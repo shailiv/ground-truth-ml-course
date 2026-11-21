@@ -1,0 +1,27 @@
+{
+ "issues": [
+  {
+   "where": "review 1 variant 3",
+   "quote": "Compare each move with its margin of error: about ±9 points for 50 advertisers, ±4 for 250, ±1 for 4,000 and ±0.6 for 12,000.",
+   "kind": "number_mismatch",
+   "severity": "medium",
+   "explanation": "±9, ±4, ±1 and ±0.6 points are the 95% margins of error for a single churn rate near 12%, not for a month-over-month move ('moved this month'). A difference between two monthly cohorts of size n has a margin of error √2 (≈1.41) times wider — roughly ±12.7, ±5.6, ±1.4 and ±0.8 points — which is why segment 3 showed two groups of 250 exceeding 5.6 points (not 4 points) 1 time in 20. Option 3 (3 points on 4,000 advertisers) is still the unique right answer, but the explanation attaches single-rate margins to two-period changes.",
+   "evidence": "facts.json -> noise.margin_of_error_for_a_churn_rate.rows (±9, ±4, ±1, ±0.6 are margins around a single observed churn rate) and noise.aa_test.by_group_size['250'].gap_exceeded_1_time_in_20_pts = 5.6.",
+   "fix": "Either change the stem to compare each segment's rate against a fixed 12% platform rate, or change why to: 'Each monthly rate wobbles by about ±9, ±4, ±1 and ±0.6 points at these group sizes, and a month-to-month gap wobbles by about 1.4 times as much (roughly ±13, ±5.6, ±1.4 and ±0.8 points). Only the 3-point move is more than twice that wobble.'"
+  },
+  {
+   "where": "seg8 narration and glossary",
+   "quote": "Estimating an interval by redrawing the rows at random many times and seeing how far the number moves.",
+   "kind": "wrong_concept",
+   "severity": "low",
+   "explanation": "Redrawing the rows of a table at random without replacement merely shuffles the same rows and leaves any rate, AUC or MAE completely unchanged across draws. The number moves in a bootstrap only because rows are drawn with replacement (allowing repeats, so some rows appear more than once and others are left out in each draw).",
+   "evidence": "Definition of the nonparametric bootstrap: resampling n rows with replacement from an n-row sample.",
+   "fix": "In seg8 narration use 'redraw the same number of rows at random, allowing repeats, a thousand times over', and in the glossary use 'Estimating an interval by redrawing a same-sized sample of rows at random (with repeats allowed) many times and seeing how far the number moves.'"
+  }
+ ],
+ "numbers_checked": 34,
+ "verdict": "Strong, accurate lesson: every simulation figure in the narration, visuals and course-domain questions matches facts.json, with one medium issue where single-sample margins of error are applied to month-over-month differences in a review explanation and one minor omission ('with replacement' / allowing repeats) in the description of bootstrapping.",
+ "_hash": "78257e9102210993",
+ "_thinking": "medium",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_ChcyeG9DYTllY0M1UzBuc0VQNWR1dnlRcxIXMnhvQ2E5ZWNDNVMwbnNFUDVkdXZ5UXM | tokens in=68600 out=800 thought=17566]"
+}

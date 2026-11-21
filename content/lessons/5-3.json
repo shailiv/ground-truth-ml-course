@@ -128,7 +128,7 @@
       "id": "5-3-q2",
       "concept": "pre-launch drift",
       "domain": "course",
-      "q": "The assistant reports: 'Difference-in-differences: the launch raised goal attainment by 7.9 points. Pre-launch check: the gap between the two groups was narrowing by 0.33 points a week, plus or minus 0.31.' It concludes that the launch was worth about 8 points. What should you flag?",
+      "q": "The assistant reports: 'Difference-in-differences: the launch raised goal attainment by 7.9 points. Pre-launch check: the launch group, which started lower, was gaining on the comparison group by 0.33 points a week, plus or minus 0.31.' It concludes that the launch was worth about 8 points. What should you flag?",
       "options": [
         "Without a randomised experiment an estimate like this is worthless and should not be reported.",
         "The gap was probably closing before launch already, so some of the 8 points was coming anyway.",

@@ -1,0 +1,22 @@
+{
+  "lesson": "3-3",
+  "recheck": [
+    {
+      "n": 0,
+      "issue": "review 2 variant 3 why: 'a difference smaller than its own interval is a tie' is the wrong rule",
+      "decision": "accepted",
+      "reason": "The tie criterion is an interval that includes zero (facts regression.paired_method); a difference can be smaller than its interval's width and still exclude zero (uncertainty.difference_logreg_minus_boosting_95 = [0.002, 0.015] around 0.009).",
+      "change": "why now reads 'When the interval around a difference includes zero, the two are tied, so the score does not decide this one.' The stem already says the interval comfortably includes zero, so the key is unchanged."
+    },
+    {
+      "n": 1,
+      "issue": "seg 5 narration: 3,363 (training leaf count) mixed into the test-set ranking discussion",
+      "decision": "rejected",
+      "reason": "The sentence is true as spoken: tree.root.no.no.no.n = 3363 training advertisers share one score, and seg 2 has just introduced that leaf as 'about 3,400 advertisers, more than half the training rows'. The tie argument holds identically for the test advertisers who land there. Not misleading enough to re-record seg 5.",
+      "change": ""
+    }
+  ],
+  "terms": [],
+  "segments_changed": [],
+  "open_questions": []
+}

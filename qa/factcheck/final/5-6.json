@@ -1,0 +1,18 @@
+{
+ "issues": [
+  {
+   "where": "quiz 5-6-q3",
+   "quote": "Only 48 percent of them churned.",
+   "kind": "unsupported_number",
+   "severity": "low",
+   "explanation": "In a course-domain question anchored on the actual test-set precision at the 0.5 cut-off (73.8%, rounded to 74%), the post-outreach churn rate of 48% is not in facts.json and cannot be derived from it. It is also much steeper than the outreach effects modelled elsewhere in facts.json (under economics' 20% save-rate assumption, 73.8% would fall to 59%; in uplift's simulated calls to the top-400 risk list, churn falls by 8 percentage points, from 53% to 45%, because most very-high-risk accounts are lost causes).",
+   "evidence": "facts.json: logreg.test.precision = 0.738 at threshold = 0.5 (no post-call figure at 0.5 exists); economics.assumptions.share_of_contacted_churners_saved = 0.2 (0.738 * 0.8 = 0.590); uplift.share_of_the_risk_list_that_stayed_without_any_call = 0.47 and uplift.policies_call_400.highest_churn_risk.churns_prevented = 32 on 400 called (53% without call -> 45% with call).",
+   "fix": "Either ground both numbers in uplift's top-400 risk list ('Without calls, 53 percent of the 400 highest-risk advertisers churned; after the team called all 400, 45 percent churned') or clearly mark the post-launch report figure as a hypothetical example (e.g. 'Suppose in later months the team calls everyone above 0.5 and finds only about 60 percent of them churned...')."
+  }
+ ],
+ "numbers_checked": 44,
+ "verdict": "Strong, accurate lesson: every simulation figure in the predict item, narrations, visuals, recall answer, and glossary matches facts.json, and the statistical reasoning on margins, label lag, and intervention feedback is sound. Only one minor unsupported percentage appears in a course-domain quiz scenario (5-6-q3).",
+ "_hash": "7a48ecde2f4c6f38",
+ "_thinking": "medium",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_ChdWaDBDYTltYUFybk92ZElQMjgySGtRcxIXVmgwQ2E5bWFBcm5PdmRJUDI4MkhrUXM | tokens in=67650 out=582 thought=11862]"
+}

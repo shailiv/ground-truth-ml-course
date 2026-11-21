@@ -1,0 +1,12 @@
+{"lesson": "1-2",
+ "recheck": [
+  {"n": 0, "issue": "Segment 5 (index 4) presents a yes-or-no churn score as the framing that fits 'whom should the success team call' without saying a risk score is not a persuadability score.", "decision": "partly", "reason": "The point is right (facts economics.caveat: 'the model predicts who will leave, not who can be persuaded'), but the segment's third row already separates 'are the calls worth making at all', and the persuadability/uplift lesson comes later (5-4); a ranked risk list is the honest starting fit for a fixed call budget. A visual note carries the caveat without re-recording.", "change": "Segment index 4 visual: table note 'A risk score ranks who may leave, not whom a call would save: a later lesson weighs that.' No narration change."},
+  {"n": 1, "issue": "Segment 6 (index 5) says a simple model is 'where the data picks the columns and the weights'; logistic regression fits a weight to every supplied column and does not screen out leaks.", "decision": "partly", "reason": "The narration is a defensible simplification and consistent with 1-1 (training chooses which of the SUPPLIED columns count and how much; a tree does pick columns); leaks and IDs are taught in 1-4. Re-recording that segment for this is not warranted, but the on-screen label can say the precise thing without contradicting the voice.", "change": "Segment index 5 visual: step sub-label 'data picks columns and weights' became 'data weighs the columns you supply'. No narration change."}
+ ],
+ "terms": [
+  {"term": "supervised learning", "spoken": true, "segment": 2, "glossary": true, "note": "Spoken right after 'If there is [an answer column], you can learn to predict it'. Glossary names classification and regression as supervised."},
+  {"term": "unsupervised learning", "spoken": true, "segment": 2, "glossary": true, "note": "Spoken right after 'the groups, or the odd ones out'. Glossary names clustering and anomaly detection."},
+  {"term": "reinforcement learning (clause)", "spoken": true, "segment": 2, "glossary": true, "note": "One sentence: 'A third family, reinforcement learning, is not in this course.' Also in the unsupervised-learning glossary line."}
+ ],
+ "segments_changed": [2],
+ "open_questions": []}

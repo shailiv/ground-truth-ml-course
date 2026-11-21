@@ -80,7 +80,7 @@
       }
     },
     {
-      "narration": "Why low? [[1]] The model learned from January to March, when about 11 percent of advertisers churned. On those months its average prediction and the actual rate match exactly. That is no achievement: training tunes the scores to agree with the outcomes it was shown. [[2]] Then it was tested on May and June, when about 13 percent churned. It still expects about 11. That is about a fifth too few, and a fifth of a high score is more points than a fifth of a low one. A model carries the churn rate of its training months forward, and when the real rate moves, the percentages go stale even if the order holds. That every bucket runs low is how this simulated world was built: churn creeps up month by month. Do not expect that pattern elsewhere. Measure it.",
+      "narration": "Why low? [[1]] The model learned from January to March, when about 11 percent of advertisers churned. On those months its average prediction and the actual rate match exactly. That is no achievement: training tunes the scores to agree with the outcomes it was shown. [[2]] Then it was tested on May and June, when about 13 percent churned. It still expects about 11. That is about two points too low overall, and away from the safest advertisers the gap opens to several points per bucket. A model carries the churn rate of its training months forward, and when the real rate moves, the percentages go stale even if the order holds. That every bucket runs low is how this simulated world was built: churn creeps up month by month. Do not expect that pattern elsewhere. Measure it.",
       "visual": {
         "type": "compare",
         "title": "Average prediction against actual churn",

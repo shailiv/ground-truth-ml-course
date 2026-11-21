@@ -67,7 +67,7 @@
       }
     },
     {
-      "narration": "You do not need to memorise seven names. You need four questions. [[1]] First: is there an answer column for past cases? Last lesson called that the label. If there is, you can learn to predict it. If not, decide which you are after: the groups, or the odd ones out. [[2]] Second: is the answer a category or a number? [[3]] Third: is time the main axis? Projecting one series forward, day after day, is forecasting. Asking whether yesterday was strange is still about the unusual. [[4]] Fourth, and the one people skip: do I want to predict it, or change it? Knowing who will leave is prediction. Knowing what would make them stay is a causal question, and a model that predicts does not answer it.",
+      "narration": "You do not need to memorise seven names. You need four questions. [[1]] First: is there an answer column for past cases? Last lesson called that the label. If there is, you can learn to predict it: that is supervised learning. If not, decide which you are after: the groups, or the odd ones out. That is unsupervised learning. A third family, reinforcement learning, is not in this course. [[2]] Second: is the answer a category or a number? [[3]] Third: is time the main axis? Projecting one series forward is forecasting. Asking whether yesterday was strange is still about the unusual. [[4]] Fourth, and the one people skip: do I want to predict it, or change it? Knowing who will leave is prediction. Knowing what would make them stay is a causal question, and a model that predicts does not answer it.",
       "visual": {
         "type": "bullets",
         "title": "Four triage questions",
@@ -135,7 +135,8 @@
             "Are the calls worth making at all?",
             "How many stay because of the call"
           ]
-        ]
+        ],
+        "note": "A risk score ranks who may leave, not whom a call would save: a later lesson weighs that."
       }
     },
     {
@@ -154,7 +155,7 @@
           },
           {
             "label": "A simple model",
-            "sub": "data picks columns and weights"
+            "sub": "data weighs the columns you supply"
           },
           {
             "label": "A complex model",
@@ -386,6 +387,14 @@
     {
       "term": "anomaly detection",
       "def": "Judging whether something is far from what is normal."
+    },
+    {
+      "term": "supervised learning",
+      "def": "Learning from past rows that have an answer column, the label: classification and regression are both supervised."
+    },
+    {
+      "term": "unsupervised learning",
+      "def": "Finding structure in rows with no answer column, such as clustering and anomaly detection. Reinforcement learning, learning by trial and reward, is a third family this course does not cover."
     },
     {
       "term": "causal question",

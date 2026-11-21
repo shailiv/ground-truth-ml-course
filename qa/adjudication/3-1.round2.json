@@ -1,0 +1,24 @@
+{
+  "lesson": "3-1",
+  "recheck": [
+    {
+      "n": 0,
+      "issue": "'a weight reads as a percentage' on a log fit: raw weights are log units (managed 0.120 -> +12.8%)",
+      "decision": "accepted",
+      "reason": "regression.log_model.how_to_read gives percent changes, which are converted values (exp(w)-1); for larger weights (cpa_vs_goal -21.4% per unit) the raw log weight and the percentage differ visibly.",
+      "change": "Seg 5 narration 'reads as a percentage' -> 'converts to a percentage' (same word count); seg 5 visual note 'Managed account, log weight converted to a percentage: +12.8%'; ask_assistant now asks to convert log-fit weights to percentage effects."
+    },
+    {
+      "n": 1,
+      "issue": "audit item says 'percent per unit for the log fit' although skewed input columns are logged too (log-log = percent per percent)",
+      "decision": "accepted",
+      "reason": "Principle: in log(y) = b + w log(x), w is the % change in y per 1% change in x. The lesson and brief log the skewed size columns.",
+      "change": "audit_checklist[0]: log-fit weights converted from log units to percent change per unit, or per 1% change for a column that was logged too."
+    }
+  ],
+  "terms": [],
+  "segments_changed": [
+    5
+  ],
+  "open_questions": []
+}

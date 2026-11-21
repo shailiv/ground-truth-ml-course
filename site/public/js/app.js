@@ -63,27 +63,143 @@ async function copy(text, msg = "Copied") {
 }
 const copyBox = (text) => h("div", { class: "copybox" }, h("p", { text }), btn("Copy", () => copy(text), "small", "copy"));
 
-// ---------- the tutor: Claude, opened with the lesson already in the conversation ----------
+// ---------- the tutor ----------
+// Claude, on the owner's own subscription, reached one of two ways. If the relay is connected (relay/tutor_relay.py:
+// Claude Code on a machine of the owner's), the question is answered here on the page. If it is not, the question
+// opens claude.ai in a new tab. Either way it carries the moment it was asked from: the lesson, the part and second
+// of the video, the sentence being spoken, what the slide showed, and what the learner has already finished.
 const WHO = "I'm a data analyst at an adtech platform (my clients are advertisers). I'm learning machine-learning fundamentals from a private course so that I can frame problems, brief an AI coding assistant and audit what it returns. I'm strong in SQL and BI, light on Python and new to ML. Be plain and concrete, use adtech examples, keep it short, and end by checking my understanding with one question.";
-function askClaude(lesson, ask, extra = "") {
-  const tail = "\nMy question: " + Array.from(ask).slice(0, 1800).join("");
-  const head = [WHO, lesson ? `\nThe lesson I'm on: "${lesson.title}" (${lesson.subtitle})\nIts three takeaways:\n- ${lesson.takeaways.join("\n- ")}` : "", extra ? "\n" + extra : ""].join("");
+const mmss = (t) => `${Math.floor((t || 0) / 60)}:${String(Math.floor((t || 0) % 60)).padStart(2, "0")}`;
+const cut = (text, n) => { const a = Array.from(String(text)); return a.length > n ? a.slice(0, n).join("") + " …" : a.join(""); };
+const slideText = (v) => (v.type === "widget" ? `an interactive called "${v.name}"${v.title ? `, titled "${v.title}"` : ""}${v.note ? `. Its note says: ${v.note}` : ""}` : cut(JSON.stringify(v), 1800));
+
+/** Where the learner is in the video, for a question asked while watching. */
+function watchMoment(les) {
+  const i = player?.i ?? 0, t = player?.t ?? 0, sg = les.segments[i], parsed = parseNarration(sg.narration);
+  const f = Math.min(1, t / (player?.durs?.[i] || 1)), sn = parsed.sentences.find((x) => f >= x.from && f < x.to) || parsed.sentences.at(-1);
+  return { label: `Part ${i + 1} · ${mmss(t)}`, seg: i, t,
+    where: `watching the lesson, part ${i + 1} of ${les.segments.length}, ${mmss(t)} into that part${player?.playing ? "" : " (paused)"}.`,
+    detail: [`The sentence being spoken at that moment: "${sn?.text || ""}"`, `That part's whole narration: "${parsed.spoken}"`, `On the slide for that part (as data): ${slideText(sg.visual)}`,
+      i ? `The part just before it said: "${parseNarration(les.segments[i - 1].narration).spoken}"` : ""].filter(Boolean).join("\n\n") };
+}
+/** Everything the tutor should know about the moment a question was asked. `full` adds the whole lesson and the course map. */
+function moment(lesson, at = {}, full = false) {
+  const out = [];
+  if (lesson) { const mod = course.modules.find((m) => m.n === lesson.module); out.push(`Lesson ${lesson.id}: "${lesson.title}" (${lesson.subtitle}). It is in module ${mod.n}, "${mod.title}".`); }
+  if (at.where) out.push("Where I was when I asked: " + at.where);
+  if (at.detail) out.push(at.detail);
+  if (lesson) out.push("The lesson's three takeaways:\n- " + lesson.takeaways.join("\n- "));
+  const done = course.lessons.filter((l) => lessonState(l.id).done).map((l) => l.id);
+  out.push(`My progress: ${done.length} of ${course.lessons.length} lessons finished${done.length ? ` (${done.join(", ")})` : ""}. Any lesson not in that list is new to me.`);
+  if (full && lesson) {
+    out.push("Words this lesson introduces: " + lesson.glossary.map((g) => `${g.term}: ${g.def}`).join(" | "));
+    out.push("The whole lesson as narrated, part by part:\n" + lesson.segments.map((sg, i) => `[${i + 1}] ${parseNarration(sg.narration).spoken}`).join("\n"));
+  }
+  if (full) out.push("The course map (so you can say which lesson covers something):\n" + course.lessons.map((l) => `${l.id} ${l.title}`).join("\n"));
+  return out.join("\n\n");
+}
+// the tutor may only ever open claude.ai: the question carries lesson text and whatever the learner typed
+function claudeAddress(v) { try { const u = new URL(v); return u.protocol === "https:" && u.hostname === "claude.ai" ? u.href : ""; } catch { return ""; } }
+function openInClaude(lesson, ask, at) {
+  const tail = "\n\nMy question: " + Array.from(ask).slice(0, 1800).join("");
+  const head = WHO + "\n\n" + moment(lesson, at);
   let q = Array.from(head).slice(0, 5500 - tail.length).join("") + tail;           // trim the context, never the question
   while (encodeURIComponent(q).length > 7000) q = Array.from(q.slice(0, q.length - tail.length)).slice(0, -200).join("") + tail;
   copy(q, "Question copied. Opening Claude");
   const base = claudeAddress(store.setting("claudeUrl")) || "https://claude.ai/new";
   window.open(base + (base.includes("?") ? "&" : "?") + "q=" + encodeURIComponent(q), "_blank", "noopener");
 }
-// the tutor may only ever open claude.ai: the question carries lesson text and whatever the learner typed
-function claudeAddress(v) { try { const u = new URL(v); return u.protocol === "https:" && u.hostname === "claude.ai" ? u.href : ""; } catch { return ""; } }
-function tutorBox(lesson, extra, what = "lesson") {
-  const inp = h("input", { type: "text", placeholder: `Ask anything about this ${what}…`, "aria-label": "Question for the tutor", id: "tutor-q" });
-  const go = () => askClaude(lesson, inp.value.trim() || "Explain this lesson's main idea a different way, with a fresh example.", extra?.());
-  inp.addEventListener("keydown", (e) => e.key === "Enter" && go());
-  return h("div", { class: "section" }, h("h3", { text: "Stuck? Ask your tutor" }),
-    h("div", { class: "row" }, h("div", { style: { flex: "1 1 260px", minWidth: 0 } }, inp), btn("Ask Claude", go, "", "spark")),
-    h("div", { class: "row" }, ["Explain it differently", "Give me a harder example", "How would this go wrong on real data?", "Quiz me on this"].map((t) => btn(t, () => askClaude(lesson, t, extra?.()), "small ghost"))),
-    h("p", { class: "note", style: { color: "var(--ink-3)", fontSize: ".82rem" }, text: `Opens Claude in a new tab with this ${what} already in the message (on your Claude subscription).` }));
+const relay = {
+  known: null, at: 0,
+  async online(fresh = false) {
+    if (!fresh && this.known != null && Date.now() - this.at < 30000) return this.known;
+    try { const r = await fetch("/api/tutor/status", { credentials: "same-origin" }); this.known = r.ok && (await r.json()).online === true; } catch { this.known = false; }
+    this.at = Date.now();
+    return this.known;
+  },
+  async ask(question, context, history) {
+    const r = await fetch("/api/tutor/ask", { method: "POST", credentials: "same-origin", headers: { "content-type": "application/json" }, body: JSON.stringify({ question, context, history }) });
+    if (r.status === 401) { location.href = "/login" + location.hash; throw new Error("You were signed out."); }
+    if (r.status === 503) { this.known = false; throw new Error("The tutor went offline just now. “Open in Claude” below still works."); }
+    if (r.status === 429) throw new Error("That is the tutor's limit for one day. “Open in Claude” below still works.");
+    if (!r.ok) throw new Error("The question could not be sent. Try again.");
+    const { id } = await r.json();
+    for (let k = 0; k < 6; k++) {                 // the server holds each wait open for up to 25 seconds
+      const a = await fetch("/api/tutor/answer?id=" + encodeURIComponent(id), { credentials: "same-origin" });
+      if (!a.ok) break;
+      const body = await a.json();
+      if (body.text != null) return body.text;
+      if (body.error) throw new Error(body.error);
+    }
+    throw new Error("No answer came back in time. Try again.");
+  },
+};
+const threads = {
+  load(key) { try { const v = JSON.parse(localStorage.getItem("gt.tutor." + key)); return Array.isArray(v) ? v : []; } catch { return []; } },
+  save(key, turns) { try { localStorage.setItem("gt.tutor." + key, JSON.stringify(turns.filter((t) => !t.failed).slice(-40))); } catch { /* fine */ } },
+};
+/** The tutor writes plain text with a little emphasis. Build it from nodes, never from HTML. */
+function prose(text) {
+  const inline = (line) => line.split(/(\*\*[^*\n]+\*\*|`[^`\n]+`)/g).filter(Boolean).map((part) => (/^\*\*.+\*\*$/.test(part) ? h("b", { text: part.slice(2, -2) }) : /^`.+`$/.test(part) ? h("code", { text: part.slice(1, -1) }) : part));
+  const out = []; let list = null, para = [];
+  const flush = () => { if (para.length) out.push(h("p", {}, inline(para.join(" ")))); para = []; };
+  for (const line of String(text).trim().split("\n")) {
+    const item = /^\s*(?:[-*•]|\d+[.)])\s+(.*)$/.exec(line);
+    if (item) { flush(); if (!list) out.push((list = h("ul", { class: "list" }))); list.append(h("li", {}, inline(item[1]))); continue; }
+    list = null;
+    if (!line.trim()) flush(); else para.push(line.replace(/^#+\s*/, "").trim());
+  }
+  flush();
+  return out;
+}
+/**
+ * The tutor box. `where()` describes the moment ({ label, where, detail, seg, t }); `key` names the conversation,
+ * which is kept in this browser so a question asked last week is still under the lesson it was asked in.
+ */
+function tutorBox(lesson, where, what = "lesson", key = lesson?.id || what) {
+  const DEFAULT = `Explain this ${what}'s main idea a different way, with a fresh example.`;
+  let turns = threads.load(key), busy = false;
+  const list = h("div", { class: "thread", "aria-live": "polite" });
+  const inp = h("input", { type: "text", maxlength: 2000, placeholder: `Ask anything about this ${what}…`, "aria-label": "Question for the tutor", id: "tutor-q-" + key });
+  const note = h("p", { class: "note tutor-note", text: "Checking for the tutor…" });
+  const clear = btn("Clear this conversation", () => { turns = []; threads.save(key, turns); draw(); }, "small ghost");
+  const jump = (t) => { if (player && t.seg != null) { player.show(t.seg, false, t.t || 0); player.wrap.scrollIntoView({ behavior: "smooth", block: "nearest" }); } };
+  const draw = () => {
+    list.replaceChildren(...turns.map((t) => (t.role === "me"
+      ? h("div", { class: "turn me" }, t.label ? h("button", { class: "at", type: "button", title: lesson && t.seg != null ? "Go back to this moment" : null, disabled: !(player && t.seg != null), text: t.label, onclick: () => jump(t) }) : null, h("p", { text: t.text }))
+      : h("div", { class: "turn tutor" + (t.failed ? " failed" : "") }, prose(t.text)))),
+      ...(busy ? [h("div", { class: "turn tutor wait" }, h("p", { text: "Thinking…" }))] : []));
+    clear.hidden = !turns.length || busy;
+  };
+  const other = btn("Open in Claude instead", () => openInClaude(lesson, inp.value.trim() || DEFAULT, where?.() || {}), "small ghost");
+  const mode = async (fresh) => {
+    const on = await relay.online(fresh);
+    other.hidden = !on;                       // when the tutor is not connected, asking already opens Claude
+    note.textContent = on ? `Answered here by Claude, on your own subscription. It is told where you were in the ${what} when you asked.`
+      : `The tutor is not connected right now, so a question opens Claude in a new tab, with this moment of the ${what} already in the message.`;
+    return on;
+  };
+  const ask = async (q) => {
+    q = (q ?? inp.value).trim() || DEFAULT;
+    if (busy) return;
+    const at = where?.() || {};
+    if (!(await mode(true))) return openInClaude(lesson, q, at);
+    inp.value = "";
+    const history = turns.slice(-8).map(({ role, text }) => ({ role, text }));
+    turns.push({ role: "me", text: q, label: at.label, seg: at.seg, t: at.t, at: Date.now() });
+    busy = true; draw(); list.lastChild?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    try { turns.push({ role: "tutor", text: await relay.ask(q, moment(lesson, at, true), history), at: Date.now() }); }
+    catch (e) { turns.push({ role: "tutor", failed: true, text: e.message || "No answer came back. Try again." }); mode(true); }
+    busy = false; threads.save(key, turns); draw();
+  };
+  inp.addEventListener("keydown", (e) => { if (e.key === "Enter") ask(); });
+  draw(); mode();
+  const box = h("div", { class: "section tutor" }, h("h3", { text: turns.length ? "Your tutor" : "Stuck? Ask your tutor" }), list,
+    h("div", { class: "row" }, h("div", { style: { flex: "1 1 260px", minWidth: 0 } }, inp), btn("Ask", () => ask(), "", "spark")),
+    h("div", { class: "row" }, ["Explain it differently", "Give me a harder example", "How would this go wrong on real data?", "Quiz me on this"].map((t) => btn(t, () => ask(t), "small ghost"))),
+    h("div", { class: "row" }, note, other, clear));
+  box.ask = ask;
+  return box;
 }
 
 // ---------- multiple-choice question, shared by the lesson quiz and the daily review ----------
@@ -201,7 +317,7 @@ function lesson(id, stepArg) {
       return h("div", { class: "view", style: { display: "grid", gap: "16px" } }, mount, doneBar,
         h("section", { class: "card panel" }, h("div", { class: "row" }, btn("Show the transcript", (e) => { tr.hidden = !tr.hidden; e.currentTarget.lastChild.textContent = tr.hidden ? "Show the transcript" : "Hide the transcript"; }, "small"),
           h("span", { style: { color: "var(--ink-3)", fontSize: ".85rem" }, text: "Best watched the first time. The headphones button switches to audio only, for a second pass on the move." })), tr,
-          tutorBox(les, () => `The part I'm on says: "${parseNarration(les.segments[player?.i ?? 0].narration).spoken}"`)));
+          tutorBox(les, () => watchMoment(les))));
     },
     check() {
       const qs = les.quiz, host = h("div"), bar = h("div", { class: "qbar" }, qs.map(() => h("i")));
@@ -230,14 +346,23 @@ function lesson(id, stepArg) {
             missed.length ? btn("Try the questions again", () => { session.set("quiz." + id, null); panel.replaceChildren(VIEW.check()); }, "ghost") : null)));
       };
       show();
-      return h("section", { class: "card panel view" }, h("div", { class: "task" }, bar, host));
+      const here = () => {
+        const q = qs[i];
+        if (!q) return { label: "After the check", where: `on the lesson's check, all ${qs.length} questions answered (${res.filter(Boolean).length} right).`, detail: "The questions I got wrong:\n" + (qs.filter((_, k) => !res[k]).map((x) => `- ${x.q} (the course's explanation: ${x.why})`).join("\n") || "none") };
+        const answered = res[i] !== undefined;
+        return { label: `Check · question ${i + 1}`, where: `on the lesson's check, question ${i + 1} of ${qs.length}.`,
+          detail: `The question on screen: ${q.q}\nIts options (shown to me in a shuffled order, so refer to them by their words, not by letter):\n${q.options.map((o) => "- " + o).join("\n")}\n` +
+            (answered ? `I answered it ${res[i] ? "correctly" : "wrongly"}. The right option is: "${q.options[q.answer]}". The course's explanation: ${q.why}` : "I have NOT answered it yet. Help me reason towards it; do not tell me which option is right.") };
+      };
+      return h("section", { class: "card panel view" }, h("div", { class: "task" }, bar, host), tutorBox(les, here, "question"));
     },
     explain() {
       const r = les.recall, ta = h("textarea", { id: "recall-" + id, placeholder: "Type it, or say it out loud and type nothing." }), model = h("div", { class: "why", role: "status", hidden: true }, h("b", { text: "A strong answer" }), h("span", { text: r.model_answer }));
       const rate = h("div", { class: "section", hidden: true }, h("h3", { text: "Rate yourself to continue" }), h("div", { class: "row" }, [["Missed it", 0], ["Partly", 1], ["Nailed it", 2]].map(([t, v]) => btn(t, () => { store.put("lessons", id, { recall: v }); go("take"); })),
-        btn("Have Claude grade it", () => askClaude(les, "Grade my answer against the model answer on three points: correct, complete, clear. Be specific about what I missed.", `The question: ${r.prompt}\nThe model answer: ${r.model_answer}\nMy answer: ${ta.value.trim() || "(I answered out loud; ask me to type it)"}`), "small ghost", "spark")));
+        btn("Have the tutor grade it", () => box.ask("Grade my answer against the model answer on three points: correct, complete, clear. Be specific about what I missed."), "small ghost", "spark")));
+      const box = tutorBox(les, () => ({ label: "Explain it back", where: "on the lesson's optional \"explain it back\" step.", detail: `The question I was asked to explain: ${r.prompt}\nThe course's model answer: ${r.model_answer}\nWhat I typed: ${ta.value.trim() || "(nothing: I answered out loud, so ask me to type it)"}` }), "answer");
       const first = h("div", { class: "row" }, btn("Show a strong answer", () => { model.hidden = false; rate.hidden = false; first.hidden = true; }, "primary"), btn("Skip", () => go("take"), "ghost"));
-      return h("section", { class: "card panel view" }, h("div", { class: "eyebrow", text: "Optional · explaining it is the fastest way to find the gap" }), h("h2", { text: r.prompt }), h("div", { style: { maxWidth: "760px", display: "grid", gap: "14px" } }, ta, first, model, rate));
+      return h("section", { class: "card panel view" }, h("div", { class: "eyebrow", text: "Optional · explaining it is the fastest way to find the gap" }), h("h2", { text: r.prompt }), h("div", { style: { maxWidth: "760px", display: "grid", gap: "14px" } }, ta, first, model, rate), box);
     },
     take() {
       if (!lessonState(id).took) store.put("lessons", id, { took: Date.now() }, { quiet: true });
@@ -254,7 +379,7 @@ function lesson(id, stepArg) {
           h("section", { class: "card panel" }, h("div", { class: "section" }, h("h3", { text: "Where else this applies" }), h("ul", { class: "list" }, les.transfer.map((t) => h("li", { text: t })))),
             h("div", { class: "section" }, h("h3", { text: "Other ways to attack it" }), h("div", { class: "kv" }, les.other_ways.map((o) => h("div", {}, h("b", { text: o.approach }), h("span", { text: o.when }))))))),
         h("section", { class: "card panel" }, h("h3", { text: "New words, and what the textbooks call them" }), h("div", { class: "kv two" }, les.glossary.map((g) => h("div", {}, h("b", { text: g.term }), h("span", { text: g.def }))))),
-        h("section", { class: "card panel" }, tutorBox(les)));
+        h("section", { class: "card panel" }, tutorBox(les, () => ({ label: "Take-aways", where: "on the lesson's take-away page, after finishing it.", detail: `The brief the lesson suggests I give my assistant: ${les.ask_assistant}\n\nWhat its output must show before I believe it:\n- ${les.audit_checklist.join("\n- ")}` }))));
     },
   };
   if (!Object.hasOwn(VIEW, step)) step = "guess";
@@ -356,7 +481,7 @@ function lab(id) {
     c.steps.map((s, i) => h("section", { class: "card panel" }, h("div", { class: "eyebrow", text: `Stage ${i + 1} of ${c.steps.length}` }), h("h2", { text: s.title }), h("div", { class: "section" }, h("h3", { text: "Say this to your assistant" }), copyBox(s.brief)),
       h("div", { class: "cols" }, h("div", { class: "section" }, h("h3", { text: "You should see roughly" }), h("ul", { class: "list" }, s.expect.map((t) => h("li", { text: t })))), h("div", { class: "section" }, h("h3", { text: "The gate: do not go on until" }), h("ul", { class: "list" }, s.gate.map((t) => h("li", { text: t }))))))),
     h("section", { class: "card panel" }, h("label", { class: "check" }, h("input", { type: "checkbox", id: "lab-" + id, checked: !!st.done, onchange: (e) => store.put("labs", id, { done: e.target.checked ? Date.now() : 0 }) }), h("span", { text: "I ran this and my numbers were in the right neighbourhood" })),
-      tutorBox(null, () => `I'm doing a practice lab called "${c.title}": ${c.setup}`, "lab")));
+      tutorBox(null, () => ({ label: "Lab", where: `working through a practice lab called "${c.title}".`, detail: `${c.setup}\n\nIts stages:\n${c.steps.map((x, k) => `${k + 1}. ${x.title}. Brief: ${cut(x.brief, 500)} Gate: ${x.gate.join("; ")}`).join("\n")}` }), "lab", "lab-" + id)));
 }
 
 // ---------- recall drills (audio only) ----------
@@ -408,7 +533,7 @@ function about(toSettings) {
     course.about.flatMap((s) => [h("h2", { text: s.h }), ...s.p.map((t) => h("p", { text: t }))]),
     h("section", { class: "card panel", id: "settings", style: { color: "var(--ink)" } }, h("h2", { text: "Settings" }),
       h("div", { class: "section" }, h("h3", { text: "Daily review cap" }), h("div", { class: "seg-btns" }, [6, 10, 16].map((n) => h("button", { type: "button", text: `${n} cards`, "aria-pressed": String((store.setting("dailyCap") || 10) === n), onclick: (e) => { store.setting("dailyCap", n); e.currentTarget.parentNode.querySelectorAll("button").forEach((x) => x.setAttribute("aria-pressed", String(x === e.currentTarget))); drawBadge(); } })))),
-      h("div", { class: "section" }, h("h3", { text: "Where the tutor opens" }), h("p", { text: "Leave empty for a new Claude chat. To keep one running tutor conversation with memory of the course, create a Claude Project, upload the assistant pack, and paste the project's URL here." }),
+      h("div", { class: "section" }, h("h3", { text: "The tutor" }), h("p", { text: "When the tutor relay is running on your computer, questions are answered on the lesson page by Claude, on your own subscription, and it is told the exact moment of the lesson you asked from. When it is not running, a question opens Claude in a new tab instead. This box sets where that tab goes: leave it empty for a new chat, or paste the address of a Claude Project that holds the assistant pack to keep one running conversation." }),
         h("input", { type: "url", id: "claude-url", placeholder: "https://claude.ai/project/…", value: store.setting("claudeUrl") || "", onchange: (e) => { const v = e.target.value.trim(); if (v && !claudeAddress(v)) { toast("That is not a claude.ai address"); e.target.value = store.setting("claudeUrl") || ""; return; } store.setting("claudeUrl", v); toast("Saved"); } })),
       h("div", { class: "section" }, h("h3", { text: "Your progress" }), h("div", { class: "row" }, btn("Download a copy", () => { const a = h("a", { href: URL.createObjectURL(new Blob([store.exportState()], { type: "application/json" })), download: "ground-truth-progress.json" }); a.click(); }, "small"),
         btn("Start over…", () => { confirmBox.hidden = false; confirmBox.querySelector("input").focus(); }, "small ghost"), h("form", { method: "post", action: "/logout", style: { display: "inline" } }, h("button", { class: "btn small ghost", type: "submit", text: "Sign out" }))),

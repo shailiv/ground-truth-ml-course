@@ -1,0 +1,8 @@
+{"lesson": "2-1",
+ "recheck": [],
+ "terms": [
+  {"term": "generalisation (to generalise)", "spoken": true, "segment": 1, "glossary": true, "note": "Spoken right after the test set is introduced: 'The textbook name for holding up on rows it never saw is generalisation.' (107 to 120 words)."},
+  {"term": "holdout (optional)", "spoken": true, "segment": 1, "glossary": true, "note": "Already present, left as is: narration says 'held out', the title is 'Hold-out, the gap, and baselines', and the test-set glossary line says 'also called a hold-out'."}
+ ],
+ "segments_changed": [1],
+ "open_questions": []}

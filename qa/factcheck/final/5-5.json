@@ -1,0 +1,18 @@
+{
+ "issues": [
+  {
+   "where": "quiz 5-5-q2",
+   "quote": "The model ranks well, but a predicted-versus-actual table shows that advertisers it scores at around 8 percent actually churn about 12 percent of the time.",
+   "kind": "number_mismatch",
+   "severity": "low",
+   "explanation": "This question has domain 'course' and refers to 'The model' without marking the numbers as hypothetical, which reads as a statement about the course's logistic regression model. In the simulated data (and in segment 5), the 5-10% score bin has an average predicted probability of 7.2% and an actual churn rate of 9.7%, and the 289 test advertisers scored between 0.073 and 0.10 churned at 10.4% (30/289), not 12%.",
+   "evidence": "calibration.logreg[1]: {\"bin\": \"5-10%\", \"n\": 650, \"predicted\": 0.072, \"actual\": 0.097}; thresholds[1] (threshold 0.10: flagged 1311, tp 413) and economics.table[4] (contacted 1600, score 0.073, churners_reached 443) imply (443 - 413) / (1600 - 1311) = 10.4%.",
+   "fix": "Frame the figures explicitly as a hypothetical scenario so they do not conflict with segment 5 or facts.json: \"Suppose break-even is a churn probability of 10 percent. A model ranks well, but its predicted-versus-actual table shows that advertisers it scores at around 8 percent actually churn about 12 percent of the time. What happens if you cut the list at a score of 0.10?\""
+  }
+ ],
+ "numbers_checked": 55,
+ "verdict": "Practically ready to ship: all core figures, table values, calibration callbacks, regression/uplift cross-references, and quiz/review calculations match facts.json and sound ML/causal reasoning, with only one unlabelled hypothetical calibration figure in quiz 5-5-q2 to clarify.",
+ "_hash": "1db17900f90cb4c4",
+ "_thinking": "medium",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_ChdWaDBDYTYzQ0NLcXN2ZElQX09qTC1BVRIXVmgwQ2E2M0NDS3FzdmRJUF9PakwtQVU | tokens in=68550 out=548 thought=16381]"
+}

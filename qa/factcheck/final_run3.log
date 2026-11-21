@@ -11,3 +11,10 @@ WARNING: status is 'requires_continuation' - the output above may be partial. Us
 5-1: 2 issues  [[gemini-4-carbon | status=completed | id=v1_ChdWeFlDYTVUT01meWt2ZElQdnMtb3FBSRIXVnhZQ2E1VE9NZnlrdmRJUHZzLW9xQUk | tokens in=67873 out=664 thought=31070]]
 5-2: 0 issues  [[gemini-4-carbon | status=completed | id=v1_Chc3UmNDYV9IaE5aeW8yOG9QcllDUW9BYxIXN1JjQ2FfSGhOWnlvMjhvUHJZQ1FvQWM | tokens in=67924 out=123 thought=17944]]
 5-3: 1 issues  [[gemini-4-carbon | status=completed | id=v1_ChdVaGdDYTZydU8teUF4czBQdXBEZi1RZxIXVWhnQ2E2cnVPLXlBeHMwUHVwRGYtUWc | tokens in=68330 out=473 thought=25111]]
+5-4: 2 issues  [[gemini-4-carbon | status=completed | id=v1_ChdNQnNDYTV5dUZjM2puc0VQdFBXSXdRbxIXTUJzQ2E1eXVGYzNqbnNFUHRQV0l3UW8 | tokens in=68278 out=664 thought=24662]]
+5-5: -1 issues  [JSONDecodeError: [gemini-4-carbon | status=requires_continuation | id=v1_ChdjQnNDYThhdUlhNnR2ZElQcV9QMXFRbxIXY0JzQ2E4YXVJYTZ0dmRJUHFfUDFxUW8 | tokens in=68550 out=3 thought=32765]
+WARNING: status is 'requires_continuation' - the output above may be partial. Use --raw to inspect.
+]
+5-6: -1 issues  [JSONDecodeError: [gemini-4-carbon | status=requires_continuation | id=v1_ChdkQm9DYTRuRklacVlrZFVQMGFMdXNRbxIXZEJvQ2E0bkZJWnFZa2RVUDBhTHVzUW8 | tokens in=67650 out=3 thought=32765]
+WARNING: status is 'requires_continuation' - the output above may be partial. Use --raw to inspect.
+]

@@ -1,9 +1,17 @@
 {
-  // Ground Truth: one Worker in front of everything (login, progress API, static files).
+  // Ground Truth: one Worker in front of everything (login, progress API, tutor queue, static files).
+  // This file is the template. build/deploy.sh writes wrangler.deploy.jsonc (not committed) with the real KV id.
   "name": "ground-truth",
   "main": "worker.js",
   "compatibility_date": "2026-11-01",
-  "assets": { "directory": "./public", "binding": "ASSETS", "run_worker_first": true, "not_found_handling": "none" },
+  // html_handling "none": every file is served at its exact path and nowhere else, so the asset server never
+  // answers with a redirect of its own (the Worker decides what "/" and "/login" mean)
+  "assets": { "directory": "./public", "binding": "ASSETS", "run_worker_first": true, "not_found_handling": "none", "html_handling": "none" },
   "kv_namespaces": [{ "binding": "PROGRESS", "id": "REPLACED_AT_DEPLOY" }],
+  // the tutor's queue: one small Durable Object that holds questions until the relay collects them (tutor.js)
+  "durable_objects": { "bindings": [{ "name": "TUTOR", "class_name": "TutorRoom" }] },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["TutorRoom"] }],
+  // a ceiling on sign-in attempts from everywhere at once, on top of the per-address brake in worker.js
+  "ratelimits": [{ "name": "LOGIN_LIMIT", "namespace_id": "1001", "simple": { "limit": 20, "period": 60 } }],
   "observability": { "enabled": true }
 }

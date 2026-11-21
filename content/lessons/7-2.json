@@ -43,7 +43,7 @@
         "note": "Average similarity to this ticket: same category 0.809, other categories 0.716. Even other topics score high: read the gap, not the level."}
     },
     {
-      "narration": "Nobody can picture 256 directions, so the map squashes them down to two. Every dot is a ticket, and dots that sit close together are tickets the model considers similar. The squashing loses a lot, so expect neighbourhoods with blurred edges, not islands. And nobody told the embedding model about our six categories. Whatever grouping appears comes from the text alone. Take a minute with the map. Find where one category gathers, then find a border where two of them run into each other.",
+      "narration": "Nobody can picture 256 directions, so the map squashes them down to two. Squashing many columns into a few is called dimensionality reduction, and the classic method is PCA. Every dot is a ticket, and dots that sit close together are tickets the model considers similar. The squashing loses a lot, so expect neighbourhoods with blurred edges, not islands. And nobody told the embedding model about our six categories. Whatever grouping appears comes from the text alone. Take a minute with the map. Find where one category gathers, then find a border where two of them run into each other.",
       "visual": {"type": "widget", "name": "ticket_map", "title": "Tickets as dots: near means similar", "note": "256 numbers squashed to 2 for drawing. Find where a category gathers, and a border where two blur."}
     },
     {
@@ -157,7 +157,7 @@
         "Unworkable: embeddings can be used for search but never for routing tickets."
       ],
       "answer": 0,
-      "why": "Embeddings place same-topic tickets close together, and both of these are about a double charge; whether they also separate 'refund' from 'correct the invoice' is exactly the kind of fine distinction where they were weakest in this lesson, so measure it on labelled tickets from both queues. A similarity score is a distance, not a probability, and raising a cut-off without a test is a guess."
+      "why": "Embeddings place same-topic tickets close together, and both of these are about a double charge; whether they also separate 'refund' from 'correct the invoice' is exactly the kind of fine distinction where they were weakest in this lesson, so measure it on labelled tickets from both queues. A similarity score measures closeness between coordinates, not a probability of a match, and raising a cut-off without a test is a guess."
     }
   ],
   "review": [
@@ -272,7 +272,8 @@
   "glossary": [
     {"term": "embedding", "def": "A list of numbers a model produces for a piece of text, arranged so that similar meanings get nearby numbers."},
     {"term": "embedding model", "def": "A neural network, trained on large amounts of text, that turns a piece of text into its embedding. It is either hosted, so the text is sent to a vendor, or run on your own machines. A text is embedded once, and the result can be stored and reused."},
+    {"term": "dimensionality reduction", "def": "Squashing many columns into a few that keep as much of their structure as possible, for example 256 embedding numbers down to 2 so they can be drawn. The classic method is principal component analysis (PCA)."},
     {"term": "neural network", "def": "A model built from stacked layers of weighted sums with a bend between the layers, which learns its own features from data."},
-    {"term": "similarity score", "def": "A number for how close two embeddings are; it tops out at 1 for texts the model places at the same point. Its level depends on the model, so compare scores with each other, not with a fixed bar."}
+    {"term": "similarity score", "def": "A number for how close two embeddings are; it tops out at 1 for texts the model places at the same point. The usual one for embeddings is cosine similarity. Its level depends on the model, so compare scores with each other, not with a fixed bar."}
   ]
 }

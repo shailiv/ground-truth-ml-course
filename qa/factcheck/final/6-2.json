@@ -1,0 +1,27 @@
+{
+ "issues": [
+  {
+   "where": "ask_assistant and seg5 narration",
+   "quote": "from each of the last [twelve] [month starts]... Build an [80] percent range for [the number I need: one day, or the total over the horizon] from backtest errors of that same kind, using the earlier backtests, and report how often it held on the later ones.",
+   "kind": "misleading",
+   "severity": "medium",
+   "explanation": "Splitting 12 monthly backtests into 6 earlier and 6 later rehearsals works for daily errors because each half has 6 x 28 = 168 daily observations. For a 28-day total, each backtest produces only one error, leaving just 6 numbers to cut 10th and 90th percentiles and 6 numbers to test coverage. Even the full [min, max] of 6 continuous i.i.d. errors has an expected out-of-sample coverage of only 5/7 (71.4%), below the promised 80%, and observed coverage on 6 test totals moves in 16.7-point steps. Building and validating an empirical quantile range for a horizon total requires many more backtest dates than 12 monthly starts.",
+   "evidence": "forecast.backtest.how (12 forecasts of 28 days each); forecast.interval.how (10th and 90th percentiles on first 6 backtests, checked on last 6, which gives 168 daily errors per half but would give n=6 totals per half; compare forecast.interval.by_week_ahead where even n=42 days per half gives noisy 66.7% to 90.5% coverage).",
+   "fix": "Add a caveat in seg5 and ask_assistant that because each rehearsal yields only one horizon-total error, building and checking a quantile band for a 28-day total requires many more backtest origins (for example, weekly forecast starts over history rather than 12 monthly ones)."
+  },
+  {
+   "where": "seg1 narration and quiz 6-2-q1",
+   "quote": "hold out a random fifth of the days / 5-fold cross-validation, shuffled, on 851 days",
+   "kind": "unsupported_number",
+   "severity": "low",
+   "explanation": "FACTS reports mape_shuffled_folds = 0.0318 (3.2%) for gradient boosting on calendar features and n_days = 851 for the series, but does not state how many folds were used in forecast.shuffled_folds_vs_backtest or whether all 851 days were included in those folds.",
+   "evidence": "forecast.shuffled_folds_vs_backtest (describes 'randomly held-out days' with mape_shuffled_folds = 0.0318, with no fold count recorded).",
+   "fix": "Refer to 'randomly held-out folds of days' in seg1 and 'shuffled cross-validation' in quiz 6-2-q1 without specifying 5 folds / a fifth."
+  }
+ ],
+ "numbers_checked": 44,
+ "verdict": "All core numbers, series values, and quiz keys match facts.json accurately; the main substantive issue is instructing learners to estimate and validate an 80% quantile band for a 28-day total by splitting just 12 monthly backtests in half (n=6 totals per half), plus an unverified 5-fold detail for the shuffled forecast test.",
+ "_hash": "21941e7896131925",
+ "_thinking": "medium",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_ChdLeHdDYTYzSk11bk52ZElQc2FTWTRBTRIXS3h3Q2E2M0pNdW5OdmRJUHNhU1k0QU0 | tokens in=68405 out=823 thought=18862]"
+}

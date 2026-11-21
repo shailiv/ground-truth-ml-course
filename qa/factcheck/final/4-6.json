@@ -1,0 +1,27 @@
+{
+ "issues": [
+  {
+   "where": "quiz 4-6-q4 why",
+   "quote": "That only the order matters is true when everyone is sorted by probability alone; it stops being true once percentages that are off by different amounts in different groups are multiplied by money.",
+   "kind": "wrong_concept",
+   "severity": "medium",
+   "explanation": "If predicted percentages are off by different amounts in different groups (group-level miscalibration, such as 5.5% vs 8.4% for large accounts against 17.6% vs 18.3% for small accounts), sorting everyone on one list by probability alone is also distorted across groups because the underpredicted group is pushed below better-calibrated groups with lower true risk. A probability-sorted list is invariant only to a single monotonic shift applied equally across all groups, whereas multiplying by spend requires calibrated probability ratios so that neither nonlinear shifts nor group-specific underprediction distort expected dollars.",
+   "evidence": "Calibration and ranking principle; also facts.json slices.by_size (small avg_predicted 0.176 vs avg_actual 0.183; large avg_predicted 0.055 vs avg_actual 0.084).",
+   "fix": "Replace the second sentence of why with: \"An overall shift that moves everyone's scores together leaves a probability-sorted list unchanged, because only the order matters; once you multiply by spend (or when probabilities run lower in one group than another), understated probabilities shrink expected loss and cost that group places on the list.\""
+  },
+  {
+   "where": "review 2 variant 3",
+   "quote": "Next month's report says the model has got worse: churners on the list fell from 220 to 151. ... The scores are identical; only the sort key changed",
+   "kind": "contradiction",
+   "severity": "medium",
+   "explanation": "The question stem attributes the drop from 220 to 151 to \"Next month's report\", which would be a new cohort of advertisers where scores are not identical and real model drift could also occur. That contradicts the explanation (\"The scores are identical; only the sort key changed\") and misplaces the course numbers: 220 vs 151 churners (and ~25% vs 57% of lost spend) come from sorting the exact same 4,000-row May-June test set two ways, whereas a single month has only 2,000 advertisers in total.",
+   "evidence": "facts.json slices.rank_by_what (rank_by_churn_probability.churners_on_list = 220, rank_by_probability_times_spend.churners_on_list = 151 on the 4,000-row test set) and data.per_month = 2000.",
+   "fix": "Change the question stem to compare both rankings on the same test set: \"The team switches the churn list from ranking by probability to ranking by probability times spend. Recomputed on the same test months, a report says the model has got worse: churners on the list fell from 220 to 151. What is the right read?\" and change option 1 from \"has degraded since last month\" to \"has degraded\"."
+  }
+ ],
+ "numbers_checked": 48,
+ "verdict": "All 48 numeric claims in the narration, visuals, takeaways, and questions match facts.json accurately; two medium-severity explanation/framing issues were found in quiz 4-6-q4 and review 2 variant 3.",
+ "_hash": "2920ae20c55140d7",
+ "_thinking": "medium",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_Chd5UnNDYTlhUUxJVGo3TThQNVBUSnNBYxIXeVJzQ2E5YVFMSVRqN004UDVQVEpzQWM | tokens in=68069 out=844 thought=14016]"
+}

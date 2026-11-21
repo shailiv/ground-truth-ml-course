@@ -7,13 +7,13 @@
   "predict": {
     "q": "The design team can replace twenty creatives a week and asks which new ones will burn out fastest. Past creatives have a known ending. Which framing serves that decision best?",
     "options": [
-      "How many days each creative will last before it fatigues",
+      "What the median creative lifetime is across all past launches",
       "Which groups of similar creatives exist, found by clustering",
       "Whether each creative fatigues within two weeks, yes or no",
       "What the average CTR across all creatives will be next month"
     ],
     "answer": 2,
-    "reveal": "The yes or no in a fixed window: a weekly list of twenty needs one score to rank by, while days until fatigue answers a different question, how long creatives last. The lesson walks nine such choices through three problems no lesson worked through."
+    "reveal": "The yes or no in a fixed window: a weekly list of twenty needs one score per creative to rank by, and a median lifetime describes the whole pool without ranking any creative in it. The lesson walks nine such choices through three problems no lesson worked through."
   },
   "segments": [
     {
@@ -26,7 +26,7 @@
       }
     },
     {
-      "narration": "Three questions frame the problem. [[1]] What decision does it feed? Say the design team can replace twenty creatives a week. The output is a ranked list of twenty. [[2]] What kind of problem is it? Past creatives have a known ending, so there is an answer column. Fatigued within two weeks, yes or no, is classification. Days until fatigue is time to event, with running creatives censored. A ranked list wants the yes or no. [[3]] What is one row, the target and the timeline? One creative, three days after launch. Fatigued means CTR down by half, if the room agrees. Features come only from those three days. Last week's launches have no label yet.",
+      "narration": "Three questions frame the problem. [[1]] What decision does it feed? Say the design team can replace twenty creatives a week. The output is a ranked list of twenty. [[2]] What kind of problem is it? Past creatives have a known ending, so there is an answer column. Fatigued within two weeks, yes or no, is classification. Days until fatigue is time to event, with running creatives censored. For a weekly list, the yes or no is the simpler route. [[3]] What is one row, the target and the timeline? One creative, three days after launch. Fatigued means CTR down by half, if the room agrees. Features come only from those three days. Last week's launches have no label yet.",
       "visual": {
         "type": "flow",
         "title": "Frame it: the first three questions",
@@ -58,7 +58,7 @@
         "columns": ["Question", "Judged by", "On rows it never saw"],
         "rows": [
           ["Creatives", "Fatigued in the top twenty, model vs rule", "Creatives launched later"],
-          ["Publishers", "Precision and recall at the cut-off", "Planted incidents"],
+          ["Publishers", "Recall on planted incidents; precision from hand-checked flags", "Planted incidents"],
           ["Tickets", "Error in tickets, with a range", "Forecasts from past dates forward"]
         ],
         "note": "Question 6: simplest model first. Complexity stays only if its gain is bigger than the noise."
@@ -143,11 +143,11 @@
       "options": [
         "Ask for precision and recall too: flagging is yes or no, so classification fits",
         "Better: cluster the publishers and treat the smallest cluster as the fraud",
-        "No answer column: define normal, set a cut-off, and test on planted incidents",
+        "No answer column: define normal, set a cut-off, check planted cases and hand-review flags",
         "Have a language model label each publisher, then train the classifier on its labels"
       ],
       "answer": 2,
-      "why": "A classifier needs past cases with a known answer, and there are none, so this is a question about what is unusual: say what normal looks like, measure distance from it, and choose the cut-off as a trade between precision and recall, checked on incidents you planted. Better measures cannot rescue a classifier with nothing to learn from. Clustering always returns groups, and nothing makes the smallest one fraud; a language model's guesses are not known outcomes either."
+      "why": "A classifier needs past cases with a known answer, and there are none, so this is a question about what is unusual: say what normal looks like, measure distance from it, and choose the cut-off as a trade between precision and recall: planted incidents show what it catches, and a person reviewing a sample of flagged publishers shows how many flags are false alarms. Better measures cannot rescue a classifier with nothing to learn from. Clustering always returns groups, and nothing makes the smallest one fraud; a language model's guesses are not known outcomes either."
     },
     {
       "id": "7-5-q2",
@@ -167,7 +167,7 @@
       "id": "7-5-q3",
       "concept": "the cheapest method that clears the bar wins",
       "domain": "course",
-      "q": "Support operations ask for 'an ML forecast' of next month's ticket volume, for staffing. In twelve backtests from past dates, the average of the last four same weekdays stayed inside the error the staffing plan can absorb. A model with calendar effects did slightly better, by less than the wobble between backtests. What do you recommend?",
+      "q": "Support operations ask for 'an ML forecast' of next month's ticket volume, for staffing. In twelve backtests from past dates, the average of the last four same weekdays stayed inside the error the staffing plan can absorb. A model with calendar effects did slightly better on average, but it won only about half the backtests and the interval on the difference between the two crossed zero. What do you recommend?",
       "options": [
         "Use the four-week average, show the comparison, and re-test when the pattern shifts",
         "Use the model: a lower average error is a lower error, however small the difference",

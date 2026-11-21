@@ -1,0 +1,26 @@
+{
+ "issues": [
+  {
+   "where": "glossary",
+   "quote": "The change in an advertiser's chance of an outcome caused by acting on them: the chance without the action minus the chance with it.",
+   "kind": "wrong_concept",
+   "severity": "high",
+   "explanation": "In causal inference and uplift modelling, uplift (the individual treatment effect) for a general outcome Y is P(Y | with action) minus P(Y | without action), not without minus with. Subtracting 'with' from 'without' only gives a positive value when the outcome is an unwanted event such as churn that the action aims to reduce; stated as a general definition for 'an outcome', it contradicts 'the change ... caused by acting on them' and inverts the sign for any desirable outcome (such as purchase, conversion, upgrade, or creative refresh).",
+   "evidence": "facts.json uplift.method defines 'predicted churn without the call minus predicted churn with it' specifically for churn; in general causal inference, the treatment effect on outcome Y is P(Y=1 | T=1) - P(Y=1 | T=0).",
+   "fix": "Change the definition to: 'The change in an advertiser's chance of an outcome caused by acting on them: the chance with the action minus the chance without it (or, when the outcome is an unwanted event like churn, the churn chance without the action minus the churn chance with it).'"
+  },
+  {
+   "where": "ask_assistant",
+   "quote": "rank held-out [units] by predicted [outcome] without the action minus predicted [outcome] with it",
+   "kind": "misleading",
+   "severity": "high",
+   "explanation": "This fill-in-the-blank prompt template omits the caveat that 'without minus with' applies only when [outcome] is an undesirable event to reduce (such as churn). Used on any desirable [outcome] — including all three transfer examples directly below it (purchases from a discount code, sales conversions from a call, creative refreshes from a nudge) — 'without minus with' sorts the list completely backwards, placing sleeping dogs (hurt by the action) at the top and persuadables at the bottom.",
+   "evidence": "Two-model uplift (T-learner) ranks by P(Y=1 | treated) - P(Y=1 | untreated) when Y=1 is desired, and by P(Y=1 | untreated) - P(Y=1 | treated) only when Y=1 is undesired as in facts.json uplift.method (churn).",
+   "fix": "Replace with: 'rank held-out [units] by the predicted improvement from acting — predicted [outcome] with the action minus predicted [outcome] without it when [outcome] is wanted (such as purchase), or without minus with when [outcome] is unwanted (such as churn).' Also change 'plain risk' in the next sentence to 'plain propensity or risk'."
+  }
+ ],
+ "numbers_checked": 52,
+ "verdict": "All simulated figures, comparisons, and quiz items match facts.json accurately, but the general uplift definition in the glossary and the general [outcome] formula in ask_assistant invert the subtraction sign ('without minus with') for desirable outcomes and would rank transfer tasks backwards.",
+ "_hash": "fda37d9a76231818",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_ChdNQnNDYTV5dUZjM2puc0VQdFBXSXdRbxIXTUJzQ2E1eXVGYzNqbnNFUHRQV0l3UW8 | tokens in=68278 out=664 thought=24662]"
+}

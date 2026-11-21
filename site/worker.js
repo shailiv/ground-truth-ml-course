@@ -1,8 +1,11 @@
 // Ground Truth - the whole site sits behind this Worker.
 //   1. Who is this?  Cloudflare Access (if ACCESS_TEAM + ACCESS_AUD are set) or a passphrase cookie.
 //   2. /api/progress  GET / PUT  - one JSON document per person in KV, merged field by field (public/js/merge.js).
-//   3. everything else - static files, served only to a signed-in visitor.
+//   3. /api/tutor/*   the in-page tutor: questions wait here for the relay that runs Claude Code (tutor.js).
+//   4. everything else - static files, served only to a signed-in visitor.
 import { merge, clamp } from "./public/js/merge.js";
+import { TutorRoom, tutorForOwner, tutorForRelay } from "./tutor.js";
+export { TutorRoom };
 
 const COOKIE = "gt_session";
 const SESSION_DAYS = 60;
@@ -83,7 +86,7 @@ const usesAccess = (env) => !!(env.ACCESS_TEAM && env.ACCESS_AUD);
 const whoIs = (req, env) => (usesAccess(env) ? accessUser(req, env) : cookieUser(req, env));
 
 // Two brakes on passphrase guessing: Cloudflare's rate limiter when it is bound (all addresses together), and a small
-// per-address memory in this isolate. The passphrase itself is 100 random bits, so these are belt and braces.
+// per-address memory in this isolate. The passphrase itself is long and random, so these are belt and braces.
 const tries = new Map();
 function throttled(ip) {
   const now = Date.now(), t = (tries.get(ip) || []).filter((x) => now - x < 10 * 60e3);
@@ -178,6 +181,13 @@ export default {
       if (req.method !== "POST") return redirect("/");                                    // a link from another site cannot sign you out
       return redirect("/login", { "set-cookie": `${COOKIE}=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax` });
     }
+    if (path.startsWith("/api/relay/")) {                                                 // the tutor relay: its own secret, no cookie
+      const ip = req.headers.get("cf-connecting-ip") || "?";
+      if (throttled(ip)) return text("Too many attempts. Wait ten minutes.", 429);
+      const res = await tutorForRelay(req, env, url, safeEqual);
+      if (res.status === 403) failed(ip);
+      return secure(res);
+    }
     const open = isOpen(path);
     const who = open ? null : await whoIs(req, env);
     if (!open && !who) {
@@ -187,8 +197,10 @@ export default {
     const renew = who?.renew ? { "set-cookie": await sessionCookie(env) } : {};
     if (path === "/api/progress" || path === "/api/progress/restore") return secure(await progress(req, env, who.user, url), renew);
     if (path === "/api/me") return json({ user: who.user });
+    if (path.startsWith("/api/tutor/")) return secure(await tutorForOwner(req, env, url), renew);
     if (path.startsWith("/api/")) return json({ error: "not found" }, 404);
-    const res = await env.ASSETS.fetch(req);
+    // files are served at their exact paths (html_handling is "none"), so the one alias is spelled out here
+    const res = await env.ASSETS.fetch(path === "/" ? new Request(new URL("/index.html", req.url), req) : req);
     const h = new Headers(res.headers);
     const media = /\.(mp3|woff2|png|jpg|svg)$/.test(path);
     // clip names carry a hash of their words, so a clip never changes: cache it for good. Never cache an error.

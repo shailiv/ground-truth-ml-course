@@ -135,22 +135,22 @@
       }
     },
     {
-      "narration": "The fix is one you could write yourself, because it is SQL. Features are built from dated events, like the daily spend log or the ticket log, and every one is filtered to dates on or before the snapshot. With that one condition in the join, nothing from the future can get in. Days since last spend becomes the snapshot date minus the last spend date before it. Same name, honest value. For fields that live only in the accounts table, ask whether the outcome could have changed them. Vertical and sign-up date cannot, so they are fine, with a note. Status, tier and last-activity dates can, so they need a copy dated at the snapshot.",
+      "narration": "The fix is one you could write yourself, because it is SQL. Features are built from dated events, like the daily spend log or the ticket log, and every one is filtered to dates on or before the snapshot. With that one condition in the join, nothing from the future can get in. Days since last spend becomes the snapshot date minus the last spend date before it. Same name, honest value. For fields that live only in the accounts table, ask whether they could have changed after the snapshot, whatever the reason. Vertical and sign-up date cannot, so they are fine, with a note. Status, tier and last-activity dates can, so they need a copy dated at the snapshot.",
       "visual": {
         "type": "code",
         "title": "The fix: dated events, filtered to the snapshot",
         "lang": "sql",
-        "code": "SELECT a.advertiser_id,\n       a.snapshot_date - MAX(s.spend_date)\n         AS days_since_last_spend\nFROM   snapshots a\nJOIN   daily_spend s\n  ON   s.advertiser_id = a.advertiser_id\n AND   s.spend_date <= a.snapshot_date  -- the date filter\nGROUP  BY a.advertiser_id, a.snapshot_date;",
-        "note": "Same column name, honest value: no row dated after the snapshot can get in. Accounts-table fields: fine if the outcome cannot change them (vertical, sign-up date); otherwise use a copy dated at the snapshot."
+        "code": "SELECT a.advertiser_id,\n       a.snapshot_date - MAX(s.spend_date)\n         AS days_since_last_spend\nFROM   snapshots a\nLEFT JOIN daily_spend s\n  ON   s.advertiser_id = a.advertiser_id\n AND   s.spend > 0\n AND   s.spend_date <= a.snapshot_date  -- the date filter\nGROUP  BY a.advertiser_id, a.snapshot_date;",
+        "note": "Same column name, honest value: no row dated after the snapshot can get in. Accounts-table fields: fine if they cannot change after the snapshot (vertical, sign-up date); otherwise use a copy dated at the snapshot."
       }
     },
     {
-      "narration": "Brief and audit. [[1]] Put the rule in the brief: every feature built from dated events on or before each advertiser's snapshot date, and from the accounts table only fields the outcome cannot change, each one flagged. [[2]] Then make the output prove it, with a list of every feature, its source table and the latest date of data it used. [[3]] When a result arrives, ask which columns the model leans on most, and when each is recorded. [[4]] And when a number looks too good, ask for the same run without the suspect column, on the same advertisers. [[5]] If you want status or tier as features one day, start saving a dated copy of the accounts table now.",
+      "narration": "Brief and audit. [[1]] Put the rule in the brief: every feature built from dated events on or before each advertiser's snapshot date, and from the accounts table only fields that cannot change after the snapshot, each one flagged. [[2]] Then make the output prove it, with a list of every feature, its source table and the latest date of data it used. [[3]] When a result arrives, ask which columns the model leans on most, and when each is recorded. [[4]] And when a number looks too good, ask for the same run without the suspect column, on the same advertisers. [[5]] If you want status or tier as features one day, start saving a dated copy of the accounts table now.",
       "visual": {
         "type": "bullets",
         "title": "Brief and audit",
         "items": [
-          "Brief: dated events up to the snapshot; from accounts, only fields the outcome cannot change",
+          "Brief: dated events up to the snapshot; from accounts, only fields that cannot change after it",
           "Show: each feature, its source table, the latest date it used",
           "Show: the columns the model leans on, and when each is recorded",
           "Too good? Rerun without the suspect column, same advertisers",
@@ -269,7 +269,7 @@
             "A longer outcome window, so more upgrades are captured"
           ],
           "answer": 0,
-          "why": "Anyone who upgraded since the snapshot now shows an account manager, so today's flag is the label in another form. A field the outcome can change needs its value as of the snapshot date; only fields the outcome cannot touch, such as vertical, are safe to read from today's table."
+          "why": "Anyone who upgraded since the snapshot now shows an account manager, so today's flag is the label in another form. A field that can change after the snapshot needs its value as of the snapshot date; only fields fixed since then, such as vertical, are safe to read from today's table."
         }
       ]
     },
@@ -326,10 +326,10 @@
     "prompt": "Your assistant's model looks too good to be true. Explain what leakage is and how you would check for it without reading the code.",
     "model_answer": "Leakage is when a feature was recorded after the moment the prediction is supposed to be made, so it carries the outcome in disguise; the model scores brilliantly on past data and fails live, because on scoring day that value does not exist yet. I would ask which columns the model leans on most and when each is recorded, and apply the time-travel test: could this exact value have been computed on the snapshot date from data up to then? Any column that fails comes out, or is rebuilt from dated events filtered to the snapshot, and the result is rerun on the same advertisers."
   },
-  "ask_assistant": "Build every feature from dated event tables, such as [event tables], filtered to dates on or before each row's [prediction date]. From a table that only shows the present, such as [current-state table], use only fields the outcome cannot change, such as [stable fields], and flag each one; any other field needs a copy dated at the [prediction date]. In the output, list each feature with its source table and the latest date of data it used, next to the [prediction date]. After fitting, list the five columns the model relies on most and when each value is recorded. If a column cannot be computed as of that date, leave it out and tell me which.",
+  "ask_assistant": "Build every feature from dated event tables, such as [event tables], filtered to dates on or before each row's [prediction date]. From a table that only shows the present, such as [current-state table], use only fields that cannot change after the [prediction date], such as [stable fields], and flag each one; any other field needs a copy dated at the [prediction date]. In the output, list each feature with its source table and the latest date of data it used, next to the [prediction date]. After fitting, list the five columns the model relies on most and when each value is recorded. If a column cannot be computed as of that date, leave it out and tell me which.",
   "audit_checklist": [
     "A list of every feature with its source table and the latest date of data it used: none later than the snapshot date",
-    "Every field taken from a current-state table, each marked 'outcome cannot change it' (vertical, sign-up date) or 'copy dated at the snapshot' (status, tier, last-activity dates)",
+    "Every field taken from a current-state table, each marked 'cannot change after the snapshot' (vertical, sign-up date) or 'copy dated at the snapshot' (status, tier, last-activity dates)",
     "The columns the model relies on most, each with when its value is recorded",
     "For any suspect column: the result with and without it, on the same advertisers"
   ],

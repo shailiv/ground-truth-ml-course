@@ -64,7 +64,7 @@
       }
     },
     {
-      "narration": "The deeper mistake was treating an empty cell as a hole. It is information. Advertisers whose CPA cell is empty churn at about 18 percent, against 7 for the rest. So do not drop the rows, and do not quietly fill the gap either. Fill it with zero, and you have told the model these advertisers are beating their goal spectacularly. The honest pattern is to keep every row, fill the cell with a typical value, and add a yes or no column saying it was empty. Here that flag already exists: has conversion tracking. On this data the ranking score barely notices: about 0.845 with the flag against 0.84 without. Keep it anyway. It costs one column, and you cannot know in advance what a blank is worth.",
+      "narration": "The deeper mistake was treating an empty cell as a hole. It is information. Advertisers whose CPA cell is empty churn at about 18 percent, against 7 for the rest. So do not drop the rows, and do not quietly fill the gap either. Fill it with zero, and you have told the model these advertisers are beating their goal spectacularly. The honest pattern is to keep every row, fill the cell with a typical value, and add a yes or no column saying it was empty. Filling empty cells is called imputation. Here that flag already exists: has conversion tracking. On this data the ranking score barely notices: about 0.845 with the flag against 0.84 without. Keep it anyway. It costs one column, and you cannot know in advance what a blank is worth.",
       "visual": {
         "type": "bar",
         "title": "An empty cell is a signal",
@@ -327,7 +327,7 @@
   },
   "ask_assistant": "Before any modelling, build the table step by step. After each step print the number of rows, the number of distinct [unit ID] and the [outcome] rate, and flag any step where a count changes. Do not drop rows because a feature is missing, and do not fill anything yet: report missing values per column and add a yes/no flag column for each feature that has any. Fill values come later, computed from the training rows only. Never fill a missing [outcome]: list those rows separately. Start from [main table], join with left joins, and aggregate any table with several rows per [unit] to one row per [unit] before joining. Leave ID columns out of the feature list.",
   "audit_checklist": [
-    "A step table: rows, distinct advertisers and churn rate after every step, with rows equal to advertisers throughout.",
+    "A step table: rows, distinct advertisers and churn rate after every step, with rows equal to advertisers throughout and neither count changing except at a step you asked to filter.",
     "Missing values per column, and what was done with each: no row dropped for a missing feature, a flag column for each, no outcome value filled in.",
     "The final churn rate matches a number you already trust, such as the dashboard.",
     "The feature list contains no ID column."
@@ -367,6 +367,10 @@
     {
       "term": "distinct count",
       "def": "The number of different advertisers in a table, as opposed to the number of rows."
+    },
+    {
+      "term": "imputation",
+      "def": "Filling empty cells with a stand-in value, such as a typical value learned from the training rows; pair it with a flag that says the cell was empty."
     }
   ]
 }

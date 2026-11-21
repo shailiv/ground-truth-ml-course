@@ -122,7 +122,7 @@
       }
     },
     {
-      "narration": "The cleaner check puts an interval on the gap itself: the range of true differences this much data cannot rule out. [[1]] The gap is about 5 points. [[2]] Its interval runs from roughly minus 2 to plus 11. [[3]] Zero is inside. So no change at all fits the data, and so does a rise of 10 points. That is not proof that nothing happened. It means 250 advertisers a month cannot tell you.",
+      "narration": "The cleaner check puts an interval on the gap itself: the range of true differences this much data cannot rule out. [[1]] The gap is about 5 points. [[2]] Its interval runs from roughly minus 2 to plus 11. [[3]] Zero is inside. So no change fits the data, and so does a rise of 10 points. That is not proof that nothing happened. It means 250 advertisers a month cannot tell you. Reports often quote a p-value: how often noise alone would produce a gap at least this large. Under 5 percent, the gap is called statistically significant, roughly the same verdict as an interval clear of zero. The interval also shows the size.",
       "visual": {
         "type": "stat",
         "title": "An interval on the gap itself",
@@ -213,7 +213,7 @@
       }
     },
     {
-      "narration": "So, the brief. Whenever your assistant compares anything, two groups, two months or two models, the output must carry the evidence. [[1]] The number of advertisers behind every rate. [[2]] The gap, with a 95 percent interval beside it. [[3]] One line on how the interval was made. The usual way is to redraw the rows at random, a thousand times over, and watch how far the number moves. The assistant will call that a bootstrap. [[4]] Then check the words against the numbers. If the text says churn rose, the interval must sit clear of zero. [[5]] And if the assistant scanned thirty segments and reports the biggest mover, be suspicious. The biggest of thirty wobbles always looks like news. No interval to hand? Look at the metric's own history: has it moved this much before with no cause?",
+      "narration": "So, the brief. Whenever your assistant compares anything, two groups, two months or two models, the output must carry the evidence. [[1]] The number of advertisers behind every rate. [[2]] The gap, with a 95 percent interval beside it. [[3]] One line on how the interval was made. The usual way is to redraw the rows at random, repeats allowed, a thousand times, and watch how far the number moves. The assistant calls that a bootstrap. [[4]] Then check the words against the numbers. If the text says churn rose, the interval must sit clear of zero. [[5]] And if the assistant scanned thirty segments and reports the biggest mover, be suspicious. The biggest of thirty wobbles always looks like news. No interval to hand? Look at the metric's own history: has it moved this much before with no cause?",
       "visual": {
         "type": "bullets",
         "title": "Brief and audit: evidence beside every comparison",
@@ -333,7 +333,7 @@
             "3 points, in a group of 4,000 advertisers"
           ],
           "answer": 3,
-          "why": "Compare each move with its margin of error: about ±9 points for 50 advertisers, ±4 for 250, ±1 for 4,000 and ±0.6 for 12,000. Only the 3-point move is several times its margin. The 8-point move is the largest on the screen and the least reliable, and half a point is still inside the margin of even the biggest group."
+          "why": "A single month's rate wobbles by about ±9 points for 50 advertisers, ±4 for 250, ±1 for 4,000 and ±0.6 for 12,000, and a move between two months wobbles about 1.4 times as much: roughly ±13, ±5.6, ±1.4 and ±0.8. Only the 3-point move is about twice its wobble. The 8-point move is the largest on the screen and the least reliable, and half a point is still inside the wobble of even the biggest group."
         }
       ]
     },
@@ -435,7 +435,15 @@
     },
     {
       "term": "bootstrap",
-      "def": "Estimating an interval by redrawing the rows at random many times and seeing how far the number moves."
+      "def": "Estimating an interval by redrawing a same-sized sample of the rows at random, repeats allowed, many times and seeing how far the number moves."
+    },
+    {
+      "term": "p-value",
+      "def": "How often noise alone would produce a gap at least as large as the one observed; this lesson reads the interval instead, because it also shows the size."
+    },
+    {
+      "term": "statistically significant",
+      "def": "The usual label for a p-value under 5%; it gives roughly the same verdict as a 95% interval that excludes zero, and says nothing about how big or useful the gap is."
     }
   ]
 }

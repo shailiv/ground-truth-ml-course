@@ -1,0 +1,32 @@
+{
+ "lesson": "7-4",
+ "recheck": [
+  {
+   "n": 0,
+   "issue": "Segment index 3 visual: 'Visible columns held fixed: gap 6.5 pts'; the 6.5 holds only 7 background columns (all columns gives 4.4).",
+   "decision": "accepted",
+   "reason": "facts tracking_story.adjusted_for lists 7 background columns; model_weight_for_tracking.avg_probability_shift_pts = -4.4.",
+   "change": "Cell now 'Background columns held fixed: gap 6.5 pts'."
+  },
+  {
+   "n": 1,
+   "issue": "Segment index 3 narration and glossary define the adjusted tier as holding 'the visible columns' fixed, which would include bad controls.",
+   "decision": "accepted",
+   "reason": "facts bad_controls: adjusting also for what auto-bidding changes shrinks -4.2 to -1.2 pts; the tier must exclude columns the practice changes.",
+   "change": "Segment index 3: 'the gap survives holding the visible columns fixed' became 'the gap survives holding fixed background columns like tenure and vertical'. Glossary 'evidence tier': 'with background columns held fixed, never ones the practice itself changes'."
+  },
+  {
+   "n": 2,
+   "issue": "Review 1 variant 3 keyed option says 'adjusting for what the table holds' while the stem and the 4.2 pts are background columns only.",
+   "decision": "accepted",
+   "reason": "facts bad_controls.adjusted_for_background_only_pts = -4.2 vs adjusted_also_for_what_it_changes_pts = -1.2.",
+   "change": "Option 0: 'After adjusting for the background columns in the table, a gap of about 4 points remains'. Longest-option rule re-checked by the validator: passes."
+  }
+ ],
+ "terms": [],
+ "segments_changed": [
+  3
+ ],
+ "open_questions": [],
+ "note": "Segment indexes 0-based. 906 -> 909 words."
+}

@@ -1,0 +1,8 @@
+{
+ "issues": [],
+ "numbers_checked": 37,
+ "verdict": "Pass. Every figure in the narration, visuals, predict prompt, quiz, and review items matches facts.json (including coefficients, intercept, weight count, standard deviations, odds ratios, average probability shifts, train/test AUCs, baseline rule comparison, and the simulated causal effect of conversion tracking), and all statistical and causal-inference concepts and question keys are sound.",
+ "_hash": "30a2caaf9a20418c",
+ "_thinking": "medium",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_ChcyeG9DYTlDS0Z0ejl2ZElQNloyUzhRYxIXMnhvQ2E5Q0tGdHo5dmRJUDZaMlM4UWM | tokens in=68057 out=117 thought=18203]"
+}

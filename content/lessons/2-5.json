@@ -78,16 +78,16 @@
       }
     },
     {
-      "narration": "Finance will also add your predictions up into a revenue number. MAE and RMSE both ignore direction, so neither says whether that sum comes out right. For that, compare the predicted total with the actual total. [[1]] The same-as-last forecast comes out about 23 percent low. [[2]] The run-rate, about 20 percent low. In this simulated world total spend grows from one period to the next, and a forecast that repeats the past cannot see growth. [[3]] [[4]] Models A and B both come out about 6 percent high. Misses that lean one way are called bias, and bias does not average out. It adds up.",
+      "narration": "Finance will also add your predictions up into a revenue number. MAE and RMSE both ignore direction, so neither says whether that sum comes out right. R-squared, which assistants like to print, does not either: it is the share of the variation explained, a fraction, not dollars. For that, compare the predicted total with the actual total. [[1]] The same-as-last forecast comes out about 23 percent low. [[2]] The run-rate, about 20 percent low. In this simulated world total spend grows from one period to the next, and a forecast that repeats the past cannot see growth. [[3]] [[4]] Models A and B both come out about 6 percent high. Misses that lean one way are called bias, and bias does not average out. It adds up.",
       "visual": {
         "type": "table",
         "title": "The full scoreboard",
-        "columns": ["Method", "MAE", "RMSE", "Predicted total vs actual"],
+        "columns": ["Method", "MAE", "RMSE", "R-squared", "Predicted total vs actual"],
         "rows": [
-          ["Same as last 8 weeks", "$2,404", "$7,325", "−23.5%"],
-          ["Run-rate", "$2,022", "$6,349", "−20.2%"],
-          ["Model A", "$1,733", "$4,878", "+5.7%"],
-          ["Model B", "$1,675", "$5,824", "+6.2%"]
+          ["Same as last 8 weeks", "$2,404", "$7,325", "0.61", "−23.5%"],
+          ["Run-rate", "$2,022", "$6,349", "0.71", "−20.2%"],
+          ["Model A", "$1,733", "$4,878", "0.83", "+5.7%"],
+          ["Model B", "$1,675", "$5,824", "0.75", "+6.2%"]
         ],
         "note": "Actual total: $21.0M across 4,000 test advertisers"
       }
@@ -315,6 +315,7 @@
     {"term": "RMSE", "def": "Root mean squared error: square the misses, average them, take the square root; large misses count far more."},
     {"term": "bias", "def": "Misses that lean one way on average, so the predicted total lands above or below the actual total."},
     {"term": "total error", "def": "Predicted total divided by actual total, minus one: the measure that matters when predictions are summed."},
-    {"term": "run-rate", "def": "A baseline that doubles the most recent four weeks of spend to predict the next eight."}
+    {"term": "run-rate", "def": "A baseline that doubles the most recent four weeks of spend to predict the next eight."},
+    {"term": "R-squared", "def": "The share of the variation in actual values that the predictions explain: 1 is perfect, 0 is no better than the average. Built from squared misses, it ranks models like RMSE, but it is a fraction, not dollars."}
   ]
 }

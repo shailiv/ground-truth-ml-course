@@ -22,3 +22,6 @@ qa/dev_once.log
 build/tmp_*.py
 qa/app_before_design.css
 qa/js_before_design/
+site/wrangler.deploy.jsonc
+site/.dev.vars
+qa/relay_test.log

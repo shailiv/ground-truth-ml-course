@@ -1,0 +1,7 @@
+{"lesson": "2-5",
+ "recheck": [],
+ "terms": [
+  {"term": "R-squared", "spoken": true, "segment": 5, "glossary": true, "note": "Spoken on the scoreboard segment, right after 'neither says whether that sum comes out right': 'R-squared, which assistants like to print, does not either: it is the share of the variation explained, a fraction, not dollars.' (105 to 127 words; lesson 941, under 950). Scoreboard table gains an R-squared column from facts regression.models[].r2: 0.61, 0.71, 0.83, 0.75. Glossary adds that it is built from squared misses and so ranks models like RMSE (A 0.83 above B 0.75, matching A's lower RMSE)."}
+ ],
+ "segments_changed": [5],
+ "open_questions": []}

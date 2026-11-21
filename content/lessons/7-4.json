@@ -53,14 +53,14 @@
       }
     },
     {
-      "narration": "Next, the verbs. The handsome report says conversion tracking reduces churn by 11 points. Reduces is a claim about changing something, and evidence comes in four tiers. [[1]] Observed: two groups differed. That earns churned less, or is associated with. [[2]] Adjusted: the gap survives holding the visible columns fixed. Say it remains after adjusting. [[3]] Compared: the change in a group that got something, minus the change in a similar group without it. Module five's launch earns rose about 5 points more than the comparison group, assuming the two would have moved together. [[4]] Tested: a coin decided who got the change. Only this tier earns reduces. Tracking's true effect in this simulated world is about 2 points. On real data you cannot look it up, so the verb must carry the tier.",
+      "narration": "Next, the verbs. The handsome report says conversion tracking reduces churn by 11 points. Reduces is a claim about changing something, and evidence comes in four tiers. [[1]] Observed: two groups differed. That earns churned less, or is associated with. [[2]] Adjusted: the gap survives holding fixed background columns like tenure and vertical. Say it remains after adjusting. [[3]] Compared: the change in a group that got something, minus the change in a similar group without it. Module five's launch earns rose about 5 points more than the comparison group, assuming the two would have moved together. [[4]] Tested: a coin decided who got the change. Only this tier earns reduces. Tracking's true effect in this simulated world is about 2 points. On real data you cannot look it up, so the verb must carry the tier.",
       "visual": {
         "type": "table",
         "title": "The verb must match the evidence",
         "columns": ["Evidence tier", "What was done", "Wording it earns"],
         "rows": [
           ["Observed", "Two groups compared: 7.2% vs 18.4% churn, gap 11.2 pts", "“churned less”, “is associated with”"],
-          ["Adjusted", "Visible columns held fixed: gap 6.5 pts", "“the gap remains after adjusting for …”"],
+          ["Adjusted", "Background columns held fixed: gap 6.5 pts", "“the gap remains after adjusting for …”"],
           ["Compared", "Change in the launch group minus change in a similar untreated group: +4.7 pts, interval 3.2 to 6.2", "“rose 4.7 points more than the comparison group”; assumes the two would have moved together"],
           ["Tested", "A coin decided who got the change", "“reduces”, with its interval"]
         ],
@@ -218,7 +218,7 @@
         {
           "q": "After adjusting for the background columns in the table, advertisers on automated bidding churn about 4 points less than the rest. No experiment was run. Which sentence matches the evidence?",
           "options": [
-            "After adjusting for what the table holds, a gap of about 4 points remains",
+            "After adjusting for the background columns in the table, a gap of about 4 points remains",
             "Automated bidding lowers churn by 4 points, controlling for confounders",
             "Automated bidding has no real effect, because the raw gap shrank when adjusted",
             "Automated bidding is the main driver of retention among the practices"
@@ -318,7 +318,7 @@
     },
     {
       "term": "evidence tier",
-      "def": "How a claim was established: observed (two groups differ), adjusted (they still differ with the visible columns held fixed), compared (the change in a group that got something minus the change in a similar untreated group) or tested (a coin decided). It decides which verbs the sentence may use."
+      "def": "How a claim was established: observed (two groups differ), adjusted (they still differ with background columns held fixed, never ones the practice itself changes), compared (the change in a group that got something minus the change in a similar untreated group) or tested (a coin decided). It decides which verbs the sentence may use."
     },
     {
       "term": "provenance line",

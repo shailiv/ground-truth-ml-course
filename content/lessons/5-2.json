@@ -41,7 +41,7 @@
       }
     },
     {
-      "narration": "Two decisions belong before launch. First, write down the outcome and its window: share hitting their CPA goal over the next 8 weeks, say. Choose after looking, and you will pick whichever cut looks best. Second, size. Margins of error shrink slowly as groups grow, so small effects need big groups. Suppose 60 percent hit their goal today. [[1]] To reliably detect a lift of 10 points, you need about 350 advertisers in each group. [[2]] For a 5 point lift, about 1,470 in each. [[3]] For a 2 point lift, over 9,000. Count advertisers, not impressions: the coin is flipped once per advertiser. Reliably means four times in five. If you cannot reach the size, the test cannot answer the question.",
+      "narration": "Two decisions belong before launch. First, write down the outcome and its window: share hitting their CPA goal over the next 8 weeks, say. Choose after looking, and you will pick whichever cut looks best. Second, size. Margins of error shrink slowly as groups grow, so small effects need big groups. Suppose 60 percent hit their goal today. [[1]] To reliably detect a lift of 10 points, you need about 350 advertisers in each group. [[2]] For a 5 point lift, about 1,470 in each. [[3]] For a 2 point lift, over 9,000. Count advertisers, not impressions: the coin is flipped once per advertiser. Reliably means four times in five. That chance of catching the lift is the test's statistical power. If you cannot reach the size, the test cannot answer the question.",
       "visual": {
         "type": "table",
         "title": "Advertisers needed in each group, starting from 60% hitting goal",
@@ -52,7 +52,7 @@
           ["2 points (60% → 62%)", "9,333"]
         ],
         "highlight": [2],
-        "note": "Sized to detect the lift 4 times in 5, with a 5% false-alarm rate. The unit is the advertiser, not the impression."
+        "note": "Sized to detect the lift 4 times in 5 (80% statistical power), with a 5% false-alarm rate. The unit is the advertiser, not the impression."
       }
     },
     {
@@ -283,6 +283,7 @@
     {"term": "control group", "def": "The randomly chosen advertisers who do not get the change, kept as the yardstick."},
     {"term": "randomised encouragement", "def": "Randomising who is nudged towards a practice when the practice itself cannot be forced; everyone nudged is compared with everyone not."},
     {"term": "group size (sample size)", "def": "The number of randomised units in each group (here advertisers, not impressions); the smaller the lift you need to detect, the larger it must be."},
+    {"term": "statistical power", "def": "The chance that a test detects a lift of the size it was planned for, if that lift is real; tests are usually sized for four times in five (80 percent)."},
     {"term": "evidence tier", "def": "How strong the support for a claim is: observed (a gap), adjusted (a gap comparing like with like) or tested (a randomised experiment)."}
   ]
 }

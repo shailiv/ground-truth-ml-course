@@ -72,12 +72,12 @@ The output must show:
 
 Brief:
 
-Build every feature from dated event tables, such as [event tables], filtered to dates on or before each row's [prediction date]. From a table that only shows the present, such as [current-state table], use only fields the outcome cannot change, such as [stable fields], and flag each one; any other field needs a copy dated at the [prediction date]. In the output, list each feature with its source table and the latest date of data it used, next to the [prediction date]. After fitting, list the five columns the model relies on most and when each value is recorded. If a column cannot be computed as of that date, leave it out and tell me which.
+Build every feature from dated event tables, such as [event tables], filtered to dates on or before each row's [prediction date]. From a table that only shows the present, such as [current-state table], use only fields that cannot change after the [prediction date], such as [stable fields], and flag each one; any other field needs a copy dated at the [prediction date]. In the output, list each feature with its source table and the latest date of data it used, next to the [prediction date]. After fitting, list the five columns the model relies on most and when each value is recorded. If a column cannot be computed as of that date, leave it out and tell me which.
 
 The output must show:
 
 - A list of every feature with its source table and the latest date of data it used: none later than the snapshot date
-- Every field taken from a current-state table, each marked 'outcome cannot change it' (vertical, sign-up date) or 'copy dated at the snapshot' (status, tier, last-activity dates)
+- Every field taken from a current-state table, each marked 'cannot change after the snapshot' (vertical, sign-up date) or 'copy dated at the snapshot' (status, tier, last-activity dates)
 - The columns the model relies on most, each with when its value is recorded
 - For any suspect column: the result with and without it, on the same advertisers
 
@@ -182,11 +182,11 @@ The output must show:
 
 Brief:
 
-Predict [numeric outcome] with a linear regression fitted two ways: on the raw values, and on the log of [outcome] with [skewed size columns] logged too. Give both models [my baseline rule] as a column. Train on [training period], score on [test period], and show [baseline] beside both: MAE, RMSE, predicted total versus actual total, and a bootstrap interval on each MAE gap. State the rows fitted and the rows scored for each model, and what happened to rows where [outcome] is zero. For the log model, say how you converted back to [units], and show the total with and without the correction to averages. Print the weights with their units.
+Predict [numeric outcome] with a linear regression fitted two ways: on the raw values, and on the log of [outcome] with [skewed size columns] logged too. Give both models [my baseline rule] as a column. Train on [training period], score on [test period], and show [baseline] beside both: MAE, RMSE, predicted total versus actual total, and a bootstrap interval on each MAE gap. State the rows fitted and the rows scored for each model, and what happened to rows where [outcome] is zero. For the log model, say how you converted back to [units], and show the total with and without the correction to averages. Print the weights with their units, converting log-fit weights to percentage effects.
 
 The output must show:
 
-- The weights table shows its units: dollars per unit for the raw fit, percent per unit for the log fit
+- The weights table shows its units: dollars per unit for the raw fit; for the log fit, weights converted from log units to percent change per unit, or per 1% change for a column that was logged too
 - Row counts for every model: rows fitted, rows scored, and how many zero-outcome rows there were and what was done with them
 - Predicted total beside actual total, with and without the correction to averages, and the row count each total covers
 - The baseline in the same table on the same test rows, with an interval on each gap
@@ -224,7 +224,7 @@ Before any modelling, build the table step by step. After each step print the nu
 
 The output must show:
 
-- A step table: rows, distinct advertisers and churn rate after every step, with rows equal to advertisers throughout.
+- A step table: rows, distinct advertisers and churn rate after every step, with rows equal to advertisers throughout and neither count changing except at a step you asked to filter.
 - Missing values per column, and what was done with each: no row dropped for a missing feature, a flag column for each, no outcome value filled in.
 - The final churn rate matches a number you already trust, such as the dashboard.
 - The feature list contains no ID column.
@@ -233,13 +233,13 @@ The output must show:
 
 Brief:
 
-Write the modelling script in six labelled parts: load, choose, split, prepare, fit, score. Open it with a header comment stating what one row is and the row count, the definition of [outcome], the named feature list with confirmation that each column is known at [prediction date], which [periods] train and which test, and that all preparation is inside the pipeline. Print the row counts for training and test, then the score from predict_proba on each, labelled with its rows, beside [baseline] on the same test rows. Do not wrap data steps in try/except: let errors stop the script. Finally, list which line numbers belong to each of the six parts.
+Write the modelling script in six labelled parts: load, choose, split, prepare, fit, score. Open it with a header comment stating what one row is and the row count, the definition of [outcome], the named feature list with confirmation that each column is known at [prediction date], which [periods] train and which test, and that all preparation is inside the pipeline. Print the row counts for training and test, then the score from predict_proba on each (from predict if [outcome] is a number), labelled with its rows, beside [baseline] on the same test rows. Do not wrap data steps in try/except: let errors stop the script. Finally, list which line numbers belong to each of the six parts.
 
 The output must show:
 
 - Printed row counts for training and test, and two scores, each labelled with its rows, beside a baseline on the same test rows.
 - Training and test rows defined by named periods in the split line, not by a random split.
-- Scores with many distinct values between 0 and 1, not a column of zeros and ones.
+- For a yes-or-no outcome, scores with many distinct values between 0 and 1, not a column of zeros and ones.
 - A header that states one row, the label, the named features, the split and where preparation happens, and a line in the script that matches each statement.
 
 
@@ -255,7 +255,7 @@ The output must show:
 
 - Training and held-out scores side by side for every model, in the same measure, each labelled with its rows and row count
 - The table of scores by setting shows training beside cross-validated or validation-period scores, and has no test-row column
-- For a tree: the number of leaves and the size of the smallest leaf; a churn rate from about 100 advertisers is only good to about 6 points either way
+- For a tree: the number of leaves and the size of the smallest leaf; a churn rate near 12% from about 100 advertisers is only good to about 6 points either way, and a rate nearer 50% to wider still
 - The headline number in the summary is a held-out score, named as such, and it matches the table
 
 ### Validation without cheating
@@ -301,13 +301,13 @@ The output must show:
 
 Brief:
 
-For [model], produce three exhibits, and state on each the model and the rows used. One: permutation importance on [held-out rows] for each column and for each group of related columns ([groups]), as the drop in [metric]. Two: a partial dependence curve for [columns the business asks about]. Three: for each of the top [list size] rows, the three largest per-row contributions (coefficient times distance from the training mean for a linear model, SHAP values otherwise), with the row's value and the training mean beside each, plus the base value, so that base plus all contributions reproduces the row's score. Caption every exhibit as a description of the model; no causal wording such as drives or impact.
+For [model], produce three exhibits, and state on each the model and the rows used. One: permutation importance on [held-out rows] for each column and for each group of related columns ([groups]), as the drop in [metric]. Two: a partial dependence curve for [columns the business asks about]. Three: for each of the top [list size] rows, the three largest per-row contributions (coefficient times distance from the training mean for a linear model, SHAP values otherwise), with the row's value and the training mean beside each, plus the base value, so that base plus all contributions reproduces the row's score, after the S-curve if they are in log-odds. Caption every exhibit as a description of the model; no causal wording such as drives or impact.
 
 The output must show:
 
 - The importance table names its rows (held-out, with the row count) and shows single-column and grouped drops side by side
 - Each dependence curve names the model that drew it and is captioned as the model's behaviour
-- Per-row reasons show the row's value, the training average and the contribution; base value plus all contributions reproduces the printed score
+- Per-row reasons show the row's value, the training average and the contribution; base value plus all contributions reproduces the printed score, after the S-curve when they are in log-odds and the score is a probability
 - A search of the text for drives, causes and impact finds none attached to a column
 
 ### Who is the model wrong about?
@@ -492,7 +492,7 @@ The output must show:
 
 Brief:
 
-Classify [the text] into [our categories, one line describing each] with an approved language model given instructions only. Before sending any text, show me the exact instructions, the model name and version, and where the text will go, and wait for my go-ahead. Score it on [the test set people labelled, which no method has seen], beside [the simpler methods] and [guessing or the commonest category], each with a 95 percent interval, plus an interval on the gap between neighbouring methods on the same items. Report precision and recall per category, and accuracy on [easy and hard cases] separately. Never adjust the instructions after seeing test items; list every version you tried and on which items.
+Classify [the text] into [our categories, one line describing each] with an approved language model given instructions only (zero-shot). Before sending any text, show me the exact instructions, the model name and version, and where the text will go, and wait for my go-ahead. Score it on [the test set people labelled, which no method has seen], beside [the simpler methods] and [guessing or the commonest category], each with a 95 percent interval, plus an interval on the gap between neighbouring methods on the same items. Report precision and recall per category, and accuracy on [easy and hard cases] separately. Never adjust the instructions after seeing test items; list every version you tried and on which items.
 
 The output must show:
 

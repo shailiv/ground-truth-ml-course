@@ -1,0 +1,39 @@
+{
+  "lesson": "4-1",
+  "recheck": [
+    {
+      "n": 0,
+      "issue": "seg 5 'the model from last lesson's script, an average of 300 trees' said to contradict 'lesson 4-3'",
+      "decision": "rejected",
+      "reason": "The lesson before 4-1 is 3-5, whose script (its seg 3) is exactly this 300-tree forest scoring 0.98 on training rows and 0.83 on test (forest.train_auc 0.982, forest.test.auc 0.831). 'Lesson 4-3' in the visual and other_ways points to where the method is explained. The reviewer took the previous lesson to be 3-3.",
+      "change": ""
+    },
+    {
+      "n": 1,
+      "issue": "quiz 4-1-q2 why says the test score is 'already falling' at depth 3",
+      "decision": "accepted",
+      "reason": "depth_sweep: test AUC rises from 0.767 (depth 3) to 0.769 (depth 4); cv AUC rises to depth 5. It only falls past depth 4.",
+      "change": "why now ends: 'a small gap alone does not prove underfitting or that deeper is better: the deeper option in this very table is the one that collapsed.'"
+    },
+    {
+      "n": 2,
+      "issue": "seg 7 visual '100 rows: a rate good to about ±6 points' stated without its base rate",
+      "decision": "accepted",
+      "reason": "noise.margin_of_error_for_a_churn_rate is for a rate near 11.8%; binomial margins widen toward 50%, and the tree's riskiest leaves sit at 43.6% and 63.3%. Facts give no figure at 50%, so the fix says 'wider' without a number.",
+      "change": "Visual item: '(100 rows: about ±6 points for a rate near 12%, wider nearer 50%)'; audit_checklist[2] says the same."
+    }
+  ],
+  "terms": [
+    {
+      "term": "bias-variance trade-off",
+      "spoken": true,
+      "segment": 4,
+      "glossary": true,
+      "note": "'The textbook name for this pull between too simple and too flexible is the bias-variance trade-off.' placed right after 'The best score on new rows is.', in the segment that sets underfitting against memorising. Glossary entry names bias = underfitting, variance = overfitting."
+    }
+  ],
+  "segments_changed": [
+    4
+  ],
+  "open_questions": []
+}

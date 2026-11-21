@@ -5,7 +5,7 @@
   "subtitle": "If predicting 'nobody churns' is 87 percent accurate, what should you ask of a model instead?",
   "goal": "After this lesson you can read a classifier's four counts and say in plain words how often its flags are right and how many of the real cases it catches.",
   "predict": {
-    "q": "A churn model is 88.5 percent accurate on 4,000 test advertisers, of whom 527 churned. Roughly how many of those churners did it catch?",
+    "q": "A churn model flags 141 of 4,000 test advertisers, of whom 527 churned, and is 88.5 percent accurate. Roughly how many of those churners did it catch?",
     "options": [
       "Nearly nine in ten",
       "About two in three",
@@ -13,7 +13,7 @@
       "About one in five"
     ],
     "answer": 3,
-    "reveal": "About one in five: 104 of 527. The lesson shows how a model can be 88.5 percent accurate and still miss four churners in five."
+    "reveal": "About one in five: 104 of 527. Accuracy alone could not have told you; it is the 141 flags that pin it down. The lesson shows how a model can be 88.5 percent accurate and still miss four churners in five."
   },
   "segments": [
     {
@@ -82,7 +82,7 @@
       }
     },
     {
-      "narration": "[[1]] Now put last lesson's hand rule beside it: spend trend below 0.7. [[2]] It flags 711 advertisers, and 246 of them churn. Its precision is about 35 percent, far below the model's, and its recall about 47, far above. At this cut-off the model is a cautious caller, the rule a loud one. Flag more, catch more, raise more false alarms: precision and recall pull against each other. Which matters more is a business call. A cheap check-in forgives false alarms, so favour recall. An expensive credit does not, so favour precision. [[3]] And notice the rule's accuracy: about 81 percent, below doing nothing. Accuracy puts a rule that finds nearly half the churners behind one that finds none.",
+      "narration": "[[1]] Now put last lesson's hand rule beside it: spend trend below 0.7. [[2]] It flags 711 advertisers, and 246 of them churn. Its precision is about 35 percent, far below the model's, and its recall about 47, far above. At this cut-off the model is a cautious caller, the rule a loud one. Flag more, catch more, raise more false alarms: precision and recall pull against each other. Blend them into one number, the F1 score, and you hide which one is weak. Which matters more is a business call. A cheap check-in forgives false alarms, so favour recall. An expensive credit does not, so favour precision. [[3]] And notice the rule's accuracy: about 81 percent, below doing nothing. Accuracy puts a rule that finds nearly half the churners behind one that finds none.",
       "visual": {
         "type": "table",
         "title": "Same 4,000 advertisers, three ways to flag",
@@ -123,7 +123,7 @@
       }
     },
     {
-      "narration": "One more thing the assistant may offer. Churn is rare, so it proposes to rebalance: copy churners, or drop stayers, until the table is half and half. Your default answer is no. Rarity is a fact about your business, not a defect in your data. A model trained on a half and half table learns that churn is common, and its scores come out too high. On the test rows, never: a rebalanced test set no longer looks like the advertisers you will score, so its precision is inflated. On the training rows it is a last resort for very rare outcomes, and the scores must then be corrected and checked against what happened. Keep the data. Change the measures.",
+      "narration": "One more thing the assistant may offer. Churn is rare, which it will call class imbalance, so it proposes to rebalance: copy churners, or drop stayers, until the table is half and half. Your default answer is no. Rarity is a fact about your business, not a defect in your data. A model trained on a half and half table learns that churn is common, and its scores come out too high. On the test rows, never: a rebalanced test set no longer looks like the advertisers you will score, so its precision is inflated. On the training rows it is a last resort for very rare outcomes, and the scores must then be corrected and checked against what happened. Keep the data. Change the measures.",
       "visual": {
         "type": "quote",
         "text": "Rarity is a fact about the business, not a defect in the table.",
@@ -358,6 +358,14 @@
     {
       "term": "recall",
       "def": "Of the rows that really had the outcome, the share the model flagged."
+    },
+    {
+      "term": "class imbalance",
+      "def": "When one outcome is rare, like churn at about one row in eight: accuracy then mostly counts the common outcome."
+    },
+    {
+      "term": "F1 score",
+      "def": "One number blended from precision and recall; handy for screening models, but it hides which of the two is weak."
     }
   ]
 }

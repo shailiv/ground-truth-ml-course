@@ -52,35 +52,45 @@
       }
     },
     {
-      "narration": "Here is what the slider shows. Nine churners in ten: a cut-off of 0.05, with nearly half of all advertisers flagged. Nine right flags in ten: 0.7, with only 43 flagged. The hand rule's list size: just under 0.2. [[4]] In practice a cut-off in score units is awkward to pick. A list length is not. If account managers can call 200 advertisers this month, sort by score and take the top 200. In SQL terms: order by score descending, limit 200. The assistant will call it a top K list. That list holds 136 churners. Draw 200 advertisers at random and you would expect about 26. That count wobbles too: with a different set of test advertisers, it could be anywhere from 123 to 150.",
+      "narration": "Here is what the slider shows. Nine churners in ten: a cut-off of 0.05, with nearly half of all advertisers flagged. Nine right flags in ten: 0.7, with only 43 flagged. The hand rule's list size: just under 0.2. [[4]] In practice a list length is easier to pick than a cut-off. If account managers can call 200 advertisers, sort by score and take the top 200. In SQL terms: order by score descending, limit 200. The assistant will call it a top K list. It holds 136 churners, 68 percent: that share is called precision at K. A random list would hold about 26, so this one is about five times richer. That ratio is called lift. The churner count wobbles too: on other test advertisers it could be anywhere from 123 to 150.",
       "visual": {
         "type": "table",
         "title": "Sort by score, take the top K",
         "columns": [
           "List size",
           "Churners on the list",
-          "A random list would hold"
+          "Precision at K",
+          "A random list would hold",
+          "Lift"
         ],
         "rows": [
           [
             "100",
             "76",
-            "13.2"
+            "76%",
+            "13.2",
+            "5.8"
           ],
           [
             "200",
             "136",
-            "26.4"
+            "68%",
+            "26.4",
+            "5.2"
           ],
           [
             "400",
             "220",
-            "52.7"
+            "55%",
+            "52.7",
+            "4.2"
           ],
           [
             "800",
             "338",
-            "105.4"
+            "42.2%",
+            "105.4",
+            "3.2"
           ]
         ],
         "highlight": [
@@ -360,6 +370,14 @@
     {
       "term": "top K",
       "def": "The K highest-scoring rows: a list sized by what the team can handle, judged against what a random list of that size would hold."
+    },
+    {
+      "term": "precision at K",
+      "def": "The share of the top K rows that really have the outcome: 136 churners in the top 200 is 68 percent."
+    },
+    {
+      "term": "lift",
+      "def": "How many times richer a list is in the outcome than a random list of the same size: about five times for the top 200 here."
     },
     {
       "term": "AUC",

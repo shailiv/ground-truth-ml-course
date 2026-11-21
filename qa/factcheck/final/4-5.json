@@ -1,0 +1,27 @@
+{
+ "issues": [
+  {
+   "where": "seg4 narration and visual",
+   "quote": "Add them up, about four here, pass the total through the S-curve, and 5 percent becomes 73.",
+   "kind": "wrong_concept",
+   "severity": "medium",
+   "explanation": "Passing the sum of her pushes (about +4.0 in log-odds) directly through the logistic S-curve gives 1 / (1 + exp(-4)) = 98.2%, not 72.7%. Because pushes measure shifts relative to the average advertiser (whose 4.7% probability corresponds to -3.01 log-odds), the pushes (+3.99) must be added to that starting log-odds (-3.01) to get +0.98 before passing through the S-curve. The seg4 visual note ('All her pushes, through the S-curve: 72.7%') omits the base log-odds in the same way.",
+   "evidence": "facts.json explain_examples: average_advertiser_probability = 0.047 (log-odds -3.01), predicted = 0.727 (log-odds +0.98), total log-odds push = +3.99; sigmoid(-3.01 + 3.99) = 0.727, whereas sigmoid(3.99) = 0.982.",
+   "fix": "In seg4 narration, say: 'Add them to the average advertiser's starting score, pass that total through the S-curve, and 5 percent becomes 73.' In seg4 visual note, say: 'Average advertiser (-3.01 points, or 4.7%) plus all her pushes (+3.99), through the S-curve: 72.7%.'"
+  },
+  {
+   "where": "ask_assistant and audit_checklist",
+   "quote": "base value plus all contributions reproduces the printed score",
+   "kind": "contradiction",
+   "severity": "medium",
+   "explanation": "ask_assistant requests 'coefficient times distance from the training mean for a linear model, SHAP values otherwise' and both ask_assistant and audit_checklist require that 'base value plus all contributions reproduces the printed score'. For logistic regression (and default log-odds TreeSHAP on classifiers), those contributions add up on the log-odds scale while the printed risk-list score is a probability (such as 72.7%), contradicting seg4's note that scorecard points add up before the S-curve. Without applying the S-curve (or explicitly requesting probability-scale SHAP), base plus contributions will not equal the printed probability.",
+   "evidence": "seg4 visual note ('Scorecard points add up before the S-curve; they are not percentage points') and facts.json explain_examples.how_to_read ('pushes add up on the log-odds scale').",
+   "fix": "Update ask_assistant and audit_checklist to say: 'base value plus all contributions reproduces the printed score (after passing through the S-curve when contributions are in log-odds and the score is a probability)'."
+  }
+ ],
+ "numbers_checked": 73,
+ "verdict": "All numbers from facts.json and all quiz and review items check out; two medium issues remain around the log-odds-to-probability S-curve arithmetic in seg4, ask_assistant and audit_checklist.",
+ "_hash": "738ed10ffe191c5e",
+ "_thinking": "medium",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_Chd3UnNDYTduNUI5N2w3TThQak9QTXFRVRIXd1JzQ2E3bjVCOTdsN004UGpPUE1xUVU | tokens in=68606 out=714 thought=14046]"
+}

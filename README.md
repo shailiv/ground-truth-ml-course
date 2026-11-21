@@ -80,13 +80,44 @@ The useful checks, in order of value:
 
 ## Deploy
 
+On Windows, double-click `go-live.cmd`: it signs in to Cloudflare (a browser window, once), then runs the script
+below, then shows the address and the passphrase. `show-login.cmd` shows them again at any time.
+
 ```bash
-cf-login.cmd            # Windows: one-time Cloudflare sign-in (or: npx wrangler login, inside site/)
-bash build/deploy.sh    # builds, creates the KV namespace, deploys, sets the secrets, smoke-tests the lock
+cd site && npx wrangler login && cd ..     # once
+bash build/deploy.sh                       # tests, builds, creates the KV namespace, deploys with its secrets,
+                                           # then runs build/smoke.sh against the live site and fails loudly
+                                           # if anything is readable without a sign-in
 ```
 
-The passphrase and the session secret are generated at deploy time and stored as Worker secrets. They are never in
-this repository; `.secrets/` is ignored.
+The passphrase, the session-signing key and the tutor relay's secret are generated on first deploy and kept in
+`.secrets/` (ignored by git); they are uploaded as Worker secrets together with the code. `site/wrangler.jsonc` is
+a template: the real KV namespace id goes into `site/wrangler.deploy.jsonc`, which is not committed either.
+
+`bash build/smoke.sh <url> <passphrase-file>` can be run against `npx wrangler dev` too, which is Cloudflare's own
+runtime on your machine: that is how the Worker, the Durable Object and the audio byte ranges were checked before
+the first real deploy.
+
+## The tutor
+
+A lesson page can ask Claude a question, and the question carries the moment it was asked from: the lesson, the
+part and second of the video, the sentence being spoken, what the slide showed, the question on screen during a
+check, and which lessons are already finished.
+
+Claude is reached on the owner's own Claude subscription, which only Claude Code may use. So the site does not call
+Claude. Instead:
+
+```
+lesson page --question--> Worker --> TutorRoom (Durable Object, site/tutor.js)
+                                          ^  one request held open
+                          relay/tutor_relay.py  --runs-->  claude -p   (no tools, no settings, nothing saved)
+```
+
+`relay/tutor_relay.py` runs wherever Claude Code is signed in (`tutor-relay.cmd` on Windows, or any always-on
+machine: `python relay/tutor_relay.py --config relay.json`). While it is connected, answers appear on the page.
+When it is not, the same question, with the same context, opens claude.ai in a new tab. The Worker never holds a
+Claude credential. This arrangement is for the owner's own questions; a site with other users would need the
+Claude API and an API key instead.
 
 ## Not in the repository
 

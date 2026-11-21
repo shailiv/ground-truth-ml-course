@@ -16,7 +16,7 @@
       "visual": {"type": "title", "kicker": "Module 5 · Lesson 1", "title": "Drivers are not causes", "sub": "What a gap between groups can and cannot tell you"}
     },
     {
-      "narration": "Here we can do something you can never do at work. This course's data is simulated, so we can run the world twice: once with tracking switched on for every advertiser, once with it switched off for all of them. Same advertisers, same everything else. [[1]] The gap on the slide, call it the naive gap, was about 11 points. [[2]] The effect of actually switching tracking on is about 2 points. So tracking helps, a little. We know that true effect only because this world was built by hand. Real data gives you the first number and never the second.",
+      "narration": "Here we can do something you can never do at work. This course's data is simulated, so we can run the world twice: once with tracking switched on for every advertiser, once with it switched off for all of them. Same advertisers, same everything else. What would have happened to the same advertisers otherwise has a name: the counterfactual. [[1]] The gap on the slide, call it the naive gap, was about 11 points. [[2]] The effect of actually switching tracking on is about 2 points. So tracking helps, a little. We know that true effect only because this world was built by hand. Real data gives you the first number and never the second.",
       "visual": {
         "type": "compare",
         "title": "Conversion tracking and churn",
@@ -25,7 +25,7 @@
       }
     },
     {
-      "narration": "So where do the other 9 points come from? Some advertisers are simply more sophisticated. [[1]] Those advertisers are more likely to install tracking. [[2]] They are also less likely to churn, with tracking or without it. [[3]] And sophistication is not a column anywhere in the table. So the tracked group is stacked with advertisers who were going to stay anyway. [[4]] The naive gap mixes two things: what tracking does, and who chooses tracking. A hidden trait that pushes both the practice and the outcome is a common cause. The textbook word is confounder.",
+      "narration": "So where do the other 9 points come from? Some advertisers are simply more sophisticated. [[1]] Those advertisers are more likely to install tracking. [[2]] They are also less likely to churn, with tracking or without it. [[3]] And sophistication is not a column anywhere in the table. So the tracked group is stacked with advertisers who were going to stay anyway. [[4]] The naive gap mixes two things: what tracking does, and who chooses tracking. That second part is called selection bias. A hidden trait that pushes both the practice and the outcome is a common cause. The textbook word is confounder.",
       "visual": {
         "type": "bullets",
         "title": "One hidden trait, two results",
@@ -45,7 +45,7 @@
         "unit": "pts",
         "data": [
           {"label": "Naive gap", "value": -11.2},
-          {"label": "Adjusted for visible columns", "value": -6.5},
+          {"label": "Adjusted for background columns", "value": -6.5},
           {"label": "True effect", "value": -2.3}
         ],
         "highlight": [2],
@@ -72,7 +72,7 @@
       }
     },
     {
-      "narration": "Now connect this to your models. A weight in any model is the same kind of number: a gap, adjusted for the other columns. Importance scores inherit that. [[1]] The churn model's weight for tracking takes a bit over 4 points off predicted churn. [[2]] The true effect is about 2. The weight is not a mistake. For prediction it is exactly right: tracking does tell you who is likely to stay. It does not tell you what happens if you install it. So choose your words. Tracking is associated with lower churn. Drives, causes and impact are words the table has not earned.",
+      "narration": "Now connect this to your models. A column's weight in a regression is the same kind of number: a gap, adjusted for the other columns. Importance scores inherit that. [[1]] The churn model's weight for tracking takes a bit over 4 points off predicted churn. [[2]] The true effect is about 2. The weight is not a mistake. For prediction it is exactly right: tracking does tell you who is likely to stay. It does not tell you what happens if you install it. So choose your words. Tracking is associated with lower churn. Drives, causes and impact are words the table has not earned.",
       "visual": {
         "type": "compare",
         "title": "A model's weight is the same kind of number",
@@ -127,10 +127,10 @@
         "It used a simple regression; a more flexible model would have adjusted more accurately.",
         "A gap of 25 points is too large to be real, so a join must have duplicated rows upstream.",
         "It controlled for too few columns; adding every column in the table would settle it.",
-        "It never asks who gets a review: if they go to struggling accounts, the gap is backwards."
+        "It never asks who gets a review: if they go to struggling accounts, the gap is biased against reviews."
       ],
       "answer": 3,
-      "why": "Reviews are given to accounts already in trouble, so reviewed accounts look worse whatever the review does; in the simulation the review actually helps by about 9 points. Surviving the controls proves little, because adjusting only removes differences the table records, and neither a fancier model nor more columns can adjust for a reason that was never written down."
+      "why": "Reviews are given to accounts already in trouble, which pulls the reviewed group's rate down and can outweigh a real benefit, even flip the sign: in the simulation the review actually helps by about 9 points. Surviving the controls proves little, because adjusting only removes differences the table records, and neither a fancier model nor more columns can adjust for a reason that was never written down."
     },
     {
       "id": "5-1-q3",
@@ -275,6 +275,8 @@
     {"term": "naive gap", "def": "The raw difference in an outcome between those who do something and those who do not, taken at face value."},
     {"term": "confounder (common cause)", "def": "A trait that influences both the practice and the outcome, so the gap between the groups differs from what the practice itself does."},
     {"term": "adjusting (controlling) for", "def": "Comparing like with like on the columns you have, usually with a regression; it cannot account for anything that was not recorded."},
-    {"term": "causal effect", "def": "How much the outcome would change if you changed the practice and nothing else."}
+    {"term": "causal effect", "def": "How much the outcome would change if you changed the practice and nothing else."},
+    {"term": "counterfactual", "def": "What would have happened to the same advertisers under the other choice; real data never shows it, so it can only be estimated, best by a randomised experiment."},
+    {"term": "selection bias", "def": "The part of a gap that comes from who chose or was given the practice, not from what the practice does."}
   ]
 }

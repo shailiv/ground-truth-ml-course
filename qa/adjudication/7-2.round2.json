@@ -1,0 +1,33 @@
+{
+ "lesson": "7-2",
+ "recheck": [
+  {
+   "n": 0,
+   "issue": "Quiz 7-2-q4 why: 'A similarity score is a distance, not a probability' inverts the scale (similarity rises as distance falls).",
+   "decision": "accepted",
+   "reason": "Right in principle, and it contradicts the lesson's own glossary ('tops out at 1').",
+   "change": "Why now: 'A similarity score measures closeness between coordinates, not a probability of a match, and raising a cut-off without a test is a guess.'"
+  }
+ ],
+ "terms": [
+  {
+   "term": "dimensionality reduction (PCA the classic method)",
+   "spoken": true,
+   "segment": 3,
+   "glossary": true,
+   "note": "After 'the map squashes them down to two.': 'Squashing many columns into a few is called dimensionality reduction, and the classic method is PCA.' Worded so it does not claim the map was drawn with PCA: tickets_facts map.how does not name the method. Glossary spells out principal component analysis."
+  },
+  {
+   "term": "cosine similarity (optional)",
+   "spoken": false,
+   "segment": null,
+   "glossary": true,
+   "note": "One clause in the existing 'similarity score' entry: 'The usual one for embeddings is cosine similarity.' Not claimed as the course's own measure, since the facts do not name it."
+  }
+ ],
+ "segments_changed": [
+  3
+ ],
+ "open_questions": [],
+ "note": "Segment indexes 0-based. 930 -> 946 words. Glossary now 5 items."
+}

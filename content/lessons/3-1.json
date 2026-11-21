@@ -107,7 +107,7 @@
       }
     },
     {
-      "narration": "[[3]] Fit the same weighted sum to the log of spend, with the past-spend columns on the same scale. [[4]] The average miss falls to about 1,430 dollars, the best on the ladder. [[5]] It even edges out a more flexible model, the kind model B was in the last module, fitted in dollars and tuned for the average miss: about 1,500, a gap that only just clears zero. On a log scale a weight reads as a percentage: a managed account is predicted to spend about 13 percent more, the rest held fixed. An association, not a lever. One caution: this simulated world was built so that effects on spend multiply, which suits a log fit. On your data, fit both ways and compare.",
+      "narration": "[[3]] Fit the same weighted sum to the log of spend, with the past-spend columns on the same scale. [[4]] The average miss falls to about 1,430 dollars, the best on the ladder. [[5]] It even edges out a more flexible model, the kind model B was in the last module, fitted in dollars and tuned for the average miss: about 1,500, a gap that only just clears zero. On a log scale a weight converts to a percentage: a managed account is predicted to spend about 13 percent more, the rest held fixed. An association, not a lever. One caution: this simulated world was built so that effects on spend multiply, which suits a log fit. On your data, fit both ways and compare.",
       "visual": {
         "type": "bar",
         "title": "The ladder: average miss (MAE), same 4,000 test advertisers",
@@ -137,7 +137,7 @@
         "highlight": [
           3
         ],
-        "note": "Log regression vs that flexible model: −$72, interval −$155 to −$5. Model B itself, fitted to squared misses: $1,675. Log weight for a managed account: +12.8%."
+        "note": "Log regression vs that flexible model: −$72, interval −$155 to −$5. Model B itself, fitted to squared misses: $1,675. Managed account, log weight converted to a percentage: +12.8%."
       }
     },
     {
@@ -334,9 +334,9 @@
     "prompt": "Your first linear regression lost to the run-rate baseline. Explain what a linear regression is, why it lost, and the two changes that fixed it.",
     "model_answer": "A linear regression is a weighted sum of the columns, with weights chosen to make the squared misses on the training rows as small as possible; each weight is the change per unit with the other columns held fixed. It lost because a weighted sum cannot build the run-rate out of two columns by itself, and because spend is so skewed that a few giant accounts dominate a squared-error fit. Adding the run-rate as a column and fitting on a log scale fixed both. The catch: log predictions are typical values, so correct them to averages before summing."
   },
-  "ask_assistant": "Predict [numeric outcome] with a linear regression fitted two ways: on the raw values, and on the log of [outcome] with [skewed size columns] logged too. Give both models [my baseline rule] as a column. Train on [training period], score on [test period], and show [baseline] beside both: MAE, RMSE, predicted total versus actual total, and a bootstrap interval on each MAE gap. State the rows fitted and the rows scored for each model, and what happened to rows where [outcome] is zero. For the log model, say how you converted back to [units], and show the total with and without the correction to averages. Print the weights with their units.",
+  "ask_assistant": "Predict [numeric outcome] with a linear regression fitted two ways: on the raw values, and on the log of [outcome] with [skewed size columns] logged too. Give both models [my baseline rule] as a column. Train on [training period], score on [test period], and show [baseline] beside both: MAE, RMSE, predicted total versus actual total, and a bootstrap interval on each MAE gap. State the rows fitted and the rows scored for each model, and what happened to rows where [outcome] is zero. For the log model, say how you converted back to [units], and show the total with and without the correction to averages. Print the weights with their units, converting log-fit weights to percentage effects.",
   "audit_checklist": [
-    "The weights table shows its units: dollars per unit for the raw fit, percent per unit for the log fit",
+    "The weights table shows its units: dollars per unit for the raw fit; for the log fit, weights converted from log units to percent change per unit, or per 1% change for a column that was logged too",
     "Row counts for every model: rows fitted, rows scored, and how many zero-outcome rows there were and what was done with them",
     "Predicted total beside actual total, with and without the correction to averages, and the row count each total covers",
     "The baseline in the same table on the same test rows, with an interval on each gap"

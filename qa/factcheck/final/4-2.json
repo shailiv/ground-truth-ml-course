@@ -1,0 +1,27 @@
+{
+ "issues": [
+  {
+   "where": "ask_assistant and audit_checklist (also seg8 narration, quiz 4-2-q4)','",
+   "quote": "keep all rows of one [unit] in the same fold, make each fold check on later [periods] than it trains on ... count of advertisers on both sides of any fold: 0",
+   "kind": "misleading",
+   "severity": "medium",
+   "explanation": "Two practical problems arise on panel data where every advertiser has rows across multiple months. First, no partition of all rows can simultaneously keep all monthly rows of an advertiser in one fold and make each fold check only on later months than the training folds: if a fold holds all of an advertiser's Jan-Jun rows, every fold spans Jan-Jun. Satisfying both requires subsetting by group and time in each check (training only on pre-cutoff rows of training advertisers and checking only on post-cutoff, post-gap rows of held-out advertisers, discarding the remaining rows in that split). Second, requiring 0 shared advertisers across every split is right when scoring unseen advertisers (as in panel_leak), but when a model is deployed to predict future months for existing advertisers (as in review 2 variant 2, predicting each advertiser's next-month spend from two years of monthly rows), a walk-forward time split naturally puts the same advertisers' earlier rows in training and later rows in validation.",
+   "evidence": "facts.json -> panel_leak.three_ways_to_score ('whole_advertisers_held_out: 5 folds where all of an advertiser's rows go to the same side') vs LESSON.json -> review 2 variant 2 ('A model predicts each advertiser's spend next month from two years of monthly rows ... train on earlier months, check on later ones').",
+   "fix": "Clarify in ask_assistant and audit_checklist that when units span multiple periods, checking unseen units on later periods means holding out whole units AND restricting training units to earlier periods and held-out units to later periods (after any label-window gap); whereas if the model will score existing units in future periods, split walk-forward by time (with any label gap and no ID column) and expect existing units to appear in both past training and future validation."
+  },
+  {
+   "where": "other_ways (item 1: 'A later period held out for choosing')",
+   "quote": "train on January and February and choose on March",
+   "kind": "misleading",
+   "severity": "low",
+   "explanation": "January, February and March are the exact three training months of the course's main table, where the churn label looks 60 days ahead and requires a one-month gap. On a 60-day outcome like the course's churn table, training on January-February and validating on March leaks answers that did not exist on the March snapshot date because February's 60-day churn window runs into April.",
+   "evidence": "facts.json -> data.train_months ('Jan-Mar') and data.why_a_gap ('churn is judged over the 60 days after a snapshot, so on the day you score the May advertisers you do not yet know who churned from the April cohort; training on April would use answers that did not exist yet').",
+   "fix": "Add the label-window caveat: 'train on January and choose on March (leaving February as a gap when the label looks 60 days ahead), or walk forward month by month when things drift, so every check only uses answers already known at check time.'"
+  }
+ ],
+ "numbers_checked": 65,
+ "verdict": "All 65 numeric claims match facts.json accurately across narrations, visuals, quizzes, recall and transfer notes; the only issues are two practical caveats around combining group-disjoint folds with forward-in-time splits on panel data and leaving a label-window gap when holding out March.",
+ "_hash": "6fcbe876036636d9",
+ "_thinking": "medium",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_ChZWaDBDYTVOZmtPR2V3UV9kaTd2d0JnEhZWaDBDYTVOZmtPR2V3UV9kaTd2d0Jn | tokens in=68633 out=812 thought=20376]"
+}

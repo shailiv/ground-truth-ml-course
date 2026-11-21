@@ -1,0 +1,27 @@
+{
+ "issues": [
+  {
+   "where": "seg5 narration and visual",
+   "quote": "On a log scale a weight reads as a percentage ... Log weight for a managed account: +12.8%.",
+   "kind": "misleading",
+   "severity": "medium",
+   "explanation": "A linear regression fitted on log(spend) outputs raw weights in log units, not percentages: +12.8% is the converted effect after exponentiating (exp(weight) - 1 for natural log, where the raw weight is 0.120, or 10^weight - 1 for base-10 log, where the raw weight is 0.052). Especially because seg3 just illustrated the log scale using base-10 steps (x10 = one step) and ask_assistant asks to 'Print the weights with their units' without requesting conversion, a practitioner reading raw regression weights directly as percentages will misread large natural-log weights and all base-10 log weights.",
+   "evidence": "facts.json -> regression.log_model: fitted on natural log(spend_next_8w); 'managed' has pct_change_in_spend = 12.8 (raw weight ln(1.128) = 0.1204), and 'cpa_vs_goal' has pct_change_per_one_unit = -21.4 (raw weight ln(0.786) = -0.240).",
+   "fix": "Say that on a log fit, converting a weight back from log units gives a percentage change (e.g. 'Converted log effect for a managed account: +12.8%'), and in ask_assistant ask to 'convert log-fit weights to percentage effects'."
+  },
+  {
+   "where": "audit_checklist",
+   "quote": "dollars per unit for the raw fit, percent per unit for the log fit",
+   "kind": "wrong_concept",
+   "severity": "medium",
+   "explanation": "Both seg5 ('with the past-spend columns on the same scale') and ask_assistant ('with [skewed size columns] logged too') log the skewed input columns as well as the outcome. When both outcome and predictor are logged (log-log), the predictor's effect is an elasticity (percent change in predicted spend per 1% change in that predictor), not 'percent per unit' (e.g. percent per dollar).",
+   "evidence": "Log-log regression principle: in log(y) = b0 + w * log(x) + ..., w measures % change in y per 1% change in x, not % change per dollar of x.",
+   "fix": "Update the checklist item to: 'The weights table shows clear units: dollars per unit for the raw fit; for the log fit (after converting from log units), percent change per unit for unlogged columns and percent change per 1% change for logged columns.'"
+  }
+ ],
+ "numbers_checked": 51,
+ "verdict": "Every numeric figure from facts.json (MAEs, medians, means, maxes, bootstrap intervals, stayer counts, total errors, correction factor, and coefficients) is accurate; the only fixes needed are clarifying that log-model weights must be converted from log units to percentages and that logged input columns read as percent-per-percent rather than percent-per-unit.",
+ "_hash": "003e4c5b7db69198",
+ "_thinking": "medium",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_ChcyeG9DYTZDeUVOejV2ZElQbDczcThBURIXMnhvQ2E2Q3lFTno1dmRJUGw3M3E4QVE | tokens in=68298 out=779 thought=16488]"
+}

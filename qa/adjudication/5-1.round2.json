@@ -1,0 +1,42 @@
+{
+ "lesson": "5-1",
+ "recheck": [
+  {
+   "n": 0,
+   "issue": "Segment index 6: 'A weight in any model is the same kind of number: a gap, adjusted for the other columns' is false for trees and neural networks.",
+   "decision": "accepted",
+   "reason": "Only a regression-style model has one weight per column that reads as an adjusted gap (facts logreg 'one weight per feature' vs neural_net 1,249 weights between hidden units); trees have no per-column weight.",
+   "change": "Segment index 6 narration: 'A weight in any model' became 'A column's weight in a regression'. Regression weights are introduced in segment index 3. 'Importance scores inherit that' kept (importance rests on the same associations)."
+  },
+  {
+   "n": 1,
+   "issue": "Quiz 5-1-q2 keyed option says targeting struggling accounts makes the gap 'backwards', and the why says reviewed accounts look worse 'whatever the review does'.",
+   "decision": "accepted",
+   "reason": "Selecting struggling accounts biases the gap against reviews; it does not guarantee a sign flip. The flip is this simulation's result (naive -25.3 vs true +8.8 pts), which the why still states as such.",
+   "change": "Option 3: '...the gap is backwards' became '...the gap is biased against reviews'. Why: 'so reviewed accounts look worse whatever the review does' became 'which pulls the reviewed group's rate down and can outweigh a real benefit, even flip the sign'. Still keyed and unambiguous; validator's longest-option rule passes. Also, unprompted and visual-only: segment index 3 bar label 'Adjusted for visible columns' became 'Adjusted for background columns', matching facts tracking_story.adjusted_for (7 background columns) and the same fix the re-check asked for in 7-4."
+  }
+ ],
+ "terms": [
+  {
+   "term": "counterfactual",
+   "spoken": true,
+   "segment": 1,
+   "glossary": true,
+   "note": "Right after 'Same advertisers, same everything else.': 'What would have happened to the same advertisers otherwise has a name: the counterfactual.'"
+  },
+  {
+   "term": "selection bias",
+   "spoken": true,
+   "segment": 2,
+   "glossary": true,
+   "note": "Right after 'what tracking does, and who chooses tracking.': 'That second part is called selection bias.' Confounder stays the name for the hidden trait."
+  }
+ ],
+ "segments_changed": [
+  1,
+  2,
+  6
+ ],
+ "open_questions": [],
+ "note": "Segment indexes are 0-based. 924 -> 946 spoken words. Glossary now 7 items (the maximum)."
+}

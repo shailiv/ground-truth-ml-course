@@ -1,0 +1,34 @@
+{
+  "lesson": "3-5",
+  "recheck": [
+    {
+      "n": 0,
+      "issue": "predict vs predict_proba rule stated without 'for a classifier'",
+      "decision": "accepted",
+      "reason": "scikit-learn: predict_proba exists only on classifiers; a regressor's predict returns the number itself, and the lesson's transfer/review items include number models.",
+      "change": "Qualified to yes-or-no models in the predict_proba glossary entry, the '.predict(' row and note of the seg 7 table, ask_assistant ('from predict if [outcome] is a number') and audit_checklist[2]. Narration seg 5 already speaks of the churn classifier only; unchanged."
+    },
+    {
+      "n": 1,
+      "issue": "min_samples_leaf=5 in the forest snippet is not in facts.json",
+      "decision": "rejected",
+      "reason": "The snippet matches the code that produced the facts: build/analysis.py line 330 fits RandomForestClassifier(n_estimators=300, min_samples_leaf=5, random_state=0); forest.train_auc 0.982 and test.auc 0.831 come from that fit. It is a code setting, not a quoted figure.",
+      "change": ""
+    }
+  ],
+  "terms": [
+    {
+      "term": "one-hot encoding (dummy columns)",
+      "spoken": true,
+      "segment": 1,
+      "glossary": true,
+      "note": "Chosen over 3-2 because 3-5 already shows OneHotEncoder turning vertical into yes/no columns (seg 2 code and note). Spoken in the Prepare step: 'one yes or no column per value, called one-hot encoding'. 3-2 left untouched."
+    }
+  ],
+  "segments_changed": [
+    1
+  ],
+  "open_questions": [
+    "facts.json does not record the forest's min_samples_leaf=5 (it is in build/analysis.py); add it to facts.forest if the fact-checker should stop flagging it."
+  ]
+}

@@ -1,0 +1,16 @@
+{
+ "lesson": "5-3",
+ "recheck": [
+  {
+   "n": 0,
+   "issue": "Quiz 5-3-q2 stem says the gap was 'narrowing' without saying which group started lower, so the direction of the bias cannot be deduced.",
+   "decision": "accepted",
+   "reason": "A narrowing gap overstates the effect only if the launch group started below (facts before_after.averages: got_the_flow_before 0.605 < comparison_before 0.668).",
+   "change": "Stem: 'the gap between the two groups was narrowing by 0.33 points a week' became 'the launch group, which started lower, was gaining on the comparison group by 0.33 points a week'. Options and why unchanged."
+  }
+ ],
+ "terms": [],
+ "segments_changed": [],
+ "open_questions": [],
+ "note": "No narration change. 867 words."
+}

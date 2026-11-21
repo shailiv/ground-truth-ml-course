@@ -39,7 +39,11 @@
       "visual": {
         "type": "compare",
         "title": "One tree, depth 25, 611 leaves",
-        "left": {"label": "The 6,000 advertisers it trained on", "value": "AUC 1.000", "sub": "accuracy 100%"},
+        "left": {
+          "label": "The 6,000 advertisers it trained on",
+          "value": "AUC 1.000",
+          "sub": "accuracy 100%"
+        },
         "right": {
           "label": "4,000 advertisers it has never seen",
           "value": "AUC 0.607",
@@ -56,17 +60,39 @@
       }
     },
     {
-      "narration": "There is an opposite failure, and it is quieter. [[1]] The one-question tree scores about 0.66 on training rows and about 0.66 on test. No gap, and not much of a model. It is too simple to hold the pattern. That is underfitting. [[2]] Depth 4 has a visible gap, and the best test score of any depth. [[3]] Depth 25 is flawless in training and worse than one question outside it. So a small gap is not the goal. The best score on new rows is. Where the peak falls is a fact about this simulated data. That training scores keep rising after test scores stop is true of flexible models in general.",
+      "narration": "There is an opposite failure, and it is quieter. [[1]] The one-question tree scores about 0.66 on training rows and about 0.66 on test. No gap, and not much of a model. It is too simple to hold the pattern. That is underfitting. [[2]] Depth 4 has a visible gap, and the best test score of any depth. [[3]] Depth 25 is flawless in training and worse than one question outside it. So a small gap is not the goal. The best score on new rows is. The textbook name for this pull between too simple and too flexible is the bias-variance trade-off. Where the peak falls is a fact about this simulated data. That training scores keep rising after test scores stop is true of flexible models in general.",
       "visual": {
         "type": "table",
         "title": "Too simple, about right, memorised",
-        "columns": ["Tree", "Leaves", "Training AUC", "Test AUC"],
-        "rows": [
-          ["Depth 1", "2", "0.663", "0.656"],
-          ["Depth 4", "16", "0.810", "0.769"],
-          ["Depth 25", "611", "1.000", "0.607"]
+        "columns": [
+          "Tree",
+          "Leaves",
+          "Training AUC",
+          "Test AUC"
         ],
-        "highlight": [1],
+        "rows": [
+          [
+            "Depth 1",
+            "2",
+            "0.663",
+            "0.656"
+          ],
+          [
+            "Depth 4",
+            "16",
+            "0.810",
+            "0.769"
+          ],
+          [
+            "Depth 25",
+            "611",
+            "1.000",
+            "0.607"
+          ]
+        ],
+        "highlight": [
+          1
+        ],
         "note": "Where the peak falls is specific to this data. Depth 3 scores 0.767 here, with no minimum leaf size; lesson 3-3's tree required at least 100 training advertisers in every leaf and scored 0.761."
       }
     },
@@ -75,11 +101,27 @@
       "visual": {
         "type": "table",
         "title": "Both numbers, every model",
-        "columns": ["Model", "Training AUC", "Test AUC"],
+        "columns": [
+          "Model",
+          "Training AUC",
+          "Test AUC"
+        ],
         "rows": [
-          ["Weighted sum (logistic regression)", "0.849", "0.845"],
-          ["One tree, depth 25", "1.000", "0.607"],
-          ["300 trees, averaged (lesson 4-3)", "0.982", "0.831"]
+          [
+            "Weighted sum (logistic regression)",
+            "0.849",
+            "0.845"
+          ],
+          [
+            "One tree, depth 25",
+            "1.000",
+            "0.607"
+          ],
+          [
+            "300 trees, averaged (lesson 4-3)",
+            "0.982",
+            "0.831"
+          ]
         ],
         "note": "The gap says where to look. The test column decides."
       }
@@ -106,7 +148,7 @@
           "Training score and held-out score, side by side",
           "Each labelled with its rows and row count",
           "Both scores at several settings, held-out rows from inside the training months",
-          "For a tree: number of leaves, smallest leaf (100 rows: a rate good to about ±6 points)"
+          "For a tree: number of leaves, smallest leaf (100 rows: about ±6 points for a rate near 12%, wider nearer 50%)"
         ]
       }
     },
@@ -151,7 +193,7 @@
         "Depth 3 has almost no gap, so it is underfitting and deeper is the right direction"
       ],
       "answer": 2,
-      "why": "The headline figure is a training score; on held-out advertisers depth 12 scores 0.58 against 0.77, so it has memorised. A training score slightly above test, as at depth 3, is normal and no reason to reject, and a small gap does not mean 'go deeper' when the test score is already falling."
+      "why": "The headline figure is a training score; on held-out advertisers depth 12 scores 0.58 against 0.77, so it has memorised. A training score slightly above test, as at depth 3, is normal and no reason to reject, and a small gap alone does not prove underfitting or that deeper is better: the deeper option in this very table is the one that collapsed."
     },
     {
       "id": "4-1-q3",
@@ -278,7 +320,7 @@
   "audit_checklist": [
     "Training and held-out scores side by side for every model, in the same measure, each labelled with its rows and row count",
     "The table of scores by setting shows training beside cross-validated or validation-period scores, and has no test-row column",
-    "For a tree: the number of leaves and the size of the smallest leaf; a churn rate from about 100 advertisers is only good to about 6 points either way",
+    "For a tree: the number of leaves and the size of the smallest leaf; a churn rate near 12% from about 100 advertisers is only good to about 6 points either way, and a rate nearer 50% to wider still",
     "The headline number in the summary is a held-out score, named as such, and it matches the table"
   ],
   "transfer": [
@@ -316,6 +358,10 @@
     {
       "term": "regularisation",
       "def": "Any way of making a model pay for complexity, such as capping a tree's depth or penalising large weights."
+    },
+    {
+      "term": "bias-variance trade-off",
+      "def": "The pull between a model too simple to see the pattern (bias, underfitting) and one so flexible it learns the noise (variance, overfitting); the best setting scores best on new rows."
     }
   ]
 }

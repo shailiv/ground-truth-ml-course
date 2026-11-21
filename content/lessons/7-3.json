@@ -21,7 +21,7 @@
       "visual": {"type": "title", "kicker": "Module 7 · Lesson 3", "title": "Language models as classifiers", "sub": "Five ways to sort 450 tickets, one exam"}
     },
     {
-      "narration": "Here is the ladder. [[1]] Rung one: keyword rules. If the ticket says invoice, call it billing. [[2]] Rung two: a bag-of-words model. Count the words and short phrases in each ticket, one column each, and let logistic regression learn the weights from 600 labelled tickets. [[3]] Rung three: last lesson's embeddings, with the same logistic regression and the same 600 tickets. [[4]] Rung four: a cheap language model, given only the six category names and a line describing each. No examples, no training. [[5]] Rung five: a stronger language model, same instructions. All five face the same 450 unseen test tickets, where blind guessing scores about 17 percent.",
+      "narration": "Here is the ladder. [[1]] Rung one: keyword rules. If the ticket says invoice, call it billing. [[2]] Rung two: a bag-of-words model. Count the words and short phrases in each ticket, one column each, and let logistic regression learn the weights from 600 labelled tickets. [[3]] Rung three: last lesson's embeddings, with the same logistic regression and the same 600 tickets. [[4]] Rung four: a cheap language model, given only the six category names and a line describing each. No examples, no training: what is called zero-shot. [[5]] Rung five: a stronger language model, same instructions. All five face the same 450 unseen test tickets, where blind guessing scores about 17 percent.",
       "visual": {"type": "flow", "title": "Five rungs, one exam: 450 unseen tickets", "steps": [
         {"label": "Keyword rules", "sub": "written by hand, no training"},
         {"label": "Bag-of-words model", "sub": "word counts + logistic regression, 600 labelled tickets"},
@@ -41,7 +41,7 @@
       ], "note": "In brackets: the 95% interval. Blind guessing among six equal categories scores 16.7%."}
     },
     {
-      "narration": "Overlap alone does not settle it, because both models sat the same exam. Module two had the sharper test: compare them ticket by ticket and put an interval on the gap itself. [[1]] Bag-of-words over keyword rules: 25 points, clearly real. [[2]] Embeddings over bag-of-words: 21 points, clearly real. [[3]] The cheap language model over embeddings: 6 points. Its interval runs from about 1 point to 11, so real, and possibly small. [[4]] The stronger model over the cheap one: 15 points, clearly real. The narrow step is the one from training on labels to using none.",
+      "narration": "Overlapping intervals do not mean a tie: that test is too blunt, and here both models sat the same exam. Module two had the sharper test: compare them ticket by ticket and put an interval on the gap itself. [[1]] Bag-of-words over keyword rules: 25 points, clearly real. [[2]] Embeddings over bag-of-words: 21 points, clearly real. [[3]] The cheap language model over embeddings: 6 points. Its interval runs from about 1 point to 11, so real, and possibly small. [[4]] The stronger model over the cheap one: 15 points, clearly real. The narrow step is the one from training on labels to using none.",
       "visual": {"type": "table", "title": "Is each step real? Gaps measured on the same 450 tickets",
         "columns": ["Step up the ladder", "Gap in points", "95% interval", "Verdict"],
         "rows": [
@@ -68,7 +68,7 @@
         "note": "300 of the 450 test tickets are deliberately tangled: two issues in one message, or vague wording."}
     },
     {
-      "narration": "Four limits before anyone quotes 96 percent. [[1]] The tickets are synthetic, written to order by language models, so the answer key is simply what was requested. Real labels are disputed: two people often disagree about the main issue, and a score above their rate of agreement stops meaning anything. [[2]] The sorting models come from the same family as the writing models, so their scores flatter them. [[3]] The trained methods carry a handicap: they learned from one writer's tickets, a quarter of them tangled, and were tested on another's, two thirds tangled. That is realistic, but it puts an asterisk on that narrow step. [[4]] And the keyword rules were written once and never tuned. Expect lower scores on a real inbox.",
+      "narration": "Four limits before anyone quotes 96 percent. [[1]] The tickets are synthetic, written to order by language models, so the answer key is simply what was requested. Real labels are disputed: two people often disagree about the main issue, and that caps what any score can mean. [[2]] The sorting models come from the same family as the writing models, so their scores flatter them. [[3]] The trained methods carry a handicap: they learned from one writer's tickets, a quarter of them tangled, and were tested on another's, two thirds tangled. That is realistic, but it puts an asterisk on that narrow step. [[4]] And the keyword rules were written once and never tuned. Expect lower scores on a real inbox.",
       "visual": {"type": "bullets", "title": "Four honest limits", "items": [
         "Synthetic tickets with a known answer key; real labels are disputed",
         "Writers and sorters are one model family: language-model scores are optimistic",
@@ -85,7 +85,7 @@
       ]}
     },
     {
-      "narration": "Brief and audit. [[1]] Ask for a test set labelled by people, blind to any model's answer. Your assistant is a language model too, and it does not mark its own work. Nothing is trained or tuned on those tickets. [[2]] Ask for every method on the same tickets, with blind guessing beside them and an interval on each score. [[3]] Ask for precision and recall per category. The cheap model's 81 percent hides that it catches only 60 percent of feature requests. [[4]] Ask for ordinary and tangled tickets separately. [[5]] Before any text is sent, ask for the exact instructions, the model and version, and where the text goes. If two categories keep getting confused, add a few labelled examples to the instructions and score again on fresh tickets.",
+      "narration": "Brief and audit. [[1]] Ask for a test set labelled by people, blind to any model's answer. Your assistant is a language model too, and it does not mark its own work. Nothing is trained or tuned on those tickets. [[2]] Ask for every method on the same tickets, with blind guessing beside them and an interval on each score. [[3]] Ask for precision and recall per category. The cheap model's 81 percent hides that it catches only 60 percent of feature requests. [[4]] Ask for ordinary and tangled tickets separately. [[5]] Before any text is sent, ask for the exact instructions, the model and version, and where the text goes. If two categories keep getting confused, add a few labelled examples to the instructions, which is called few-shot, and score again on fresh tickets.",
       "visual": {"type": "bullets", "title": "Brief and audit", "items": [
         "Show: a test set labelled by people, unseen, with nothing tuned on it",
         "Show: every method on the same tickets, with guessing and intervals",
@@ -163,7 +163,7 @@
         "Some 'errors' are disputes: where people split on a label, a higher score means little."
       ],
       "answer": 3,
-      "why": "When careful people file the same ticket two ways, the label itself is uncertain, and a score above the rate at which people agree stops measuring the model. Rewriting the key to match the model makes the score circular, and removing the tangled tickets makes the test stop resembling the inbox. Both are tempting ways to tidy a number that is honestly untidy."
+      "why": "When careful people file the same ticket two ways, the label itself is uncertain, and disputed labels put a ceiling below 100 percent on what any score can measure. Rewriting the key to match the model makes the score circular, and removing the tangled tickets makes the test stop resembling the inbox. Both are tempting ways to tidy a number that is honestly untidy."
     }
   ],
   "review": [
@@ -258,7 +258,7 @@
     "prompt": "A vendor says their language model classifies your tickets at 96 percent with no training needed. What do you ask before you believe it?",
     "model_answer": "I ask what it was scored on: labelled tickets it had not seen, how many, and who decided the right answers. I want a baseline and an interval beside the score, precision and recall per category, and the result on messy multi-issue tickets shown separately. I also ask whether the test tickets resemble my inbox, because scores on tidy or synthetic text run high, and whether the instructions were tuned on the same tickets that were used for scoring."
   },
-  "ask_assistant": "Classify [the text] into [our categories, one line describing each] with an approved language model given instructions only. Before sending any text, show me the exact instructions, the model name and version, and where the text will go, and wait for my go-ahead. Score it on [the test set people labelled, which no method has seen], beside [the simpler methods] and [guessing or the commonest category], each with a 95 percent interval, plus an interval on the gap between neighbouring methods on the same items. Report precision and recall per category, and accuracy on [easy and hard cases] separately. Never adjust the instructions after seeing test items; list every version you tried and on which items.",
+  "ask_assistant": "Classify [the text] into [our categories, one line describing each] with an approved language model given instructions only (zero-shot). Before sending any text, show me the exact instructions, the model name and version, and where the text will go, and wait for my go-ahead. Score it on [the test set people labelled, which no method has seen], beside [the simpler methods] and [guessing or the commonest category], each with a 95 percent interval, plus an interval on the gap between neighbouring methods on the same items. Report precision and recall per category, and accuracy on [easy and hard cases] separately. Never adjust the instructions after seeing test items; list every version you tried and on which items.",
   "audit_checklist": [
     "The test set is described: how many items, who labelled them (people, blind to every model's answer), and a list of every version of the instructions with the items it was tried on, none of them test items.",
     "One table holds every method on the same items: the number scored, the guessing baseline, an interval on each score and on each gap between neighbours.",
@@ -271,14 +271,16 @@
     "What reason does each answer to the cancellation survey give?"
   ],
   "other_ways": [
-    {"approach": "Put a few labelled examples inside the language model's instructions", "when": "When instructions alone confuse two categories; score it again on tickets that were not used as examples."},
+    {"approach": "Put a few labelled examples inside the language model's instructions", "when": "When instructions alone confuse two categories; score it again on tickets that were not used as examples. A bigger step, fine-tuning, retrains the model itself on your labelled tickets and needs the same unseen test."},
     {"approach": "Embeddings with a simple trained model", "when": "When you have labelled examples and a high volume of text. The text stays in the building only if the embedding model runs on your own machines; a hosted one receives every text, exactly as a language model does."},
     {"approach": "A language model for the bulk, and people for the tickets where two models disagree", "when": "When mistakes are costly and a human review queue already exists."}
   ],
   "glossary": [
     {"term": "bag-of-words model", "def": "A model fed counts of the words and short phrases in each text, ignoring their order."},
     {"term": "zero-shot classification", "def": "Asking a language model to label text from instructions alone, with no training examples."},
+    {"term": "few-shot classification", "def": "The same, with a handful of labelled examples added to the instructions; score it on tickets that were not among the examples."},
+    {"term": "fine-tuning", "def": "Training a language model further on your own labelled examples, so the model itself changes; a bigger step than adding examples to the instructions, and it needs the same unseen test."},
     {"term": "paired comparison", "def": "Comparing two methods on the same test items, with an interval on the gap between them."},
-    {"term": "label agreement", "def": "How often two people give the same item the same label; no model can be meaningfully scored above it."}
+    {"term": "label agreement", "def": "How often two people give the same item the same label; when people often disagree, the answer key itself is uncertain, which caps what any model's score can meaningfully show below 100 percent."}
   ]
 }

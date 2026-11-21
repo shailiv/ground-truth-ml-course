@@ -11,6 +11,7 @@ import sys
 
 sys.path.insert(0, "build")
 from validate import check  # noqa: E402
+from narration import text_key, drill_text_key  # noqa: E402
 
 ROOT = pathlib.Path(".")
 site = json.loads((ROOT / "content/site.json").read_text(encoding="utf-8"))
@@ -22,7 +23,7 @@ practice.sort(key=lambda p: (p["after"], p["kind"] != "lab", p["id"]))
 man_path = ROOT / "data/audio_manifest.json"
 manifest = json.loads(man_path.read_text(encoding="utf-8")) if man_path.exists() else {}
 
-lessons, problems = [], 0
+lessons, problems, stale_audio = [], 0, []
 for f in sorted(glob.glob("content/lessons/*.json")):
     errs, warn, total = check(f)
     if errs:
@@ -31,7 +32,11 @@ for f in sorted(glob.glob("content/lessons/*.json")):
         continue
     L = json.loads(pathlib.Path(f).read_text(encoding="utf-8"))
     aud = manifest.get("lessons", {}).get(L["id"], [])
-    L["audio"] = [{"src": a["src"], "dur": a["dur"]} for a in aud] if len(aud) == len(L["segments"]) and all(a.get("src") for a in aud) else None
+    # a clip is only good for the exact words it was recorded from: an edited sentence makes its clip stale
+    fresh = len(aud) == len(L["segments"]) and all(a.get("src") and a.get("text") == text_key(sg["narration"]) for a, sg in zip(aud, L["segments"]))
+    if aud and not fresh:
+        stale_audio.append(L["id"] + ":" + ",".join(str(i + 1) for i, sg in enumerate(L["segments"]) if i >= len(aud) or aud[i].get("text") != text_key(sg["narration"])))
+    L["audio"] = [{"src": a["src"], "dur": a["dur"]} for a in aud] if fresh else None
     L["minutes"] = round(sum(a["dur"] for a in aud) / 60, 1) if L["audio"] else round(total / 150, 1)
     L["words"] = total
     lessons.append(L)
@@ -55,6 +60,8 @@ drills = {}
 for m in site["modules"]:
     items = [d for l in lessons if l["module"] == m["n"] for d in l["drill"]]
     d = manifest.get("drills", {}).get(str(m["n"]))
+    if d and d.get("text") != drill_text_key(m["n"], items, m["title"]):
+        stale_audio.append(f"drill-{m['n']}"); d = None                # a question or answer changed since the track was recorded
     drills[m["n"]] = {"items": items, "src": d["src"] if d else None, "dur": d["dur"] if d else None}
 
 # ---- numbers the About page quotes about how the course was checked: read from the review records, never typed
@@ -84,6 +91,20 @@ def review_stats():
     fin = [load("factcheck/final/" + f.name, {}) for f in sorted((q / "factcheck/final").glob("*.json"))] if (q / "factcheck/final").exists() else []
     st["final_lessons"], st["final_issues"] = len(fin), sum(len(x.get("issues", [])) for x in fin)
     st["final_clean"] = sum(1 for x in fin if not x.get("issues"))
+    # the second round: what the editors did with the final re-check's points, and the textbook terms they named
+    r2 = {"accepted": 0, "partly": 0, "rejected": 0}; terms = 0; r2_lessons = 0
+    for f in sorted((q / "adjudication").glob("*.round2.json")):
+        d = load("adjudication/" + f.name, {}); r2_lessons += 1
+        terms += sum(1 for t in d.get("terms", []) if t.get("glossary") or t.get("spoken"))
+        for x in d.get("recheck", []):
+            k = str(x.get("decision", "")).strip().lower()
+            k = "accepted" if k.startswith(("accept", "already")) else "partly" if k.startswith("part") else "rejected" if k.startswith("reject") else None
+            if k: r2[k] += 1
+    st["r2_lessons"], st["r2_accepted"], st["r2_partly"], st["r2_rejected"], st["r2_terms"] = r2_lessons, r2["accepted"], r2["partly"], r2["rejected"], terms
+    st["r2_points"] = sum(r2.values())
+    ux = load("ux/report.json", {})
+    st["ux_findings"] = len(ux.get("findings", []))
+    st["code_findings"] = len(load("site_review_code.json", {}).get("findings", [])) + len(load("site_review_round2.json", {}).get("findings", []))
     au = load("audio_report.json", {})
     st["clips"], st["audio_diff"], st["audio_flagged"] = au.get("clips", 0), round(100 * au.get("mean_wer", 0), 1), len(au.get("flagged", []))
     extra = load("review_notes.json", {})          # measurements made by hand during the build (linter mutation test, design scores, rounds)
@@ -145,6 +166,8 @@ if missing:
 # ---- audio: a lesson without narration must stop a real build; clips nothing points to must not be published
 silent = [l["id"] for l in lessons if not l["audio"]]
 no_drill = [str(n) for n, d in drills.items() if not d["src"]]
+if stale_audio:
+    print("audio recorded from older text (lesson:parts), re-record with build/tts.py:", " ".join(stale_audio))
 if silent or no_drill:
     print(f"no audio: lessons {' '.join(silent) or '-'}; drills {' '.join(no_drill) or '-'}")
     if "--allow-missing" not in sys.argv:

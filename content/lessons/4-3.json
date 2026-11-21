@@ -31,22 +31,43 @@
         "type": "flow",
         "title": "A random forest: many deep trees, averaged",
         "steps": [
-          {"label": "Resample", "sub": "each tree: its own random draw of rows, a random few columns per split"},
-          {"label": "Grow deep", "sub": "300 trees, each overfitting to different accidents"},
-          {"label": "Average", "sub": "accidents cancel, the shared pattern stays"}
+          {
+            "label": "Resample",
+            "sub": "each tree: its own random draw of rows, a random few columns per split"
+          },
+          {
+            "label": "Grow deep",
+            "sub": "300 trees, each overfitting to different accidents"
+          },
+          {
+            "label": "Average",
+            "sub": "accidents cancel, the shared pattern stays"
+          }
         ]
       }
     },
     {
-      "narration": "Boosting takes the opposite road: small trees, built one after another. [[1]] The first small tree gives a rough score. [[2]] Then the method looks at where that score is still wrong. [[3]] The next small tree is fitted to those misses, and a fraction of its correction is added in. [[4]] Repeat, a hundred rounds or more. The final score is the sum of many small corrections. It is powerful, and it has settings to choose: how deep each tree is, how many rounds, how big each step.",
+      "narration": "Boosting takes the opposite road: small trees, built one after another. [[1]] The first small tree gives a rough score. [[2]] Then the method looks at where that score is still wrong. [[3]] The next small tree is fitted to those misses, and a fraction of its correction is added in. [[4]] Repeat, a hundred rounds or more. The final score is the sum of many small corrections. It is powerful, and it has settings to choose: how deep each tree is, how many rounds, how big each step. The textbook name for both is an ensemble: many models, voting or correcting each other.",
       "visual": {
         "type": "flow",
         "title": "Gradient boosting: small trees, one after another",
         "steps": [
-          {"label": "Small tree", "sub": "a rough first score"},
-          {"label": "Find the misses", "sub": "where is the score still wrong?"},
-          {"label": "Next small tree", "sub": "fitted to the misses, added in a small step (the learning rate)"},
-          {"label": "Repeat", "sub": "100 rounds or more"}
+          {
+            "label": "Small tree",
+            "sub": "a rough first score"
+          },
+          {
+            "label": "Find the misses",
+            "sub": "where is the score still wrong?"
+          },
+          {
+            "label": "Next small tree",
+            "sub": "fitted to the misses, added in a small step (the learning rate)"
+          },
+          {
+            "label": "Repeat",
+            "sub": "100 rounds or more"
+          }
         ]
       }
     },
@@ -55,12 +76,32 @@
       "visual": {
         "type": "table",
         "title": "Churn: training rows against new advertisers (AUC)",
-        "columns": ["Model", "Training", "Test"],
+        "columns": [
+          "Model",
+          "Training",
+          "Test"
+        ],
         "rows": [
-          ["Boosting, untuned: depth 4, 200 rounds", "0.938", "0.827"],
-          ["Boosting, tuned: depth 2, 100 rounds", "0.874", "0.836"],
-          ["Forest, 300 trees", "0.982", "0.831"],
-          ["Logistic regression, 22 weights", "0.849", "0.845"]
+          [
+            "Boosting, untuned: depth 4, 200 rounds",
+            "0.938",
+            "0.827"
+          ],
+          [
+            "Boosting, tuned: depth 2, 100 rounds",
+            "0.874",
+            "0.836"
+          ],
+          [
+            "Forest, 300 trees",
+            "0.982",
+            "0.831"
+          ],
+          [
+            "Logistic regression, 22 weights",
+            "0.849",
+            "0.845"
+          ]
         ],
         "note": "Tuned: 16 combinations of settings compared by 5-fold cross-validation on the training months only."
       }
@@ -70,13 +111,49 @@
       "visual": {
         "type": "table",
         "title": "Two questions, same table, same models",
-        "columns": ["Model", "Churn AUC", "Churn top 200", "Video AUC", "Video top 200"],
+        "columns": [
+          "Model",
+          "Churn AUC",
+          "Churn top 200",
+          "Video AUC",
+          "Video top 200"
+        ],
         "rows": [
-          ["Tree, depth 3", "0.761", "111", "0.864", "152"],
-          ["Logistic regression", "0.845", "136", "0.861", "153"],
-          ["Forest, 300 trees", "0.831", "126", "0.895", "184"],
-          ["Boosting, tuned", "0.836", "132", "0.901", "185"],
-          ["Logistic + 3 combination flags", "–", "–", "0.882", "171"]
+          [
+            "Tree, depth 3",
+            "0.761",
+            "111",
+            "0.864",
+            "152"
+          ],
+          [
+            "Logistic regression",
+            "0.845",
+            "136",
+            "0.861",
+            "153"
+          ],
+          [
+            "Forest, 300 trees",
+            "0.831",
+            "126",
+            "0.895",
+            "184"
+          ],
+          [
+            "Boosting, tuned",
+            "0.836",
+            "132",
+            "0.901",
+            "185"
+          ],
+          [
+            "Logistic + 3 combination flags",
+            "–",
+            "–",
+            "0.882",
+            "171"
+          ]
         ],
         "note": "Top 200: churners or adopters among the 200 highest scores (a random 200 holds about 26 or 38). The churn tree is lesson 3-3's: depth 3, at least 100 advertisers per leaf; with no minimum, single trees peaked at 0.769. A combination that matters together is called an interaction."
       }
@@ -99,7 +176,7 @@
       }
     },
     {
-      "narration": "[[1]] Why did the simple model take churn? Because of how this simulated world was built. Churn in it is close to a tidy weighted sum, each column nudging risk steadily one way. [[2]] Video was built the other way. Those are facts about the simulation, not about churn or video. On your data it could go either way. [[3]] One more source of noise. A small neural network, a flexible model from module seven, starts its training from random numbers. Trained on churn six times, its test score ranged from about 0.81 to 0.835. [[4]] No better than the weighted sum, and a spread between its own runs wider than the whole churn gap. Training has luck in it too. The interval earlier covered only the luck of the test rows.",
+      "narration": "[[1]] The simple model took churn because of how this simulated world was built. Churn in it is close to a tidy weighted sum, each column nudging risk steadily one way. [[2]] Video was built the other way. Those are facts about the simulation, not about churn or video. On your data it could go either way. [[3]] A small neural network, a flexible model from module seven, starts its training from random numbers. A number called the random seed fixes those draws, so a rerun repeats exactly. Trained on churn six times, its test score ranged from about 0.81 to 0.835. [[4]] No better than the weighted sum, and a spread between its own runs wider than the whole churn gap. Training has luck in it too. The interval earlier covered only the luck of the test rows.",
       "visual": {
         "type": "bullets",
         "title": "What decided it, and one more source of noise",
@@ -331,6 +408,14 @@
     {
       "term": "interaction",
       "def": "A combination of columns that matters together, such as many creatives and a good click rate; trees can find one, a weighted sum has to be handed it."
+    },
+    {
+      "term": "ensemble",
+      "def": "A model made of many models whose scores are combined, by voting or averaging as in a forest, or by adding corrections as in boosting."
+    },
+    {
+      "term": "random seed",
+      "def": "The number that fixes a method's random choices, so a rerun gives the same answer; changing it shows how much of a score is luck."
     }
   ]
 }

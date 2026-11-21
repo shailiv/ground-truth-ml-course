@@ -1,0 +1,25 @@
+{
+  "lesson": "4-3",
+  "recheck": [],
+  "terms": [
+    {
+      "term": "ensemble",
+      "spoken": true,
+      "segment": 2,
+      "glossary": true,
+      "note": "'The textbook name for both is an ensemble: many models, voting or correcting each other.' at the end of the boosting segment, once forest and boosting have both been taught."
+    },
+    {
+      "term": "random seed",
+      "spoken": true,
+      "segment": 6,
+      "glossary": true,
+      "note": "'A number called the random seed fixes those draws, so a rerun repeats exactly.' after the neural network's random start. To keep seg 6 at or under 140 words, the same segment dropped 'One more source of noise.' (still the visual's title) and 'Why did the simple model take churn? Because of...' became 'The simple model took churn because of...'."
+    }
+  ],
+  "segments_changed": [
+    2,
+    6
+  ],
+  "open_questions": []
+}

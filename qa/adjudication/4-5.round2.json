@@ -1,0 +1,24 @@
+{
+  "lesson": "4-5",
+  "recheck": [
+    {
+      "n": 0,
+      "issue": "seg 4: 'Add them up, about four, pass the total through the S-curve' omits the average advertiser's starting score (S-curve of 4 alone is about 98%)",
+      "decision": "accepted",
+      "reason": "explain_examples.how_to_read: pushes add on the log-odds scale relative to an average advertiser (average_advertiser_probability 0.047, predicted 0.727); the pushes must be added to that advertiser's score before the S-curve.",
+      "change": "Seg 4 narration: 'Add her pushes, about four points, to the average advertiser's score, then pass the total through the S-curve: 5 percent becomes 73.' Offset in the same segment: 'goes by the name SHAP' -> 'is called SHAP' (seg 4 now 136 words). Visual note: 'Average advertiser: 4.7%. Her pushes added to its score, then through the S-curve: 72.7%.' (no derived log-odds figures added, as they are not in facts.json)."
+    },
+    {
+      "n": 1,
+      "issue": "ask_assistant / audit: 'base plus all contributions reproduces the printed score' ignores that contributions are in log-odds while the score is a probability",
+      "decision": "accepted",
+      "reason": "Same principle as finding 0; the lesson's own seg 4 note says scorecard points add up before the S-curve.",
+      "change": "ask_assistant: '..., after the S-curve if they are in log-odds.' audit_checklist[2]: '..., after the S-curve when they are in log-odds and the score is a probability'. ask_assistant trimmed elsewhere to stay at 118 words (R3 limit 120)."
+    }
+  ],
+  "terms": [],
+  "segments_changed": [
+    4
+  ],
+  "open_questions": []
+}

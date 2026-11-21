@@ -23,11 +23,7 @@ MODEL = G.resolve(CFG.get("model", "tts"), "tts")
 AUDIO, WAVS = ROOT / "site/public/audio", ROOT / "data/audio_wav"
 AUDIO.mkdir(parents=True, exist_ok=True); WAVS.mkdir(parents=True, exist_ok=True)
 
-def spoken(text):
-    """What the voice should read: cue markers out, a few things a speech model reads badly spelled the way they sound."""
-    t = re.sub(r"\s*\[\[\d+\]\]\s*", " ", text)
-    t = t.replace("—", ", ").replace("–", " to ").replace("−", "minus ")
-    return re.sub(r"\s+", " ", t).strip()
+from narration import spoken, text_key, drill_parts, drill_text_key      # shared with build_site.py
 
 def key(text, voice=None, style=None):
     return hashlib.sha256(json.dumps([text, voice or VOICE, style or STYLE, MODEL]).encode()).hexdigest()[:14]
@@ -73,16 +69,15 @@ def lesson_clip(job):
     k = key(text)
     mp3 = AUDIO / lid / f"{i + 1:02d}-{k}.mp3"
     if not mp3.exists(): to_mp3(synth(text), mp3)
-    return lid, i, {"src": f"audio/{lid}/{mp3.name}", "dur": dur(mp3)}
+    return lid, i, {"src": f"audio/{lid}/{mp3.name}", "dur": dur(mp3), "text": text_key(text)}
 
 def drill_track(module, items, title):
     """question -> a pause to answer in your head -> the answer. One MP3 per module."""
-    parts = [f"Recall drill for module {module}: {title}. I ask, you answer in your head, then I answer. Here we go."]
-    for n, it in enumerate(items, 1): parts += [f"Question {n}. {it['q']}", it["a"]]
-    parts.append("That is the drill. Anything you missed, the review cards will bring back.")
+    parts = drill_parts(module, items, title)
     k = hashlib.sha256(json.dumps([parts, VOICE, STYLE, MODEL, "v2"]).encode()).hexdigest()[:14]
     mp3 = AUDIO / "drills" / f"module-{module}-{k}.mp3"
-    if mp3.exists(): return {"src": f"audio/drills/{mp3.name}", "dur": dur(mp3)}
+    tk = drill_text_key(module, items, title)
+    if mp3.exists(): return {"src": f"audio/drills/{mp3.name}", "dur": dur(mp3), "text": tk}
     with cf.ThreadPoolExecutor(4) as ex: wavs = list(ex.map(synth, parts))
     with tempfile.TemporaryDirectory() as td:
         td = pathlib.Path(td); lst = []
@@ -99,7 +94,7 @@ def drill_track(module, items, title):
         (td / "list.txt").write_text("\n".join(lst), encoding="utf-8")
         mp3.parent.mkdir(parents=True, exist_ok=True)
         subprocess.run(["ffmpeg", "-y", "-v", "error", "-f", "concat", "-safe", "0", "-i", str(td / "list.txt"), "-c:a", "libmp3lame", "-b:a", "56k", str(mp3)], check=True)
-    return {"src": f"audio/drills/{mp3.name}", "dur": dur(mp3)}
+    return {"src": f"audio/drills/{mp3.name}", "dur": dur(mp3), "text": tk}
 
 def main():
     ap = argparse.ArgumentParser()

@@ -242,7 +242,7 @@
   {
    "h": "Your data",
    "p": [
-    "This site sits behind a login. It stores only your progress: which lessons you finished and your review schedule. It makes no requests to any third party. The tutor button opens Claude in a new tab with the lesson context in the message; nothing is sent until you press it."
+    "This site sits behind a login. It stores only your progress: which lessons you finished and your review schedule. It makes no requests to any third party. The tutor is Claude on your own subscription. When the tutor relay is running on your computer, a question and the part of the lesson you asked from travel to Claude Code there and the answer comes back to the page; the site itself never holds a Claude credential. When the relay is not running, the question opens Claude in a new tab instead. Nothing is sent until you ask, and the conversation is kept only in your browser."
    ]
   }
  ]

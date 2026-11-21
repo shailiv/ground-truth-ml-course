@@ -1,0 +1,8 @@
+{"lesson": "1-1",
+ "recheck": [
+  {"n": 0, "issue": "Segment 5 (index 4) says training starts from a rough guess and nudges cut-offs and weights; trees search candidate cut-offs, they do not nudge them.", "decision": "accepted", "reason": "Right in principle: gradient methods nudge weights, tree learners pick cut-offs by searching candidate splits. 'Nobody tries every possible rule' stays: it is true (no one tries every multi-column combination). Rule 10: say the true thing plainly.", "change": "Segment index 4 narration: 'The computer starts from a rough guess, ... nudges the cut-offs and weights to shrink that miss, and repeats' became 'The computer tries cut-offs and weights, ... keeps the changes that shrink that miss, and repeats' (true for both a split search and a weight update). 121 to 118 words."},
+  {"n": 1, "issue": "The 0-to-1 score is stated unconditionally (goal, takeaway, recall, glossary) while review 1 variant 3 is a revenue prediction.", "decision": "partly", "reason": "A number-predicting model returns dollars, not 0 to 1, so the definitions are scoped to yes-or-no outcomes. The revenue variant is kept: it tests which rows have a label, and 'the rows you score' is correct usage for any model. Narration segment index 5 speaks of the churn model only, so it stays.", "change": "goal: 'the score or prediction'; takeaway 2: 'scores each new row, from 0 to 1 for a yes-or-no outcome'; glossary 'score' and recall model answer scoped to a yes-or-no outcome. No narration change."}
+ ],
+ "terms": [],
+ "segments_changed": [4],
+ "open_questions": []}

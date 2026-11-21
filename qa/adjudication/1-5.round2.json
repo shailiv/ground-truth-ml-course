@@ -1,0 +1,7 @@
+{"lesson": "1-5",
+ "recheck": [
+  {"n": 0, "issue": "Stage-2 audit block lists only cpa_vs_goal as missing; hit_cpa_goal is empty for the same 4,984 untracked rows.", "decision": "accepted", "reason": "Already fixed: the block was corrected by hand after the re-check ran and now reads 'missing     = cpa_vs_goal, hit_cpa_goal: 4,984 rows' (facts data.n_untracked = 4984; data.outcome_columns.hit_cpa_goal empty without tracking). Narration ('CPA versus goal is empty for nearly five thousand') remains true.", "change": "none: already fixed"}
+ ],
+ "terms": [],
+ "segments_changed": [],
+ "open_questions": []}

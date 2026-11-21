@@ -66,7 +66,7 @@ const W = {
     const chartHost = h("div");
     const draw = (i) => {
       const r = rows[i];
-      chartHost.replaceChildren(lineChart({ title: "AUC by tree depth", xlabel: "Tree depth", ylabel: "AUC", x: rows.map((x) => x.depth), series: [{ name: "Training rows", values: rows.map((x) => x.train_auc) }, { name: "New advertisers", values: rows.map((x) => x.test_auc) }] }, host, { width: 480, height: 230, even: true, mark: i, right: 12, noTable: true }));
+      chartHost.replaceChildren(lineChart({ title: "AUC by tree depth", xlabel: "Tree depth (the depths tried, evenly spaced)", ylabel: "AUC", x: rows.map((x) => x.depth), series: [{ name: "Training rows", values: rows.map((x) => x.train_auc) }, { name: "New advertisers", values: rows.map((x) => x.test_auc) }] }, host, { width: 480, height: 230, even: true, mark: i, right: 12, noTable: true }));
       k.lv.set(r.leaves.toLocaleString()); k.tr.set(r.train_auc.toFixed(3)); k.te.set(r.test_auc.toFixed(3)); k.gap.set((r.train_auc - r.test_auc).toFixed(3));
     };
     const sl = slider("Let the tree grow to depth", 0, rows.length - 1, 1, 2, draw, (i) => rows[i].depth);

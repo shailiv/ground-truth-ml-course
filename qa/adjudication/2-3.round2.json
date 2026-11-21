@@ -1,0 +1,8 @@
+{"lesson": "2-3",
+ "recheck": [],
+ "terms": [
+  {"term": "precision at K", "spoken": true, "segment": 3, "glossary": true, "note": "Spoken where the top-200 list is read: 'It holds 136 churners, 68 percent: that share is called precision at K.' (facts top_k[k=200].precision 0.68). Visual table gains a 'Precision at K' column (76%, 68%, 55%, 42.2% from top_k)."},
+  {"term": "lift", "spoken": true, "segment": 3, "glossary": true, "note": "Spoken in the same segment so only one clip changes: 'A random list would hold about 26, so this one is about five times richer. That ratio is called lift.' (top_k[k=200].times_better_than_random 5.2). Visual table gains a 'Lift' column (5.8, 5.2, 4.2, 3.2). To stay under 140 words the segment's 'a cut-off in score units is awkward to pick. A list length is not' became 'a list length is easier to pick than a cut-off', 'this month' and 'with a different set of' were trimmed; 130 to 139 words."}
+ ],
+ "segments_changed": [3],
+ "open_questions": []}

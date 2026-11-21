@@ -1,0 +1,34 @@
+{
+ "base": "http://localhost:8788",
+ "out": "qa/verify",
+ "seed": "__gt.store.put('lessons', '1-1', {guess: 2, watched: Date.now(), quiz: {score: 3, of: 4, t: Date.now()}, done: Date.now()}); await new Promise(r => setTimeout(r, 300)); localStorage.setItem('gt.tutor.1-4', JSON.stringify([{role:'me', text:'Why is that a problem?', label:'Part 3 \u00b7 0:14', seg:2, t:14, at:1}, {role:'tutor', text:'Because the answer is **already in the row**.\\n\\n- first point with `status`\\n- second point\\n\\nDoes that make sense?', at:2}]));",
+ "shots": [
+  {
+   "name": "t01-tutor-offline",
+   "url": "/#/lesson/1-2/take",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "await new Promise(r => setTimeout(r, 600)); document.querySelector('.tutor').scrollIntoView({block: 'center'}); return { note: document.querySelector('.tutor-note').textContent };"
+  },
+  {
+   "name": "t02-tutor-ask-watch",
+   "url": "/#/lesson/1-4/watch",
+   "w": 1366,
+   "h": 900,
+   "theme": "dark",
+   "wait": 800,
+   "js": "const st = await (await fetch('/api/tutor/status')).json(); const p = __gt.player; await p.show(2, false, 14); document.querySelector('.overlay').hidden = true; await new Promise(r => setTimeout(r, 400)); const inp = document.querySelector('.tutor input'); inp.value = 'Wait, why is that a problem? Say it once more with a different example.'; [...document.querySelectorAll('.tutor button')].find(b => b.textContent.trim() === 'Ask').click(); let n = 0; while (n++ < 120 && !document.querySelector('.turn.tutor:not(.wait)')) await new Promise(r => setTimeout(r, 500)); document.querySelector('.tutor').scrollIntoView({block: 'end'}); const turns = [...document.querySelectorAll('.turn')].map(t => t.className + ' | ' + t.innerText.slice(0, 700)); return { relayOnline: st.online, waitedSec: n / 2, note: document.querySelector('.tutor-note').textContent, turns, saved: JSON.parse(localStorage.getItem('gt.tutor.1-4') || '[]').length };"
+  },
+  {
+   "name": "t03-tutor-thread-kept",
+   "url": "/#/lesson/1-4/watch",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "light",
+   "wait": 600,
+   "js": "document.querySelector('.tutor').scrollIntoView({block: 'start'}); const at = document.querySelector('.turn .at'); const before = __gt.player.i; at?.click(); await new Promise(r => setTimeout(r, 900)); document.querySelector('.tutor').scrollIntoView({block: 'start'}); return { turns: document.querySelectorAll('.turn').length, label: at?.textContent, jumpedTo: [__gt.player.i, Math.round(__gt.player.t)], was: before };"
+  }
+ ]
+}

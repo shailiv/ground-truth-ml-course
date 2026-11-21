@@ -1,0 +1,18 @@
+{
+ "lesson": "5-2",
+ "recheck": [],
+ "terms": [
+  {
+   "term": "statistical power",
+   "spoken": true,
+   "segment": 3,
+   "glossary": true,
+   "note": "After 'Reliably means four times in five.': 'That chance of catching the lift is the test's statistical power.' Table note now '4 times in 5 (80% statistical power)'; 80% matches facts experiment.formula."
+  }
+ ],
+ "segments_changed": [
+  3
+ ],
+ "open_questions": [],
+ "note": "Re-check reported no issues. Segment indexes 0-based. 933 -> 944 words. The illustrative encouragement-test sentence (segment index 2) left as is, labelled as made-up numbers."
+}

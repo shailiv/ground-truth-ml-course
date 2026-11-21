@@ -1,0 +1,7 @@
+{"lesson": "2-4",
+ "recheck": [
+  {"n": 0, "issue": "Segment 5 (index 4) says 'about a fifth too few, and a fifth of a high score is more points than a fifth of a low one', implying a base-rate shift scales every score by the same fraction.", "decision": "accepted", "reason": "Right in principle: a base-rate shift moves the odds by a roughly constant factor, not the probability by a constant fraction (it cannot push 0.9 to 1.08); in points it is smallest near 0 and largest in the middle. The proportional story also invites the wrong repair (multiply scores by actual over predicted). The observed gaps (facts calibration.logreg: 0.5, 2.5, 1.5, 8.0, 5.9, 7.0, 8.7, 10.9 points) are widest at the top, which also reflects drift and a 43-row top bucket, so the sentence now describes what the table shows without asserting a mechanism.", "change": "Segment index 4 narration: the sentence became 'That is about two points too low overall, and away from the safest advertisers the gap opens to several points per bucket.' (calibration.overall 10.9 against 13.2 = 2.3 points). Same word count; segment stays at 138 words."}
+ ],
+ "terms": [],
+ "segments_changed": [4],
+ "open_questions": []}

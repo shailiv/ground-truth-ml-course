@@ -1,0 +1,46 @@
+{
+ "lesson": "7-5",
+ "recheck": [
+  {
+   "n": 0,
+   "issue": "Predict: option 'How many days each creative will last' is as defensible as the key, and the reveal misdescribes it.",
+   "decision": "accepted",
+   "reason": "A per-creative time-to-event prediction can rank creatives too (segment index 2 visual already says 'Classification (or time to event)').",
+   "change": "Option 0 now 'What the median creative lifetime is across all past launches' (a pool summary that ranks nothing). Reveal: '...needs one score per creative to rank by, and a median lifetime describes the whole pool without ranking any creative in it.'"
+  },
+  {
+   "n": 1,
+   "issue": "Segment index 1: 'A ranked list wants the yes or no' overstates; time to event can rank too. Also 'censored' vs 'past creatives have a known ending'.",
+   "decision": "partly",
+   "reason": "First half right: the fixed window is the simpler route, not the only one. Second half rejected: 'running creatives' are not past creatives, so there is no contradiction.",
+   "change": "Segment index 1: 'A ranked list wants the yes or no.' became 'For a weekly list, the yes or no is the simpler route.'"
+  },
+  {
+   "n": 2,
+   "issue": "Segment index 3 narration and visual present precision at the cut-off as measurable on planted incidents in unlabelled publisher data.",
+   "decision": "partly",
+   "reason": "Right that planted incidents check recall on known patterns and precision needs a hand-checked sample of flags. The narration only says the flag trades precision against recall and lists planted incidents among held-out rows, both true, so it stays; the visual made the misleading pairing, so the fix is there.",
+   "change": "Visual row 2 'Judged by': 'Recall on planted incidents; precision from hand-checked flags'. No narration change for this finding."
+  },
+  {
+   "n": 3,
+   "issue": "Quiz 7-5-q1 keyed option and why imply planted incidents measure both precision and recall.",
+   "decision": "accepted",
+   "reason": "Same principle as n2.",
+   "change": "Option 2: 'No answer column: define normal, set a cut-off, check planted cases and hand-review flags'. Why: 'planted incidents show what it catches, and a person reviewing a sample of flagged publishers shows how many flags are false alarms.'"
+  },
+  {
+   "n": 4,
+   "issue": "Quiz 7-5-q3: judging the edge against 'the wobble between backtests' is the unpaired fallacy.",
+   "decision": "accepted",
+   "reason": "The course's own rule is the paired interval (facts regression.paired_differences: a difference whose interval includes 0 is a tie).",
+   "change": "Stem: 'did slightly better on average, but it won only about half the backtests and the interval on the difference between the two crossed zero.' Why unchanged."
+  }
+ ],
+ "terms": [],
+ "segments_changed": [
+  1
+ ],
+ "open_questions": [],
+ "note": "Segment indexes 0-based. 902 -> 906 words."
+}

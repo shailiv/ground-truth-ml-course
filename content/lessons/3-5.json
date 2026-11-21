@@ -26,7 +26,7 @@
       }
     },
     {
-      "narration": "Here are the six. [[1]] Load: read the table. [[2]] Choose: say which columns are features and which one is the label. [[3]] Split: decide which rows the model learns from and which are held back to test it. [[4]] Prepare: fill empty cells, put columns on a common scale, turn categories such as vertical into numbers. [[5]] Fit: the model learns, from the training rows only. [[6]] Score: predictions for the test rows, compared with what really happened. None of this is new to you. Choosing the label was module one, the split was the hold-out lesson, and loading and filling was last lesson. A script just writes those decisions down in order.",
+      "narration": "Here are the six. [[1]] Load: read the table. [[2]] Choose: say which columns are features and which one is the label. [[3]] Split: decide which rows the model learns from and which are held back to test it. [[4]] Prepare: fill empty cells, put columns on a common scale, turn categories such as vertical into numbers: one yes or no column per value, called one-hot encoding. [[5]] Fit: the model learns, from the training rows only. [[6]] Score: predictions for the test rows, compared with what really happened. None of this is new to you. Choosing the label was module one, the split was the hold-out lesson, and loading and filling was last lesson. A script just writes those decisions down in order.",
       "visual": {
         "type": "flow",
         "title": "Every modelling script has six parts",
@@ -168,7 +168,7 @@
           [
             ".predict(",
             "6 Score",
-            "only where a hard yes or no is wanted, never for a ranking score"
+            "on a yes-or-no model, only where a hard answer is wanted, never for a ranking score"
           ],
           [
             "except",
@@ -176,7 +176,7 @@
             "not around a data step: an error should stop the script"
           ]
         ],
-        "note": "A string that is missing is a finding too: with no predict_proba, ask where the scores come from."
+        "note": "A string that is missing is a finding too: on a yes-or-no model with no predict_proba, ask where the scores come from. A model that predicts a number uses predict."
       }
     }
   ],
@@ -335,11 +335,11 @@
     "prompt": "Without looking, explain where in a modelling script the four classic bugs live, and how you would spot each one.",
     "model_answer": "In the choose part: features defined as everything except the label, which lets IDs and columns recorded after the snapshot in. In the split: a shuffled split, with no months named, for a question about the future. In prepare: a fill or a rescale fitted on the whole table above the split, so the test rows are no longer unseen. In score: predictions made on the training rows, which is how a flexible model shows 0.98 when it gets 0.83 on new advertisers. A header comment that states each part makes all four quick to check."
   },
-  "ask_assistant": "Write the modelling script in six labelled parts: load, choose, split, prepare, fit, score. Open it with a header comment stating what one row is and the row count, the definition of [outcome], the named feature list with confirmation that each column is known at [prediction date], which [periods] train and which test, and that all preparation is inside the pipeline. Print the row counts for training and test, then the score from predict_proba on each, labelled with its rows, beside [baseline] on the same test rows. Do not wrap data steps in try/except: let errors stop the script. Finally, list which line numbers belong to each of the six parts.",
+  "ask_assistant": "Write the modelling script in six labelled parts: load, choose, split, prepare, fit, score. Open it with a header comment stating what one row is and the row count, the definition of [outcome], the named feature list with confirmation that each column is known at [prediction date], which [periods] train and which test, and that all preparation is inside the pipeline. Print the row counts for training and test, then the score from predict_proba on each (from predict if [outcome] is a number), labelled with its rows, beside [baseline] on the same test rows. Do not wrap data steps in try/except: let errors stop the script. Finally, list which line numbers belong to each of the six parts.",
   "audit_checklist": [
     "Printed row counts for training and test, and two scores, each labelled with its rows, beside a baseline on the same test rows.",
     "Training and test rows defined by named periods in the split line, not by a random split.",
-    "Scores with many distinct values between 0 and 1, not a column of zeros and ones.",
+    "For a yes-or-no outcome, scores with many distinct values between 0 and 1, not a column of zeros and ones.",
     "A header that states one row, the label, the named features, the split and where preparation happens, and a line in the script that matches each statement."
   ],
   "transfer": [
@@ -368,7 +368,7 @@
     },
     {
       "term": "predict_proba",
-      "def": "The call that returns a probability score for each row; plain predict returns only yes or no."
+      "def": "On a yes-or-no model, the call that returns a probability score for each row; plain predict returns only the hard answer. A model that predicts a number has no predict_proba and uses predict."
     },
     {
       "term": "pipeline",
@@ -381,6 +381,10 @@
     {
       "term": "try/except",
       "def": "A Python block that catches an error and lets the script carry on, which can hide a failed step."
+    },
+    {
+      "term": "one-hot encoding (dummy columns)",
+      "def": "Turning a category column such as vertical into one yes-or-no column per value, so a model can use it; OneHotEncoder does it in scikit-learn."
     }
   ]
 }

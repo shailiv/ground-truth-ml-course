@@ -1,0 +1,10 @@
+{"lesson": "2-2",
+ "recheck": [
+  {"n": 0, "issue": "The predict item has no unique answer: with 4,000 rows, 527 churners and 88.5 percent accuracy, any recall from 67 to all 527 churners fits.", "decision": "accepted", "reason": "Verified: TP + TN = 3,540 and TN = 3,473 - FP gives TP = 67 + FP, so 67 <= TP <= 527. Adding the flagged count (logreg.test.flagged = 141) pins it: 2 TP = 3,540 - 3,473 + 141, TP = 104 (logreg.test.tp), recall 19.7 percent.", "change": "predict.q now reads 'A churn model flags 141 of 4,000 test advertisers, of whom 527 churned, and is 88.5 percent accurate...'; reveal adds 'Accuracy alone could not have told you; it is the 141 flags that pin it down.' Options and key unchanged. No narration change."}
+ ],
+ "terms": [
+  {"term": "class imbalance", "spoken": true, "segment": 6, "glossary": true, "note": "Named where the assistant proposes to rebalance: 'Churn is rare, which it will call class imbalance, so it proposes to rebalance' (120 to 126 words)."},
+  {"term": "F1 score", "spoken": true, "segment": 5, "glossary": true, "note": "Named right after 'precision and recall pull against each other': 'Blend them into one number, the F1 score, and you hide which one is weak.' (120 to 135 words). It was already in other_ways; that entry is left as is. Lesson total 931 words, under the 950 cap, so both terms are spoken rather than glossary-only."}
+ ],
+ "segments_changed": [5, 6],
+ "open_questions": []}

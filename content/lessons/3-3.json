@@ -279,7 +279,7 @@
             "A much deeper tree, grown until it beats the logistic regression outright on the test rows."
           ],
           "answer": 0,
-          "why": "A difference smaller than its own interval is a tie, so the score does not decide this one. The use does: the client needs readable rules, and the tree gives them at no measured cost. Chasing a tiny, noisy gap would be reacting to chance."
+          "why": "When the interval around a difference includes zero, the two are tied, so the score does not decide this one. The use does: the client needs readable rules, and the tree gives them at no measured cost. Chasing a tiny, noisy gap would be reacting to chance."
         }
       ]
     }

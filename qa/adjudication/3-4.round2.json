@@ -1,0 +1,25 @@
+{
+  "lesson": "3-4",
+  "recheck": [
+    {
+      "n": 0,
+      "issue": "audit item 1 ('rows equal to advertisers throughout') passes a dropna or an inner join, where both counts fall together",
+      "decision": "accepted",
+      "reason": "dirty_tables.dropna (7,016 = 7,016) and inner_join_drop (3,768 = 3,768) keep rows equal to advertisers while losing customers; the seg 6 table note already states the full rule.",
+      "change": "audit_checklist[0] adds 'and neither count changing except at a step you asked to filter'."
+    }
+  ],
+  "terms": [
+    {
+      "term": "imputation",
+      "spoken": true,
+      "segment": 3,
+      "glossary": true,
+      "note": "'Filling empty cells is called imputation.' placed right after the keep-the-row, fill-with-a-typical-value, add-a-flag pattern; seg 3 is now 135 words."
+    }
+  ],
+  "segments_changed": [
+    3
+  ],
+  "open_questions": []
+}

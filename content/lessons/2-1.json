@@ -26,7 +26,7 @@
       }
     },
     {
-      "narration": "Start with measured on what. In the first lesson we said that matching the past is easy, and holding up on new rows is the whole game. A model graded on the rows it learned from is a student marking the exam with the answer key open. [[1]] So before any training, the rows with known outcomes are divided. [[2]] One part is the training set, which the model learns from. [[3]] The other part is held out, and it is called the test set. The model never sees it while learning, and only the result on the test set counts. The interesting question is which rows to hold out.",
+      "narration": "Start with measured on what. In the first lesson we said that matching the past is easy, and holding up on new rows is the whole game. A model graded on the rows it learned from is a student marking the exam with the answer key open. [[1]] So before any training, the rows with known outcomes are divided. [[2]] One part is the training set, which the model learns from. [[3]] The other part is held out, and it is called the test set. The model never sees it while learning, and only the result on the test set counts. The textbook name for holding up on rows it never saw is generalisation. The interesting question is which rows to hold out.",
       "visual": {
         "type": "flow",
         "title": "Hold some rows back",
@@ -372,6 +372,10 @@
     {
       "term": "test set",
       "def": "Rows held back from training and used only to judge the model; also called a hold-out."
+    },
+    {
+      "term": "generalisation (to generalise)",
+      "def": "How well a model holds up on rows it never saw while learning; the test set is where you measure it."
     },
     {
       "term": "time split",

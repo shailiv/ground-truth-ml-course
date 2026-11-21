@@ -1,0 +1,40 @@
+{
+  "lesson": "2-6",
+  "recheck": [
+    {
+      "n": 0,
+      "issue": "review 1 variant 3 why applies single-rate margins to month-over-month moves",
+      "decision": "accepted",
+      "reason": "A gap between two independent groups of n wobbles about sqrt(2) times a single rate; facts noise.aa_test: 250 -> 5.6 pts (= 1.4 x 4.0), 4000 -> 1.4 pts (= 1.4 x 1.0). The key (3 points on 4,000) stays correct.",
+      "change": "Rewrote the why: single-month margins (9/4/1/0.6, noise.margin_of_error_for_a_churn_rate) and the move's wobble about 1.4 times larger (13/5.6/1.4/0.8); the 3-point move is about twice its wobble."
+    },
+    {
+      "n": 1,
+      "issue": "bootstrap described without 'with replacement'",
+      "decision": "accepted",
+      "reason": "Redrawing without repeats just reshuffles the same rows; the bootstrap resamples with replacement.",
+      "change": "Seg 7 narration: 'redraw the rows at random, repeats allowed, a thousand times' (offset by trimming 'over' and 'will call' -> 'calls' in the same segment, still 140 words); glossary 'bootstrap' now says a same-sized sample, repeats allowed."
+    }
+  ],
+  "terms": [
+    {
+      "term": "p-value",
+      "spoken": true,
+      "segment": 4,
+      "glossary": true,
+      "note": "Named right after the April-vs-March interval: how often noise alone would produce a gap at least this large; the lesson reads the interval because it also shows the size."
+    },
+    {
+      "term": "statistically significant",
+      "spoken": true,
+      "segment": 4,
+      "glossary": true,
+      "note": "Under 5 percent; roughly the same verdict as a 95% interval clear of zero. 'at all' trimmed from the same segment to stay under the 950 cap (947)."
+    }
+  ],
+  "segments_changed": [
+    4,
+    7
+  ],
+  "open_questions": []
+}

@@ -16,6 +16,7 @@ ap.add_argument("--dir", default="qa/blind/lessons")
 ap.add_argument("--out", default="qa/factcheck/gemini")
 ap.add_argument("--model", default="smart")
 ap.add_argument("--workers", type=int, default=4)
+ap.add_argument("--thinking", default="high")
 a = ap.parse_args()
 SRC, OUT = ROOT / a.dir, ROOT / a.out
 OUT.mkdir(parents=True, exist_ok=True)
@@ -82,15 +83,20 @@ def check(path):
         (td / "BRIEF.md").write_text(brief(lid) or "(no brief found)", encoding="utf-8")
         (td / "schema.json").write_text(json.dumps(SCHEMA), encoding="utf-8")
         (td / "system.txt").write_text(SYSTEM, encoding="utf-8")
-        cmd = [sys.executable, str(G), "ask", "-m", a.model, "--thinking", "high", "--max-tokens", "40000", "-s", "@" + str(td / "system.txt"),
+        cmd = [sys.executable, str(G), "ask", "-m", a.model, "--thinking", a.thinking, "--max-tokens", "40000", "-s", "@" + str(td / "system.txt"),
                "-f", str(ROOT / "data/facts.json"), "-f", str(td / "BRIEF.md"), "-f", str(td / "LESSON.json"),
                "--json-schema", str(td / "schema.json"),
                f"Fact-check lesson {lid}. The three attached files are FACTS (facts.json), BRIEF (BRIEF.md) and LESSON (LESSON.json). Return the JSON."]
+        level = a.thinking
         for attempt in range(3):
+            cmd[cmd.index("--thinking") + 1] = level
             r = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", env={**os.environ, "PYTHONIOENCODING": "utf-8"})
+            # the model sometimes pauses mid-answer at the highest setting ("requires_continuation"): asking again the
+            # same way pauses again, so step the thinking down instead of paying for the same failure twice
+            if "requires_continuation" in (r.stderr or ""): level = {"high": "medium", "medium": "low"}.get(level, "low")
             try:
                 out = json.loads(r.stdout)
-                out["_hash"] = h; out["_status"] = (r.stderr.strip().splitlines() or [""])[-1][:200]
+                out["_hash"] = h; out["_thinking"] = level; out["_status"] = (r.stderr.strip().splitlines() or [""])[-1][:200]
                 dest.write_text(json.dumps(out, indent=1, ensure_ascii=False), encoding="utf-8")
                 return lid, len(out["issues"]), out["_status"]
             except Exception as e:

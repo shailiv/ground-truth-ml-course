@@ -1,0 +1,71 @@
+{
+ "lesson": "7-3",
+ "recheck": [
+  {
+   "n": 0,
+   "issue": "Glossary 'label agreement': 'no model can be meaningfully scored above it' is false; pairwise human agreement is not the ceiling.",
+   "decision": "accepted",
+   "reason": "Pairwise agreement compounds two raters' noise; a consistent model scored against one rater can legitimately exceed it. tickets_facts honest_limits[0] only says disagreement 'caps what any method can score'.",
+   "change": "Def now: '...when people often disagree, the answer key itself is uncertain, which caps what any model's score can meaningfully show below 100 percent.'"
+  },
+  {
+   "n": 1,
+   "issue": "Segment index 5 narration: 'a score above their rate of agreement stops meaning anything' states the same false ceiling aloud.",
+   "decision": "accepted",
+   "reason": "Same principle as n0; a wrong spoken sentence must be fixed.",
+   "change": "Segment index 5: '...and a score above their rate of agreement stops meaning anything.' became '...and that caps what any score can mean.'"
+  },
+  {
+   "n": 2,
+   "issue": "Quiz 7-3-q4 why repeats the 'agreement is the ceiling' rule.",
+   "decision": "accepted",
+   "reason": "Same principle as n0; the keyed option stays correct.",
+   "change": "Why: 'and a score above the rate at which people agree stops measuring the model' became 'and disputed labels put a ceiling below 100 percent on what any score can measure'."
+  },
+  {
+   "n": 3,
+   "issue": "Segment index 3: 'Overlap alone does not settle it, because both models sat the same exam' implies pairing is the only reason overlap is no test.",
+   "decision": "accepted",
+   "reason": "Overlap of two 95% intervals is too blunt even unpaired (on 364 vs 337 of 450 an unpaired interval already excludes zero); pairing sharpens it further. Quiz q1's why already says it correctly.",
+   "change": "Segment index 3 now opens: 'Overlapping intervals do not mean a tie: that test is too blunt, and here both models sat the same exam.'"
+  }
+ ],
+ "terms": [
+  {
+   "term": "zero-shot",
+   "spoken": true,
+   "segment": 1,
+   "glossary": true,
+   "note": "Rung four: 'No examples, no training: what is called zero-shot.' Glossary entry 'zero-shot classification' already existed, kept. ask_assistant now says 'instructions only (zero-shot)' (119 words)."
+  },
+  {
+   "term": "few-shot",
+   "spoken": true,
+   "segment": 7,
+   "glossary": true,
+   "note": "Brief and audit: 'add a few labelled examples to the instructions, which is called few-shot, and score again on fresh tickets.' New glossary entry 'few-shot classification'."
+  },
+  {
+   "term": "fine-tuning",
+   "spoken": false,
+   "segment": null,
+   "glossary": true,
+   "note": "Glossary plus one sentence in other_ways[0].when. Lesson is at its word limit (948 of 950) and retraining the language model itself is not otherwise taught, so a spoken naming would cost a cut elsewhere."
+  },
+  {
+   "term": "hallucination (optional)",
+   "spoken": false,
+   "segment": null,
+   "glossary": false,
+   "note": "Not added: the lesson does not teach confident invention, so there is no clause where the idea already lands."
+  }
+ ],
+ "segments_changed": [
+  1,
+  3,
+  5,
+  7
+ ],
+ "open_questions": [],
+ "note": "Segment indexes 0-based. 934 -> 948 words. Glossary now 6 items."
+}

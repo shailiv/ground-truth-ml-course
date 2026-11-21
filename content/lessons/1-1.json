@@ -3,7 +3,7 @@
   "module": 1,
   "title": "From rules to learned models",
   "subtitle": "What does a model do that your CASE WHEN does not?",
-  "goal": "After this lesson you can explain a model as a rule whose columns, cut-offs and weights were chosen by data, and point to the row, the features, the label and the score in any modelling task.",
+  "goal": "After this lesson you can explain a model as a rule whose columns, cut-offs and weights were chosen by data, and point to the row, the features, the label and the score or prediction in any modelling task.",
   "predict": {
     "q": "You flag advertisers with a hand-written rule: spend trend below 0.7. How is a machine-learning model different from that rule?",
     "options": [
@@ -118,7 +118,7 @@
       }
     },
     {
-      "narration": "So let the table do the checking. [[1]] Your rule is one column and one cut-off, picked by you. [[2]] A learned model can lean on many columns at once, each with its own cut-off or its own weight, which means how much that column counts. Is active days a better signal than spend trend? Is 0.7 really the best cut-off? Nobody tries every possible rule. The computer starts from a rough guess, measures how far its outputs are from what really happened to thousands of past advertisers, nudges the cut-offs and weights to shrink that miss, and repeats. That adjusting is called training. What comes out is still a rule. The data chose it, instead of you.",
+      "narration": "So let the table do the checking. [[1]] Your rule is one column and one cut-off, picked by you. [[2]] A learned model can lean on many columns at once, each with its own cut-off or its own weight, which means how much that column counts. Is active days a better signal than spend trend? Is 0.7 really the best cut-off? Nobody tries every possible rule. The computer tries cut-offs and weights, measures how far its outputs are from what really happened to thousands of past advertisers, keeps the changes that shrink that miss, and repeats. That adjusting is called training. What comes out is still a rule. The data chose it, instead of you.",
       "visual": {
         "type": "compare",
         "title": "Who makes the choices?",
@@ -191,7 +191,7 @@
   ],
   "takeaways": [
     "A model is a rule whose columns, cut-offs and weights were chosen by data instead of by you.",
-    "Training matches past rows with known labels; the frozen model then gives each new row a score between 0 and 1.",
+    "Training matches past rows with known labels; the frozen model then scores each new row, from 0 to 1 for a yes-or-no outcome.",
     "Matching the past proves nothing: what counts is new rows, and a model knows only the columns it was given."
   ],
   "quiz": [
@@ -342,7 +342,7 @@
   ],
   "recall": {
     "prompt": "Explain to a colleague, in about thirty seconds, what training a model does. Use the words feature, label and score.",
-    "model_answer": "You start with past rows where the outcome is known: the input columns are the features and the known outcome is the label. Training tries out which columns, cut-offs and weights make the output match those labels best, then freezes the result. Applied to a new row, the frozen model returns a score between 0 and 1. It deserves trust only if it holds up on rows it never saw, and it knows nothing that is not in its columns."
+    "model_answer": "You start with past rows where the outcome is known: the input columns are the features and the known outcome is the label. Training tries out which columns, cut-offs and weights make the output match those labels best, then freezes the result. Applied to a new row, the frozen model returns a score, between 0 and 1 for a yes-or-no outcome. It deserves trust only if it holds up on rows it never saw, and it knows nothing that is not in its columns."
   },
   "ask_assistant": "Before building anything, describe the table you would train on to answer this: [the question, in one sentence]. In one sentence, say what one row is, and give the row count and the number of distinct [units, such as advertisers, leads or creatives]. Name the label column, the outcome to be predicted, and write its exact definition in plain words. List every feature column with a one-line description; the label must not be in that list. Show five example rows including the label, with at least one row for [each outcome]. Do not train a model yet: stop and wait for my go-ahead.",
   "audit_checklist": [
@@ -389,7 +389,7 @@
     },
     {
       "term": "score",
-      "def": "The number between 0 and 1 a model returns for a row; higher means more like past positive cases."
+      "def": "The number a model returns for a row; for a yes-or-no outcome it runs from 0 to 1, and higher means more like past positive cases."
     }
   ]
 }

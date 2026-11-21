@@ -1,0 +1,22 @@
+{
+  "lesson": "4-6",
+  "recheck": [
+    {
+      "n": 0,
+      "issue": "quiz 4-6-q4 why: 'only the order matters is true when everyone is sorted by probability alone' ignores group-specific miscalibration",
+      "decision": "accepted",
+      "reason": "slices.by_size: small 17.6% predicted vs 18.3% actual, large 5.5% vs 8.4%. A probability that runs low in one group also pushes that group down a probability-sorted list; order is unaffected only by a shift common to everyone.",
+      "change": "Second sentence of why rewritten: 'Only the order matters' holds when every score is off in the same way; when percentages run low in one group, that group sits too low on any list, sorted by probability or by dollars. The key (option 3) is unchanged."
+    },
+    {
+      "n": 1,
+      "issue": "review 2 variant 3 stem says 'Next month's report' although 220 vs 151 come from re-sorting the same test set",
+      "decision": "accepted",
+      "reason": "slices.rank_by_what: both rankings are of the same 400 slots on the same test months (220 vs 151 churners, 25.3% vs 57.0% of lost spend); 'next month' would be a new cohort, contradicting 'the scores are identical'.",
+      "change": "Stem: 'Recomputed on the same test months, a report says the model has got worse: ...'; distractor 'degraded since last month' -> 'degraded since the switch' (kept longer than the key so the longest-option count stays 2 of 10)."
+    }
+  ],
+  "terms": [],
+  "segments_changed": [],
+  "open_questions": []
+}

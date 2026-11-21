@@ -119,6 +119,46 @@ const clip = (() => { const d = "site/public/audio"; if (!fs.existsSync(d)) retu
     eq((await call(clip, me({ headers: { range: `bytes=${size + 5}-` } }))).status, 416, "a range past the end is refused");
   } else console.log("note: no audio on disk, range tests skipped");
 
+  // the tutor: a question travels page -> room -> relay -> room -> page, and nobody without the secret can listen in
+  {
+    const J = { "content-type": "application/json" }, relayAuth = { authorization: "Bearer test-relay" };
+    const askBody = (o) => me({ method: "POST", headers: J, body: JSON.stringify(o) });
+    eq((await call("/api/tutor/status")).status, 401, "signed out, the tutor is closed");
+    eq((await call("/api/tutor/ask", { method: "POST", headers: J, body: "{}" })).status, 401, "signed out, nobody can ask");
+    eq((await (await call("/api/tutor/status", me())).json()).online, false, "with no relay connected the tutor says so");
+    eq((await call("/api/tutor/ask", askBody({ question: "hello" }))).status, 503, "and a question is refused, so the page can fall back");
+    eq((await call("/api/relay/next")).status, 403, "the relay door needs its secret");
+    eq((await call("/api/relay/next", { headers: { authorization: "Bearer wrong" } })).status, 403, "a wrong relay secret is refused");
+    eq((await call("/api/relay/next", me())).status, 403, "the owner's cookie does not open the relay door");
+    const waiting = call("/api/relay/next", { headers: relayAuth });                   // the relay, holding a request open
+    await new Promise((res) => setTimeout(res, 20));
+    eq((await (await call("/api/tutor/status", me())).json()).online, true, "a waiting relay shows as connected");
+    eq((await call("/api/tutor/ask", askBody({ question: "   " }))).status, 400, "an empty question is refused");
+    eq((await call("/api/tutor/ask", me({ method: "POST", headers: { "content-type": "text/plain" }, body: "{}" }))).status, 415, "a cross-site form cannot ask");
+    const asked = await call("/api/tutor/ask", askBody({ question: "Why split by time? " + "x".repeat(5000), context: "Lesson 2-1 ...", history: [{ role: "me", text: "earlier" }, { role: "tutor", text: "reply" }, { role: "hacker", text: 7 }] }));
+    const { id } = await asked.json();
+    ok(asked.status === 200 && typeof id === "string", "a question is accepted");
+    const got = await (await waiting).json();
+    ok(got.id === id && got.question.length === 2000 && got.context === "Lesson 2-1 ..." && got.history.length === 2 && got.history[1].role === "tutor", "the relay receives it at once, trimmed to the limits");
+    const pending = call("/api/tutor/answer?id=" + id, me());                         // the page, waiting for the answer
+    await new Promise((res) => setTimeout(res, 20));
+    eq((await call("/api/relay/answer", { method: "POST", headers: { ...J, ...relayAuth }, body: JSON.stringify({ id, text: "Because the future is what you will be scored on." }) })).status, 200, "the relay delivers the answer");
+    eq((await (await pending).json()).text, "Because the future is what you will be scored on.", "and the waiting page gets it");
+    eq((await call("/api/tutor/answer?id=" + id)).status, 401, "signed out, an answer cannot be read");
+    eq((await call("/api/tutor/answer?id=nope", me())).status, 404, "an unknown question id is 404");
+    // a failure on the relay's side reaches the page as a message, not as silence
+    const w2 = call("/api/relay/next", { headers: relayAuth });
+    await new Promise((res) => setTimeout(res, 20));
+    const id2 = (await (await call("/api/tutor/ask", askBody({ question: "second" }))).json()).id;
+    await w2;
+    await call("/api/relay/answer", { method: "POST", headers: { ...J, ...relayAuth }, body: JSON.stringify({ id: id2, error: "The tutor could not answer just now." }) });
+    eq((await (await call("/api/tutor/answer?id=" + id2, me())).json()).error, "The tutor could not answer just now.", "a relay failure is passed on");
+    const bare = makeEnv({ TUTOR: undefined, RELAY_SECRET: undefined });
+    const c2 = (await worker.fetch(new Request("http://localhost/login", { ...form({ passphrase: "test" }), redirect: "manual" }), bare)).headers.get("set-cookie").split(";")[0];
+    eq((await (await worker.fetch(new Request("http://localhost/api/tutor/status", { headers: { cookie: c2 } }), bare)).json()).online, false, "a site deployed without the tutor simply reports it offline");
+    eq((await worker.fetch(new Request("http://localhost/api/relay/next", { headers: relayAuth }), bare)).status, 404, "and has no relay door at all");
+  }
+
   // signing out
   ok((await call("/logout", me())).headers.get("set-cookie") == null, "a link cannot sign you out");
   ok(/Max-Age=0/.test((await call("/logout", me({ method: "POST" }))).headers.get("set-cookie") || ""), "the sign-out button does");

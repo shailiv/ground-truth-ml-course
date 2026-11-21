@@ -136,7 +136,7 @@
       }
     },
     {
-      "narration": "Question three is hers: why this advertiser? Start from an advertiser who is average on every column. The model gives that one about 5 percent. Then measure how far she sits from average. [[1]] She was active on 5 of the last 28 days. [[2]] Her CPA is more than two and a half times her goal. [[3]] Her newest creative is 120 days old. [[4]] [[5]] Spend trend and click rate add two smaller pushes. Each push is the column's weight times her distance from average, in the scorecard points of module three, not percentage points. Add them up, about four here, pass the total through the S-curve, and 5 percent becomes 73. For more complex models the same idea goes by the name SHAP. Either way it is arithmetic, not a cause.",
+      "narration": "Question three is hers: why this advertiser? Start from an advertiser who is average on every column. The model gives that one about 5 percent. Then measure how far she sits from average. [[1]] She was active on 5 of the last 28 days. [[2]] Her CPA is more than two and a half times her goal. [[3]] Her newest creative is 120 days old. [[4]] [[5]] Spend trend and click rate add two smaller pushes. Each push is the column's weight times her distance from average, in the scorecard points of module three, not percentage points. Add her pushes, about four points, to the average advertiser's score, then pass the total through the S-curve: 5 percent becomes 73. For complex models the same idea is called SHAP. Either way it is arithmetic, not a cause.",
       "visual": {
         "type": "table",
         "title": "Advertiser 111754: why 73%?",
@@ -178,7 +178,7 @@
             "+0.30"
           ]
         ],
-        "note": "Scorecard points add up before the S-curve; they are not percentage points. Average advertiser: 4.7%. All her pushes, through the S-curve: 72.7%. Top five shown; averages from the training months. CPA vs goal is scaled after its empty values are filled, so its push does not reproduce exactly from the average shown."
+        "note": "Scorecard points add up before the S-curve; they are not percentage points. Average advertiser: 4.7%. Her pushes added to its score, then through the S-curve: 72.7%. Top five shown; averages from the training months. CPA vs goal is scaled after its empty values are filled, so its push does not reproduce exactly from the average shown."
       }
     },
     {
@@ -396,11 +396,11 @@
     "prompt": "An account manager asks why a particular advertiser is on the risk list. Explain what you can tell her, and what you cannot.",
     "model_answer": "I can show her the pushes: starting from an average advertiser, which of this advertiser's values moved the model's score up, and by how much — for example few active days, a CPA far over goal and stale creatives. That gives her a reason to open the call with. What I cannot tell her is that fixing those things would keep the account: a push is the model's arithmetic, weight times distance from average, not a cause. The same caution applies to the importance chart, where overlapping columns hide each other, and to a dependence curve, which is the model's behaviour and not a promise."
   },
-  "ask_assistant": "For [model], produce three exhibits, and state on each the model and the rows used. One: permutation importance on [held-out rows] for each column and for each group of related columns ([groups]), as the drop in [metric]. Two: a partial dependence curve for [columns the business asks about]. Three: for each of the top [list size] rows, the three largest per-row contributions (coefficient times distance from the training mean for a linear model, SHAP values otherwise), with the row's value and the training mean beside each, plus the base value, so that base plus all contributions reproduces the row's score. Caption every exhibit as a description of the model; no causal wording such as drives or impact.",
+  "ask_assistant": "For [model], produce three exhibits, each stating the model and the rows used. One: permutation importance on [held-out rows] for each column and each group of related columns ([groups]), as the drop in [metric]. Two: a partial dependence curve for [columns the business asks about]. Three: for each of the top [list size] rows, the three largest per-row contributions (coefficient times distance from the training mean for a linear model, SHAP values otherwise), with the row's value and the training mean beside each, plus the base value, so base plus all contributions reproduces the row's score, after the S-curve if they are in log-odds. Caption each exhibit as the model's behaviour; no causal wording such as drives or impact.",
   "audit_checklist": [
     "The importance table names its rows (held-out, with the row count) and shows single-column and grouped drops side by side",
     "Each dependence curve names the model that drew it and is captioned as the model's behaviour",
-    "Per-row reasons show the row's value, the training average and the contribution; base value plus all contributions reproduces the printed score",
+    "Per-row reasons show the row's value, the training average and the contribution; base value plus all contributions reproduces the printed score, after the S-curve when they are in log-odds and the score is a probability",
     "A search of the text for drives, causes and impact finds none attached to a column"
   ],
   "transfer": [

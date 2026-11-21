@@ -1,0 +1,15 @@
+{
+  "lesson": "3-2",
+  "recheck": [],
+  "terms": [
+    {
+      "term": "one-hot encoding (dummy columns)",
+      "spoken": false,
+      "segment": null,
+      "glossary": false,
+      "note": "Assigned to 3-2 or 3-5; placed in 3-5, which already shows a category (vertical) turned into yes/no columns via OneHotEncoder. 3-2 unchanged."
+    }
+  ],
+  "segments_changed": [],
+  "open_questions": []
+}
