@@ -1,0 +1,443 @@
+{
+ "id": "5-3",
+ "module": 5,
+ "title": "When you cannot experiment",
+ "subtitle": "A change launched without a coin flip. What can you still say about its effect?",
+ "goal": "After this lesson you can estimate a launch's effect against a comparison group, and check the one assumption that estimate rests on.",
+ "predict": {
+  "q": "A setup flow launched for ecommerce advertisers only. Their goal-hit rate went from 60.5% to 69.5%. Over the same weeks the other verticals, which never got it, went from 66.8% to 71.1%. What is the best estimate of the flow's effect?",
+  "options": [
+   "About 9 points",
+   "About minus 1.6 points",
+   "About 4.7 points",
+   "It cannot be estimated without an experiment"
+  ],
+  "answer": 2,
+  "reveal": "About 4.7 points: ecommerce's rise minus the rise everyone had anyway. The lesson shows the one assumption that answer rests on."
+ },
+ "segments": [
+  {
+   "narration": "Product launched a guided creative setup flow for ecommerce advertisers in week 13. Twelve weeks on, the slide is ready. The share of ecommerce advertisers hitting their CPA goal rose from about 60 percent to nearly 70. Nine points. Success? Nobody flipped a coin here. The flow went to every ecommerce advertiser at once, so there is no experiment to read. The question is what you can honestly say with what you have. This example is a separate small simulation built for this lesson, so once again we will know the true answer.",
+   "visual": {
+    "type": "title",
+    "kicker": "Module 5 · Lesson 3",
+    "title": "When you cannot experiment",
+    "sub": "A launch, a comparison group, and one assumption to check"
+   }
+  },
+  {
+   "narration": "Answer one is the slide's answer: before against after, in ecommerce alone. Plus 9 points. The trouble is that the weeks after launch differ from the weeks before in more than the flow. It was a good season. The other verticals never got the flow, and their rate climbed too, from about 67 percent to about 17. So some of ecommerce's 9 points would have arrived anyway. A before and after comparison credits the launch with everything that changed over those weeks. The season, a price change, a holiday. All of it lands on the one thing you happened to be watching.",
+   "visual": {
+    "type": "line",
+    "title": "Share hitting CPA goal, week by week",
+    "xlabel": "Week",
+    "ylabel": "% hitting CPA goal",
+    "x": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     10,
+     11,
+     12,
+     13,
+     14,
+     15,
+     16,
+     17,
+     18,
+     19,
+     20,
+     21,
+     22,
+     23,
+     24
+    ],
+    "series": [
+     {
+      "name": "Ecommerce (flow from week 13)",
+      "values": [
+       58.6,
+       58.3,
+       58.6,
+       59.4,
+       60.3,
+       61.2,
+       61.0,
+       63.3,
+       59.4,
+       61.2,
+       60.6,
+       64.0,
+       67.7,
+       68.7,
+       67.3,
+       67.7,
+       68.1,
+       69.8,
+       70.2,
+       71.2,
+       70.8,
+       71.6,
+       71.3,
+       69.8
+      ]
+     },
+     {
+      "name": "Other verticals (no flow)",
+      "values": [
+       65.3,
+       65.4,
+       64.2,
+       66.6,
+       67.0,
+       66.7,
+       67.7,
+       69.0,
+       67.1,
+       67.6,
+       67.0,
+       67.5,
+       68.4,
+       69.4,
+       70.1,
+       69.8,
+       72.0,
+       70.4,
+       71.8,
+       71.8,
+       72.7,
+       71.3,
+       72.7,
+       72.5
+      ]
+     }
+    ],
+    "note": "Ecommerce: 60.5% before launch, 69.5% after. Other verticals: 66.8%, then 71.1%."
+   }
+  },
+  {
+   "narration": "So bring in the other verticals. Answer two: compare the two groups after the launch. [[1]] Ecommerce, with the flow, sits just under 70 percent. [[2]] The others, without it, sit at about 71. Ecommerce is lower by 1.6 points. Now the flow looks harmful. And the trouble is the one from two lessons ago: the groups were never alike. Before the launch, ecommerce was at about 60 percent and the others at about 67. Ecommerce started well behind, for reasons that have nothing to do with the flow. Comparing the groups after launch blames the flow for that old gap.",
+   "visual": {
+    "type": "compare",
+    "title": "After launch: ecommerce against the rest",
+    "left": {
+     "label": "Ecommerce (got the flow)",
+     "value": "89.5%",
+     "sub": "before launch: 60.5%"
+    },
+    "right": {
+     "label": "Other verticals (no flow)",
+     "value": "71.1%",
+     "sub": "before launch: 66.8%"
+    }
+   }
+  },
+  {
+   "narration": "Notice that each wrong answer fixes the other's flaw. Before against after compares ecommerce with itself, so the starting level drops out, but the season stays in. Ecommerce against the others uses the same weeks, so the season drops out, but the starting level stays in. So combine them. [[1]] Take the change in the group that got the flow: up 9 points. [[2]] Take the change over the same weeks in the group that did not, the comparison group. That stands in for what the season would have done to ecommerce anyway. [[3]] Subtract. What is left is about 4.7 points. [[4]] The interval runs from about 3 points to about 6. The effect built into this simulation is 4. The method is called difference-in-differences.",
+   "visual": {
+    "type": "formula",
+    "title": "The change minus the change",
+    "lines": [
+     "Ecommerce: 60.5% → 69.5%, up 9.0 pts",
+     "Other verticals, same weeks: 66.8% → 71.1%",
+     "(69.5 − 60.5) − (71.1 − 66.8) = +4.7 pts",
+     "95% interval 3.2 to 6.2 · true effect 4.0"
+    ],
+    "note": "Difference-in-differences"
+   }
+  },
+  {
+   "narration": "That answer rests on one assumption. Without the launch, the two groups would have moved in parallel. Not at the same level. In parallel, so the gap between them would have stayed put. You can never observe that, because the launch happened. What you can check is the weeks before it. Was the gap steady then? [[1]] Here, over the twelve weeks before launch, the gap drifted by about a tenth of a point a week. [[2]] The margin of error on that is larger than the drift itself. [[3]] So there is no sign the groups were pulling apart or closing up. That is not proof they would have stayed together. It is the evidence available, and you should always ask for it.",
+   "visual": {
+    "type": "stat",
+    "title": "Were the two groups moving together before launch?",
+    "stats": [
+     {
+      "value": "0.12 pts a week",
+      "label": "drift of the gap between the groups, weeks 1 to 12"
+     },
+     {
+      "value": "± 0.17",
+      "label": "margin of error on that drift"
+     },
+     {
+      "value": "No drift detected",
+      "label": "not distinguishable from zero"
+     }
+    ]
+   }
+  },
+  {
+   "narration": "Here is what it looks like when the assumption fails. Same launch, same true effect of 4 points, in a second simulated world where the other verticals were barely improving on their own. Ecommerce was already catching up before anything launched. [[1]] In the first world the arithmetic gave about 4.7. [[2]] In this one, the same arithmetic gives about 8. Twice the truth, and nothing in the calculation complains. It has credited the launch with improvement that was already under way. The warning sits in the weeks before launch. The gap was closing by about a third of a point a week, and this time that drift is distinguishable from zero.",
+   "visual": {
+    "type": "compare",
+    "title": "Same arithmetic, same true effect of 4.0 pts",
+    "left": {
+     "label": "Moving together before launch",
+     "value": "+4.7 pts",
+     "sub": "pre-launch drift 0.12 ± 0.17 pts a week"
+    },
+    "right": {
+     "label": "Already closing the gap before launch",
+     "value": "+7.9 pts",
+     "sub": "pre-launch drift 0.33 ± 0.13 pts a week"
+    }
+   }
+  },
+  {
+   "narration": "Brief and audit. Ask the assistant for the change in both groups, not just the launch group, and make the output show four things. [[1]] The weekly series for both groups, across all the weeks, so you can see the launch and the season for yourself. [[2]] The four averages, each group before and after, with the estimate and its interval. [[3]] The check on the weeks before launch: how fast the gap was drifting, with its margin. [[4]] And a note on anything else that changed for one group only around the launch date, because the arithmetic cannot tell two causes apart. Then word it honestly. This is stronger than an adjusted gap, and weaker than an experiment.",
+   "visual": {
+    "type": "bullets",
+    "title": "Brief and audit: a launch estimate must show",
+    "items": [
+     "Weekly series for both groups, all weeks",
+     "Four averages with group sizes; the estimate with its interval",
+     "Pre-launch check: drift of the gap, with its margin",
+     "Anything else that changed for one group at launch"
+    ]
+   }
+  },
+  {
+   "narration": "Three answers to one question. [[1]] Before against after said plus 9, and credited the launch with the season. [[2]] Group against group said minus 1.6, and blamed the launch for an old gap. [[3]] The change minus the change said about 4.7, close to the true 4. It is only as good as the claim that the two groups were moving together, so check that on the weeks before launch, every time. Next, a different question about actions: knowing that something works on average does not tell you who it works on.",
+   "visual": {
+    "type": "table",
+    "title": "Did the flow work? Three answers",
+    "columns": [
+     "Comparison",
+     "Says",
+     "Its weakness"
+    ],
+    "rows": [
+     [
+      "Before vs after, ecommerce only",
+      "+9.0 pts",
+      "credits the launch with the season"
+     ],
+     [
+      "Ecommerce vs others, after launch",
+      "−1.6 pts",
+      "blames the launch for an old gap"
+     ],
+     [
+      "Change minus change",
+      "+4.7 pts",
+      "needs the groups to move in parallel"
+     ]
+    ],
+    "highlight": [
+     2
+    ],
+    "note": "True effect in this simulation: 4.0 pts. Interval on the third answer: 3.2 to 6.2."
+   }
+  }
+ ],
+ "takeaways": [
+  "Before-and-after credits a launch with everything else that changed over the same weeks.",
+  "Subtract the change, over the same weeks, in a similar group that did not get the launch.",
+  "That works only if the two groups were moving in parallel, so check the weeks before launch."
+ ],
+ "quiz": [
+  {
+   "id": "5-3-q1",
+   "concept": "before-and-after needs a comparison",
+   "domain": "course",
+   "q": "A bid-suggestion feature launched for finance advertisers only. Their goal-hit rate averaged 62 percent in the ten weeks before and 68 percent in the ten weeks after. The product manager writes: 'the feature lifted goal attainment by 6 points.' What do you need before accepting that?",
+   "options": [
+    "The same before and after rates for the verticals that did not get the feature, to see what moved anyway.",
+    "A longer 'after' period, twenty weeks rather than ten, so that the 68 percent is a more stable number.",
+    "An interval on the 6 points: if it excludes zero, the rise is not noise and the claim stands.",
+    "Nothing: the same advertisers are compared with themselves, so they act as their own control group."
+   ],
+   "answer": 0,
+   "why": "Comparing a group with itself removes differences between groups, but not everything else that changed over those weeks: the season, the market, other launches. Only the change in a group that did not get the feature shows how much of the 6 points would have happened anyway. An interval or a longer window makes the 6 points more precise, not more attributable to the feature."
+  },
+  {
+   "id": "5-3-q2",
+   "concept": "pre-launch drift",
+   "domain": "course",
+   "q": "The assistant reports: 'Difference-in-differences: the launch raised goal attainment by 7.9 points. Pre-launch check: the gap between the two groups was narrowing by 0.33 points a week, plus or minus 0.31.' It concludes that the launch was worth about 8 points. What should you flag?",
+   "options": [
+    "Without a randomised experiment, an estimate like this is worthless and should not be reported at all.",
+    "The gap was already closing before launch, so part of the 8 points is improvement that was already under way.",
+    "Nothing: a drift of a third of a point is tiny next to an effect of 8 points, so the check is passed.",
+    "The estimate should be replaced by the simple before-and-after difference in the launch group."
+   ],
+   "answer": 1,
+   "why": "The method assumes the gap between the groups would have stayed steady without the launch; a pre-launch drift that is distinguishable from zero says it would not have. A third of a point a week sounds small, but it accumulates over every week of the comparison, and the arithmetic hands all of it to the launch. That makes the estimate too high rather than worthless, and plain before-and-after would ignore the comparison group altogether."
+  },
+  {
+   "id": "5-3-q3",
+   "concept": "change minus change",
+   "domain": "other",
+   "q": "A subscription service raised its price in one country on March 1 and nowhere else. Weekly cancellations there went from 2.0 to 2.6 percent. In two neighbouring countries with no price change they went from 1.8 to 2.1 percent over the same weeks. What is the best estimate of the price rise's effect, and what should be checked?",
+   "options": [
+    "Plus 0.6 points: the rise in the country that changed its price; check that the sample is large enough.",
+    "Plus 0.5 points: the gap between the countries after the change; check that the weeks compared are the same.",
+    "Plus 0.3 points: its rise minus the neighbours' rise; check that they moved together before March.",
+    "No estimate is possible, because no two countries are ever alike; only a randomised price test would do."
+   ],
+   "answer": 2,
+   "why": "Cancellations rose everywhere, so 0.3 of the 0.6 points would have happened anyway; subtracting the neighbours' change removes it. The after-only gap of 0.5 mixes in the fact that this country already cancelled more. Countries differing in level is fine: what matters is that they were moving in parallel beforehand, which is the check."
+  },
+  {
+   "id": "5-3-q4",
+   "concept": "choosing a comparison group",
+   "domain": "other",
+   "q": "A support inbox adds an automatic first reply for billing tickets in week 8, and billing resolution time falls. You need a comparison group to judge the change. Which is the best choice?",
+   "options": [
+    "The billing tickets from the same weeks that did not trigger the automatic reply.",
+    "Whichever category without the reply had the closest resolution time to billing in week 7.",
+    "Billing tickets from the same weeks one year earlier, when there was no automatic reply.",
+    "A category without the reply whose resolution time had been moving in step with billing."
+   ],
+   "answer": 3,
+   "why": "A comparison group earns its place by moving in parallel with the group that got the change, before the change, not by sitting at the same level in one week. Billing tickets that did not trigger the reply differ in kind from those that did, so the two groups were never alike, and last year's tickets cannot show what this season did."
+  }
+ ],
+ "review": [
+  {
+   "concept": "subtract the change that would have happened anyway",
+   "variants": [
+    {
+     "q": "An onboarding checklist launched for self-serve accounts only. Their 30-day activation rate went from 40 to 52 percent. Managed accounts, which did not get it, went from 55 to 60 percent over the same period. What is the best estimate of the checklist's effect?",
+     "options": [
+      "About 12 points",
+      "About minus 8 points",
+      "About 5 points",
+      "About 7 points"
+     ],
+     "answer": 3,
+     "why": "Self-serve rose 12 points, but managed accounts rose 5 without the checklist, so about 5 of the 12 would have happened anyway: 12 minus 5 leaves 7. Twelve credits the checklist with the whole period; minus 8 just compares the two groups afterwards and blames the checklist for self-serve having started lower."
+    },
+    {
+     "q": "A push-notification feature shipped on Android only. Weekly sessions per user went from 5.0 to 5.9 on Android, and from 6.0 to 6.5 on iPhone over the same weeks. A slide says 'notifications added 0.9 sessions per user'. What should it say?",
+     "options": [
+      "About 0.4 sessions: Android's rise minus the rise iPhone had without the feature.",
+      "About 0.9 sessions, as written: Android is compared with itself, so nothing else can explain it.",
+      "Notifications reduced sessions, because Android with the feature is still below iPhone without it.",
+      "About 0.5 sessions: the rise that was seen on iPhone over the same weeks."
+     ],
+     "answer": 0,
+     "why": "iPhone rose 0.5 without the feature, which is the best available guess at what Android would have done anyway; 0.9 minus 0.5 leaves 0.4. Comparing Android with itself removes the difference between platforms, but not whatever lifted both platforms over those weeks."
+    },
+    {
+     "q": "After a checkout redesign for returning customers, their average order value was 10 percent higher in the following month than in the month before. Which single extra number does most to make the claim 'the redesign raised order value' credible?",
+     "options": [
+      "The average order value of the same returning customers in each of the six months before the redesign.",
+      "The number of returning customers behind each monthly average, and an interval on the 10 percent.",
+      "The change in order value over the same two months for customers who did not get the redesign.",
+      "The share of returning customers who said in a survey that they liked the new checkout better."
+     ],
+     "answer": 2,
+     "why": "A rise after a launch only means something next to the rise that happened without it. Sample sizes and an interval tell you whether the 10 percent is noisy, not whether the redesign caused it, and more history for the same group is still before-and-after: it cannot show what that particular month did to everybody."
+    }
+   ]
+  },
+  {
+   "concept": "the comparison only works if the groups would have moved in parallel",
+   "variants": [
+    {
+     "q": "A feature launched for gaming advertisers, with health advertisers as the comparison group. In the ten weeks before launch, gaming's spend was growing 3 percent a week and health's 1 percent a week. Change-minus-change says the feature added 15 percent. How should you read that?",
+     "options": [
+      "As the feature's effect: subtracting the comparison group's change is what removes any trend in spend.",
+      "As too low: gaming's faster growth before launch hides part of what the feature added.",
+      "As overstated: gaming was already pulling ahead, and that head start is being credited to the feature.",
+      "As invalid: verticals of different sizes and spend levels cannot serve as each other's comparison."
+     ],
+     "answer": 2,
+     "why": "The subtraction removes only the trend the two groups share. Gaming was already growing faster, so the gap would have widened with no feature at all, and the arithmetic counts that widening as effect. Different sizes or levels are not a problem; different trends before launch are."
+    },
+    {
+     "q": "A delivery fee changes in one region, the treated region, and you are choosing a comparison region. Region A had the same order rate as the treated region last month, but the two have been drifting apart all year. Region B's order rate is far higher, but its gap to the treated region has been steady all year. Which do you pick?",
+     "options": [
+      "Region A, because it matches the treated region's current level most closely.",
+      "Region B, because a steady gap means the two were moving in parallel.",
+      "Neither: a comparison region must match on level as well as trend.",
+      "The average of both regions, so that their flaws cancel out."
+     ],
+     "answer": 1,
+     "why": "The method subtracts changes, so a constant difference in level cancels out; what it cannot survive is a gap that was already moving. Region A's matching level last month is one point on a drifting path: it would have kept drifting, and that drift would be read as the fee's effect."
+    },
+    {
+     "q": "A new invalid-traffic filter was switched on for one traffic source in week 20. In the same week, that source's largest publisher was suspended for unrelated reasons. Invalid clicks on the source then fell much more than on the other sources, which had tracked it closely until then. What can you conclude about the filter?",
+     "options": [
+      "The filter caused the whole extra drop, since the sources had tracked each other closely before week 20.",
+      "Nothing: without a randomised experiment a launch like this can never be evaluated at all.",
+      "The filter did nothing: the suspension of the largest publisher explains the whole extra drop.",
+      "The extra drop is the filter and the suspension together; the comparison cannot split them."
+     ],
+     "answer": 3,
+     "why": "Moving together beforehand supports the claim that the sources would have stayed in step, but only if nothing else changed for one of them. The suspension broke that, so the extra drop belongs to both events and the arithmetic cannot split it. Giving all of it to either one is a guess."
+    }
+   ]
+  }
+ ],
+ "drill": [
+  {
+   "q": "A feature launched for one group of advertisers and their results improved afterwards. Why is the before and after difference not the effect of the feature?",
+   "a": "Because other things changed over the same weeks, such as the season. You need the change in a similar group that did not get the feature, and you subtract it from the change in the group that did."
+  },
+  {
+   "q": "When you use a comparison group to judge a launch, what has to be true of the two groups, and how do you check it?",
+   "a": "They must have been moving in parallel, so that without the launch the gap between them would have stayed steady. You check the weeks before launch. If the gap was already drifting, the estimate is contaminated."
+  }
+ ],
+ "recall": {
+  "prompt": "A feature launched for one group and their numbers rose. Explain how you would estimate its effect without an experiment, and what would make you distrust the answer.",
+  "model_answer": "Before-and-after alone credits the launch with everything else that changed, and comparing the two groups afterwards blames it for where they started. So take the change in the launch group and subtract the change over the same weeks in a similar group that did not get it. That only works if the two would have moved in parallel, so check that the gap between them was steady in the weeks before launch. If it was already drifting, or something else hit one group at launch, the estimate is contaminated."
+ },
+ "ask_assistant": "The guided creative-setup flow launched for ecommerce advertisers in week 13 and for nobody else. Estimate its effect on the share hitting their CPA goal as a difference-in-differences: ecommerce's change from before to after, minus the change in the other verticals over the same weeks. Show the weekly rate for both groups across all weeks, the four averages (each group, before and after) with advertiser counts, the estimate with a 95 percent interval, and a check of whether the gap between the groups was drifting in the weeks before launch. List anything else that changed for either group around week 13.",
+ "audit_checklist": [
+  "The weekly series for both groups, before and after launch, not just two averages",
+  "The four averages (each group, before and after) with group sizes, and the estimate with its interval",
+  "The pre-launch check: how fast the gap was drifting per week, with its margin, and whether that is distinguishable from zero",
+  "A note on anything else that changed for one group only around the launch date"
+ ],
+ "transfer": [
+  "Did the price rise in one region cause the fall in renewals there?",
+  "Did the new fraud filter on one traffic source cut invalid clicks, or was all traffic getting cleaner?",
+  "Did moving a set of accounts to a new account-management team raise their spend?"
+ ],
+ "other_ways": [
+  {
+   "approach": "A randomised experiment or a random holdout",
+   "when": "Whenever you still control who gets the change, for example the next rollout wave; a coin needs no assumption about parallel movement."
+  },
+  {
+   "approach": "A staggered launch: groups get the change on different dates",
+   "when": "When a rollout happens in waves; each wave gives another comparison against groups still waiting, so a single coincidence is less likely to fool you."
+  },
+  {
+   "approach": "Forecast the launch group from its own history and compare what happened with the forecast",
+   "when": "When no untreated group exists at all; the answer is only as good as the forecast, which module 6 covers."
+  }
+ ],
+ "glossary": [
+  {
+   "term": "before-and-after comparison",
+   "def": "The outcome after a change minus the outcome before it, in the same group; it credits the change with everything else that happened over that time."
+  },
+  {
+   "term": "comparison group",
+   "def": "A group that did not get the change, used to show what would have happened anyway."
+  },
+  {
+   "term": "difference-in-differences",
+   "def": "The change in the group that got the launch, minus the change over the same period in a comparison group."
+  },
+  {
+   "term": "moving in parallel (parallel trends)",
+   "def": "The assumption that, without the change, the two groups would have moved in step, so the gap between them would have stayed constant."
+  },
+  {
+   "term": "pre-launch check",
+   "def": "Testing whether the gap between the two groups was already drifting in the weeks before the change."
+  }
+ ]
+}

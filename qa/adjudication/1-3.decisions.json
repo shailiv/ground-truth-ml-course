@@ -1,0 +1,90 @@
+{
+ "lesson": "1-3",
+ "decisions": [
+  {
+   "n": 0,
+   "reviewer": "gemini",
+   "finding": "Quiz q1 pairs the 'no spend in 60 days' label with a collapse to 6 and 2 percent that only an event-type label produces",
+   "decision": "accepted",
+   "reason": "facts data.outcome_columns.churned_next_60d = 'no spend at all in the 60 days after the snapshot'. An advertiser who has spent is already a stayer; computed literally on an open window the flag counts everyone with no spend yet, so recent months come out too HIGH. The old key ('future churners count as stayed') was wrong for this definition.",
+   "change": "q1 now states how the flag was computed ('no spend since the snapshot'), shows 11, 12, 11, 12, 19 and 38 percent with the claim 'churn is accelerating', and keys 'The newest snapshots' 60 days are not over, so advertisers on a pause count as churned'. The explanation gives both directions (defaulting unfinished rows to stayed would have pushed the same months too low)."
+  },
+  {
+   "n": 1,
+   "reviewer": "gemini",
+   "finding": "Narration: 'has not survived 60 days. They have survived 20. Label them as stayed, and you have filed some future churners under loyal' contradicts the zero-spend definition (the text is in segment 4)",
+   "decision": "accepted",
+   "reason": "Same principle as finding 0; this is the lesson-specific ruling.",
+   "change": "seg4: 'Take a snapshot from 20 days ago. Anyone who has spent since is settled: they stayed. Anyone who has not is undecided. They may be gone for good, or three weeks into a pause. Count them as churned and the rate is too high. Default them to stayed and it is too low. So a snapshot enters the table only when its whole outcome window has passed.' Table row 2 reworded to match."
+  },
+  {
+   "n": 2,
+   "reviewer": "gemini",
+   "finding": "Drill 2: 'some of them will still churn' is wrong for an advertiser who has already spent in the window",
+   "decision": "accepted",
+   "reason": "Same principle. The undecided advertisers are the ones with no spend so far.",
+   "change": "Drill 2 now asks why an advertiser with no spend in the three weeks since the snapshot cannot be labelled yet; the answer names both errors (call them churned: too high; call them stayed: too low)."
+  },
+  {
+   "n": 3,
+   "reviewer": "expert-1",
+   "finding": "The lesson treats churn as an event that accrues over the window; for an absence label an open window errs the other way, and 'open window = suspiciously low' teaches the learner to believe an inflated recent rate",
+   "decision": "accepted",
+   "reason": "Correct, and the most consequential point in the file: the old rule of thumb would have made a learner read a computed-too-high recent month as a real rise.",
+   "change": "seg4, q1 and drill 2 as above. seg6 also changed: 'A sudden jump or a sudden drop in the newest months means asking whether the definition changed, or whether those months' outcome windows have closed.' The new guess question asks the same thing before the lesson."
+  },
+  {
+   "n": 4,
+   "reviewer": "learner-1",
+   "finding": "seg4 jumps from one 20-day-old advertiser to 'on the day you score May's advertisers, April's 60 days are still running'",
+   "decision": "accepted",
+   "reason": "At this point the learner has not met months scored in sequence; 2-1 teaches the April gap with a timeline, and 1-5 seg5 already points to it.",
+   "change": "The April sentence was removed from seg4."
+  },
+  {
+   "n": 5,
+   "reviewer": "learner-1",
+   "finding": "seg7 and checklist item 2 compare a date with a length ('more recent than the outcome window is long')",
+   "decision": "accepted",
+   "reason": "Unparseable by ear; the plain version says the same.",
+   "change": "seg7: 'If the newest snapshot is less than 60 days old, its labels are not finished.' Checklist item 2: 'Snapshot dates beside the data pull date: every snapshot kept is at least one full outcome window older than the pull'."
+  },
+  {
+   "n": 6,
+   "reviewer": "learner-1",
+   "finding": "The guess is arithmetic: the 60-day definition is in the question and three weeks is less than 60 days",
+   "decision": "accepted",
+   "reason": "A guess should need a commitment. The replacement also puts the corrected open-window idea in front of the learner before the lesson (the first suggested alternative, 14 versus 60 days, is arithmetic again).",
+   "change": "New guess: a table built from a snapshot taken 20 days ago; which advertisers already have a definite label? Key: only those who have spent since (they stayed). The reveal says the rest could be pausing or gone and that this bends a churn rate in either direction."
+  },
+  {
+   "n": 7,
+   "reviewer": "learner-1",
+   "finding": "seg7 says 'twenty example rows of each class'; 'class' was never introduced",
+   "decision": "accepted",
+   "reason": "SPEC rule 7: terms only after they are taught.",
+   "change": "seg7 narration: 'twenty example rows, churned and stayed'; seg7 bullet 5: 'Twenty example rows: churned and stayed'."
+  }
+ ],
+ "rulings": {
+  "R1": "seg1 now says: 'The same goes for any outcome a model predicts: whether an advertiser adopted the video format is just as arguable. Every label needs three things pinned down: what, who and when.'",
+  "R2": "Not applicable.",
+  "R3": "ask_assistant rewritten as a template, 98 words, slots: [outcome], [number of days], [reference date], [unit], [snapshot date], [outcome window], [period]. Keeps every demand and adds two: the snapshot dates beside the data pull date with the dropped snapshots named, and how rows whose outcome was not yet decided were treated.",
+  "R4": "seg8 narration is 44 words, two sentences: make a label prove itself (one sentence, a timeline, a count of who was left out), then the pointer to leakage. Cue markers removed; visual unchanged.",
+  "R5": "Keyed answer is the longest option in 2 of 10. Replaced the 'None:' / 'Nothing:' / 'Nothing extra:' options in quiz q2, q3, q4 and review 1 variant 1. Review 1 variant 3 keeps its keyed 'None yet: it has been observed for 10 of the 30 days': it is the answer (no label exists yet), and the only such question in the lesson. Literal 'None:' / 'Nothing:' / 'Either' / 'Neither' / 'Both' options were replaced with a specific mistake. Options that accept the result FOR A STATED REASON (for example 'Trust the score: it was learned from thousands of advertisers') were kept: they are the tempting misreading the explanation argues against, not a bare 'nothing is wrong'.",
+  "R6": "'Build two label definitions side by side' sat only in other_ways and is the direct answer to the lesson's opening. seg7 now ends: 'And if the room still cannot agree on a definition, have two built side by side, and read the accounts that change sides.'",
+  "R7": "Checklist: item 2 is now two dates to compare (snapshot dates beside the pull date); item 3 names a jump OR a drop in the newest months; items 1 and 4 unchanged.",
+  "specific": "Open-window problem taught for the course's label in every place it appears: guess, seg4 narration and table, seg6 sentence, quiz q1 (flag computation stated, error direction now upward, both directions in the explanation), drill 2. The review variants were checked against the same principle and left: variants 1 and 2 use event labels (a lead converting, video adoption), where an open window does understate, and variant 3 (an absence label) was already right."
+ },
+ "segments_changed": [
+  1,
+  4,
+  6,
+  7,
+  8
+ ],
+ "numbers_verified": 72,
+ "open_questions": [
+  "Quiz q1 uses invented rates (11, 12, 11, 12, 19, 38 percent) and says so ('on your own platform's data'), as the original did; none is quoted as a course fact."
+ ]
+}

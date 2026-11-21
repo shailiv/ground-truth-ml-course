@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="color-scheme" content="light dark">
+  <title>Ground Truth · Sign in</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/fonts.css">
+  <link rel="stylesheet" href="css/app.css">
+  <style>#wrong { color: var(--bad); font-size: .92rem; }</style>
+</head>
+<body>
+  <div class="login">
+    <form class="card" method="post" action="/login" style="position: relative">
+      <a class="brand" href="/login" aria-label="Ground Truth">
+        <svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M16 4.5 28 26H4L16 4.5Z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><circle cx="16" cy="19" r="3.2" fill="var(--marker)"/></svg>
+        <span>Ground Truth</span>
+      </a>
+      <p style="color: var(--ink-2)">Machine-learning fundamentals for a working analyst: framing a question, directing an AI assistant, and auditing what comes back.</p>
+      <p style="color: var(--ink-3); font-size: .9rem">This is a private course. Enter your passphrase to open it.</p>
+      <label class="sr" for="passphrase">Passphrase</label>
+      <input id="passphrase" name="passphrase" type="password" autocomplete="current-password" placeholder="Passphrase" required autofocus>
+      <p id="wrong" hidden>That passphrase is not right. Try again.</p>
+      <button class="btn primary" type="submit">Sign in</button>
+    </form>
+  </div>
+  <script src="js/login.js"></script>
+</body>
+</html>

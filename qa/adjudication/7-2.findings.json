@@ -1,0 +1,32 @@
+[
+ {
+  "reviewer": "learner-2",
+  "lesson": "7-2",
+  "where": "seg3 narration",
+  "quote": "A gap, though not a wide one.",
+  "kind": "doubt",
+  "severity": "low",
+  "problem": "I am told the similarity score tops out at one but not where unrelated text sits, so I cannot judge whether 0.72 for another category is close or far.",
+  "fix": "Give a floor: 'two unrelated sentences score about X'."
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "7-2",
+  "where": "brief",
+  "quote": "using an approved model",
+  "kind": "not_usable",
+  "severity": "low",
+  "problem": "The lesson never says what kinds of embedding model exist, what one costs per thousand tickets, or who approves it. The outline promised 'what it costs'.",
+  "fix": "Two sentences on hosted against in-house models and rough cost, plus the concrete step of asking whoever owns data protection."
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "7-2",
+  "where": "seg1 narration (example for 7-2 and 7-3)",
+  "quote": "Two tickets reach the support inbox.",
+  "kind": "not_for_me",
+  "severity": "low",
+  "problem": "Two lessons of text work both run on support tickets. The text I actually hold is ad headlines, creative copy, search terms and account managers' call notes; those appear only in the transfer lines.",
+  "fix": "Run one of the two lessons on ad headlines checked against policy."
+ }
+]

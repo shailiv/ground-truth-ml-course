@@ -1,0 +1,44 @@
+{
+ "issues": [
+  {
+   "where": "glossary",
+   "quote": "How often two people give the same item the same label; no model can be meaningfully scored above it.",
+   "kind": "wrong_concept",
+   "severity": "high",
+   "explanation": "Pairwise inter-annotator agreement is not an upper bound on meaningful model accuracy. Comparing two humans compounds two raters' errors or subjectivity, whereas scoring a consistent deterministic model against a single human rater incurs that noise only once (and scoring against consensus/majority-vote labels reduces it further). Formally, if class probabilities among human raters for item x are p_c(x), pairwise human agreement is E[sum_c p_c(x)^2] while the Bayes-optimal accuracy against single-rater labels is E[max_c p_c(x)], which is strictly higher whenever raters are neither unanimous nor uniformly split. For example, across 6 categories, if each human agrees with the consensus 85% of the time and slips randomly on 15% (3% per other class), two humans agree only 72.7% of the time (0.85^2 + 5 * 0.03^2), yet a consistent model meaningfully scores 85.0% against single-rater labels and near 100% against majority-vote labels.",
+   "evidence": "facts.json tickets.honest_limits[0] states only that 'two people often disagree about the main issue, which caps what any method can score' (i.e. creates a ceiling below 100%, not equal to the pairwise agreement rate); probability inequality max_c p_c > sum_c p_c^2 for max_c p_c in (1/K, 1).",
+   "fix": "How often two people give the same item the same label; frequent disagreement shows that labels are noisy or disputed, which caps what any model can meaningfully score well below 100%."
+  },
+  {
+   "where": "seg5 narration",
+   "quote": "and a score above their rate of agreement stops meaning anything.",
+   "kind": "wrong_concept",
+   "severity": "high",
+   "explanation": "Because pairwise agreement between two humans suffers from both humans' error rates at once (roughly 1 - 2e for small error rate e), a consistent model scored against one human's labels can legitimately reach roughly 1 - e, and higher still on consensus labels. Telling practitioners that any score above pairwise human agreement 'stops meaning anything' would lead them to dismiss real accuracy gains above the pairwise rate.",
+   "evidence": "facts.json tickets.honest_limits[0]: 'two people often disagree about the main issue, which caps what any method can score'; for independent rater noise e, P(R1 = R2) >= 1 - 2e whereas optimal P(model = R1) = 1 - e.",
+   "fix": "which puts a ceiling well below 100 percent on what any score can mean."
+  },
+  {
+   "where": "quiz 7-3-q4",
+   "quote": "and a score above the rate at which people agree stops measuring the model.",
+   "kind": "wrong_concept",
+   "severity": "medium",
+   "explanation": "The keyed option (3) is correct, but the explanation ('why') repeats the false rule that pairwise human agreement is the exact ceiling above which scores stop measuring the model. Disputed labels cap meaningful accuracy well below 100% (at the consensus rate max_c p_c(x) against single-rater labels), which is generally higher than pairwise human agreement sum_c p_c(x)^2.",
+   "evidence": "facts.json tickets.honest_limits[0] and Bayes optimal single-rater ceiling E[max_c p_c(x)] vs pairwise agreement E[sum_c p_c(x)^2].",
+   "fix": "and disputed labels put a ceiling well below 100 percent on what any score can measure."
+  },
+  {
+   "where": "seg3 narration",
+   "quote": "Overlap alone does not settle it, because both models sat the same exam.",
+   "kind": "misleading",
+   "severity": "medium",
+   "explanation": "Attributing the failure of the overlapping-intervals heuristic solely to paired testing ('because both models sat the same exam') implies that when two groups did not sit the same exam—such as in a standard two-sample A/B test—overlapping 95% confidence intervals would mean a tie. In fact, two independent 95% intervals overlap whenever the gap is under roughly 2 * 1.96 * SE, whereas an unpaired difference is already significant at the 5% level above sqrt(2) * 1.96 * SE. Even on these exact numbers (364/450 = 80.9% vs 337/450 = 74.9%), an unpaired comparison gives a 95% CI of [+0.6, +11.4] points (p = 0.03), excluding zero before pairing is even used; pairing narrows it further to [+1.1, +10.9].",
+   "evidence": "facts.json tickets.methods (364/450 vs 337/450) and tickets.paired.rows[2] (ci95_pts: [1.1, 10.9]); standard two-sample vs paired confidence interval theory (quiz 7-3-q1's explanation states this more accurately: 'Overlap between two separate intervals is too blunt a test').",
+   "fix": "Overlap between two separate intervals is too blunt a test, even before accounting for the fact that both models sat the same exam."
+  }
+ ],
+ "numbers_checked": 66,
+ "verdict": "Every simulation figure in the lesson matches facts.json exactly, and all quiz and review answer keys are defensible; however, the narration, quiz explanation, and glossary falsely equate pairwise human label agreement with the hard ceiling on meaningful model accuracy, and seg3 narration misstates why overlapping 95% intervals do not imply a tie.",
+ "_hash": "10de0a5462074faa",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_ChdWeFlDYTc3RUNlNkNrZFVQdzhEeHVBcxIXVnhZQ2E3N0VDZTZDa2RVUHc4RHh1QXM | tokens in=68412 out=1265 thought=30126]"
+}

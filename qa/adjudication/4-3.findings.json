@@ -1,0 +1,74 @@
+[
+ {
+  "reviewer": "expert-3",
+  "lesson": "4-3",
+  "where": "seg6 narration and visual; quiz 4-3-q1 why",
+  "quote": "That count itself wobbles by more than a dozen either way, so for the retention team the lists are interchangeable",
+  "kind": "wrong_concept",
+  "severity": "medium",
+  "problem": "The 123-to-150 range is the resampling wobble of ONE model's count. The two lists are scored on the same 4,000 advertisers and share most of their names, so the wobble of the DIFFERENCE between them is far smaller. Judging a paired gap against an unpaired interval is the overlapping-intervals fallacy, and the lesson's own AUC example shows it failing: the two AUC intervals overlap almost entirely, yet the interval on their difference excludes zero. Used at work, this ruler waves through real differences between models.",
+  "evidence": "uncertainty.top_200_churners_95 = [123, 150] (one model); logreg_auc_95 [0.827, 0.863] and boosting_auc_95 [0.817, 0.855] overlap while difference_logreg_minus_boosting_95 = [0.002, 0.015]. facts.json holds no interval on the difference in top-200 counts.",
+  "fix": "Make the practical argument instead of the noise one: 'Four more churners in 200 calls is too few to change what the retention team does, so the lists are interchangeable.' Or compute a paired interval on the count difference and quote that. Same change in the 4-3-q1 explanation ('the top-200 count wobbles by more than the four churners')."
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "4-3",
+  "where": "seg6 narration",
+  "quote": "The interval on that lead runs from about 0.002 to 0.015.",
+  "kind": "ear",
+  "severity": "medium",
+  "problem": "Read aloud this segment is nine numbers, several of them strings of zeros. I lost which interval belonged to which question before the top-200 counts arrived.",
+  "fix": "Speak the verdict and one number per question ('a lead of nine thousandths, and its interval only just clears zero'); leave the endpoints on screen."
+ },
+ {
+  "reviewer": "expert-3",
+  "lesson": "4-3",
+  "where": "predict q; seg1 narration",
+  "quote": "built from hundreds of small trees",
+  "kind": "number_mismatch",
+  "severity": "low",
+  "problem": "The flexible model whose gaps the lesson quotes (0.009 and 0.040) is tuned boosting with 100 rounds on both questions: one hundred small trees. Only the forest has hundreds (300), and those are deep, not small.",
+  "evidence": "boosting.params.max_iter = 100; video.tuning.best.max_iter = 100; forest.n_trees = 300",
+  "fix": "'built from a hundred or more small trees' (predict) and 'built from many trees' (seg1)"
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "4-3",
+  "where": "seg7 narration",
+  "quote": "Training has luck in it too, which the interval a moment ago did not count.",
+  "kind": "lost",
+  "severity": "low",
+  "problem": "A model I have not met (a neural network, 'from a later module') is used as 'one more ruler', and a new idea, that run-to-run randomness is a second source of noise, is squeezed into a closing clause.",
+  "fix": "Make the point with boosting or the forest re-run on different random seeds, and give the idea two full sentences."
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "4-3",
+  "where": "brief",
+  "quote": "give the difference in test AUC with a 95% bootstrap interval",
+  "kind": "lost",
+  "severity": "low",
+  "problem": "Two terms in the paste-ready brief were never spoken to me: 'learning rate' appears only as a sub-label on a slide, and 'bootstrap' nowhere in my lessons or the outline. I would be pasting words I cannot defend.",
+  "fix": "Say each once in the narration, or phrase the brief in the course's words ('step size', 'an interval on the difference')."
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "4-3",
+  "where": "quiz 4-3-q1",
+  "quote": "The simple model is narrowly ahead; for a list of 200 the two are interchangeable, so take the readable one",
+  "kind": "question",
+  "severity": "low",
+  "problem": "The key is the only moderate option. The distractors ('dropped from now on', 'decisively better here and on future tables', 'a waste of time') can be struck by tone without the lesson.",
+  "fix": "Add a tempting half-truth, for example 'The interval excludes zero, so ship the simple model; the top-200 counts add nothing'."
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "4-3",
+  "where": "seg4 narration",
+  "quote": "And the weighted sum, with its 22 weights, sits at 0.845.",
+  "kind": "lost",
+  "severity": "low",
+  "problem": "Seg1 said 'same 17 columns'; now there are 22 weights with no explanation. By ear I wondered whether it was a different model.",
+  "fix": "Drop the count, or add 'one per column, plus one for each vertical'."
+ }
+]

@@ -1,0 +1,387 @@
+[
+  {
+    "kind": "lab",
+    "id": "l1",
+    "after": 2,
+    "title": "Baseline before model",
+    "blurb": "Check the table, split it by month, and set the bar any churn model has to beat.",
+    "setup": "The question: before anyone builds a churn model, what does it have to beat? You hand advertisers.csv to your own AI assistant and direct it in three stages; at the end you have a checked table, a split by month and two baselines with their counts. The file is simulated, so it is safe to share with any assistant; real client data must never go into a tool that is not approved for it.",
+    "files": [{"name": "advertisers.csv", "href": "data/advertisers.csv"}],
+    "steps": [
+      {
+        "title": "The table: unit, target, timeline",
+        "brief": "Attached is advertisers.csv, a simulated table from an adtech platform. Do not build a model yet. Each row should be one advertiser at one snapshot month, and the feature columns describe the 8 weeks before the snapshot. The label is churned_next_60d: 1 means no spend at all in the 60 days after the snapshot. Print: the row count, the number of distinct advertiser_id values and the number of duplicated rows; every column with its type, marking the ones that are measured after the snapshot; rows and churn rate by snapshot_month, with a 95% margin of error beside each rate; and the number of empty cells per column, saying which advertisers they fall on. Show five example rows, then stop.",
+        "expect": [
+          "12,000 rows and 12,000 distinct advertiser IDs, no duplicates: nobody appears twice.",
+          "23 columns: the ID, the snapshot month, 17 features and four outcome columns. Six snapshot months, Jan to Jun, 2,000 rows each.",
+          "Churn about 11.8% overall (1,420 churners). By month between about 10.9% and 13.7%, highest in May and June, each with a margin of error of about 1.4 to 1.5 points.",
+          "Empty cells in two columns only, cpa_vs_goal and hit_cpa_goal: 4,984 rows each, about 42%, exactly the advertisers without conversion tracking.",
+          "Three columns happen after the snapshot and can never be features: spend_next_8w, adopted_video_next_60d and the label itself. The fourth outcome, hit_cpa_goal, is measured in the 8 weeks before it."
+        ],
+        "gate": [
+          "Rows equal distinct advertiser IDs, so one row really is one advertiser.",
+          "Row count and churn rate for all six months, with no month missing and no unexplained jump.",
+          "Empty cells counted and explained, with no row dropped or filled."
+        ]
+      },
+      {
+        "title": "The split: train, gap, test",
+        "brief": "Still no model. Split advertisers.csv by snapshot_month, not at random: train on Jan, Feb and Mar; leave Apr out; test on May and Jun. April is left out because churn takes 60 days to show, so its labels would not exist yet on the day the May advertisers are scored. Print one line per part with its months, row count, number of churners and churn rate. Confirm that the three parts add up to the full table and that no advertiser_id appears in more than one part. Do not use the test months for anything else yet, and say so in the output.",
+        "expect": [
+          "Train, Jan to Mar: 6,000 rows, 668 churners, about 11.1%.",
+          "Left out, Apr: 2,000 rows, about 11%.",
+          "Test, May and Jun: 4,000 rows, 527 churners, about 13.2%.",
+          "Churn is about two points higher in the test months than in training. Note it now; it matters when you check a model's percentages."
+        ],
+        "gate": [
+          "Three parts named by month, with rows that add up to 12,000.",
+          "Churn rate for training and for test, side by side.",
+          "A sentence on why April is out, and a statement that nothing was fitted or chosen on the test months."
+        ]
+      },
+      {
+        "title": "Two baselines on the test months",
+        "brief": "Now score two baselines on the test months only (May and Jun, 4,000 rows). Still no model. Baseline one: predict that every advertiser stays. Baseline two: my hand rule, which flags an advertiser when spend_trend is strictly below 0.7. For each, print the four counts against churned_next_60d: flagged and churned, flagged and stayed, not flagged and churned, not flagged and stayed. Then print how many were flagged, precision (of those flagged, the share that churned), recall (of all churners, the share flagged) and accuracy. Put both baselines in one table, with the test row count and churn rate above it. Do not tune the 0.7.",
+        "expect": [
+          "Everyone stays: nobody flagged, accuracy about 86.8%, recall zero. It finds none of the 527 churners.",
+          "The rule flags 711 advertisers: 246 churned and 465 stayed. It misses 281 churners and correctly leaves 3,008 alone.",
+          "Rule precision about 34.6%, recall about 46.7%. A random list would hold about 13% churners.",
+          "Rule accuracy about 81.4%: lower than doing nothing, although it finds 246 churners. That is accuracy failing, not the rule."
+        ],
+        "gate": [
+          "Both baselines on the same 4,000 test rows, and each set of four counts adds up to 4,000.",
+          "The number flagged beside precision and recall: 711 is the list size a model must be compared at.",
+          "The cut-off is still 0.7 and nothing was fitted."
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "lab",
+    "id": "l2",
+    "after": 3,
+    "title": "A first model, read properly",
+    "blurb": "Fit one logistic regression and read it four ways: both AUCs, the four counts, a ranked list, the percentages.",
+    "setup": "The question: does a learned model beat your hand rule at finding advertisers who will churn, and how much of what it prints can you trust? You give advertisers.csv to your assistant and direct one logistic regression through four stages. At the end you have a model judged on unseen months beside its baselines: both AUCs, the four counts, a ranked list and a check of its percentages.",
+    "files": [{"name": "advertisers.csv", "href": "data/advertisers.csv"}],
+    "steps": [
+      {
+        "title": "Fit on the training months, show both scores",
+        "brief": "Attached is advertisers.csv: simulated, one row per advertiser. Fit a logistic regression to predict churned_next_60d. Train on snapshot months Jan to Mar, leave Apr out, test on May and Jun. Use exactly these 17 features: vertical, managed, tenure_weeks, spend_8w (as a log), spend_trend, active_days_28, days_since_login, campaigns_active, creatives_per_campaign, creative_refresh_days, has_conversion_tracking, uses_auto_bidding, had_optimisation_review, cpa_vs_goal, ctr_pct, support_tickets_8w, payment_failures_8w. Keep all preparation in one pipeline fitted on the training rows: fill empty cpa_vs_goal with the training median, standardise the continuous columns, turn vertical into yes/no columns. No class re-weighting, no rebalancing, no dropped rows. Print: rows and churn rate for train and test; the feature list; AUC on the training rows beside AUC on the test rows; the weights, largest first.",
+        "expect": [
+          "Train 6,000 rows at about 11.1% churn, test 4,000 rows at about 13.2%, no rows lost.",
+          "AUC about 0.85 on the training rows and about 0.845 on the test rows. Anything from 0.83 to 0.86 on test is within the noise of a test set this size.",
+          "The two scores are nearly equal: this model is not memorising.",
+          "Largest weight: spend_trend, negative. One typical step up, about 0.41, cuts the odds of churn by more than half.",
+          "About 22 learned numbers in all, intercept included. They are associations, not causes."
+        ],
+        "gate": [
+          "Months, rows and churn rate for train and test, with April in neither.",
+          "Two AUCs, each labelled with its rows: training and test.",
+          "A named list of 17 features with no ID, no snapshot month and no outcome column on it."
+        ]
+      },
+      {
+        "title": "The four counts at 0.5, beside the baselines",
+        "brief": "Keep the fitted pipeline and the same test rows (May and Jun); do not refit. Turn the scores into yes or no at a cut-off of 0.5 and print the four counts against churned_next_60d, then the number flagged, precision, recall and accuracy. In the same table add two baselines on the same rows: predict that everyone stays, and my rule spend_trend strictly below 0.7. Also print the smallest, median and largest score on the test rows, and the number of distinct score values, so I can see they are probabilities and not zeros and ones. Do not change the cut-off yet.",
+        "expect": [
+          "The model flags about 141 advertisers: about 104 churned and about 37 are false alarms. It misses about 423 of the 527 churners.",
+          "Precision about 74%, recall about 20%.",
+          "Accuracy about 88.5% against 86.8% for 'everyone stays': under two points apart, which is why accuracy is the wrong lens.",
+          "The rule on the same rows: 711 flagged, 246 churned, precision about 35%, recall about 47%. The list sizes differ, so this is not yet a fair comparison.",
+          "Both rates wobble on a test set this size: precision from about 67% to 81%, recall from about 17% to 24%."
+        ],
+        "gate": [
+          "Four counts that add up to 4,000, for the model and for each baseline.",
+          "The number flagged printed beside every precision and recall.",
+          "Scores spread between 0 and 1 with many distinct values."
+        ]
+      },
+      {
+        "title": "Ranked lists: against the rule and random",
+        "brief": "Same pipeline, same test rows, no refit. Sort the test advertisers by score, highest first. Print how many churners are in the top 100, 200, 400 and 800, with precision, recall and the number of churners a random list of that size would be expected to hold. Then compare with my rule at equal list size: the rule spend_trend strictly below 0.7 flags 711 advertisers, so show the churners in the model's top 711 beside the churners the rule flags. Finally cut the sorted list into ten equal groups and print the size, the churners and the churn rate of each group.",
+        "expect": [
+          "Top 200: about 136 churners, 68%, where a random 200 would hold about 26. On another draw of test advertisers that 136 could sit anywhere from about 123 to 150.",
+          "Top 100: about 76. Top 400: about 220. Top 800: about 338, nearly two thirds of all churners.",
+          "Equal list size: the model's top 711 hold about 321 churners against the rule's 246. This is the comparison that counts.",
+          "Ten groups of 400: the top group churns at about 55%, the second at about 30%, the bottom one at under 1%."
+        ],
+        "gate": [
+          "Model and rule compared at the same list size, on the same rows.",
+          "A random-list figure beside every top-K count.",
+          "Ten groups of equal size, with churn rate falling from the top group to the bottom."
+        ]
+      },
+      {
+        "title": "Can you trust the percentage?",
+        "brief": "Same pipeline, same test rows, no refit. Check whether the predicted probabilities can be read as percentages. Group the test advertisers by predicted churn probability into these buckets: 0 to 5%, 5 to 10%, 10 to 20%, 20 to 30%, 30 to 40%, 40 to 50%, 50 to 70% and 70 to 100%. For each bucket print the number of advertisers, the average predicted probability and the share that actually churned. Add one line for all test rows together, and one line for the training rows, where predicted and actual should match. Do not recalibrate or adjust the scores; I only want to see the table.",
+        "expect": [
+          "Every bucket runs low in the course's run. The 20 to 30% bucket holds about 290 advertisers, predicted about 25%, and about 33% of them churned.",
+          "Lowest bucket: about 2,000 advertisers, predicted about 2%, actual about 2.5%. Highest: about 43 advertisers, predicted about 80%, actual about 91%.",
+          "All test rows: average predicted about 10.9%, actual about 13.2%.",
+          "Training rows: predicted and actual both about 11.1%.",
+          "Why: the model learned from months with less churn than the months it is tested on. The ranking is intact; the percentages are a little low."
+        ],
+        "gate": [
+          "The number of advertisers in every bucket, so thin buckets can be discounted.",
+          "Bucket counts that add up to 4,000: the table is on the test months.",
+          "The overall test line beside the training line, with nothing recalibrated."
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "lab",
+    "id": "l3",
+    "after": 4,
+    "title": "Catch the leak, then validate honestly",
+    "blurb": "A score that is too good, the column behind it, and settings chosen without touching the test months.",
+    "setup": "The question: the assistant comes back with a churn model that looks brilliant; is it? You give it advertisers_with_trap.csv, the table you know plus one extra column, and work through five stages. At the end you have the column that knows the future, the honest score without it, and a comparison of more flexible models whose settings were chosen on the training months alone.",
+    "files": [{"name": "advertisers_with_trap.csv", "href": "data/advertisers_with_trap.csv"}],
+    "steps": [
+      {
+        "title": "Fit on every column, get the too-good score",
+        "brief": "Attached is advertisers_with_trap.csv: simulated, one row per advertiser. Fit a logistic regression in one pipeline to predict churned_next_60d: train on snapshot months Jan to Mar, leave Apr out, test on May and Jun. As features use every column that describes the advertiser: all columns except advertiser_id, snapshot_month and the four outcome columns (hit_cpa_goal, spend_next_8w, adopted_video_next_60d, churned_next_60d). Take the log of spend_8w, fill empty cpa_vs_goal with the training median, standardise the continuous columns, turn vertical into yes/no columns; no class re-weighting. Print rows and churn rate for train and test, the feature list with its count, AUC on training and on test rows, the four counts at cut-off 0.5 on the test rows, and how many of the 200 highest test scores really churned.",
+        "expect": [
+          "18 features: the 17 you know plus days_since_last_spend.",
+          "Test AUC about 0.97, with the training score close to it.",
+          "All 200 of the top 200 really churned.",
+          "At 0.5: about 439 flagged and about 428 of them churners. Precision about 97%, recall about 81%.",
+          "For scale, the hand rule finds 246 churners in 711 flags. A jump this large is a finding to investigate, not a result to report."
+        ],
+        "gate": [
+          "The full feature list, name by name, with its count.",
+          "Train and test rows by month (6,000 and 4,000), with both AUCs.",
+          "The top-200 count and the four counts are labelled as test months."
+        ]
+      },
+      {
+        "title": "Find what the model leans on",
+        "brief": "Do not change the model. I think this result is too good, so show me what it relies on. On the test months, compute permutation importance for every feature: shuffle one column at a time and report how far the test AUC falls, sorted from largest to smallest. For the five columns at the top, print the median, minimum and maximum for advertisers who churned and for advertisers who stayed, side by side. Then, for each of those five, say whether its value could have been known on the snapshot date, given that churn means no spend in the 60 days after the snapshot. Flag any column whose values only make sense after that window.",
+        "expect": [
+          "days_since_last_spend sits far above every other column: shuffling it costs many times more than shuffling spend_trend, the next one down.",
+          "Its typical value is about 86 days for advertisers who churned and about 3 for those who stayed (averages about 76 and 5).",
+          "Every advertiser here spent in the four weeks before the snapshot (spend_trend is above zero), so 86 days since the last spend cannot have been measured on the snapshot date. It was read after the 60-day window closed: the outcome in disguise.",
+          "The assistant cannot know when a column was recorded; it can only show you the values. The time-travel test is yours: could this have been computed on the snapshot date?"
+        ],
+        "gate": [
+          "An importance table with every feature, sorted, measured on the test months.",
+          "Churned and stayed side by side for the top columns.",
+          "One column named as not knowable on the snapshot date, with the reason in a sentence."
+        ]
+      },
+      {
+        "title": "Remove it and re-score",
+        "brief": "Remove days_since_last_spend from the features and change nothing else: same pipeline, same training months, same test months. Print a before-and-after table on the test months, one line for the model with the column and one without: number of features, AUC on training rows, AUC on test rows, churners in the top 200, and the four counts at cut-off 0.5 with precision and recall. Add my baseline on the same rows: the rule spend_trend strictly below 0.7 with its flagged count and churners, beside the churners in the honest model's list of the same size. Confirm that no row was dropped.",
+        "expect": [
+          "Test AUC falls from about 0.97 to about 0.845; the training score is about 0.85.",
+          "Top 200: about 136 churners instead of 200.",
+          "At 0.5: about 141 flagged and about 104 right, against about 439 and 428 with the column.",
+          "Still better than the rule at equal size: about 321 churners in the top 711 against the rule's 246.",
+          "The honest model is the less impressive one. On the day you score, the removed column would not exist yet."
+        ],
+        "gate": [
+          "With and without the column on the same 4,000 test rows.",
+          "A feature count of 17, with days_since_last_spend gone from the list.",
+          "The rule beside the honest model at the same list size."
+        ]
+      },
+      {
+        "title": "Choose a setting on training months only",
+        "brief": "Now try a more flexible model without touching the test months. Use only the training months (Jan to Mar, 6,000 rows) and the 17 honest features. Run five-fold cross-validation with shuffled folds, which is safe here because every row is a different advertiser, and refit all preparation inside each fold. First the logistic regression pipeline: print the five validation AUCs and their mean. Then a single decision tree at depths 1, 2, 3, 4, 5, 6, 8, 10, 15 and 25: for each depth print the mean AUC on the training folds beside the mean AUC on the validation folds. Name the depth with the best validation score. Do not score anything on May or Jun in this stage, and say so in the output.",
+        "expect": [
+          "Logistic regression: five validation scores spread from roughly 0.82 to 0.87, mean about 0.84. That spread is your ruler for what counts as a difference.",
+          "The tree's score on its own training folds climbs with depth all the way to 1.0.",
+          "Its validation score starts near 0.65 at depth 1, peaks at a shallow depth, somewhere from 3 to 6, at about 0.77, then falls to around 0.6 for the deepest trees.",
+          "Which shallow depth wins can change with the shuffle: the gaps between neighbouring depths are smaller than the spread across folds."
+        ],
+        "gate": [
+          "Training-fold and validation-fold scores side by side for every depth.",
+          "All five fold scores for the logistic regression, not only their mean.",
+          "A plain statement that no May or June row was scored in this stage."
+        ]
+      },
+      {
+        "title": "Open the test months once",
+        "brief": "Final comparison, run once. Fit four models on all the training months (Jan to Mar) with the 17 honest features, then score the test months (May and Jun): the logistic regression pipeline; a decision tree at the depth chosen by cross-validation; a random forest of 300 trees with at least 5 advertisers per leaf; and gradient boosting with depth 4, 200 rounds and learning rate 0.05. Print one table: model, settings, AUC on the training rows, AUC on the test rows, churners in the top 200. Add a baseline line: a random ordering, with the number of churners a random 200 would hold. Do not change any setting after seeing these numbers.",
+        "expect": [
+          "Logistic regression: about 0.85 on training rows, about 0.845 on test, about 136 churners in the top 200. A random 200 would hold about 26.",
+          "Tree at a shallow depth: about 0.77 on test, well below the weighted sum.",
+          "Random forest: about 0.98 on its own training rows and about 0.83 on test, with about 126 in the top 200.",
+          "Gradient boosting at these settings: about 0.94 on training rows and about 0.83 on test, with about 124 in the top 200.",
+          "The flexible models memorise more and rank slightly worse here. That is a property of how this simulated table was built, not a rule: on your own data, measure."
+        ],
+        "gate": [
+          "Training and test AUC side by side for all four models.",
+          "The same 4,000 test rows behind every line, with the baseline in the table.",
+          "The settings printed match the ones fixed before this run."
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "lab",
+    "id": "l4",
+    "after": 5,
+    "title": "A call list, and a gap that is not a cause",
+    "blurb": "Size a call list from costs instead of a default cut-off, then report a gap between groups without calling it an effect.",
+    "setup": "Two questions on advertisers.csv. How many advertisers should the retention team call, given what a call costs and what a saved advertiser is worth; and what can you responsibly say about a practice whose users hit their CPA goal more often? At the end you have a call list sized by costs, and one gap reported twice, naive and adjusted, with the reason neither is a causal effect.",
+    "files": [{"name": "advertisers.csv", "href": "data/advertisers.csv"}],
+    "steps": [
+      {
+        "title": "Score, then find the break-even",
+        "brief": "Attached is advertisers.csv: simulated, one row per advertiser. Fit a logistic regression pipeline to predict churned_next_60d: train on snapshot months Jan to Mar, leave Apr out, test on May and Jun. Features: the 17 columns from vertical to payment_failures_8w in file order, never the ID, the snapshot month or an outcome column. Take the log of spend_8w, fill empty cpa_vs_goal with the training median, standardise continuous columns; no class re-weighting. Then use these hypothetical numbers: a retention call costs 30 dollars, a saved advertiser is worth 1,500 dollars, and a call saves 1 in 5 of the churners it reaches. Print train and test AUC, the break-even churn probability with its formula, and on the test months how many advertisers score at or above it and at or above 0.5, with the churners in each group.",
+        "expect": [
+          "Test AUC about 0.845 with about 0.85 on the training rows: the same model as before, on the same rows.",
+          "Break-even probability 0.10: cost divided by value times save rate, 30 over 300.",
+          "About 1,300 test advertisers score at or above 0.10 (1,311 in the course's run), and they include about 413 of the 527 churners.",
+          "At the default 0.5: about 141 advertisers, about 104 of them churners.",
+          "The rule is about the next advertiser down the list: call while their own probability is above 10%, whatever the average hit rate of the list."
+        ],
+        "gate": [
+          "The three assumptions and the formula printed, labelled as hypothetical.",
+          "Counts at both cut-offs on the 4,000 test rows, with the churners in each.",
+          "Train and test months named, with AUC on both."
+        ]
+      },
+      {
+        "title": "Value the lists",
+        "brief": "Same model, same test rows, no refit. Value each call list using what actually happened in the test months: every real churner on the list is worth 1,500 times 0.2, so 300 dollars, and every call costs 30. Print a table for: the break-even list (score at or above 0.10), the default list (at or above 0.5), calling all 4,000, and the top 100, 200, 400, 800 and 1,600 by score. For each give advertisers called, churners reached, net value, and the net value of a random list of the same size. Then print the average predicted probability beside the actual churn rate on the test rows. Finally set aside a random 10% of the break-even list as a holdout that nobody calls, and print its size. State which numbers are assumptions.",
+        "expect": [
+          "Break-even list: about 1,311 called, about 413 churners reached, net value about 84,600 dollars. Anything from 83,500 to 85,500 is the same answer.",
+          "Default 0.5 list: about 141 called, net value about 27,000 dollars. Under these hypothetical costs, the list sized by costs is worth roughly three times as much.",
+          "Calling everyone: 38,100 dollars. Top 400: about 54,000, where a random 400 would net about 3,800. Top 1,600: about 84,900.",
+          "The curve is nearly flat from about 1,300 to 1,600 calls, so the exact peak means little: in the course's run the best list in hindsight was 1,271 calls, about 85,200 dollars.",
+          "Average predicted about 10.9% against 13.2% actual: the percentages run low, and here they are multiplied by money. And the model predicts who leaves, not who can be persuaded."
+        ],
+        "gate": [
+          "Called, churners reached and net value for every list, on actual test-month outcomes, with a random list of the same size beside each.",
+          "The three cost assumptions labelled as assumptions, and predicted beside actual churn.",
+          "The holdout: how many names were held back, and that they were drawn at random."
+        ]
+      },
+      {
+        "title": "The naive gap",
+        "brief": "New question, same file, no model. Among advertisers with conversion tracking (has_conversion_tracking = 1, all six months), compare how often hit_cpa_goal is 1 for those who use a practice and those who do not. Do it for two practices: uses_auto_bidding and had_optimisation_review. For each print the number of advertisers and the hit rate in both groups, the gap in percentage points and a 95% interval for the gap. First print how many advertisers are excluded because they have no tracking, and the churn rate of the excluded and of the included. Call each result an observed gap. Do not write that a practice improves, drives or causes anything.",
+        "expect": [
+          "7,016 advertisers have tracking and about 66% of them hit their goal. 4,984 are excluded, and they differ: about 18% of them churn against about 7% of the included.",
+          "Auto-bidding: about 73% hit their goal with it (4,240 advertisers) against 54% without (2,776). A gap of about 19 points, interval roughly 17 to 22.",
+          "Optimisation review: about 47% with a review (1,798) against 72% without (5,218). A gap of about minus 25 points, interval roughly minus 28 to minus 23.",
+          "Both gaps are far outside noise. That tells you the difference is real, not that the practice produced it."
+        ],
+        "gate": [
+          "Group sizes and an interval beside each gap.",
+          "The excluded advertisers counted, with how they differ.",
+          "The word observed on each result, and no causal verb anywhere in the output."
+        ]
+      },
+      {
+        "title": "The adjusted gap, and the wording",
+        "brief": "Same tracked advertisers. Estimate the adjusted gap for uses_auto_bidding and for had_optimisation_review. Fit one logistic regression of hit_cpa_goal on five practice flags (uses_auto_bidding, had_optimisation_review, managed, creatives_per_campaign of 4 or more, creative_refresh_days of 14 or less) plus background columns: tenure_weeks, log of spend_8w, campaigns_active and vertical. Do not adjust for cpa_vs_goal, spend_trend or active_days_28: a practice may itself change those. For each practice, set its flag to 1 for everyone and then to 0 for everyone, and report the difference in average predicted hit rate, in points, beside the naive gap. Label the results adjusted, list what was adjusted for, and write one sentence on what this still cannot rule out.",
+        "expect": [
+          "Auto-bidding: adjusted gap about 15 points, down from about 19. Smaller, and still not an effect.",
+          "Optimisation review: adjusted about minus 25.5, against a naive minus 25.3. Adjusting changed nothing.",
+          "What the simulation knows and no real table can tell you: auto-bidding truly adds about 11 points, and a review adds about 9. The review gap has the wrong sign.",
+          "Why: a hidden trait drives both good practices and good results, and reviews go to accounts already struggling for reasons the table cannot see. No column holds either.",
+          "Honest wording: 'is associated with', evidence tier 'adjusted'. To claim an effect you need the next tier: a randomised test."
+        ],
+        "gate": [
+          "Naive and adjusted side by side for each practice, on the same 7,016 advertisers.",
+          "The list of columns adjusted for, with nothing on it that the practice itself could change.",
+          "The label adjusted, and a stated limit: unmeasured differences between the groups remain."
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "lab",
+    "id": "l5",
+    "after": 6,
+    "title": "A forecast with a backtest",
+    "blurb": "Backtest two naive forecasts and a calendar model, then score an alert rule against incidents planted in the file.",
+    "setup": "Finance wants the next 28 days of platform spend, and operations wants an alert when a day looks wrong. You give daily_spend.csv, one row per day, to your assistant and work through five stages. At the end you have naive forecasts and a calendar model compared by backtest, and two alert rules scored against incidents that were planted in the file.",
+    "files": [{"name": "daily_spend.csv", "href": "data/daily_spend.csv"}],
+    "steps": [
+      {
+        "title": "Plot and describe the rhythm",
+        "brief": "Attached is daily_spend.csv: simulated daily ad spend for a whole platform, with columns date and spend. No forecast yet. Print the number of rows, the first and last date, and whether any date is missing or duplicated. Plot the whole series, and plot the last twelve weeks on their own. Then describe the rhythm with numbers: average daily spend in 2024 and in 2025 and the growth between them; average spend by day of the week as a ratio to the overall average; average spend by month of 2025 as a ratio to the 2025 average. List the calendar events you would expect to matter for an advertising platform, and show the days around each one.",
+        "expect": [
+          "851 days, 1 January 2024 to 30 April 2026, none missing and none duplicated.",
+          "Average daily spend about 104,000 dollars in 2024 and about 120,000 in 2025: growth of about 15%.",
+          "Monday to Friday run 4 to 10% above the overall average. Saturday is about 15% below it and Sunday about 19% below.",
+          "November is the peak month, about 24% above the 2025 average. January to August sit below that average, March lowest at about 11% below.",
+          "The week around the fourth Friday of November, this simulation's Black Friday week, stands above its neighbours; 24 to 26 December and 1 January fall below theirs."
+        ],
+        "gate": [
+          "Row count, first and last date, and a statement that no day is missing.",
+          "Weekday and month ratios as numbers, not only as a chart.",
+          "Calendar events named, with their dates."
+        ]
+      },
+      {
+        "title": "Two seasonal baselines, backtested",
+        "brief": "Backtest three naive forecasts on daily_spend.csv. Make 12 forecasts, one starting on the first day of each month from May 2025 to April 2026. Each covers the next 28 days and may use only data from before its start date, with no actual values from inside the 28 days. Methods: (a) the last value before the start date, repeated; (b) the last observed week repeated, so each day gets the value of the same weekday in the week before the start date; (c) for each weekday, the average of its last four occurrences before the start date. Print the 12 start dates with the last training date and the forecast window of each, then MAPE per method, overall and by week ahead (1 to 4).",
+        "expect": [
+          "Twelve start dates, 1 May 2025 to 1 April 2026, each with training data that ends the day before.",
+          "Last value repeated: off by about 15% a day on average.",
+          "Last week repeated: about 7%. The four-week average of the same weekday: a little better, just under 7%.",
+          "Both seasonal methods get worse further out: about 5% in the first week, about 9% in the fourth.",
+          "These are a little higher than the lesson's figures (about 14% and 6%), which came from a copy of the series without the seven planted incidents. Your file has them."
+        ],
+        "gate": [
+          "The 12 forecast start dates, each with a last training date before its window.",
+          "All three methods scored on the same 12 windows of 28 days.",
+          "Error by week ahead, not only one overall number."
+        ]
+      },
+      {
+        "title": "A calendar model against the baselines",
+        "brief": "Now a model, judged by the same backtest: the same 12 start dates, 28 days each, fitted only on data before each start date. Fit a linear regression on the log of spend with: a straight-line time trend; day of the week; three sine and cosine pairs over the year; and three event flags: Black Friday week (the fourth Friday of November and the three days either side), 24 to 26 December, and 1 January. Print MAPE overall and by week ahead beside the three naive methods, and the error for each of the 12 windows. Run it once more without the event flags. Then fit the full model on the whole file and print what it learned, in percent: yearly growth, Saturday and Sunday against Monday, and each event. Do not score on randomly held-out days.",
+        "expect": [
+          "The model: about 3.7% error a day, roughly half the best naive method at about 6.8%. Anything from 3.5% to 4% is the same answer.",
+          "It holds up further out: about 2.4% in week one and about 4% in weeks two to four, where the naive methods climb to 9%.",
+          "Without the event flags: about 4.2%. The calendar is knowledge you supply.",
+          "What it learned: growth of about 15% a year; Saturday about 18% and Sunday about 22% below Monday; Black Friday week about 22% up; Christmas about 19% down; New Year's Day about 26% down.",
+          "On a copy without the planted incidents this model scores about 2.8%. It has the same shape as the simulation that produced the series, so read it as a best case: real series do worse."
+        ],
+        "gate": [
+          "The model and the naive methods in one table, on the same 12 windows.",
+          "A last training date before every forecast window.",
+          "Error for each of the 12 windows, so one bad month cannot hide in the average."
+        ]
+      },
+      {
+        "title": "Two alert rules, and how often they fire",
+        "brief": "Now alerts, for the days from 4 August 2025 to 30 April 2026, using earlier days as history. Rule A: alert when spend moves more than 15% against the day before. Rule B: expected spend is the median of the same weekday over the previous six weeks, and the deviation is actual divided by expected, minus one. Compare today's deviation with the previous 56 days of deviations: subtract their median and divide by 1.4826 times their median absolute deviation; alert when the result is beyond plus or minus 3. For each rule print the days checked, the number of alert days, alerts by day of the week, and every alert date with actual, expected and deviation. Do not tune anything.",
+        "expect": [
+          "270 days checked.",
+          "Rule A fires on 89 days, about one day in three. About 83% of its alerts fall on a Saturday or a Monday: it is detecting the weekend.",
+          "Rule B fires on 17 days, in about 12 separate runs of days.",
+          "A typical day sits about 5% away from its same-weekday expectation, so a fixed 15% line and a band built from normal variation are measuring different things.",
+          "If the assistant swaps in an ordinary standard deviation, the band widens and rule B fires on fewer days. Send it back: the brief asked for the median version."
+        ],
+        "gate": [
+          "First and last date of the window, and 270 days checked for both rules.",
+          "Alert days counted per rule, with every date listed.",
+          "For rule B, actual and expected beside each alert."
+        ]
+      },
+      {
+        "title": "Score the alerts against planted incidents",
+        "brief": "This file is simulated and has seven planted incidents. Start dates and lengths: 2025-09-16 (1 day), 2025-10-22 (2 days), 2025-12-09 (1), 2026-01-20 (5), 2026-02-28 (1), 2026-03-17 (1), 2026-04-08 (2), so 13 incident days in all. Using the alert dates from the previous stage, score rule A and rule B: incidents caught (at least one alert on one of its days), incidents missed and which, alert days that fall on no incident, and precision by day. Of the false alert days, say how many fall in Black Friday week, on 24 to 26 December or on 1 January. Then rerun rule B with thresholds 2, 2.5, 3.5 and 4 and print the same table.",
+        "expect": [
+          "Rule A: 6 of 7 incidents caught, but 83 of its 89 alert days are false, a precision of about 7%. It misses the weekend spike.",
+          "Rule B at 3: 6 of 7 caught with 17 alert days. 9 are false, and 7 of those 9 fall on known holidays. It misses the five-day slow leak.",
+          "Loosen to 2: all 7 caught, 32 alert days, 23 of them false. Tighten to 4: 8 alert days, 1 false, 5 of 7 caught.",
+          "Fewer alerts, more misses: precision and recall again. The threshold is a decision about what a miss costs against what a false alarm costs.",
+          "In the lesson, a detector that expects what the forecast expected caught all seven with 10 alert days and no false alarm. That is a best case in a stable simulated world."
+        ],
+        "gate": [
+          "Caught, missed and false alert days for both rules, on the same 270 days.",
+          "The missed incidents named.",
+          "A table by threshold in which alert days fall as misses rise."
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,336 @@
+{
+  "id": "4-3",
+  "module": 4,
+  "title": "Forests and boosting",
+  "subtitle": "When does a model built from many trees beat a simple weighted sum?",
+  "goal": "After this lesson you can ask for a simple model and a many-tree model on the same test rows, and decide between them by comparing their gap with the noise.",
+  "predict": {
+    "q": "A simple weighted-sum model and a far more flexible model built from a hundred or more small trees are run on two questions from the same advertiser table: who will churn, and who will start using video ads. Which model ranks better?",
+    "options": [
+      "The flexible model, on both questions",
+      "The simple model, on both questions",
+      "One each",
+      "Neither: they tie on both questions"
+    ],
+    "answer": 2,
+    "reveal": "One each: the simple model is ahead on churn by 0.009 AUC, the flexible one on video by 0.040. The lesson shows why you cannot tell in advance, and how to judge each gap."
+  },
+  "segments": [
+    {
+      "narration": "Monday brings two requests. Retention wants the churn list. The video team wants a list of advertisers likely to start using the new video format in the next 60 days. Same table, same 17 columns, same two candidates: the weighted sum you already know, and a far more flexible model built from many trees. On one question the simple model finishes narrowly ahead. On the other it loses clearly. Nothing in the table tells you beforehand which is which. The same goes for any yes-or-no model, an invalid-traffic filter included: whether flexibility pays depends on the shape of the pattern, so you run both and measure.",
+      "visual": {
+        "type": "title",
+        "kicker": "Module 4 · Lesson 3",
+        "title": "Forests and boosting",
+        "sub": "Two questions, one table, two different winners"
+      }
+    },
+    {
+      "narration": "One shallow tree is coarse: eight leaves, eight possible scores. One deep tree memorises. A forest escapes by numbers. [[1]] Give each tree its own random resample of the training advertisers, and let it consider only a random few columns at each split, so no two trees are alike. [[2]] Grow 300 of them, deep. Each overfits, but to different accidents. [[3]] Then average their scores. The accidents differ from tree to tree, so they mostly cancel. The pattern is shared, so it survives. On churn, that lifts the best single tree's 0.77 to about 0.83.",
+      "visual": {
+        "type": "flow",
+        "title": "A random forest: many deep trees, averaged",
+        "steps": [
+          {"label": "Resample", "sub": "each tree: its own random draw of rows, a random few columns per split"},
+          {"label": "Grow deep", "sub": "300 trees, each overfitting to different accidents"},
+          {"label": "Average", "sub": "accidents cancel, the shared pattern stays"}
+        ]
+      }
+    },
+    {
+      "narration": "Boosting takes the opposite road: small trees, built one after another. [[1]] The first small tree gives a rough score. [[2]] Then the method looks at where that score is still wrong. [[3]] The next small tree is fitted to those misses, and a fraction of its correction is added in. [[4]] Repeat, a hundred rounds or more. The final score is the sum of many small corrections. It is powerful, and it has settings to choose: how deep each tree is, how many rounds, how big each step.",
+      "visual": {
+        "type": "flow",
+        "title": "Gradient boosting: small trees, one after another",
+        "steps": [
+          {"label": "Small tree", "sub": "a rough first score"},
+          {"label": "Find the misses", "sub": "where is the score still wrong?"},
+          {"label": "Next small tree", "sub": "fitted to the misses, added in a small step (the learning rate)"},
+          {"label": "Repeat", "sub": "100 rounds or more"}
+        ]
+      }
+    },
+    {
+      "narration": "So, churn. [[1]] Take boosting on default-looking settings, with trees four levels deep. It scores about 0.94 on its training rows and 0.83 on new advertisers. You know that signature: memorising. [[2]] Tuned by cross-validation on the training months, it prefers trees just two levels deep, and most of the gap closes. It lands at 0.836. [[3]] The forest is in the same neighbourhood. [[4]] And the weighted sum sits at 0.845. All that machinery finishes nine thousandths behind.",
+      "visual": {
+        "type": "table",
+        "title": "Churn: training rows against new advertisers (AUC)",
+        "columns": ["Model", "Training", "Test"],
+        "rows": [
+          ["Boosting, untuned: depth 4, 200 rounds", "0.938", "0.827"],
+          ["Boosting, tuned: depth 2, 100 rounds", "0.874", "0.836"],
+          ["Forest, 300 trees", "0.982", "0.831"],
+          ["Logistic regression, 22 weights", "0.849", "0.845"]
+        ],
+        "note": "Tuned: 16 combinations of settings compared by 5-fold cross-validation on the training months only."
+      }
+    },
+    {
+      "narration": "Now the video question. [[1]] The single three-level tree was far behind on churn. [[2]] On video it matches the weighted sum. [[3]] The forest pulls ahead. [[4]] Tuned boosting reaches about 0.90 against 0.86, and this time cross-validation chose deeper trees. Why the reversal? In this simulation, adoption was built from thresholds and combinations: many creatives and a good click rate, a big spender who is also hitting goal. A weighted sum cannot say \"and\". Each column pushes at its own steady rate, whatever the others are doing. Trees say \"and\" for a living: a split inside a branch is exactly that. [[5]] Give the weighted sum three hand-built combination columns, and it reaches 0.88. That closes about half the gap.",
+      "visual": {
+        "type": "table",
+        "title": "Two questions, same table, same models",
+        "columns": ["Model", "Churn AUC", "Churn top 200", "Video AUC", "Video top 200"],
+        "rows": [
+          ["Tree, depth 3", "0.761", "111", "0.864", "152"],
+          ["Logistic regression", "0.845", "136", "0.861", "153"],
+          ["Forest, 300 trees", "0.831", "126", "0.895", "184"],
+          ["Boosting, tuned", "0.836", "132", "0.901", "185"],
+          ["Logistic + 3 combination flags", "–", "–", "0.882", "171"]
+        ],
+        "note": "Top 200: churners or adopters among the 200 highest scores (a random 200 holds about 26 or 38). The churn tree is lesson 3-3's: depth 3, at least 100 advertisers per leaf; with no minimum, single trees peaked at 0.769. A combination that matters together is called an interaction."
+      }
+    },
+    {
+      "narration": "Hold each gap against its own noise: an interval on the gap itself, measured on the same test rows, never one model's interval laid over the other's. [[1]] On churn the simple model leads by nine thousandths, and the interval on that lead only just clears zero. Probably real, and tiny. Now the team's units, the 200 highest scores. The simple model's list holds 136 churners and the boosted one 132. Nobody has put an interval on that difference of four, so call it unsettled. Either way, four names would not change the retention team's week. [[2]] On video the flexible model leads by about 0.04, and its interval sits far from zero. That one is settled. Its top 200 holds 185 adopters. The weighted sum's holds 153.",
+      "visual": {
+        "type": "compare",
+        "title": "Each gap against its own interval (95%)",
+        "left": {
+          "label": "Churn: logistic regression ahead by",
+          "value": "0.009",
+          "sub": "interval on the gap 0.002 to 0.015 · top 200: 136 against 132 churners, no interval on that difference of 4"
+        },
+        "right": {
+          "label": "Video: boosting ahead by",
+          "value": "0.040",
+          "sub": "interval on the gap 0.031 to 0.049 · top 200: 185 against 153 adopters"
+        }
+      }
+    },
+    {
+      "narration": "[[1]] Why did the simple model take churn? Because of how this simulated world was built. Churn in it is close to a tidy weighted sum, each column nudging risk steadily one way. [[2]] Video was built the other way. Those are facts about the simulation, not about churn or video. On your data it could go either way. [[3]] One more source of noise. A small neural network, a flexible model from module seven, starts its training from random numbers. Trained on churn six times, its test score ranged from about 0.81 to 0.835. [[4]] No better than the weighted sum, and a spread between its own runs wider than the whole churn gap. Training has luck in it too. The interval earlier covered only the luck of the test rows.",
+      "visual": {
+        "type": "bullets",
+        "title": "What decided it, and one more source of noise",
+        "items": [
+          "Churn in this simulation: close to a tidy weighted sum",
+          "Video in this simulation: thresholds and combinations",
+          "Small neural network on churn, 6 runs: test AUC 0.808 to 0.835",
+          "Spread between runs: wider than the 0.009 churn gap"
+        ]
+      }
+    },
+    {
+      "narration": "Brief and audit. [[1]] Ask for a simple model and a boosted one, scored on the same test rows. If the assistant hands you only the fancy one, send it back. [[2]] Boosted settings chosen by cross-validation on the training months, with the chosen depth reported, since that depth hints at the shape of the pattern. [[3]] Training and test scores for each. [[4]] The gap between them, with an interval. [[5]] And the gap in the decision's units: how many more churners in the list the team will work. Pay for complexity, which costs you readable weights, only when the gap is clear of the noise and big enough to matter.",
+      "visual": {
+        "type": "bullets",
+        "title": "Brief and audit",
+        "items": [
+          "A simple model and a boosted one, same test rows",
+          "Boosted settings chosen by cross-validation; chosen depth reported",
+          "Training and test score for each",
+          "The gap between them, with an interval",
+          "The gap in the decision's units: top-K counts"
+        ]
+      }
+    },
+    {
+      "narration": "So when a model built from many trees arrives, you ask for the simple one beside it on the same test rows, and pay for complexity only if the gap is real and worth something. Next, the video list again, and what three hand-built columns did to it.",
+      "visual": {
+        "type": "quote",
+        "text": "Run both. Compare the gap with the noise. Pay for complexity only when it buys something.",
+        "sub": "Which model wins on churn here is a property of how this simulated world was built"
+      }
+    }
+  ],
+  "takeaways": [
+    "A forest averages many deep trees; boosting adds up many small ones, each fitted to what is still wrong.",
+    "Flexible models pull ahead when the pattern is thresholds and combinations, and you cannot know that in advance.",
+    "Run both on the same rows, hold the gap against an interval on the gap itself, and pay for complexity only when it buys something."
+  ],
+  "quiz": [
+    {
+      "id": "4-3-q1",
+      "concept": "compare the gap with the noise",
+      "domain": "course",
+      "q": "The assistant's churn report says: 'Logistic regression 0.845, tuned boosting 0.836. Logistic regression is the better model.' The interval on the difference runs from 0.002 to 0.015, and the two top-200 lists hold 136 and 132 churners. What is the fairest summary for the retention team?",
+      "options": [
+        "The interval excludes zero, so the simple model is clearly stronger; the top-200 counts add nothing to that",
+        "Narrowly ahead on ranking; four churners in 200 would not change the calls, so take the readable model",
+        "Each model's own AUC interval is far wider than 0.009, so an interval on the gap that excludes zero must be a mistake",
+        "Boosting lost on this table, so it can be left out when the video team's list is built next week"
+      ],
+      "answer": 1,
+      "why": "The interval on the difference clears zero, so the lead is probably real on these test advertisers, and it is tiny: in the team's units, four churners in 200, a difference with no interval of its own and too small to change the calls. So complexity buys nothing here and the readable model is the sensible pick. Each model's own interval is the wrong ruler: both were scored on the same advertisers, so only an interval on the difference between them counts. And one table's loser can win the next question, which is why you run both again."
+    },
+    {
+      "id": "4-3-q2",
+      "concept": "always run the simple model too",
+      "domain": "other",
+      "q": "For an invalid-traffic detector, the assistant reports a single model: 'Gradient boosting, test AUC 0.93, state of the art.' What do you ask for before accepting it?",
+      "options": [
+        "A deeper boosted model, to see whether 0.93 can be pushed higher",
+        "Evidence that other teams use boosting for invalid traffic, since that makes it the safe choice",
+        "The same boosted model re-run with a different random seed",
+        "A simple model on the same test rows, with the gap and its interval"
+      ],
+      "answer": 3,
+      "why": "A score means little without the simpler alternative beside it: if a weighted sum scores 0.92, the complexity bought almost nothing, and if it scores 0.80 it bought a lot. 'Boosting is strongest' is the rule this lesson refuses, because which family wins depends on the shape of the pattern, and that has to be measured."
+    },
+    {
+      "id": "4-3-q3",
+      "concept": "untuned flexible models memorise",
+      "domain": "other",
+      "q": "On a lead-scoring task the assistant reports: 'Boosting (depth 6, 500 rounds, default choices): training AUC 0.99, test 0.81. Logistic regression: training 0.79, test 0.80. Boosting wins.' What is the most useful next request?",
+      "options": [
+        "Tune the boosted model by cross-validation, then compare again with an interval",
+        "Ship the boosted model as it is, since 0.81 is higher than 0.80 on the same test rows",
+        "Ship logistic regression, since boosting's gap proves it is the worse model",
+        "Raise the number of rounds until the boosted training score reaches 1.0"
+      ],
+      "answer": 0,
+      "why": "A training score of 0.99 against 0.81 says the boosted model is memorising on settings nobody chose, so 0.81 is not yet its best, and a lead of 0.01 with no interval is not a win. Rejecting it outright is the opposite mistake: once tuned it may pull clearly ahead or fall behind, and only the measurement says which."
+    },
+    {
+      "id": "4-3-q4",
+      "concept": "combinations a weighted sum cannot express",
+      "domain": "course",
+      "q": "On the video question, logistic regression scores 0.861 and tuned boosting 0.901. A product manager needs a model she can explain to account managers. Which step is worth trying before accepting the less readable model?",
+      "options": [
+        "Train logistic regression for longer, so that it can catch up with the boosted model",
+        "Remove columns from both models until the two of them score the same",
+        "Add hand-built combination columns to logistic regression, then re-measure",
+        "Average the two models' scores and report the result as 0.881"
+      ],
+      "answer": 2,
+      "why": "A weighted sum cannot represent 'this and that' unless the combination is handed to it as a column; three such flags lifted it to 0.882 here, closing about half the gap. Training for longer does not help, because the limit is the model's shape, not its effort."
+    }
+  ],
+  "review": [
+    {
+      "concept": "run both and compare the gap with the noise",
+      "variants": [
+        {
+          "q": "For predicting creative fatigue, a weighted-sum model scores 0.780 and a boosted model 0.786 on the same test creatives. The 95% interval on the difference runs from −0.010 to +0.022. What do you conclude?",
+          "options": [
+            "Boosting is better: 0.786 is the higher of the two scores",
+            "A tie on this evidence, so the simpler model is the sensible pick",
+            "The weighted sum is better: simple models hold up better on new data",
+            "Neither is usable: a gap that small means both models are poor"
+          ],
+          "answer": 1,
+          "why": "The interval spans zero, so these test rows cannot say which model is ahead, and the readable model costs less to run and explain. 'Simple models hold up better' is a rule this evidence supports no more than 'boosting is better'."
+        },
+        {
+          "q": "For an upsell list, a boosted model leads a weighted sum by 0.05 AUC, with an interval from 0.04 to 0.06, and puts 40 more buyers into the top 300. The weighted sum is easier to explain. What is the reasonable call?",
+          "options": [
+            "The weighted sum: a simple model is always the safer choice when explaining matters",
+            "A tie: intervals are never precise enough to decide between models",
+            "Boosting: the gap is clear of the noise and large in the decision's units",
+            "Boosting: it is the stronger method on any table you give it"
+          ],
+          "answer": 2,
+          "why": "The gap is far outside its noise and worth 40 buyers on the list the team works, so here complexity buys something. The last option picks the same model for a reason that is false: on another question the simple model can come out ahead, which is why you measure."
+        },
+        {
+          "q": "A colleague says: 'On our churn table the simple model beat boosting, so on the new fraud project we can skip boosting and save the time.' What is the flaw?",
+          "options": [
+            "He has the rule backwards: on a new project the flexible model is the safer one to keep",
+            "Fraud is too rare an outcome for boosting to work at all",
+            "Boosting should only be skipped on tables under 10,000 rows",
+            "Which family wins depends on the pattern in each problem, so measure again"
+          ],
+          "answer": 3,
+          "why": "A simple model wins when the pattern is close to a weighted sum and loses when it is thresholds and combinations, and nothing in the churn result says which the fraud problem is. A rule about table size is no better: the two opposite results in this lesson came from the same table."
+        }
+      ]
+    },
+    {
+      "concept": "a weighted sum cannot express combinations; trees can",
+      "variants": [
+        {
+          "q": "In a subscription business, customers cancel mostly when two things coincide: a price rise and a support complaint in the same month. Either one alone changes little. Which statement is right?",
+          "options": [
+            "A weighted sum captures this as long as both columns are in the model",
+            "A weighted sum needs a combined column for this; tree models can find it unaided",
+            "No kind of model can capture this without a great deal more data",
+            "Only one shallow tree captures this; averaging many trees together blurs it away again"
+          ],
+          "answer": 1,
+          "why": "A weighted sum gives each column one steady push, so 'only when both happen' is outside its shape unless you hand it a column that is yes exactly when both are true. Trees split on one column inside a branch of another, which is how they express 'and'."
+        },
+        {
+          "q": "Cross-validation for a boosted lead-scoring model keeps choosing trees that are one level deep, so each tree asks a single question. What does that suggest about the pattern in the data?",
+          "options": [
+            "Each column matters mostly on its own, not in combination with others",
+            "The boosted model is broken and should be rebuilt from scratch",
+            "The table has too few rows for boosting to work properly",
+            "Deeper trees would have won if they had been given more rounds"
+          ],
+          "answer": 0,
+          "why": "A one-question tree has no branch to split inside, so it cannot express 'this and that'; if cross-validation prefers such trees, combinations are adding little. It is a clue, not proof, that a well-built simple model will be competitive, which you then measure."
+        },
+        {
+          "q": "Clicks are usually invalid when the click rate is very high and time on site is near zero; either one alone is common in honest traffic. A weighted sum with both columns scores 0.74. Boosting scores 0.88, and the interval on the gap runs from 0.11 to 0.17. What best explains the gap?",
+          "options": [
+            "Boosting has memorised the test rows, which inflates its score well beyond its real ability",
+            "The weighted sum was not trained for long enough to catch up",
+            "AUC is a measure that systematically favours tree-based models",
+            "The signal is a combination, which a weighted sum of the two columns cannot express"
+          ],
+          "answer": 3,
+          "why": "The signal lives in the two columns together, and a weighted sum can only add a steady push from each. Memorising cannot explain a lead on rows neither model saw; that is what the test set protects you from."
+        }
+      ]
+    }
+  ],
+  "drill": [
+    {
+      "q": "In a sentence each, how does a forest differ from boosting?",
+      "a": "A forest grows many deep trees on different random samples and averages them, so their individual mistakes cancel. Boosting grows small trees one after another, each fitted to what the earlier ones still get wrong."
+    },
+    {
+      "q": "A colleague asks which is the better model, boosting or a simple weighted sum. What is the honest answer?",
+      "a": "It depends on the shape of the pattern, which you cannot know beforehand. Run both on the same test rows and compare the gap with the noise, and pay for the complex one only if the gap is real and big enough to matter."
+    }
+  ],
+  "recall": {
+    "prompt": "Your manager asks: 'Why didn't you just use boosting? Everyone says it is the best.' Answer in 30 seconds, using the two questions from this lesson.",
+    "model_answer": "We ran a simple weighted sum and tuned boosting on two questions from the same table. On churn the simple model was narrowly ahead, by about 0.009 with an interval on that gap that only just clears zero, and the two top-200 lists were four churners apart, too few to change what the team does, so the readable model was the better buy. On video adoption, which depends on combinations of columns, boosting was clearly ahead, by 0.04, far outside the noise. Which one wins depends on the shape of the pattern, and the churn result in particular is a property of how the simulation was built, so the only rule is to run both and compare the gap with the noise."
+  },
+  "ask_assistant": "Fit two models on the same training rows and score both on the same held-out rows: a simple one ([logistic or linear regression]) and a gradient-boosted one. Choose the boosted model's tree depth, number of rounds and step size (learning rate) by cross-validation on the training rows only; print every combination tried with its score. For each model print training score, test [metric], test row count and [outcome] cases in the top [list size]. Print the difference in test [metric] with a 95% interval from resampling the same test rows (a paired bootstrap), and the difference in top-list counts with its interval. If the gap is small, refit from [several] seeds and print the range.",
+  "audit_checklist": [
+    "One table with the baseline, the simple model and the boosted model, each beside the number of test rows it was scored on; the counts match",
+    "Training score beside test score for each; a boosted model near 1.0 in training has probably not been tuned",
+    "The tuning table: every combination of settings tried, its cross-validation score on training rows, and the depth that won",
+    "An interval on the difference itself, not two separate intervals, and the same difference as a count in the top-K list"
+  ],
+  "transfer": [
+    "Lead scoring: does a boosted model put enough extra buyers in the sales team's top 100 to justify losing readable weights?",
+    "Invalid traffic: is the signal a combination, such as a high click rate together with almost no time on site, that a weighted sum would miss?",
+    "Spend prediction for finance: does a flexible model's smaller typical miss survive an interval on the difference?"
+  ],
+  "other_ways": [
+    {
+      "approach": "Keep the weighted sum and hand it combination columns",
+      "when": "When readability matters and you can name the combinations: three such flags closed about half the video gap."
+    },
+    {
+      "approach": "A single shallow tree",
+      "when": "When people must be able to read the rules aloud and a coarse ranking is enough: on video the depth-3 tree matched logistic regression (0.864 against 0.861)."
+    },
+    {
+      "approach": "A small neural network",
+      "when": "Not on this churn table: six runs ranged from 0.808 to 0.835, no better than the weighted sum and less stable. Its place in this course is text, in module 7."
+    }
+  ],
+  "glossary": [
+    {
+      "term": "random forest",
+      "def": "Many deep trees, each grown on its own random resample of rows with a random few columns per split, with their scores averaged."
+    },
+    {
+      "term": "gradient boosting",
+      "def": "Many small trees built in sequence, each fitted to what the trees before it still get wrong, with their corrections added up."
+    },
+    {
+      "term": "learning rate",
+      "def": "The boosting setting for how large a step each new tree's correction is allowed to take."
+    },
+    {
+      "term": "interaction",
+      "def": "A combination of columns that matters together, such as many creatives and a good click rate; trees can find one, a weighted sum has to be handed it."
+    }
+  ]
+}

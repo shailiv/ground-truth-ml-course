@@ -1,0 +1,64 @@
+[
+ {
+  "reviewer": "expert-4",
+  "lesson": "6-2",
+  "where": "quiz 6-2-q2, with seg5 narration and ask_assistant",
+  "quote": "Finance asks for next month's spend as 'just one number'. Your backtests show that actual spend fell within roughly 4 percent of the daily forecast on four days out of five.",
+  "kind": "misleading",
+  "severity": "medium",
+  "problem": "The only range the lesson builds is for one day's value (percentiles of daily percentage errors), yet the question, the opening ask and the transfer items hand it over with a monthly figure. A range for a total has to come from backtest errors of totals: daily misses partly cancel in a sum (or, after a level shift, do not), so the daily band is the wrong width for the month. Here it is about four times too wide, and nothing in the lesson says the band is per day only.",
+  "evidence": "forecast.interval.how: 10th and 90th percentiles of the regression's daily percentage errors, -0.0449 to +0.0381. forecast.backtest.methods.trend_plus_seasonality_regression.error_of_28_day_total_typical = 0.0097.",
+  "fix": "Add to seg5: 'That band is for a single day. For the month's total, build the range the same way from the backtests' 28-day totals; here the total typically misses by about 1 percent.' In q2 either ask about daily spend or quote a band measured on totals; add the totals band to ask_assistant."
+ },
+ {
+  "reviewer": "expert-4",
+  "lesson": "6-2",
+  "where": "quiz (all 4) and review (5 of 6 variants)",
+  "quote": "keyed option is the longest option in 9 of 10 questions",
+  "kind": "bad_question",
+  "severity": "medium",
+  "problem": "Picking the longest option scores 9 out of 10. In all four quiz questions the key is longer than every distractor by 19 to 37 characters, and it is the longest in five of six review variants.",
+  "evidence": "Option lengths, keyed first: q1 102 vs 83/80/76; q2 113 vs 76/73/70; q3 115 vs 89/87/83; q4 111 vs 75/74/71; review 1 v2 93 vs 69, v3 87 vs 56; review 2 v1 84 vs 74, v2 71 vs 53, v3 60 vs 50.",
+  "fix": "Balance option lengths as in module 7."
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "6-2",
+  "where": "whole lesson (seg2 to seg8)",
+  "quote": "One last rehearsal",
+  "kind": "lost",
+  "severity": "medium",
+  "problem": "Seven ideas in one sitting: shuffled against backtest, the rehearsal itself, error by distance, a range and its coverage, a level shift, trees that cannot follow a trend, scenarios. By seg6 I had stopped filing things. This is where I would stop for the day and not come back.",
+  "fix": "Split it: one lesson on the backtest and the range, one on what breaks a forecast (level shift, trees and trends, scenarios)."
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "6-2",
+  "where": "seg6 narration",
+  "quote": "But quick to recover is not the same as accurate.",
+  "kind": "ear",
+  "severity": "medium",
+  "problem": "The verdict flips twice in about 110 words (the short memory recovers fast; but it is less accurate; the damaged model still wins three of five months), over a three-line chart whose 4-week line is already at 9 percent in September, before the step, with no comment. Afterwards I could not say which method to use after a shift.",
+  "fix": "One claim per method and a stated conclusion; explain or remove the September and October bump."
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "6-2",
+  "where": "quiz 6-2-q3 why",
+  "quote": "The practical fix is to tell the model about the break, or refit from it.",
+  "kind": "not_usable",
+  "severity": "medium",
+  "problem": "The only actionable advice about a level shift sits in a quiz explanation. The narration and the brief stop at 'expect a long memory to adjust slowly'.",
+  "fix": "Put the fix in seg6 and add a line to the brief: 'if I name a break date, add a step from that date and re-run the backtest'."
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "6-2",
+  "where": "seg4 and seg9 narration (also 6-1 seg7, 6-3 seg5)",
+  "quote": "A best case, not a promise.",
+  "kind": "boring",
+  "severity": "low",
+  "problem": "This caveat gets a full segment in 6-1 and is then repeated almost word for word twice in 6-2 and again in 6-3. I agree with it and had stopped listening to it.",
+  "fix": "Say it once in 6-1; after that a short on-screen reminder is enough."
+ }
+]

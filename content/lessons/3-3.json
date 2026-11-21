@@ -1,0 +1,344 @@
+{
+  "id": "3-3",
+  "module": 3,
+  "title": "Decision trees",
+  "subtitle": "What does a model look like when it asks questions instead of adding up points?",
+  "goal": "After this lesson you can read a fitted decision tree path by path, and say when its coarseness matters.",
+  "predict": {
+    "q": "Your hand rule flags advertisers whose spend trend is below 0.7. An algorithm now builds its own flowchart of yes/no questions from all 17 columns, with no hints. What does it do with spend trend?",
+    "options": [
+      "Ignores it and picks columns you would never think of",
+      "Uses it, with a cut-off very close to your 0.7",
+      "Uses it, but with a very different cut-off, around 0.3",
+      "Asks about nothing else, at every step"
+    ],
+    "answer": 1,
+    "reveal": "It asks about active days first, then cuts spend trend at 0.74 on one branch and 0.69 on the other: your rule, rediscovered. The lesson shows what else it found, and what the approach costs."
+  },
+  "segments": [
+    {
+      "narration": "In lesson one you wrote a rule: flag any advertiser whose spend trend is below 0.7. Now hand the same table to an algorithm that builds its own flowchart of yes or no questions, and give it no hints. Its first question is about active days. Its second, on both branches, is whether spend trend is below about 0.7. It rediscovered your rule on its own, and then it kept asking. That flowchart is called a decision tree. The data can design one for any outcome you have past answers for, which advertisers will hit their CPA goal, for instance. And you already know how to read one: it is a CASE WHEN with learned cut-offs.",
+      "visual": {
+        "type": "title",
+        "kicker": "Module 3 · Lesson 3",
+        "title": "Decision trees",
+        "sub": "A flowchart the data designed"
+      }
+    },
+    {
+      "narration": "Here is how one gets built. [[1]] Take the 6,000 training advertisers and try every possible split: each column, each cut-off. Active days above or below ten. Spend trend above or below one. A great many candidates. [[2]] For each, look at the two groups it creates and ask how cleanly they separate churners from stayers. Keep the best. Here that was active days: 14 or fewer against 15 or more. [[3]] Then do the same again inside each group, separately. [[4]] And stop at a depth you choose: here three questions deep, which gives at most eight end points. Nobody told it which columns matter. It tried them all, and kept what separated best on the training rows.",
+      "visual": {
+        "type": "flow",
+        "title": "How a tree is grown",
+        "steps": [
+          {
+            "label": "Try every split",
+            "sub": "each column, each cut-off"
+          },
+          {
+            "label": "Keep the best",
+            "sub": "the one that separates churners from stayers most cleanly"
+          },
+          {
+            "label": "Repeat",
+            "sub": "inside each of the two groups"
+          },
+          {
+            "label": "Stop",
+            "sub": "here: three questions deep, at least 100 advertisers per leaf"
+          }
+        ]
+      }
+    },
+    {
+      "narration": "Read it from the top, one path at a time. Everyone starts together, at about 11 percent churn. Take the advertisers with 14 active days or fewer. Among those, the ones whose spend trend is below 0.74. Among those, the small accounts, under about 1,000 dollars of spend in eight weeks. That leaves about 200 advertisers, and about two in three of them churned. Now the opposite path. More than 14 active days. Spend trend above 0.69, and then above 0.9 as well. That is about 3,400 advertisers, more than half the training rows, and under 4 percent of them churned. Now follow a few paths yourself, and see where an advertiser your hand rule would have flagged ends up.",
+      "visual": {
+        "type": "widget",
+        "name": "tree",
+        "title": "The fitted churn tree, three questions deep",
+        "note": "Follow a path from the top to an end point. Each box shows how many training advertisers reached it and what share of them churned."
+      }
+    },
+    {
+      "narration": "Each end point is called a leaf, and a leaf is nothing more exotic than a segment with a churn rate. Written out, the whole model is one CASE WHEN: eight branches, each returning the churn rate of the training advertisers who landed there. You could paste it into your warehouse. Think of it as a GROUP BY that the data designed. Normally you choose the grouping columns and the cut-offs. Here they were chosen for you, by whichever split separated churners best. The same machinery predicts numbers too. Asked for spend, a leaf would simply return the average spend of its advertisers.",
+      "visual": {
+        "type": "code",
+        "title": "The same tree, written as SQL",
+        "lang": "sql",
+        "code": "SELECT advertiser_id,\n  CASE\n    WHEN active_days_28 <= 14 AND spend_trend <= 0.74\n     AND spend_8w <= 1020 THEN 0.633   -- small, quiet, shrinking\n    WHEN active_days_28 <= 14 AND spend_trend <= 0.74\n                          THEN 0.436\n    -- ... five more branches ...\n    ELSE 0.036   -- active, spend trend above 0.9\n  END AS churn_score\nFROM advertisers;",
+        "note": "Eight leaves, eight possible scores: each is one segment's churn rate. Cut-offs are rounded, as the tree prints them."
+      }
+    },
+    {
+      "narration": "Read the first two questions as a table. [[1]] Among advertisers with few active days, shrinking spend takes churn from 18 percent to 54. [[2]] Among active ones, from 5 percent to 21. [[3]] So low activity costs 13 points when spend is holding and 33 when it is shrinking. Say points when you report it: as a ratio, low activity roughly triples churn either way. What a tree does differently: every branch chooses its own next question and cut-off. Quiet accounts with shrinking spend get asked about their size, those with steady spend about click rate. Last lesson's weighted sum gave each column one weight for everyone. A tree can ask something different in every corner of the table, so an answer that depends on something else costs nothing extra.",
+      "visual": {
+        "type": "table",
+        "title": "Churn rate after the first two questions",
+        "columns": [
+          "Training advertisers",
+          "Spend holding",
+          "Spend shrinking"
+        ],
+        "rows": [
+          [
+            "Few active days (14 or fewer)",
+            "18.2%",
+            "54.4%"
+          ],
+          [
+            "Active (15 or more)",
+            "5.3%",
+            "21.1%"
+          ],
+          [
+            "Gap between the rows, in points",
+            "12.9",
+            "33.3"
+          ]
+        ],
+        "note": "Shrinking means a spend trend below 0.74 in the first row and below 0.69 in the second: the tree picked each cut-off separately."
+      }
+    },
+    {
+      "narration": "The price is coarseness. Eight leaves means eight possible scores. The 3,363 advertisers in the safest leaf all get exactly the same number, so the tree cannot say which of them is riskier. Ask for the 200 most at-risk accounts and it has to cut through the middle of a leaf, where everyone ties. [[1]] So it ranks worse: an AUC of about 0.76 on the test months. [[2]] The weighted sum scored about 0.85, a gap far bigger than the noise. The coarseness comes with any small tree. The size of the gap does not. It belongs to this simulated data, where churn is built from many small pushes that add up. On another question the order can change, so you measure.",
+      "visual": {
+        "type": "compare",
+        "title": "The price of eight leaves",
+        "left": {
+          "label": "Tree, three questions deep",
+          "value": "AUC 0.761",
+          "sub": "8 possible scores · top 200 hold 111 churners"
+        },
+        "right": {
+          "label": "Weighted sum (logistic regression)",
+          "value": "AUC 0.845",
+          "sub": "a score for every advertiser · top 200 hold 136 churners"
+        }
+      }
+    },
+    {
+      "narration": "Brief and audit. Ask for a tree as a reading aid beside the weighted sum. [[1]] The brief: a shallow tree on the training months, printed as rules, with a minimum number of advertisers per leaf. [[2]] Each leaf must show its count beside its rate, because a rate from a handful of accounts is noise. [[3]] Check the first question: a tree puts its best separating column on top, so a column recorded after the snapshot would likely sit right there. And send back any tree that asks about an ID: an ID says nothing about behaviour. [[4]] Ask for the score on training and on test rows, both models on the same test rows. [[5]] If you know which columns define your segments, skip the tree: a plain GROUP BY gives the rates.",
+      "visual": {
+        "type": "bullets",
+        "title": "Brief and audit",
+        "items": [
+          "Ask: a shallow tree as rules, beside the weighted sum (here: depth 3, 100+ advertisers per leaf)",
+          "Check: every leaf shows its count and its rate",
+          "Check: first question passes the time-travel test; no ID anywhere",
+          "Check: AUC on training and test rows (tree: 0.786, 0.761), same test rows for both models",
+          "Or: a plain GROUP BY, when you know the segment columns"
+        ]
+      }
+    },
+    {
+      "narration": "So when someone needs rules they can read, or you want to see which segments the data would pick, ask for a shallow tree, and check its ranking before anyone builds a list from it. Next: what goes wrong in the table itself, before any model is fitted.",
+      "visual": {
+        "type": "bullets",
+        "title": "Keep this",
+        "items": [
+          "A flowchart of yes/no questions, found by trying every split",
+          "Each leaf is a segment with a rate: a CASE WHEN with learned cut-offs",
+          "Readable, but coarse: few leaves, few scores"
+        ]
+      }
+    }
+  ],
+  "takeaways": [
+    "A decision tree is a flowchart of yes/no questions, grown by trying every column and cut-off and keeping the split that separates the outcome best.",
+    "Each leaf is a segment with a rate, so a tree reads like a CASE WHEN with learned cut-offs.",
+    "A small tree is readable but coarse: one score per leaf, so check its ranking against a finer-grained model on the same test rows."
+  ],
+  "quiz": [
+    {
+      "id": "3-3-q1",
+      "concept": "reading a branch",
+      "domain": "course",
+      "q": "Reading the fitted churn tree, an account manager notices that click rate appears on only one branch: quiet accounts whose spend is holding. She concludes that click rate is irrelevant for every other advertiser. What is the right read?",
+      "options": [
+        "Correct: a tree asks about a column only where it matters, so its absence elsewhere shows it is irrelevant there.",
+        "The tree is faulty: every column should appear somewhere on every branch.",
+        "Click rate was the best next split on that branch; elsewhere another column won, with no room left to ask more.",
+        "Click rate causes churn, but only among quiet accounts with steady spend."
+      ],
+      "answer": 2,
+      "why": "Each branch keeps only the single best split at each step, and this tree stops after three questions. A column that is absent from a branch lost that contest; it has not been shown to be irrelevant there. And a split is chosen because it separates churners in the training rows, which is a description, not a cause."
+    },
+    {
+      "id": "3-3-q2",
+      "concept": "a leak shows up at the top",
+      "domain": "course",
+      "q": "The assistant returns a churn tree, three questions deep, with a test AUC far above the weighted sum's 0.85. The first question is about 'days since last spend', and it separates churners from stayers almost perfectly. What do you do?",
+      "options": [
+        "Send it back: the first question is the outcome in disguise, a column recorded after the snapshot.",
+        "Ship it: a tree this accurate and this easy to read is the ideal model for the team.",
+        "Ask for a much deeper tree, since three questions cannot be trusted with a result this strong.",
+        "Accept it, provided the AUC on the training rows comes out just as high, which rules out memorising."
+      ],
+      "answer": 0,
+      "why": "A tree puts its best separating column first, so a leaked column surfaces as the first question, splitting churners from stayers almost perfectly. Days since last spend, read after the outcome window, fails the time-travel test. Matching training and test scores do not help: the leak is in both. A deeper tree would only build on the same column."
+    },
+    {
+      "id": "3-3-q3",
+      "concept": "one score per leaf",
+      "domain": "other",
+      "q": "A tree predicts which creatives will fatigue within a week. The media team can refresh 50 creatives, and the tree's riskiest leaf holds 400, all with the same score. What does that tell you?",
+      "options": [
+        "The scoring is broken: every creative should come out with a different score.",
+        "The 400 creatives have been shown to be exactly equally likely to fatigue.",
+        "Adding the creative ID as a column would fix it, since every creative would then get a score of its own.",
+        "A small tree gives one score per leaf, so it cannot order the 400; a top-50 list needs finer scores."
+      ],
+      "answer": 3,
+      "why": "Everything in a leaf gets the leaf's rate, so a tree with few leaves cannot rank inside one. That is how the method works, not a bug, and it does not prove the 400 are equally risky: the tree simply stopped asking. An ID column describes nothing about a creative and would only let a model memorise rows."
+    },
+    {
+      "id": "3-3-q4",
+      "concept": "one result is not a rule",
+      "domain": "course",
+      "q": "On the simulated churn table the tree scored an AUC of 0.76 and the weighted sum 0.85. A colleague says: 'So trees are simply worse. Skip them on the upsell project.' What is the best response?",
+      "options": [
+        "Agreed: the gap is a general property of the two methods and will carry over.",
+        "Any small tree is coarse, but which model ranks better depends on the data; fit both and compare on test rows.",
+        "Disagree: trees are always the better choice, because people can read them.",
+        "The comparison was unfair from the start, because the tree and the weighted sum were scored on different test rows."
+      ],
+      "answer": 1,
+      "why": "Coarseness is a property of any small tree. The size of the gap is a property of this simulated churn data, where many small effects add up, which suits a weighted sum. A different question can favour the tree, so the only safe move is to measure both on the new table's test rows. Both models here were scored on the same test rows."
+    }
+  ],
+  "review": [
+    {
+      "concept": "a leaf is a segment with one rate",
+      "variants": [
+        {
+          "q": "A tree for lead conversion has this leaf: 'company size above 200 and requested a demo: 310 leads, 42 percent converted'. A new lead matching both conditions arrives. What score does the tree give it?",
+          "options": [
+            "A score between 0 and 100 percent that depends on the lead's other columns.",
+            "42 percent: the conversion rate of the training leads that landed in that leaf.",
+            "100 percent, because the lead matched every condition on the path.",
+            "No score until more leads like it have been collected."
+          ],
+          "answer": 1,
+          "why": "A tree's prediction is the rate of the training cases in the leaf where the new case lands. Columns the path never asked about play no part. Matching the conditions puts the lead in the segment; it does not make conversion certain."
+        },
+        {
+          "q": "Two traffic sources land in the same leaf of a tree that predicts invalid traffic. One sends 5,000 clicks a day, the other 50,000, and click volume was not asked about on that path. How do their scores compare?",
+          "options": [
+            "The larger source gets the higher score, since it carries more risk.",
+            "The smaller source gets the higher score, since small sources are less well known.",
+            "The scores are identical: everything in a leaf gets the leaf's rate.",
+            "They cannot be compared until the tree is retrained with volume as the first question."
+          ],
+          "answer": 2,
+          "why": "A leaf is a segment, and every case in it receives the same rate. Differences in columns the path did not ask about are invisible to the tree. If volume matters for the decision, that is a reason to look at a deeper tree or a different model, measured on test rows."
+        },
+        {
+          "q": "An account manager is puzzled: a tiny advertiser that joined last month and a large one with two years of history have exactly the same churn score from the tree. What explains it?",
+          "options": [
+            "They gave the same answers to the tree's three questions, so they share a leaf; nothing else was asked.",
+            "The tree weighs tenure against account size, and for these two advertisers the two effects cancelled out exactly.",
+            "It must be a scoring bug: two such different advertisers cannot have the same risk.",
+            "The tree gives every advertiser the overall churn rate until it has seen them twice."
+          ],
+          "answer": 0,
+          "why": "A tree does not add anything up. It routes each advertiser by a few yes/no answers and returns the rate of the leaf they reach. Two very different advertisers who give the same answers get the same score. That is the coarseness you accept in exchange for readable rules."
+        }
+      ]
+    },
+    {
+      "concept": "readable but coarse: match the model to the use",
+      "variants": [
+        {
+          "q": "A support team wants four or five plain rules that agents can follow to route tickets to the right queue. Which starting point fits?",
+          "options": [
+            "A model that gives every ticket its own score, since finer-grained output is always the better starting point.",
+            "A shallow tree: a few questions, a handful of segments, rules that can be read aloud.",
+            "No model at all: rules can only ever be written by hand.",
+            "Whichever model has the highest AUC, whatever it looks like."
+          ],
+          "answer": 1,
+          "why": "The use is a small set of readable rules, which is exactly what a shallow tree produces, with cut-offs learned from past tickets. Fine-grained scores add nothing when the output is a handful of queues. The tree's rules still have to be checked on tickets it has not seen."
+        },
+        {
+          "q": "Sales wants the 100 best upsell prospects out of 20,000 accounts. The assistant's tree has four leaves, and the best leaf holds 3,000 accounts. What is the problem?",
+          "options": [
+            "The leaf is too large to trust: a rate measured on 3,000 accounts is noisier than one measured on 100.",
+            "The tree needs the account ID added as a column, so that it can tell the 3,000 accounts in the leaf apart.",
+            "Four leaves is too many; a tree with two leaves would give a cleaner list.",
+            "The tree cannot rank inside a leaf, so it cannot pick 100 out of 3,000; the list needs finer scores."
+          ],
+          "answer": 3,
+          "why": "All 3,000 accounts share one score, so the tree has no opinion about which 100 are best. A ranked list that short needs a score that differs from account to account. An ID column would not help: it describes nothing about an account's behaviour. And a large leaf makes its rate steadier, not noisier."
+        },
+        {
+          "q": "On the same test rows, a shallow tree scores an AUC of 0.71 and a logistic regression 0.72, and the interval around the difference comfortably includes zero. The client insists on rules they can read. Which do you recommend?",
+          "options": [
+            "The tree: the two are tied within the noise, and readable rules are what the client needs.",
+            "The logistic regression: 0.72 is higher than 0.71, and the higher score should always win.",
+            "Neither: a gap this small between two models means that both of them are broken.",
+            "A much deeper tree, grown until it beats the logistic regression outright on the test rows."
+          ],
+          "answer": 0,
+          "why": "A difference smaller than its own interval is a tie, so the score does not decide this one. The use does: the client needs readable rules, and the tree gives them at no measured cost. Chasing a tiny, noisy gap would be reacting to chance."
+        }
+      ]
+    }
+  ],
+  "drill": [
+    {
+      "q": "Someone shows you a decision tree. How do you read what it predicts for one advertiser?",
+      "a": "Start at the top and answer each yes or no question for that advertiser until you reach a leaf. The leaf's rate, the share of training advertisers there who churned, is the prediction."
+    },
+    {
+      "q": "What does a small decision tree give up in exchange for being readable?",
+      "a": "Fine-grained scores. Everyone in a leaf gets the same score, so a tree with a few leaves cannot order the advertisers inside a leaf, and that can cost it on ranking."
+    }
+  ],
+  "recall": {
+    "prompt": "Explain how a decision tree is built, how you read one, and what it trades away for being readable.",
+    "model_answer": "A tree is grown by trying every column and cut-off, keeping the split that best separates the outcome, and repeating inside each group down to a chosen depth. You read it from the top, answering yes or no until you reach a leaf, and the leaf's rate is the prediction, so the whole model is a CASE WHEN with learned cut-offs. Different branches can ask different questions, which is how it handles 'it depends'. The cost is coarseness: one score per leaf, so on the churn table it ranked worse than the weighted sum, about 0.76 against 0.85, a gap that belongs to this simulated data."
+  },
+  "ask_assistant": "Fit a decision tree for [yes/no outcome] on [training period] only, with a maximum depth of [small depth, such as 3] and at least [minimum rows] rows in every leaf, and print it as rules. For every leaf show the rule, the number of training rows and their [outcome] rate. Report AUC on the training rows and on [test period], with row counts, next to [my simpler model or rule] scored on the same test rows. List every column used and when each is recorded; use no ID column and nothing recorded after [prediction date].",
+  "audit_checklist": [
+    "Every leaf shows its row count and its rate, and no leaf is smaller than the minimum you set.",
+    "The printed rules name each question's column, and the column list shows when each is recorded: nothing after the prediction date, and no ID.",
+    "AUC on training rows and on test rows with their row counts, and the simpler model scored on the same test rows beside it."
+  ],
+  "transfer": [
+    "Which support tickets get escalated: can the triage team have a few readable rules?",
+    "Which creatives fatigue fastest: what combination of age, format and frequency goes with a falling click rate?",
+    "How much will an advertiser spend next quarter: segments with an average spend in each leaf?"
+  ],
+  "other_ways": [
+    {
+      "approach": "A plain GROUP BY on columns you choose",
+      "when": "When you already know which two or three columns define the segments and only need the rates."
+    },
+    {
+      "approach": "Logistic regression",
+      "when": "When you need a ranked list with a distinct score for every advertiser."
+    },
+    {
+      "approach": "Many trees combined",
+      "when": "When one tree is too coarse and a measured gain justifies giving up readability; a later module covers it."
+    }
+  ],
+  "glossary": [
+    {
+      "term": "decision tree",
+      "def": "A model that routes each row through a few yes/no questions to a segment and returns that segment's rate or average."
+    },
+    {
+      "term": "split",
+      "def": "One yes/no question on one column with one cut-off, chosen because it separates the outcome best."
+    },
+    {
+      "term": "leaf",
+      "def": "An end point of the tree: a segment of rows, with the outcome rate the tree predicts for them."
+    },
+    {
+      "term": "depth",
+      "def": "The number of questions on the longest path from the top of the tree to a leaf."
+    }
+  ]
+}

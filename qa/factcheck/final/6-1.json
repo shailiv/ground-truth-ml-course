@@ -1,0 +1,17 @@
+{
+ "issues": [
+  {
+   "where": "other_ways item 2",
+   "quote": "A boosted-tree model on calendar columns ... When rhythms interact in ways a fixed formula cannot express.",
+   "kind": "misleading",
+   "severity": "medium",
+   "explanation": "Tree-based models can only output values within the range seen during training, so fitting boosted trees directly on calendar columns to predict raw levels fails to extrapolate an upward or downward trend into future dates. Presenting boosted trees on calendar columns as a drop-in alternative without noting that any trend must be removed first (or that growth/differences must be predicted instead of raw levels) will lead practitioners to systematically under- or over-forecast trending series.",
+   "evidence": "facts.json -> forecast.one_year_ahead.why ('a tree can only output values it has seen, so asked about a date beyond its training data it reuses the most recent level; taking the trend out first (or predicting growth instead of level) fixes it'), gradient_boosting_on_raw_level.mape = 0.1018 vs gradient_boosting_with_trend_removed_first.mape = 0.057, and shuffled_folds_vs_backtest.gradient_boosting_on_calendar (0.0318 shuffled vs 0.0541 forward backtest).",
+   "fix": "Add the detrending caveat: 'When rhythms interact in ways a fixed formula cannot express — provided you remove any trend first (or predict growth rather than level), because trees cannot extrapolate beyond values they have seen. Judge it against the same baselines: on raw levels here it scored 5.4%, level with the four-week average.'"
+  }
+ ],
+ "numbers_checked": 38,
+ "verdict": "All 38 numeric claims, comparisons, model effects, and quiz/review keys match facts.json accurately; the only issue is a missing extrapolation/detrending caveat when recommending boosted trees on calendar columns in other_ways.",
+ "_hash": "6e13ddd77227601c",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_ChZDaE1DYTkybUljT1UzYm9QOXBxSGFREhZDaE1DYTkybUljT1UzYm9QOXBxSGFR | tokens in=67758 out=465 thought=31359]"
+}

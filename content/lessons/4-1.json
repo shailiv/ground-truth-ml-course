@@ -1,0 +1,321 @@
+{
+  "id": "4-1",
+  "module": 4,
+  "title": "Overfitting: memorising versus learning",
+  "subtitle": "How can a model be perfect on its training rows and poor on new ones?",
+  "goal": "After this lesson you can read a training score and a test score side by side and say whether a model has learned a pattern, memorised its rows, or is too simple to do either.",
+  "predict": {
+    "q": "A decision tree is allowed to grow 25 levels deep instead of 3. On the 6,000 advertisers it was trained on, it now scores a perfect AUC of 1.0. What does it score on 4,000 advertisers it has never seen?",
+    "options": [
+      "About 0.95: a little lower, as you would expect",
+      "About 0.76: the same as the 3-level tree",
+      "About 0.61: lower than a tree that asks one question",
+      "Exactly 0.5: no better than a coin"
+    ],
+    "answer": 2,
+    "reveal": "About 0.61, below the 0.66 of a tree that asks a single question. The lesson shows how the perfect score and the poor one come from the same cause."
+  },
+  "segments": [
+    {
+      "narration": "The assistant has good news. You asked whether a deeper tree would beat the three-level one, so it let the tree grow to 25 levels. Training AUC: 1.0. A perfect score. Every churner in the training months is ranked above every advertiser who stayed. It suggests putting the new tree in the report. Before you agree, ask the scoreboard question. Perfect on which rows? Because the same tree, on advertisers it has never met, tells a different story. The same is true of any flexible model, whether it predicts churn or creative fatigue: a perfect score on rows it has seen proves nothing.",
+      "visual": {
+        "type": "title",
+        "kicker": "Module 4 · Lesson 1",
+        "title": "Overfitting: memorising versus learning",
+        "sub": "Training AUC 1.0. Perfect on which rows?"
+      }
+    },
+    {
+      "narration": "Take that tree at twelve depths between 1 and 25, and score it twice. Once on the 6,000 advertisers it trained on, once on the 4,000 test advertisers it has never seen. At depth 1, a single question, both scores sit near 0.66. Add levels and they climb together, as far as depth 3 or 4. Then they part. The training score climbs on to a perfect 1. The test score peaks at about 0.77 and turns down. By depth 25 it is about 0.61, lower than the single question. One caution. The test months are shown to demonstrate the effect, not to choose a depth. Next lesson says why. Drag the depth yourself, and watch where the two scores stop moving together.",
+      "visual": {
+        "type": "widget",
+        "name": "depth",
+        "title": "Tree depth: training rows against new advertisers",
+        "note": "Twelve depths, from 1 to 25. Find where the two scores part, then watch the test score from depth 10 on. The test months are here to show the effect, not to choose a depth."
+      }
+    },
+    {
+      "narration": "[[1]] Consider what a 25-level tree is. The three-level tree had eight leaves, each a segment big enough for a believable churn rate. This one has more than 600, many holding only a handful of advertisers. Split until every leaf is all churners or all stayers, and the training rows are described perfectly. [[2]] On new advertisers, though, a handful is not a segment. It is an anecdote. Say three gaming accounts with eleven weeks of tenure all happened to leave. The tree records that as a rule. You would never put a GROUP BY with three rows per group into a deck. And with every leaf pure, the tree stops scoring. It answers a flat yes or no, and you cannot sort a call list on that.",
+      "visual": {
+        "type": "compare",
+        "title": "One tree, depth 25, 611 leaves",
+        "left": {"label": "The 6,000 advertisers it trained on", "value": "AUC 1.000", "sub": "accuracy 100%"},
+        "right": {
+          "label": "4,000 advertisers it has never seen",
+          "value": "AUC 0.607",
+          "sub": "accuracy 82.4% · predicting 'nobody churns' gets 86.8% · it gives only 2 different scores"
+        }
+      }
+    },
+    {
+      "narration": "That is overfitting. The model has fitted the accidents of its training rows along with the pattern. Memorising, where you wanted learning. And a training score cannot tell the two apart, because a memorised answer and a learned one look identical on rows the model has already seen. Only new rows separate them. So the tell is the gap: the distance between the score on training rows and the score on rows the model has never met.",
+      "visual": {
+        "type": "quote",
+        "text": "A training score cannot tell memorising from learning. Only new rows can.",
+        "sub": "Overfitting: fitting the accidents of the training rows along with the pattern"
+      }
+    },
+    {
+      "narration": "There is an opposite failure, and it is quieter. [[1]] The one-question tree scores about 0.66 on training rows and about 0.66 on test. No gap, and not much of a model. It is too simple to hold the pattern. That is underfitting. [[2]] Depth 4 has a visible gap, and the best test score of any depth. [[3]] Depth 25 is flawless in training and worse than one question outside it. So a small gap is not the goal. The best score on new rows is. Where the peak falls is a fact about this simulated data. That training scores keep rising after test scores stop is true of flexible models in general.",
+      "visual": {
+        "type": "table",
+        "title": "Too simple, about right, memorised",
+        "columns": ["Tree", "Leaves", "Training AUC", "Test AUC"],
+        "rows": [
+          ["Depth 1", "2", "0.663", "0.656"],
+          ["Depth 4", "16", "0.810", "0.769"],
+          ["Depth 25", "611", "1.000", "0.607"]
+        ],
+        "highlight": [1],
+        "note": "Where the peak falls is specific to this data. Depth 3 scores 0.767 here, with no minimum leaf size; lesson 3-3's tree required at least 100 training advertisers in every leaf and scored 0.761."
+      }
+    },
+    {
+      "narration": "So a report shows both numbers, side by side. [[1]] The weighted sum from the last module scores about 0.85 on training rows and about 0.85 on test. Nothing memorised. [[2]] The deep tree: a perfect 1 against 0.61. [[3]] Then the model from last lesson's script, an average of 300 trees. It scores about 0.98 in training and 0.83 on test. A wide gap, and a tempting reason to throw it out. Don't. Its test score beats every single tree you just tried. The gap says its training number is worthless as evidence. It is a warning to look, not a verdict. The verdict is the test number.",
+      "visual": {
+        "type": "table",
+        "title": "Both numbers, every model",
+        "columns": ["Model", "Training AUC", "Test AUC"],
+        "rows": [
+          ["Weighted sum (logistic regression)", "0.849", "0.845"],
+          ["One tree, depth 25", "1.000", "0.607"],
+          ["300 trees, averaged (lesson 4-3)", "0.982", "0.831"]
+        ],
+        "note": "The gap says where to look. The test column decides."
+      }
+    },
+    {
+      "narration": "The cure has one shape, whatever the model: make it pay for complexity. [[1]] For a tree, cap the depth, or insist that every leaf holds a minimum number of advertisers, so no rule can rest on three accounts. [[2]] For a weighted sum, charge a penalty for large weights, so it needs real evidence before leaning hard on one column. [[3]] For any model, fewer columns means fewer places for an accident to hide. [[4]] The umbrella word is regularisation. How much of it to apply is a setting somebody has to choose, and choosing it without fooling yourself is the next lesson.",
+      "visual": {
+        "type": "bullets",
+        "title": "The cure: make the model pay for complexity",
+        "items": [
+          "Trees: cap the depth, or set a minimum leaf size",
+          "Weighted sums: a penalty on large weights",
+          "Any model: fewer columns",
+          "The umbrella word: regularisation"
+        ]
+      }
+    },
+    {
+      "narration": "Brief and audit. Wherever the assistant gives you one score, ask for two. [[1]] Training rows and held-out rows, side by side, in the same measure. [[2]] Each labelled with the rows it came from, and how many. A score that does not say where it was measured is a training score until shown otherwise. [[3]] For any model with a complexity setting, ask for both scores at several settings, from simple to flexible. For that table, the held-out rows come from inside the training months, and the test months stay closed. Next lesson shows how. [[4]] For a tree, ask for the number of leaves and the size of the smallest one.",
+      "visual": {
+        "type": "bullets",
+        "title": "Brief and audit",
+        "items": [
+          "Training score and held-out score, side by side",
+          "Each labelled with its rows and row count",
+          "Both scores at several settings, held-out rows from inside the training months",
+          "For a tree: number of leaves, smallest leaf (100 rows: a rate good to about ±6 points)"
+        ]
+      }
+    },
+    {
+      "narration": "So a score with no rows named gets one reply from you: show me the other number. One problem is left. Somebody has to pick the depth, and picking the one that looks best on the test set spends the test set. That is next.",
+      "visual": {
+        "type": "quote",
+        "text": "The gap is the warning. The test score is the verdict.",
+        "sub": "Next: choosing the depth without spending the test set"
+      }
+    }
+  ],
+  "takeaways": [
+    "A training score cannot tell memorising from learning; only rows the model has never seen can.",
+    "A wide gap between training and test is a warning to look; the test score is the verdict.",
+    "Too simple fails too: aim for the best score on new rows, not the smallest gap."
+  ],
+  "quiz": [
+    {
+      "id": "4-1-q1",
+      "concept": "a training score is not evidence",
+      "domain": "course",
+      "q": "The assistant reports a new churn model: 'AUC 0.99'. You ask which rows that was measured on. 'The training months.' What does 0.99 tell you about how the model will rank next month's advertisers?",
+      "options": [
+        "It will rank them almost as well; a score that high leaves plenty of margin",
+        "Nothing yet; you need its score on the held-out months",
+        "It will rank them badly; a training score that high always means a useless model",
+        "It will score about 0.85, because that is what this data supports"
+      ],
+      "answer": 1,
+      "why": "A training score mixes what the model learned with what it memorised and cannot separate them, so it predicts nothing about new rows. 'Always useless' overshoots the other way: the model that averages 300 trees scores 0.98 in training and still 0.83 on new advertisers. Ask for the other number."
+    },
+    {
+      "id": "4-1-q2",
+      "concept": "reading both numbers",
+      "domain": "course",
+      "q": "The assistant's report has this table for a decision tree. Depth 3: training AUC 0.787, test 0.767. Depth 12: training 0.955, test 0.582. Its summary reads: 'We recommend depth 12, which captures far more of the structure in the data (AUC 0.955).' What is wrong?",
+      "options": [
+        "Depth 12 was scored on fewer rows than depth 3, so the two cannot be compared",
+        "Both depths are overfitted, since training beats test in both rows; reject both",
+        "The summary quotes the training score; on new advertisers depth 12 is far worse than depth 3",
+        "Depth 3 has almost no gap, so it is underfitting and deeper is the right direction"
+      ],
+      "answer": 2,
+      "why": "The headline figure is a training score; on held-out advertisers depth 12 scores 0.58 against 0.77, so it has memorised. A training score slightly above test, as at depth 3, is normal and no reason to reject, and a small gap does not mean 'go deeper' when the test score is already falling."
+    },
+    {
+      "id": "4-1-q3",
+      "concept": "the gap is a warning, not a verdict",
+      "domain": "other",
+      "q": "Sales wants a lead-scoring model. The assistant tries two, scored on the same 5,000 held-out leads. Model A: training AUC 0.74, test 0.73. Model B: training 0.97, test 0.80. A colleague says B is obviously overfitted, so ship A. What is the right read?",
+      "options": [
+        "Prefer B: it still ranks unseen leads better than A does",
+        "Ship A: its smaller gap means it will hold up better on new leads than B",
+        "Ship B: a training score of 0.97 shows it has learned far more about leads",
+        "Neither: with a gap that large, B's test score cannot be trusted either"
+      ],
+      "answer": 0,
+      "why": "Both test scores come from leads neither model saw, so 0.80 against 0.73 is an honest comparison and B wins it. B's gap says its training score is no evidence and a closer look is due; it does not make A better, and it does not contaminate a test score measured on held-out leads."
+    },
+    {
+      "id": "4-1-q4",
+      "concept": "making the model pay for complexity",
+      "domain": "course",
+      "q": "The 25-level churn tree scores 1.0 on its training rows and 0.61 on the test months. The assistant offers four fixes. Which one addresses the cause?",
+      "options": [
+        "Add the test months to the training data so the tree sees more examples, then re-score",
+        "Report accuracy instead of AUC, since the tree only answers yes or no anyway",
+        "Give the tree more columns, so it has more signal for the hard cases",
+        "Cap the depth or set a minimum leaf size, then report both scores again"
+      ],
+      "answer": 3,
+      "why": "The tree memorised because nothing stopped it carving leaves of a handful of advertisers; limiting depth or leaf size makes it pay for complexity. Folding the test months into training is the tempting one: more rows can help, but you would have no unseen rows left to show that it did."
+    }
+  ],
+  "review": [
+    {
+      "concept": "a training score is not evidence",
+      "variants": [
+        {
+          "q": "A model predicts which ad creatives will fatigue within two weeks. On the 8,000 creatives it was trained on, it is right 99 percent of the time. On 2,000 newer creatives it has never seen, it is right 64 percent of the time. What should you expect when it is put to use?",
+          "options": [
+            "About 64 percent: only the unseen creatives measure what it learned",
+            "About 99 percent: it was built on four times as many creatives",
+            "About 82 percent: the midpoint of the two results is the fair summary",
+            "About 92 percent: the two results weighted by the number of creatives"
+          ],
+          "answer": 0,
+          "why": "In use the model meets creatives it has not seen, so the unseen-creative figure is the forecast; the gap to 99 says much of the training result was memory. Averaging the two, by midpoint or by size, blends an honest number with a flattering one."
+        },
+        {
+          "q": "Finance receives a model of each advertiser's spend next quarter. The summary says 'typical miss: 310 dollars'. The appendix shows a typical miss of 310 dollars on the advertisers used for training and 2,650 dollars on held-out advertisers. What should the summary have said?",
+          "options": [
+            "Typical miss 310 dollars; the appendix figure is a worst case",
+            "Typical miss about 1,480 dollars, halfway between the two figures",
+            "Typical miss about 2,650 dollars; the model has largely memorised its training rows",
+            "Typical miss 310 dollars, since that is what the model achieved on its own data"
+          ],
+          "answer": 2,
+          "why": "The held-out figure is the only one that describes advertisers the model has not seen, which is every advertiser it will be used on. A miss many times smaller on training rows is the signature of memorising, not a result to headline."
+        },
+        {
+          "q": "A ticket-routing model was built from 600 labelled support tickets, and it routes all 600 of them correctly. A manager asks whether it is ready. What do you ask for first?",
+          "options": [
+            "The 600 tickets ranked by difficulty, to see what it found hard",
+            "Its results on labelled tickets that were not among the 600",
+            "The same 600 tickets routed a second time, to confirm the result",
+            "A retrain on 6,000 tickets, so the perfect score is more precise"
+          ],
+          "answer": 1,
+          "why": "A perfect result on the tickets a model was built from cannot distinguish learning from memorising; only tickets it has never seen can. Routing the same 600 again only repeats the training score. More training tickets might improve the model, but a perfect training score on 6,000 would be just as uninformative."
+        }
+      ]
+    },
+    {
+      "concept": "the gap is a warning, the test score is the verdict",
+      "variants": [
+        {
+          "q": "Two invalid-traffic detectors are scored on the same held-out week. Detector X: training AUC 0.71, test 0.70. Detector Y: training 0.93, test 0.88. Which do you take forward, and why?",
+          "options": [
+            "X: with almost no gap, its score is the more trustworthy of the two",
+            "X: Y is overfitted and will collapse on live traffic",
+            "Y: its training score of 0.93 is the highest figure in the comparison",
+            "Y: it ranks unseen traffic better, whatever its training score says"
+          ],
+          "answer": 3,
+          "why": "Both test scores come from traffic neither detector saw, so they are equally trustworthy, and Y's is far higher. Y's gap means its training score is no evidence and it deserves a closer look; choosing Y because of the 0.93 would be the right pick for the wrong reason."
+        },
+        {
+          "q": "An upsell model that uses a single column, account size, scores an AUC of 0.62 on its training rows and 0.62 on test rows. The analyst writes: 'No overfitting, so the model is sound.' What is the right read?",
+          "options": [
+            "Not memorising, but possibly too simple: compare a more flexible model",
+            "Overfitted after all: a score as low as 0.62 shows it has memorised noise",
+            "Suspect: equal scores mean that test rows must have leaked into training",
+            "At its limit: with no gap left to close, more columns could only overfit"
+          ],
+          "answer": 0,
+          "why": "Equal scores rule out memorising and nothing else; a model can be equally weak on both sets because it is too simple to hold the pattern. A low score is not the sign of overfitting; a gap is. More columns do not automatically overfit: the check is a more flexible model's score on the same test rows."
+        },
+        {
+          "q": "Three versions of a model that predicts which trial accounts will convert are scored on the same held-out accounts. Simple: training 0.70, test 0.70. Medium: training 0.84, test 0.81. Flexible: training 1.00, test 0.66. Which do you take forward?",
+          "options": [
+            "Simple: it is the only version with no gap at all",
+            "Flexible: a perfect training score shows the most capacity",
+            "Medium: it has the best score on accounts none of them saw",
+            "Simple or flexible: medium is neither the most honest nor the most powerful"
+          ],
+          "answer": 2,
+          "why": "The choice is made on unseen accounts, and medium is best there; its small gap is the ordinary price of a model flexible enough to hold the pattern. Simple is too weak and flexible has memorised: the smallest gap and the highest training score are both the wrong thing to chase."
+        }
+      ]
+    }
+  ],
+  "drill": [
+    {
+      "q": "A model scores perfectly on the rows it was trained on. Why is that not good news by itself?",
+      "a": "Because a flexible model can memorise its training rows, accidents included. Only its score on rows it has never seen tells you whether it learned a pattern."
+    },
+    {
+      "q": "One model has a wide gap between its training score and its test score. Another has almost none. Which do you choose?",
+      "a": "Whichever scores better on the test rows. The gap is a warning to look closer, not the verdict, and a model with no gap can simply be too simple."
+    }
+  ],
+  "recall": {
+    "prompt": "A colleague shows you a tree that scores a perfect 1.0 on its training months. Explain in 30 seconds why that is not good news yet, and what you would ask to see.",
+    "model_answer": "A flexible model can memorise its training rows, accidents included, and a training score cannot tell memorising from learning. In the course data a 25-level tree scores 1.0 in training and about 0.61 on new advertisers, below a tree that asks one question. So I would ask for the score on held-out rows beside the training score. A wide gap is my warning to look closer; the test score is what I judge the model on."
+  },
+  "ask_assistant": "For every model you fit, report the score on the training rows and on held-out rows side by side, in [measure], each labelled with its rows and row count. For [model], also fit it at [several values of its complexity setting, from simplest to most flexible] and give me a table of the training score beside the cross-validated score, with folds made inside the training rows only (or scored on [a validation period I name]), plus [a size check, such as number of leaves and smallest leaf]. Keep the test rows out of that table: they are scored once, later, after a setting is fixed. Never quote a score without saying which rows it was measured on.",
+  "audit_checklist": [
+    "Training and held-out scores side by side for every model, in the same measure, each labelled with its rows and row count",
+    "The table of scores by setting shows training beside cross-validated or validation-period scores, and has no test-row column",
+    "For a tree: the number of leaves and the size of the smallest leaf; a churn rate from about 100 advertisers is only good to about 6 points either way",
+    "The headline number in the summary is a held-out score, named as such, and it matches the table"
+  ],
+  "transfer": [
+    "A creative-fatigue model fits last quarter's creatives perfectly: what does it score on creatives launched since?",
+    "An invalid-traffic rule was tuned in a spreadsheet until it flagged every case from last month: how many does it catch this month?",
+    "A spend forecast has a hand-made adjustment for every past dip and spike: how far off is it next month?"
+  ],
+  "other_ways": [
+    {
+      "approach": "Collect more training rows",
+      "when": "When rows are cheap to get: with more examples, an accident in three accounts is harder to mistake for a pattern."
+    },
+    {
+      "approach": "Switch to a less flexible kind of model",
+      "when": "When the pattern is mostly steady effects that each push one way: the weighted sum scores 0.849 in training and 0.845 on test here."
+    },
+    {
+      "approach": "Average many deep trees instead of trusting one",
+      "when": "When one tree is too coarse while shallow and memorises once deep; lesson 4-3 covers it."
+    }
+  ],
+  "glossary": [
+    {
+      "term": "overfitting",
+      "def": "Fitting the accidents of the training rows along with the pattern, so the model scores well on rows it has seen and worse on new ones."
+    },
+    {
+      "term": "underfitting",
+      "def": "A model too simple to hold the pattern: it scores poorly on training rows and new rows alike."
+    },
+    {
+      "term": "train-test gap",
+      "def": "The difference between a model's score on its training rows and on rows it has never seen; the tell of memorising."
+    },
+    {
+      "term": "regularisation",
+      "def": "Any way of making a model pay for complexity, such as capping a tree's depth or penalising large weights."
+    }
+  ]
+}

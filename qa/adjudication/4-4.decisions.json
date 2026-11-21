@@ -1,0 +1,79 @@
+{
+ "lesson": "4-4",
+ "decisions": [
+  {
+   "n": 0,
+   "reviewer": "learner-2",
+   "finding": "The guess question is not a guess: 4-3 ended by announcing that columns move the score far more, and the title repeats it.",
+   "decision": "accepted",
+   "reason": "True of the old pair of lessons. A guess the previous recap answers teaches nothing.",
+   "change": "New guess: which group of columns, used alone, gets closest to the score of all seventeen (answer: recent behaviour, feature_groups.each_group_alone 0.822 against 0.845). 4-3's recap no longer gives the result away."
+  },
+  {
+   "n": 1,
+   "reviewer": "learner-2",
+   "finding": "Seventeen column names are read out in four lists with a score after each.",
+   "decision": "accepted",
+   "reason": "SPEC rule 3: never read a table aloud.",
+   "change": "Segment 3 (old segment 2) speaks each group with one or two examples ('such as tenure and vertical', 'conversion tracking and automated bidding among them', 'such as spend trend and active days'). The full lists moved to the chart's note."
+  },
+  {
+   "n": 2,
+   "reviewer": "learner-2",
+   "finding": "The lesson says what not to do with a current-state table but not what to do when no dated history exists (tier, managed flag, CPA goal).",
+   "decision": "accepted",
+   "reason": "A real gap for this learner, and consistent with the working rule ruled for 1-4 (fields that can change because of the outcome need a copy dated at the snapshot).",
+   "change": "Segment 8 (Brief and audit) says: 'For a column kept only as today's value, like account tier, use its change history if one exists, start saving dated copies, or leave it out and say so.' Bullet 3 carries it; the brief asks the assistant to flag any column read from a current-state table; audit item 1 checks that no flagged column is among the big movers."
+  },
+  {
+   "n": 3,
+   "reviewer": "learner-2",
+   "finding": "Every recap restates the three take-aways, which then appear three more times; drop the spoken recap and spend the time on one worked audit of a flawed output.",
+   "decision": "partly",
+   "reason": "The repetition is real and R4 answers it. A worked audit as a new segment is a change of lesson format (SPEC rule 9 keeps a short recap) and 4-4 is now at nine segments.",
+   "change": "Segment 9 is 47 words, says what the learner does before paying for a fancier algorithm, points to 4-5, and repeats no take-away. The worked-audit idea is passed on as a course-level suggestion."
+  },
+  {
+   "n": 4,
+   "reviewer": "expert-3",
+   "finding": "0.18 across column sets is set against 0.01 between only the two best algorithms; like for like the algorithm range is 0.084, so columns moved the score about twice as much, not eighteen times.",
+   "decision": "accepted",
+   "reason": "feature_groups.spread_across_feature_sets = 0.184; spread_across_algorithms.best_minus_worst = 0.084; gap_between_the_two_best = 0.009. The old reveal, recap card, take-away, drill and explain-back all dropped the 0.08.",
+   "change": "Segment 4 (old 3) now speaks like for like first ('From the weakest of the four algorithms, the single small tree, to the best, it moved by about 0.08. Between the two best, by about 0.01.'). The compare card's right side shows 0.084 with 'only 0.009 between the two best' beneath. Take-away 1, quiz 1 why, drill 1 ('about twice as far as the whole range of algorithms'), the explain-back answer and the recap card all carry the 0.08. The new guess reveal no longer makes the comparison."
+  },
+  {
+   "n": 5,
+   "reviewer": "learner-2",
+   "finding": "spend_trend as written divides by zero for advertisers with no spend in the first four weeks.",
+   "decision": "accepted",
+   "reason": "Correct SQL point, and the course's own line is that missing is information (dirty_tables.missing_is_information).",
+   "change": "Code note: 'spend_trend = spend_last_4w ÷ NULLIF(spend_8w − spend_last_4w, 0), with a flag for no earlier spend.' Narration untouched."
+  }
+ ],
+ "rulings": {
+  "R1": "Segment 1: 'That pattern is general, for a yes-or-no model like this one or a number model like a spend forecast: what it is shown can matter more than which algorithm reads it.'",
+  "R2": "New opening on the video-adoption list: the weighted sum found 153 adopters among its 200 highest scores, boosting 185, and three hand-built combination columns took the same weighted sum to 171 (video.scoreboard). One-sentence bridge: 'The churn table lets you check how much.' Title card shows the three counts. Everything after keeps the churn evidence.",
+  "R3": "ask_assistant rewritten as a template (119 words) with slots [unit], [snapshot date], [window length], [units], [simple model], [metric], [test period], [outcome]; no '56 days', no 'logistic regression', no 'test AUC'. It keeps the feature list and the group-by-group scores and adds the current-state flag, row counts around each join, and a learning curve.",
+  "R4": "Segment 9 is 47 words: one sentence on what to do before paying for a fancier algorithm, one pointing to 4-5. Quote card kept; its small line now gives 0.18, 0.08, 0.01 and the flat curve.",
+  "R5": "Keyed answer is the longest option in 2 of 10. Replaced 'Nothing: ...' (review 2 variant 1), 'None: ...' (review 2 variant 2) and 'It is not missing it: ...' (review 1 variant 3) with specific mistakes. Options that agree with a person's wrong claim ('Agreed: ...', 'Correct: ...') were kept: each states a reason and they come in pairs.",
+  "R6": "The lesson's main move was already spoken. The practical fallback that was nowhere, what to do with a column that exists only as today's value, now has one spoken sentence in Brief and audit (finding 2).",
+  "R7": "Audit items: item 1 now checks that current-state sources are flagged and that no flagged column is among the big movers (replacing the old 'is traced to dated events', which was a claim); item 4 is the learning curve with the count of positives at each size. Items 2 and 3 were already evidence.",
+  "specific": "Coordinator's addition (the learning-curve segment cut from 4-2 gets a home here): new segment 2, 83 spoken words, framed as 'would more rows help?' before any work on columns. Line chart reused from qa/lessons_before_fix/4-2.json segment 7; all 21 values re-checked against learning_curve (logistic_max, logistic_auc, logistic_min) plus 11 and 111 churners. It keeps the three points: about 0.83 at 1,000 rows against 0.845 at 6,000; count the positives, not the rows; a property of this data, so ask for the curve on yours. Segment 4 then ties the three levers together ('the learning curve had gone flat, so more rows promised little'). 'Learning curve' added to the glossary (5 terms), the brief, audit item 4, take-away 1, the recap card, drill 1 and the explain-back answer. The lesson is now 9 segments and 935 words (cap 950). Room was made by moving the column lists to the chart note, removing the old opening, and trimming the video sentence in segment 4 that the new opening made redundant."
+ },
+ "segments_changed": [
+  1,
+  2,
+  3,
+  4,
+  8,
+  9
+ ],
+ "numbers_verified": 91,
+ "open_questions": [
+  "Segment numbering shifted by one: segment 2 is new (learning curve); old segments 2 to 8 are now 3 to 9. Old segments 4, 5 and 6 (now 5, 6, 7) keep their narration word for word, so their audio is reusable.",
+  "The current 4-2 glossary still defines 'learning curve' although its segment moved here; 4-4's glossary now defines it too. The owner of 4-2 should decide whether to drop it there.",
+  "content/OUTLINE.md still describes the old 4-4 hook and still lists 'how much data is enough' under 4-2. The number linter takes each lesson's evidence keys from the outline, so 4-4's video and learning_curve figures pass only as exact matches found elsewhere in facts; adding 'video' and 'learning_curve' to 4-4's Evidence line would make them first-class.",
+  "Narration is 935 words: over the 900 aim, under the 950 cap, because of the added segment.",
+  "Learner finding 3 asks for one worked audit of a flawed output in place of recaps across the course; not done here."
+ ]
+}

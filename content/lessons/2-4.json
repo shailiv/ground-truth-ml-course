@@ -1,0 +1,337 @@
+{
+  "id": "2-4",
+  "module": 2,
+  "title": "Can you trust the percentage?",
+  "subtitle": "When the model says 30 percent, do 30 in a hundred leave?",
+  "goal": "After this lesson you can ask for and read a predicted-versus-actual table, and say whether a model's scores are safe to multiply by money.",
+  "predict": {
+    "q": "The model gave 291 test advertisers a churn score between 20 and 30 percent, about 25 percent on average. What share of those 291 actually churned?",
+    "options": [
+      "About 15 percent",
+      "About 25 percent",
+      "About 33 percent",
+      "About 50 percent"
+    ],
+    "answer": 2,
+    "reveal": "About 33 percent. The model ranks well, but its percentages run low here; the lesson shows why, and when that matters."
+  },
+  "segments": [
+    {
+      "narration": "The sales lead shows you next quarter's forecast. Every open deal carries a win probability, and the forecast multiplies each one by the deal's value and adds it up. That assumes deals scored at 30 percent close three times in ten, and nobody has checked. Any yes-or-no model, whether it scores deals, video-format adoption or churn, makes two separate claims: that it ranks cases in the right order, and that its percentages are right. AUC tested only the first, and a model can pass one and fail the other. Finance wants the same sum from your churn model, score times spend, called revenue at risk, and on the churn table the second claim can be checked. Of the advertisers the model scored at around 30 percent, how many actually left?",
+      "visual": {
+        "type": "title",
+        "kicker": "Module 2 · Lesson 4",
+        "title": "Can you trust the percentage?",
+        "sub": "The model says 30 percent. How many left?"
+      }
+    },
+    {
+      "narration": "The check is a GROUP BY. Put the test advertisers into buckets by score, and in each bucket compare two numbers: the average score, and the share who really churned. [[1]] Take the bucket scored between 20 and 30 percent. The model said about 25 percent on average, and about 33 percent left. One in four promised, one in three delivered. [[2]] The next bucket up, the thirties, was promised about 35 percent and delivered about 40. When predicted and actual agree in every bucket, a model is called calibrated: its 30 percent means 30 in a hundred. This one runs low on both sides of 30.",
+      "visual": {
+        "type": "table",
+        "title": "Around a score of 30%: what the model said, what happened",
+        "columns": [
+          "Score bucket",
+          "Advertisers",
+          "Model said",
+          "Churned"
+        ],
+        "rows": [
+          [
+            "20–30%",
+            "291",
+            "24.6%",
+            "32.6%"
+          ],
+          [
+            "30–40%",
+            "153",
+            "34.6%",
+            "40.5%"
+          ]
+        ],
+        "note": "Test months. Calibrated would mean the last two columns match."
+      }
+    },
+    {
+      "narration": "Now every bucket at once. For a calibrated model, each bucket's prediction and its actual rate would match. Here the actual rate is above the prediction in all eight buckets, from the safest advertisers to the riskiest. The gap is small at the bottom, where the model says 2 percent and about two and a half percent churn. It is widest from the twenties upward. Watch the bucket sizes as well: the top bucket holds only 43 advertisers, so its gap is the least certain. Explore it now, one bucket at a time: what the model said, what happened, and how many advertisers stand behind it.",
+      "visual": {
+        "type": "widget",
+        "name": "calibration",
+        "title": "Predicted against actual, bucket by bucket",
+        "note": "For each bucket: what the model said, what happened, and how many advertisers stand behind it."
+      }
+    },
+    {
+      "narration": "Read those buckets two ways. First, compare each bucket with the next one up. The actual churn rate climbs every time, from under 3 percent in the lowest bucket to about 90 percent in the highest. So the ranking is intact: a higher score really does mean a riskier advertiser. That is what AUC measured. Second, compare prediction with outcome inside each bucket. The model's number is below the truth every time. The order is right and the level is wrong. A top 200 list built from these scores is exactly as good as it was last lesson. A sum of money built from them is not.",
+      "visual": {
+        "type": "compare",
+        "title": "The same buckets, read two ways",
+        "left": {
+          "label": "Bucket to bucket: the order",
+          "value": "2.5% → 90.7%",
+          "sub": "actual churn climbs at every step, so the ranking is intact"
+        },
+        "right": {
+          "label": "Inside each bucket: the level",
+          "value": "8 of 8 run low",
+          "sub": "the model said less than happened, every time"
+        }
+      }
+    },
+    {
+      "narration": "Why low? [[1]] The model learned from January to March, when about 11 percent of advertisers churned. On those months its average prediction and the actual rate match exactly. That is no achievement: training tunes the scores to agree with the outcomes it was shown. [[2]] Then it was tested on May and June, when about 13 percent churned. It still expects about 11. That is about a fifth too few, and a fifth of a high score is more points than a fifth of a low one. A model carries the churn rate of its training months forward, and when the real rate moves, the percentages go stale even if the order holds. That every bucket runs low is how this simulated world was built: churn creeps up month by month. Do not expect that pattern elsewhere. Measure it.",
+      "visual": {
+        "type": "compare",
+        "title": "Average prediction against actual churn",
+        "left": {
+          "label": "Training months (Jan–Mar)",
+          "value": "11.1% → 11.1%",
+          "sub": "predicted → actual: an exact match"
+        },
+        "right": {
+          "label": "Test months (May–Jun)",
+          "value": "10.9% → 13.2%",
+          "sub": "predicted → actual: runs low"
+        }
+      }
+    },
+    {
+      "narration": "When does this matter? [[1]] If you only sort and take the top of the list, it does not. Order is all a list uses. [[2]] It matters the moment a score is multiplied by money. Finance's revenue at risk adds up thousands of scores that run low, so the total comes out low too. [[3]] And it matters when someone states a cut-off in percent. Say the policy is to call everyone above 30 percent risk. The advertisers the model scores at about 25 are really churning at about 33, and the policy walks straight past them. So use the score as a rank freely. Use it as a number only after checking.",
+      "visual": {
+        "type": "bullets",
+        "title": "When the percentage has to be right",
+        "items": [
+          "Sort and take the top K: order is enough",
+          "Score × dollars: every term inherits the error",
+          "A cut-off stated in percent: the line is not where you think"
+        ]
+      }
+    },
+    {
+      "narration": "Brief and audit. [[1]] Ask the assistant for a predicted versus actual table on the test months: score buckets, the number of advertisers in each, the average prediction and the actual rate. [[2]] Ask for the same table by the segments the business cares about, because a model can be right overall and wrong for one group of clients. Then the evidence. [[3]] The bucket counts must add up to the test rows, 4,000 here. A table built on the training months will match beautifully and prove nothing. [[4]] The overall average prediction must sit beside the overall actual rate. [[5]] And every bucket needs its count, so you can discount the thin ones. If the scores are off, the repair is called recalibration. Ask for it, then ask for the same table, on rows the adjustment never saw.",
+      "visual": {
+        "type": "bullets",
+        "title": "Brief and audit",
+        "items": [
+          "Ask: predicted versus actual by score bucket, test months",
+          "Ask: the same table by segment",
+          "Check: bucket counts add up to the 4,000 test rows",
+          "Check: overall predicted beside overall actual",
+          "Check: a count in every bucket"
+        ]
+      }
+    },
+    {
+      "narration": "The next time someone multiplies a probability by money, in a sales forecast or a revenue at risk figure, you know which table to ask for first. So far every prediction was a yes or a no; next lesson, it is a number, like dollars of spend.",
+      "visual": {
+        "type": "bullets",
+        "title": "Keep this",
+        "items": [
+          "Ranking and percentages are separate claims",
+          "Check predicted versus actual, on test rows",
+          "Rank freely; multiply by money only after checking"
+        ]
+      }
+    }
+  ],
+  "takeaways": [
+    "Ranking well and stating honest percentages are separate claims; AUC only checks the first.",
+    "Check the percentages with a predicted-versus-actual table on test rows, overall and by segment.",
+    "A score works as a rank straight away; multiply it by money or set a cut-off in percent only after that check."
+  ],
+  "quiz": [
+    {
+      "id": "2-4-q1",
+      "concept": "ranking is not calibration",
+      "domain": "course",
+      "q": "The churn model has an AUC of about 0.85. The finance lead says: 'That is a strong model, so we can treat each score as that advertiser's probability of leaving and add up the expected lost revenue.' What is the right read?",
+      "options": [
+        "Agreed: an AUC above 0.8 is the usual bar for treating scores as probabilities.",
+        "Not usable at all: an AUC of 0.85 means about 15 percent of the scores are wrong.",
+        "Not yet: AUC only shows that churners outrank stayers, so check predicted against actual first.",
+        "Agreed for the total: single scores may be off, but the errors cancel when thousands are added up."
+      ],
+      "answer": 2,
+      "why": "AUC uses only the order of the scores, so it is silent on whether 0.3 means 30 percent. On the test months the scores run low: the model expected about 11 percent to churn and about 13 percent did, so the revenue total would be understated. Errors that all lean the same way do not cancel in a sum, AUC is not an error rate, and no AUC level certifies the percentages."
+    },
+    {
+      "id": "2-4-q2",
+      "concept": "check calibration on unseen rows",
+      "domain": "course",
+      "q": "The assistant reports: 'Calibration check on the 6,000 advertisers the model was fitted on: average predicted churn 11.1 percent, actual churn 11.1 percent. The model is perfectly calibrated and its scores can be used as probabilities.' What do you send back?",
+      "options": [
+        "Approved for totals: with the two averages equal, a sum over all advertisers will come out right.",
+        "A match on the fitted rows is automatic: show the same check on the test rows, by bucket.",
+        "An average can hide the buckets: show the bucket table for those same 6,000 advertisers.",
+        "Show the AUC on those 6,000 rows as well: if it is above 0.8, the calibration claim holds."
+      ],
+      "answer": 1,
+      "why": "The check was run on the rows the model was fitted on, January to March, where the average prediction matches the actual rate because training made it so. On the 4,000 test advertisers the model said 10.9 percent and 13.2 percent churned. Asking for buckets is a good instinct, but buckets on the fitted rows would flatter the model too, and AUC says nothing about the level of the scores."
+    },
+    {
+      "id": "2-4-q3",
+      "concept": "when calibration matters",
+      "domain": "other",
+      "q": "An upsell model scores accounts on how likely they are to buy an add-on. It ranks well, but a check shows its percentages run high: of the accounts it scored around 40 percent, about 25 percent bought. The scores feed two uses. One: sales calls the 50 highest-scoring accounts each week. Two: finance forecasts add-on revenue as score times price, summed. What is the right read of the two uses?",
+      "options": [
+        "The call list and the forecast are both off: scores that are wrong as percentages are wrong as an order too.",
+        "The call list and the forecast both stand: a model that ranks well gives a sound total when its scores are summed.",
+        "The call list is off and the forecast stands: over-scored accounts crowd the top 50, but the errors cancel in a sum.",
+        "The call list stands and the forecast is overstated: the order is untouched, but every term in the sum is too high."
+      ],
+      "answer": 3,
+      "why": "The call list uses only the order of the scores, and the order is good. The forecast uses the scores as numbers, so every term is inflated and the total is too high; errors that all lean high do not cancel. Wrong percentages do not mean a wrong ranking: they are separate properties, checked separately."
+    },
+    {
+      "id": "2-4-q4",
+      "concept": "a cut-off stated in percent",
+      "domain": "course",
+      "q": "An account lead sets a policy: 'Call every advertiser the model puts above 30 percent churn risk.' The predicted-versus-actual table shows that advertisers scored between 20 and 30 percent churned at about 33 percent. What does that mean for her policy?",
+      "options": [
+        "It skips advertisers whose real risk is above her line: those scored about 25 percent are leaving at about 33.",
+        "It works as she intends: the ranking is correct, so the riskiest advertisers are still the ones called.",
+        "It should be dropped: a model whose 25 percent means 33 percent cannot rank advertisers either.",
+        "Her line should move up, to about 40 percent, because the model flags more advertisers than she meant."
+      ],
+      "answer": 0,
+      "why": "She means a real risk above 30 percent, but the line is drawn on the model's scores, and a score of about 25 here goes with a real rate of about 33. So a whole group above her intended line is left out. The ranking is fine, which is why this is easy to miss and why the model need not be dropped; to reach the advertisers she means, her line on the scores has to come down, not up."
+    }
+  ],
+  "review": [
+    {
+      "concept": "ranking and calibration are separate",
+      "variants": [
+        {
+          "q": "A lead-scoring model ranks leads well, but its percentages run high: leads it scores around 20 percent convert about 8 percent of the time. Sales uses the scores only to order the daily call queue. What is the impact?",
+          "options": [
+            "The queue is in the wrong order: a lead scored at 20 percent belongs lower down.",
+            "None on the queue, which uses order only; just keep the percentages out of quotes and forecasts.",
+            "The model must be retrained before the next queue goes out, because inflated scores inflate the ranking too.",
+            "The queue should be cut to less than half its length, since fewer than half the promised conversions arrive."
+          ],
+          "answer": 1,
+          "why": "A call queue needs only the order of the scores, and the order is good. The inflated percentages would do harm only where they are used as numbers: quoted to a rep, or multiplied into a forecast. A model can rank well and still state the wrong percentages, so neither the order nor the length of the queue has to change."
+        },
+        {
+          "q": "A click model orders ads from best to worst correctly, but its predicted click rates are about twice the real ones for every ad. Which task will it get wrong?",
+          "options": [
+            "Picking the ten ads most likely to be clicked.",
+            "Ordering a client's creatives from strongest to weakest.",
+            "Forecasting next week's clicks as predicted rate times impressions.",
+            "Flagging the weakest tenth of a client's ads for a refresh."
+          ],
+          "answer": 2,
+          "why": "Picking the top ten, ordering creatives and flagging the weakest tenth all use only the ranking, which is right. The forecast multiplies the predicted rate by a volume, so it uses the rate as a number and comes out about double. Doubling every rate changes the level and leaves the order alone."
+        },
+        {
+          "q": "A check shows the churn model's scores run low in every bucket, while the actual churn rate still rises steadily from the lowest-scored bucket to the highest. What can you still rely on?",
+          "options": [
+            "Only the bottom buckets, where the gap is small; the top of the list is no longer trustworthy.",
+            "The percentages but not the order: a steady rise shows each bucket's number is about right.",
+            "The order and the percentages: a rate that rises bucket by bucket shows the scores are right as numbers too.",
+            "The order: top-K lists and AUC stand, but the scores are not yet percentages."
+          ],
+          "answer": 3,
+          "why": "A churn rate that rises bucket by bucket shows the ranking is intact, so anything that uses order alone still stands, at the top of the list as much as the bottom. Running low in every bucket shows the level is off, so the scores are not yet percentages. A steady rise says nothing about the level: the scores could all be half the truth and still rise."
+        }
+      ]
+    },
+    {
+      "concept": "check percentages on unseen rows before using them as numbers",
+      "variants": [
+        {
+          "q": "A model that estimates the chance a support ticket is urgent was trained in a quarter when 5 percent of tickets were urgent. After a product launch, 10 percent are. The model has not been touched. What should you expect of its percentages now?",
+          "options": [
+            "They run low on average, because the model still carries the old 5 percent rate; the ordering may still hold.",
+            "They run high, because with twice as many urgent tickets the model finds more to flag.",
+            "They are unchanged and still right: a model that was not retrained gives the same numbers.",
+            "They and the ordering are both unusable, since the inbox no longer resembles the training data."
+          ],
+          "answer": 0,
+          "why": "A model carries forward the rate it was trained on, so when urgent tickets become twice as common its percentages come out too low on average. 'Its numbers are the same' is exactly the problem: the inbox changed and the model did not. Ordering is a separate property and can survive, so check both on recent tickets."
+        },
+        {
+          "q": "A colleague wants to forecast renewal revenue as each customer's predicted renewal probability times contract value. Which piece of evidence should come first?",
+          "options": [
+            "The model's AUC on the test rows, to confirm that it ranks well.",
+            "The model's accuracy at a 0.5 cut-off on the test rows, beside an always-renews baseline.",
+            "A predicted-versus-actual table by score bucket, on rows the model did not train on.",
+            "A predicted-versus-actual table on the training rows, where there are more customers per bucket."
+          ],
+          "answer": 2,
+          "why": "Multiplying by money uses the probability as a number, so the question is whether 70 percent means 70 in a hundred. The bucket table answers that, and only on unseen rows. AUC and accuracy say nothing about the level of the scores, and a table on training rows flatters a model that was fitted to those very outcomes."
+        },
+        {
+          "q": "Two checks of the churn model arrive. Check A, on the 6,000 advertisers it was trained on: predicted 11.1 percent, actual 11.1 percent. Check B, on 4,000 advertisers from later months: predicted 10.9 percent, actual 13.2 percent. Which one tells you what to expect when the model is used next month?",
+          "options": [
+            "Check A: it rests on more advertisers, so its numbers wobble less.",
+            "Neither alone: average them, weighted by rows, for about 12 percent actual.",
+            "Check A: an exact match is the strongest evidence that the scores are calibrated.",
+            "Check B: those advertisers come from months the model never saw."
+          ],
+          "answer": 3,
+          "why": "Check A is the training months, where predicted and actual agree because the model was fitted to those outcomes. Check B is the test months, later advertisers the model never saw, and it is the only one that resembles how the model will be used. More rows do not help when they are the rows the model already learned from, and averaging the two only dilutes the honest check."
+        }
+      ]
+    }
+  ],
+  "drill": [
+    {
+      "q": "A model ranks customers well. Does that mean you can trust its percentages?",
+      "a": "No. Ranking only needs the order to be right. Every score could be too low or too high and the order would be the same. Check the percentages separately, by comparing predicted with actual in score buckets on rows the model never saw."
+    },
+    {
+      "q": "When does it matter that a model's percentages are right, and when does it not?",
+      "a": "It matters whenever the score is used as a number: multiplied by money, or compared with a cut-off stated in percent. It does not matter when you only sort and take the top of the list."
+    }
+  ],
+  "recall": {
+    "prompt": "Finance wants revenue at risk computed as churn score times spend. Explain what you would check first, what that check showed on the course data, and why a good AUC did not settle it.",
+    "model_answer": "AUC only says churners tend to score above stayers: it uses the order of the scores, not their size. Before multiplying by money I would ask for a predicted-versus-actual table on the test months. Here every bucket ran low: advertisers scored about 25 percent churned at about 33 percent, and overall the model said 10.9 percent where 13.2 percent churned, because it learned from months with about 11 percent churn. So the ranked list is fine as it is, but the dollar total would be understated until the scores are recalibrated and checked again."
+  },
+  "ask_assistant": "On [the test rows: a period or holdout the model never trained on] only, group rows by predicted probability into [8 to 10] score buckets. For each bucket print the number of rows, the average prediction and the actual [outcome] rate, and add one line with the overall average prediction beside the overall actual rate. State how many rows the table covers and which [period] they come from. Repeat the table for [the two or three segments the business cares about]. Do not adjust the scores yet. If I later ask for recalibration, say which rows it was fitted on and show this table again on rows it did not use.",
+  "audit_checklist": [
+    "The table is built on test rows: the bucket counts add up to the test row count (4,000 here), not the training count (6,000).",
+    "Every bucket shows its row count, and the overall average prediction sits beside the overall actual rate (10.9% against 13.2% here).",
+    "The same table appears for each segment the business cares about.",
+    "After any recalibration: the output names the rows the adjustment was fitted on, and the table is shown again on rows it did not use."
+  ],
+  "transfer": [
+    "Can an upsell score be multiplied by price to forecast add-on revenue?",
+    "Can a predicted click rate be multiplied by impressions to forecast a client's clicks?",
+    "Can sales be told that a lead scored 0.4 has a 40 percent chance of closing?"
+  ],
+  "other_ways": [
+    {
+      "approach": "Recalibration: adjust the scores so that predicted matches actual on recent outcomes",
+      "when": "When the ranking is good but the percentages are off; check the table again on rows not used for the adjustment."
+    },
+    {
+      "approach": "Use the score as a rank only: a top-K list, with no percentage quoted",
+      "when": "When the decision is a fixed-capacity list and nobody multiplies by money."
+    },
+    {
+      "approach": "One summary number for probability error (the Brier score)",
+      "when": "When comparing many models at once; it will not show where, or in which direction, the percentages are off."
+    }
+  ],
+  "glossary": [
+    {
+      "term": "calibration",
+      "def": "Whether predicted percentages match what happens: of the rows scored about 30 percent, about 30 in a hundred have the outcome."
+    },
+    {
+      "term": "predicted-versus-actual table",
+      "def": "Rows grouped into score buckets, with the average prediction beside the actual rate in each."
+    },
+    {
+      "term": "score bucket",
+      "def": "A group of rows whose scores fall in the same range, such as 20 to 30 percent."
+    },
+    {
+      "term": "recalibration",
+      "def": "Adjusting a model's scores after training so that they match observed rates."
+    }
+  ]
+}

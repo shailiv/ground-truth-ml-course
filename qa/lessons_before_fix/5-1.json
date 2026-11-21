@@ -1,0 +1,280 @@
+{
+  "id": "5-1",
+  "module": 5,
+  "title": "Drivers are not causes",
+  "subtitle": "What does a gap between two groups, or a model's weight, actually tell you?",
+  "goal": "After this lesson you can tell an association from an effect, and say what a gap between groups can and cannot support.",
+  "predict": {
+    "q": "Advertisers with conversion tracking churn about 11 points less than those without. If you switched tracking on for every advertiser, by how much would churn fall?",
+    "options": ["About 11 points", "About 6 points", "About 2 points", "It would not fall at all"],
+    "answer": 2,
+    "reveal": "About 2 points, in this simulated world. The lesson shows where the other 9 come from, and why the table alone could never have told you."
+  },
+  "segments": [
+    {
+      "narration": "It is the quarterly review, and a slide goes up. Advertisers with conversion tracking churn 11 points less. Recommendation: push tracking to every account. The arithmetic is fine. About 7 percent of advertisers with tracking churned, against about 18 percent of those without. But the slide measured a gap between two groups, then promised what will happen if you move an advertiser across it. The first is a GROUP BY. The second is a prediction about an action nobody has taken. This lesson is about the distance between them.",
+      "visual": {"type": "title", "kicker": "Module 5 · Lesson 1", "title": "Drivers are not causes", "sub": "What a gap between groups can and cannot tell you"}
+    },
+    {
+      "narration": "Here we can do something you can never do at work. This course's data is simulated, so we can run the world twice: once with tracking switched on for every advertiser, once with it switched off for all of them. Same advertisers, same everything else. [[1]] The gap on the slide, call it the naive gap, was about 11 points. [[2]] The effect of actually switching tracking on is about 2 points. So tracking helps, a little. We know that true effect only because this world was built by hand. Real data gives you the first number and never the second.",
+      "visual": {
+        "type": "compare",
+        "title": "Conversion tracking and churn",
+        "left": {"label": "Naive gap between the groups", "value": "−11.2 pts", "sub": "7.2% churn with tracking, 18.4% without"},
+        "right": {"label": "True effect of switching it on", "value": "−2.3 pts", "sub": "10.7% if everyone had it, 12.9% if nobody did"}
+      }
+    },
+    {
+      "narration": "So where do the other 9 points come from? Some advertisers are simply more sophisticated. [[1]] Those advertisers are more likely to install tracking. [[2]] They are also less likely to churn, with tracking or without it. [[3]] And sophistication is not a column anywhere in the table. So the tracked group is stacked with advertisers who were going to stay anyway. [[4]] The naive gap mixes two things: what tracking does, and who chooses tracking. A hidden trait that pushes both the practice and the outcome is a common cause. The textbook word is confounder.",
+      "visual": {
+        "type": "bullets",
+        "title": "One hidden trait, two results",
+        "items": [
+          "Sophisticated advertisers install tracking more often",
+          "Sophisticated advertisers churn less, tracking or not",
+          "Sophistication is not a column in the table",
+          "Naive gap = what tracking does + who chooses tracking"
+        ]
+      }
+    },
+    {
+      "narration": "The usual reply is: then control for it. Ask the assistant to compare like with like, holding tenure, spend, vertical and the rest fixed. That is what a regression weight does. [[1]] The naive gap was about 11 points. [[2]] Adjusted, it shrinks to about six and a half. [[3]] The truth is still about 2. Adjusting removed the part of the mirage the table can see. It cannot remove the part that comes from a trait nobody recorded. And nothing in the output warns you how far off it still is. Adjusted is a better description. It is still not the effect of acting.",
+      "visual": {
+        "type": "bar",
+        "title": "Tracking and churn: three numbers",
+        "unit": "pts",
+        "data": [
+          {"label": "Naive gap", "value": -11.2},
+          {"label": "Adjusted for visible columns", "value": -6.5},
+          {"label": "True effect", "value": -2.3}
+        ],
+        "highlight": [2],
+        "note": "Adjusted for tenure, spend, campaigns, creatives, account manager and vertical."
+      }
+    },
+    {
+      "narration": "Now the question your stakeholders love. What separates advertisers who hit their CPA goal from those who do not, and can we turn that into best practices? Take five candidate practices, each with three numbers: the naive gap, the adjusted gap, and the true effect from rerunning the world. Advertisers with fresh creatives hit their goal about 20 points more often, and freshness is truly worth about 13. So part of a gap can be real. Advertisers with an account manager hit their goal about 10 points more often. The true effect on hitting the goal, in this world, is zero. That whole gap is who gets an account manager. Step through all five, and guess each true effect before you reveal it.",
+      "visual": {"type": "widget", "name": "practices", "title": "Five practices: naive gap, adjusted gap, true effect", "note": "Guess the true effect of each practice before you reveal it."}
+    },
+    {
+      "narration": "One of the five does something worse than shrink. [[1]] Accounts that had an optimisation review hit their goal about 25 points less often than the rest. As a best practice, that reads: stop doing reviews. [[2]] Adjust for tenure, spend, vertical and the other practices, and the gap does not move. [[3]] Rerun the world, and the review helps, by about 9 points. The gap has the wrong sign. Reviews are not handed out by lottery. They go to accounts already struggling, for reasons the table cannot see. So reviewed accounts look worse even though the review made them better. Here adjusting brought us no closer to the truth. It is never guaranteed to.",
+      "visual": {
+        "type": "bar",
+        "title": "Optimisation review and hitting the CPA goal",
+        "unit": "pts",
+        "data": [
+          {"label": "Naive gap", "value": -25.3},
+          {"label": "Adjusted", "value": -25.5},
+          {"label": "True effect", "value": 8.8}
+        ],
+        "highlight": [2],
+        "note": "Goal-hit rate: 46.9% with a review, 72.2% without."
+      }
+    },
+    {
+      "narration": "Now connect this to your models. A weight in the churn model is the same kind of number: a gap, adjusted for the other columns. Importance scores inherit that. [[1]] The model's weight for tracking takes a bit over 4 points off predicted churn. [[2]] The true effect is about 2. The weight is not a mistake. For prediction it is exactly right: tracking does tell you who is likely to stay. It does not tell you what happens if you install it. So choose your words. Tracking is associated with lower churn. Drives, causes and impact are words the table has not earned.",
+      "visual": {
+        "type": "compare",
+        "title": "A model's weight is the same kind of number",
+        "left": {"label": "Churn model's weight for tracking", "value": "−4.4 pts", "sub": "average shift in predicted churn"},
+        "right": {"label": "True effect of tracking", "value": "−2.3 pts", "sub": "knowable only in a simulated world"}
+      }
+    },
+    {
+      "narration": "Brief and audit. When someone asks for drivers or best practices, make every comparison the assistant returns carry its evidence. [[1]] Group sizes and an interval beside every gap. [[2]] The adjusted gap, with the list of what was adjusted for. [[3]] One line per practice on who gets it or who chooses it. If the answer is the keen ones, or the ones in trouble, you know which way the number leans. [[4]] Then read the wording. If the report says drives, impact or lift, and nobody tested the change, send it back.",
+      "visual": {
+        "type": "bullets",
+        "title": "Brief and audit: a drivers report must show",
+        "items": [
+          "Group sizes and an interval for every gap",
+          "The adjusted gap, and what it was adjusted for",
+          "Who gets or chooses each practice",
+          "Wording: \"is associated with\", never \"drives\""
+        ]
+      }
+    },
+    {
+      "narration": "A gap between groups, an adjusted gap and a model's weight all tell you what goes with an outcome. None of them tells you what happens if you change it. In this world the same kind of number came out far too big, completely empty, and backwards, and only a simulation could say which. At work you cannot rerun the world, but you can make the change yourself, for a randomly chosen group of advertisers, and watch. That is an experiment, and it is the next lesson.",
+      "visual": {"type": "quote", "text": "A gap tells you what goes with an outcome. It does not tell you what happens if you change it.", "sub": "Next: experiments"}
+    }
+  ],
+  "takeaways": [
+    "A gap between groups says what goes with an outcome, not what happens if you change it.",
+    "Adjusting, like a model's weight, only removes differences the table records; the result can still be too big, empty or backwards.",
+    "Ask who gets or chooses the practice, and write \"is associated with\" until someone tests the change."
+  ],
+  "quiz": [
+    {
+      "id": "5-1-q1",
+      "concept": "a gap is not an effect",
+      "domain": "course",
+      "q": "Advertisers running four or more creatives per campaign hit their CPA goal about 22 points more often than the rest, measured on thousands of advertisers with a tight interval. The onboarding lead wants to make four creatives mandatory and promise a 22-point lift. What is the right read?",
+      "options": [
+        "Promise it: a gap measured on thousands of advertisers, with an interval this tight, is about as solid as evidence gets.",
+        "The gap is real, but who chooses to run more creatives may explain much of it; the lift from forcing it is unknown.",
+        "Hold off: a gap this large is probably noise, so check whether it shows up again next month before promising anything.",
+        "Promise about half of it, since true effects usually come out at around half the size of the naive gap."
+      ],
+      "answer": 1,
+      "why": "A tight interval says the gap between the groups is not noise; it says nothing about why the groups differ. Advertisers who run more creatives may be better run in other ways too, so forcing the practice could deliver far less. And 'about half' is not a rule either: in this course's world one gap was pure mirage and another had the wrong sign."
+    },
+    {
+      "id": "5-1-q2",
+      "concept": "who gets it can flip the sign",
+      "domain": "course",
+      "q": "The assistant's 'drivers of CPA success' report says: 'Accounts that had an optimisation review hit their goal 25 points less often. The gap is unchanged after controlling for tenure, spend, vertical and number of campaigns. Recommendation: scale reviews back.' What has the report missed?",
+      "options": [
+        "It used a simple regression; a more flexible model, such as boosting, would have adjusted more accurately.",
+        "A gap of 25 points is too large to be real, so a join must have duplicated rows somewhere upstream.",
+        "It controlled for too few columns; adding every column in the table would settle the question.",
+        "It never asks who gets a review: if reviews go to struggling accounts, the comparison is backwards."
+      ],
+      "answer": 3,
+      "why": "Reviews are given to accounts already in trouble, so reviewed accounts look worse whatever the review does; in the simulation the review actually helps by about 9 points. Surviving the controls proves little, because adjusting only removes differences the table records, and neither a fancier model nor more columns can adjust for a reason that was never written down."
+    },
+    {
+      "id": "5-1-q3",
+      "concept": "importance is not a lever",
+      "domain": "other",
+      "q": "An upsell model predicts which customers will buy the premium tier, and it validates well on held-out customers. Its most important feature is logins in the last 30 days. A product manager proposes reminder emails to get everyone logging in more, 'since logins drive upgrades'. What is the right read?",
+      "options": [
+        "Logins help predict who upgrades; that does not show that pushing logins up makes anyone upgrade. Test it on a random group.",
+        "Sound plan: the model holds up on customers it has never seen, so its most important feature is a proven lever.",
+        "Check the model's curve for logins first: if predicted upgrades rise steadily with logins, the emails will work.",
+        "Importance scores cannot be trusted for anything, so logins should be dropped from the model altogether."
+      ],
+      "answer": 0,
+      "why": "Good validation proves the model predicts well, not that its inputs are causes: customers who already want the product log in more, so interest is a common cause of both. The model's curve for logins is only the model's behaviour restated, and dropping a useful predictor fixes nothing. To learn what the emails do, send them to a random group and compare."
+    },
+    {
+      "id": "5-1-q4",
+      "concept": "wording an association",
+      "domain": "course",
+      "q": "You must write one playbook line about automated bidding. You have a naive gap of 19 points in goal attainment, 15 points after adjusting, and no test. Which line is honest?",
+      "options": [
+        "Switching on automated bidding lifts goal attainment by 19 points, based on some 7,000 advertisers.",
+        "After controlling for account differences, automated bidding drives a 15-point improvement in goal attainment.",
+        "Advertisers on automated bidding hit goal 19 points more often (15 after adjusting); the effect is untested.",
+        "Automated bidding has no proven effect on goal attainment, so it should be left out of the playbook entirely."
+      ],
+      "answer": 2,
+      "why": "The honest line reports what was seen at the strength it was seen: an association, raw and adjusted, with the limit stated. 'Drives' after controls is still a causal claim the table cannot support, because adjusting only handles recorded differences. Leaving it out overcorrects: an untested association is still worth reporting, and worth testing."
+    }
+  ],
+  "review": [
+    {
+      "concept": "a gap between groups mixes the effect with who is in each group",
+      "variants": [
+        {
+          "q": "Advertisers with an account manager hit their CPA goal about 10 points more often than self-serve advertisers. Sales proposes giving every account a manager 'to raise goal attainment by 10 points'. What should you ask first?",
+          "options": [
+            "How accounts come to have a manager, and whether those accounts differ in ways that would affect CPA anyway.",
+            "Whether a gap of 10 points is statistically significant, given the number of advertisers in each group.",
+            "Whether the cost of a manager per account is less than a 10-point lift in goal attainment is worth.",
+            "Whether the 10-point gap holds in every vertical, since an average can hide verticals where it reverses."
+          ],
+          "answer": 0,
+          "why": "Managers are assigned, not dealt at random, so the gap mixes what a manager does with which accounts get one; in this course's simulation the true effect on hitting the goal was zero. Significance and cost only matter once you know the gap is an effect at all."
+        },
+        {
+          "q": "A retailer finds that customers who installed its mobile app spend 40 percent more per year than those who did not. Marketing wants to pay for app installs, expecting the same 40 percent from each new installer. What is the flaw?",
+          "options": [
+            "There is none, provided the comparison covers enough customers for the 40 percent to be a stable figure.",
+            "The 40 percent mixes seasons; it should be recomputed within each quarter before it is used in a forecast.",
+            "Customers who chose the app were probably keener buyers already, so the gap overstates what an install does.",
+            "Spending in the app and spending in store are recorded differently, so the two groups cannot be compared."
+          ],
+          "answer": 2,
+          "why": "Installing is a choice, and the customers who make it are likely the loyal ones: a common cause of both installing and spending. A large sample makes the gap precise, not causal, and people nudged into an install are not the same kind of customer as people who sought the app out."
+        },
+        {
+          "q": "In a sales funnel, leads who attended a product webinar convert at 18 percent; leads who did not convert at 6 percent. The sales director wants every lead pushed into a webinar. Which reading is soundest?",
+          "options": [
+            "Webinars triple conversion, so every lead should be pushed into one as early in the funnel as possible.",
+            "The gap is so large that, even heavily discounted, the webinar must at least double a lead's conversion.",
+            "Webinars clearly do nothing for conversion; the entire gap is explained by which leads choose to attend.",
+            "Leads who sign up were already more interested, so the gap shows who attends, not what attending does."
+          ],
+          "answer": 3,
+          "why": "Interest drives both attending and buying, so the gap cannot be read as the webinar's effect, however large it is. But nor does it show the webinar is useless: a gap can overstate, be empty, or even have the wrong sign. You find out by inviting a random half."
+        }
+      ]
+    },
+    {
+      "concept": "adjusting, and a model's weight, only handle what the table records",
+      "variants": [
+        {
+          "q": "Customers who were given a retention discount cancel more often than customers who were not, and the gap persists after the assistant controls for plan, region and tenure. A manager concludes that discounts cause cancellations. What is the better read?",
+          "options": [
+            "With plan, region and tenure held fixed, other explanations are ruled out, so the discounts are backfiring.",
+            "Discounts go to customers who already looked likely to leave, a reason the controls cannot see at all.",
+            "Three controls are too few; with enough columns added to the model, the true effect of the discount will appear.",
+            "The result must be noise or a data error, because a discount cannot plausibly make customers cancel."
+          ],
+          "answer": 1,
+          "why": "Help aimed at people in trouble makes the helped group look worse, and adjusting for plan, region and tenure cannot fix that, because the trigger (someone judged this customer to be wavering) was never recorded. More columns help only if the real reason is among them, which the table cannot tell you."
+        },
+        {
+          "q": "A fraud model's strongest weight is 'publisher was manually audited': with the other columns held fixed, audited publishers get a much higher predicted rate of invalid traffic. A colleague says audits must be making traffic worse. What is the right read?",
+          "options": [
+            "The weight helps prediction, but audits follow suspicion, so it says nothing about what an audit itself does.",
+            "Because the other columns are held fixed, the weight isolates the effect of the audit itself on traffic quality.",
+            "The model must be broken or leaking, because a quality audit cannot sensibly raise the risk of invalid traffic.",
+            "The column is misleading the model and should be removed, even if the score on held-out publishers falls."
+          ],
+          "answer": 0,
+          "why": "A weight is a gap adjusted for the other columns, which makes it an association still. Audits go to publishers someone already suspected, and that suspicion is not a column, so 'held fixed' cannot separate the audit from the reason for it. The column remains a good predictor; it is just not evidence about the audit's effect."
+        },
+        {
+          "q": "An analyst presents: 'Advertisers using the new bulk-upload tool spend 12 percent more, after controlling for 30 variables, so this is the tool's causal impact.' What is the weakest point in that claim?",
+          "options": [
+            "Thirty controls is too many for one model, so the 12 percent is probably an artefact of overfitting.",
+            "A difference of 12 percent in spend is too small to be worth a causal claim in either direction.",
+            "A tree model would have adjusted for those 30 variables more flexibly than a regression can.",
+            "Controls remove only recorded differences; why advertisers adopt the tool may not be recorded."
+          ],
+          "answer": 3,
+          "why": "The number of controls is not the issue; what they cover is. If ambitious, growing advertisers are the ones who pick up a bulk tool, and ambition is not a column, the adjusted gap still carries it. Changing the model type changes how you adjust, not what you are able to adjust for."
+        }
+      ]
+    }
+  ],
+  "drill": [
+    {
+      "q": "A dashboard shows that advertisers who use some feature do better than those who do not. Before anyone recommends the feature, what is the first question to ask?",
+      "a": "Ask who chooses that feature, or who is given it. If those advertisers differ in ways that also affect the outcome, the gap mixes the feature's effect with who uses it. It can be too big, empty, or even backwards."
+    },
+    {
+      "q": "Why can adjusting for other columns not turn a gap between groups into a proven effect?",
+      "a": "Because you can only adjust for what is in the table. If the real common cause was never recorded, the adjusted number still carries it, and nothing in the output tells you how much."
+    }
+  ],
+  "recall": {
+    "prompt": "A stakeholder says: advertisers with conversion tracking churn 11 points less, so pushing tracking will cut churn by 11 points. Explain in 30 seconds why that does not follow.",
+    "model_answer": "The 11 points is a gap between two groups that differ in more than tracking: more sophisticated advertisers both install tracking and churn less anyway, so the gap mixes what tracking does with who chooses it. Adjusting for the columns we have shrinks the gap but cannot remove a cause that is not in the table. In our simulated world the real effect was about 2 points; with real data the only way to find out is to test the change. Until then the honest wording is 'associated with'."
+  },
+  "ask_assistant": "For each practice in this list, compare advertisers who do it with those who do not on the share hitting their CPA goal. Show both group sizes, both rates, the raw gap with a 95 percent interval, and the gap after adjusting for tenure, spend, vertical and number of campaigns; list exactly what you adjusted for, and adjust only for things that were fixed before the practice was adopted. For each practice add one line on how advertisers come to have it: chosen by them, assigned by us, or triggered by poor performance. Describe every result as an association; do not write 'drives', 'impact' or 'lift'.",
+  "audit_checklist": [
+    "Group sizes and an interval beside every gap",
+    "The list of columns adjusted for, with nothing on it that the practice itself changes (CPA, spend trend): controlling for the route a practice works through removes the very effect you are measuring",
+    "One line per practice on who gets it or who chooses it",
+    "The wording says 'associated with'; 'drives', 'causes' and 'impact' appear only where a change was actually tested"
+  ],
+  "transfer": [
+    "Do video creatives really earn a higher CTR, or do the advertisers who can afford video differ in other ways?",
+    "Customers who use the mobile app spend more: would pushing the app raise spend?",
+    "Publishers on the premium list show fewer invalid clicks: is it the list, or who was picked for it?"
+  ],
+  "other_ways": [
+    {"approach": "Run a randomised experiment: give the change to a random group and compare", "when": "Whenever you can control who gets the change or the encouragement; it is the only design that deals with causes nobody recorded (next lesson)."},
+    {"approach": "Compare the change over time in a group that got a launch with a similar group that did not", "when": "When the practice was rolled out to one group on a known date and an experiment is no longer possible (lesson 5-3)."},
+    {"approach": "Ask the people who assign the practice how they decide", "when": "Always, and first: knowing that reviews go to struggling accounts tells you which way a gap is biased before any analysis."}
+  ],
+  "glossary": [
+    {"term": "association", "def": "Two things that tend to occur together in the data, whatever the reason."},
+    {"term": "naive gap", "def": "The raw difference in an outcome between those who do something and those who do not, taken at face value."},
+    {"term": "confounder (common cause)", "def": "A trait that influences both the practice and the outcome, so the two move together without one causing the other."},
+    {"term": "adjusting (controlling) for", "def": "Comparing like with like on the columns you have, usually with a regression; it cannot account for anything that was not recorded."},
+    {"term": "causal effect", "def": "How much the outcome would change if you changed the practice and nothing else."}
+  ]
+}

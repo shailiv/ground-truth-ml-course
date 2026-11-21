@@ -1,0 +1,74 @@
+[
+ {
+  "reviewer": "learner-1",
+  "lesson": "3-5",
+  "where": "seg7 narration vs module 1",
+  "quote": "Then the six lines: does the code do what the header says?",
+  "kind": "doubt",
+  "severity": "medium",
+  "problem": "1-5 told me four times to check 'evidence in the output, not Python', and its quiz marks 'Read through the Python script it wrote, line by line' as wrong. Now I am reading Python and nobody says what changed.",
+  "fix": "One bridging sentence in seg1: 'Output first. When the output cannot settle it, one score with no rows named, a handful of lines can. You are searching the script, not reading it.'"
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "3-5",
+  "where": "seg3 visual + narration",
+  "quote": "print(roc_auc_score(y[test], scores))",
+  "kind": "lost",
+  "severity": "medium",
+  "problem": "I read simple pandas. This card has make_column_transformer, SimpleImputer, OneHotEncoder, remainder=\"passthrough\", [:, 1] and roc_auc_score, and the voice explains three words. Nobody says roc_auc_score is the AUC from 2-3, or that SimpleImputer is 'fill' and StandardScaler is 'common scale'.",
+  "fix": "Add a plain-word comment per line on the card (# fill empty cells, # same scale, # AUC) and say 'roc auc score is the AUC you already know'."
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "3-5",
+  "where": "seg3 visual vs seg4 + audit checklist",
+  "quote": "A clean script: the six parts in twelve lines",
+  "kind": "doubt",
+  "severity": "medium",
+  "problem": "The 'clean' script prints one unlabelled number, which seg4 calls the giveaway ('one score, with no word on which rows it came from') and the checklist forbids ('Two scores, each labelled with its rows'). It also prints no row counts (3-4: 'keep it in every output'), shows no baseline, and fills blanks with no flag. The model answer fails the audits I have been taught.",
+  "fix": "Make the clean script print train and test AUC with labels, the rows in each part and the baseline. Fourteen lines instead of twelve is a fair price."
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "3-5",
+  "where": "seg1 narration + other_ways",
+  "quote": "each of the classic bugs lives in one particular part and shows up as one recognisable line",
+  "kind": "not_usable",
+  "severity": "medium",
+  "problem": "On Monday the script is 80 to 300 lines. What I need is the search list (.fit(, predict_proba( versus .predict(, train_test_split, fit_transform, .drop(columns=, except), and it is scattered over three cards. The most practical move, asking the assistant to map the script to the six parts, is hidden in 'other ways'.",
+  "fix": "End on one card: 'seven strings to search for, and what each should look like'. Put the mapping request into the main brief."
+ },
+ {
+  "reviewer": "gemini",
+  "lesson": "3-5",
+  "where": "seg4 visual",
+  "quote": "min_samples_leaf=5",
+  "kind": "unsupported_number",
+  "severity": "low",
+  "explanation": "The visual claims that RandomForestClassifier(n_estimators=300, min_samples_leaf=5) produces the 0.98 training AUC and 0.83 test AUC on the simulated churn table, but facts.json documents only n_trees = 300 (with train_auc = 0.982 and test.auc = 0.831) and never states min_samples_leaf = 5. Also, reusing X[train] and X[test] from seg3 visual without make_pipeline(prep, ...) would fail on the string column vertical.",
+  "evidence": "facts.json -> forest: {\"n_trees\": 300, \"train_auc\": 0.982, \"test\": {\"auc\": 0.831}}; model_table[3]: {\"model\": \"Random forest, 300 trees\"} (min_samples_leaf is absent from facts.json).",
+  "fix": "Omit min_samples_leaf=5 from the snippet (or add min_samples_leaf to forest in facts.json) and wrap the estimator in the pipeline from seg3: model = make_pipeline(prep, RandomForestClassifier(n_estimators=300)).",
+  "problem": "The visual claims that RandomForestClassifier(n_estimators=300, min_samples_leaf=5) produces the 0.98 training AUC and 0.83 test AUC on the simulated churn table, but facts.json documents only n_trees = 300 (with train_auc = 0.982 and test.auc = 0.831) and never states min_samples_leaf = 5. Also, reusing X[train] and X[test] from seg3 visual without make_pipeline(prep, ...) would fail on the string column vertical."
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "3-5",
+  "where": "guess",
+  "quote": "About 0.83",
+  "kind": "question",
+  "severity": "low",
+  "problem": "Only three options (every other lesson has four) and two are extremes, so the middle one is the only sensible pick.",
+  "fix": "Four closer options: 0.95 / 0.90 / 0.83 / 0.70."
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "3-5",
+  "where": "seg5 narration",
+  "quote": "How much each of these flatters the score varies, and the score itself will not tell you.",
+  "kind": "lost",
+  "severity": "low",
+  "problem": "Every other bug in the lesson has a number (0.98 against 0.83). For preparation fitted before the split I get none, so it feels like a purity rule and I cannot rank what to chase first.",
+  "fix": "Give this table's number even if it is tiny ('here it moves the score in the third decimal; it is a habit, not a disaster') so I know its size next to the others."
+ }
+]

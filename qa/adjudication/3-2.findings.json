@@ -1,0 +1,42 @@
+[
+ {
+  "reviewer": "learner-1",
+  "lesson": "3-2",
+  "where": "seg3 narration",
+  "quote": "So one typical step up in spend trend cuts the odds of churn by more than half.",
+  "kind": "lost",
+  "severity": "medium",
+  "problem": "Four new things in about twenty seconds: odds, odds ratio, 'the ratio is a multiplier', and 'one typical step', which is not explained until the next segment. I did not know whether a step was 0.1 or a doubling.",
+  "fix": "Swap seg3 and seg4, or say 'one typical step, about 0.4 on spend trend; more on that in a moment'."
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "3-2",
+  "where": "seg7 narration",
+  "quote": "A later lesson takes that apart.",
+  "kind": "not_for_me",
+  "severity": "medium",
+  "problem": "Third time (1-2, 3-1, 3-2) I am told that my stakeholders' favourite question, what separates happy advertisers and can we write best practices, cannot be answered from weights, with the answer two modules away. At the end of module 3 I still have nothing to say to them on Monday.",
+  "fix": "Give an interim move here: the sentence I may write today ('advertisers with X churned N points less than otherwise similar ones; we have not tested whether changing X helps'), and pull the observed / adjusted / tested wording forward from module 5."
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "3-2",
+  "where": "guess",
+  "quote": "cuts the odds of churn by more than half",
+  "kind": "question",
+  "severity": "low",
+  "problem": "I do not know what odds are yet, so I could not reason and picked between 25 and 50 at random; 'odds and probability are unrelated' is a throwaway.",
+  "fix": "Give me something to reason from: 'Churn is about 13 percent. A report says a column cuts the odds by more than half. Roughly where does a typical advertiser's 13 percent go?'"
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "3-2",
+  "where": "seg2 visual (formula line 2)",
+  "quote": "probability of churn = 1 ÷ (1 + e^−points)",
+  "kind": "lost",
+  "severity": "low",
+  "problem": "An unexplained 'e' on screen while the voice, sensibly, only says 'S-shaped curve'. I prefer watching, and there is no picture of the curve anywhere in the lesson.",
+  "fix": "Replace that line with a small S-curve drawing with −3, 0 and +3 marked at 5, 50 and 95 percent."
+ }
+]

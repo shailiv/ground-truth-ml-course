@@ -1,0 +1,52 @@
+{
+ "lesson": "5-4",
+ "decisions": [
+  {
+   "n": 0,
+   "reviewer": "learner-2",
+   "finding": "Every result (13, 32, 44, 136) uses knowledge I will never have; the one check I can run, called against not-called inside each list, is never shown with numbers.",
+   "decision": "partly",
+   "reason": "Right, but facts cannot supply the exhibit: uplift.policies_call_400 are counts that need both outcomes per advertiser, and there is no called-versus-not-called churn inside any list. The ruling's fallback applies: say plainly the counts are simulation-only. What facts do hold is the same comparison across everyone (uplift.experiment_readout.all_advertisers: 2.9 points, interval 1.8 to 3.9).",
+   "change": "Seg 5 opens: 'Only a simulation can count this: it needs both futures for every advertiser. The counts are net, the accounts a call saves minus the few it pushes out', and ends 'You measure it, with the check in the brief.' Seg 8 names 'the check you can run at work' and its card shows the overall readout as the worked form of it."
+  },
+  {
+   "n": 1,
+   "reviewer": "learner-2",
+   "finding": "A top-400 list split into called and not-called has a margin several times the gap between the uplift and risk lists; the lesson does not say how much randomised data it takes.",
+   "decision": "partly",
+   "reason": "The doubt is correct (noise.margin_of_error_for_a_churn_rate gives +/- 4 points for 250 advertisers at a 12 percent rate, wider at list-top rates; the lists differ by 12 churns in 400). Facts give the amount of randomised data (all 12,000 advertisers) but not the interval inside each list, so that part is said without a figure.",
+   "change": "Seg 8: 'Split 400 names in two and it is several points wide, enough to swallow the whole effect, so pool several rounds before ranking one list above another.' Seg 4 card: 'decides who gets the call (here: all 12,000 advertisers)'. Seg 8 card: 'expect several points either way'."
+  },
+  {
+   "n": 2,
+   "reviewer": "learner-2",
+   "finding": "Only 'persuadable' is spoken; lost cause, sure thing and sleeping dog are on screen and in the glossary but never said.",
+   "decision": "accepted",
+   "reason": "Terms on screen should be heard once (SPEC: explain each term the first time, then use it).",
+   "change": "Seg 2 names all four as the rows appear and uses the names for the shares."
+  }
+ ],
+ "rulings": {
+  "R1": "Seg 1 ends: 'Ask that of any list built from a score. The leads most likely to convert are not necessarily the ones a sales call tips.'",
+  "R2": "Not applicable.",
+  "R3": "ask_assistant rewritten as a template ([action], [units], [assignment column], [outcome], [decision date], [list size]); 116 words; now opens the output with group sizes and a before-the-action balance table.",
+  "R4": "Seg 9 cut from 60 to 43 words; quote visual kept.",
+  "R5": "Keyed answer longest in 2 of 10 (unchanged). No 'nothing is wrong' options. Quiz and review otherwise untouched, except 5-4-q2 (see R9 note under open questions).",
+  "R6": "Seg 8: 'If not, the stop-gap is the risk list minus accounts already gone quiet, with a random slice left uncalled for next time.'",
+  "R7": "Item 1 was a statement of how assignment was done; it is now the two group sizes with a table showing the groups were alike before the calls. Seg 8 narration and card changed to match.",
+  "specific": "uplift.policies_call_400_note: seg 5 and its chart note now say the counts are net of accounts a call pushes out (32 = 33 saved less 1 pushed out; 44 = 44 less 0). Facts do not allow the called-versus-not-called check to be shown inside the lists, so the lesson says plainly that the counts need knowledge only a simulation has, and points to the check in the brief."
+ },
+ "segments_changed": [
+  1,
+  2,
+  5,
+  8,
+  9
+ ],
+ "numbers_verified": 121,
+ "open_questions": [
+  "To give learner-2 the exhibit they asked for, facts.json needs churn among called and not-called (with intervals) inside the top 400 by uplift, by risk and at random, on held-out advertisers. With that, seg 8 could show it; today it cannot.",
+  "5-4-q2 quoted invented counts (1,900 called, 6,100 not, 8,000 in all) that build/lint_numbers.py flagged as unverified. I removed them ('about a quarter of the log'); the question and its key are otherwise the same. The linter now reports 0 unverified for 5-4.",
+  "Narration is 931 words (target 900, hard cap 950); all segments at or under 130."
+ ]
+}

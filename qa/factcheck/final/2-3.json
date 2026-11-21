@@ -1,0 +1,7 @@
+{
+ "issues": [],
+ "numbers_checked": 137,
+ "verdict": "Clean pass. Every figure in the narrations, visuals, guess item, quiz, review, drill and recall matches facts.json (thresholds, top_k, lift, baseline, logreg.test, uncertainty and data), all keyed answers and explanations are sound, and the caveats on sampling wobble and what AUC hides are accurately stated.",
+ "_hash": "3fd72a5f36336903",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_ChdiUklDYThDZE9hWEV2ZElQbHZyaGlRaxIXYlJJQ2E4Q2RPYVhFdmRJUGx2cmhpUWs | tokens in=68400 out=98 thought=23681]"
+}

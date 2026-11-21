@@ -1,0 +1,44 @@
+{
+ "issues": [
+  {
+   "where": "seg5 narration (segments[4])",
+   "quote": "Once you have adjusted for the other columns in the table, whatever gap is left is the causal effect of the practice.",
+   "kind": "wrong_concept",
+   "severity": "high",
+   "explanation": "This sentence teaches the exact fallacy the lesson is built to refute and directly contradicts seg4 narration, seg6 narration, and takeaways[1]. Adjusting for observed columns only removes confounding from variables recorded in the table; unobserved confounders (and bad controls) mean the remaining adjusted gap is still an association, not the causal effect. In the practices widget itself, none of the five adjusted gaps equals the true causal effect.",
+   "evidence": "Causal inference principle (regression adjustment cannot remove unobserved confounding) and facts.json -> happy.adjusted_pts vs happy.truth: uses_auto_bidding 15.2 vs 11.3, creatives_4plus 17.4 vs 9.2, fresh_creatives 16.2 vs 13.1, managed 2.9 vs 0, had_optimisation_review -25.5 vs 8.8.",
+   "fix": "Replace that sentence with: \"Even after you have adjusted for the other columns in the table, the gap that is left is still not the causal effect of the practice.\""
+  },
+  {
+   "where": "predict",
+   "quote": "If you switched tracking on for every advertiser, by how much would churn fall?",
+   "kind": "number_mismatch",
+   "severity": "medium",
+   "explanation": "In the dataset, 58.5% of advertisers (7,016 of 12,000) already have conversion tracking switched on and the overall churn rate is 11.83%. Switching tracking on for every advertiser lowers overall churn from 11.83% to 10.7% — a drop of 1.1 percentage points, not about 2 points. The -2.3-point figure keyed as the answer is the contrast between everyone having tracking (10.7%) and nobody having tracking (12.9%).",
+   "evidence": "facts.json -> data.tracking_rate = 0.5847, data.churn_rate = 0.1183, tracking_story.truth.if_everyone_did = 0.107, tracking_story.truth.if_nobody_did = 0.129, tracking_story.truth.effect_pts = -2.3.",
+   "fix": "Reword predict.q to: \"Advertisers with conversion tracking churn about 11 points less than those without. Compared with nobody having tracking, by how much would churn fall if every advertiser had it switched on?\""
+  },
+  {
+   "where": "quiz 5-1-q2",
+   "quote": "The gap is unchanged after controlling for tenure, spend, vertical and number of campaigns.",
+   "kind": "number_mismatch",
+   "severity": "low",
+   "explanation": "In this course-domain question, the 'unchanged' adjusted gap for optimisation reviews (-25.5 pts vs -25.3 pts naive) comes from adjusting not only for tenure, spend, vertical, and number of campaigns, but also for the other four practices; facts.json does not report an adjusted gap controlling only for those four columns.",
+   "evidence": "facts.json -> happy.adjusted_pts.had_optimisation_review = -25.5 and happy.adjusted_for = [\"tenure_weeks\", \"spend_8w\", \"campaigns_active\", \"vertical\", \"the other practices\"].",
+   "fix": "Change the clause to: \"The gap is unchanged after controlling for tenure, spend, vertical, number of campaigns and the other practices.\""
+  },
+  {
+   "where": "other_ways",
+   "quote": "it is the only design that deals with causes nobody recorded",
+   "kind": "misleading",
+   "severity": "low",
+   "explanation": "Randomised experiments are not literally the only causal design that can handle unrecorded confounders: quasi-experimental designs — including difference-in-differences in the very next item (lesson 5-3), which removes time-invariant unrecorded differences between groups, as well as instrumental variables and regression discontinuity — also address unrecorded causes under extra assumptions. What is unique to randomisation is balancing all unrecorded causes by design without untestable assumptions.",
+   "evidence": "Causal inference principles and facts.json -> before_after (difference-in-differences handles unrecorded baseline group differences under parallel trends).",
+   "fix": "Change to: \"Whenever you can control who gets the change or the encouragement; it balances even unrecorded causes by design, without extra assumptions (next lesson).\""
+  }
+ ],
+ "numbers_checked": 51,
+ "verdict": "Do not publish until seg5 narration (segments[4]) is fixed: its closing sentence falsely claims that the residual gap after adjusting for the other columns in the table is the causal effect, contradicting the entire lesson and facts.json. All core numbers match facts.json, with one framing mismatch in the predict question (everyone vs status quo instead of everyone vs nobody) and two minor fixes in quiz 5-1-q2 and other_ways.",
+ "_hash": "429b153f8cb77843",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_ChZ6OVVCYTRKUHRQckd6US1NdUlPaENREhZ6OVVCYTRKUHRQckd6US1NdUlPaENR | tokens in=67630 out=1135 thought=23539]"
+}

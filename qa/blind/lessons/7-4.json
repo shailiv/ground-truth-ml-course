@@ -1,0 +1,364 @@
+{
+ "id": "7-4",
+ "module": 7,
+ "title": "The report you can stand behind",
+ "subtitle": "What must a report show before you put your name on it?",
+ "goal": "After this lesson you can check a model report for six things (bound numbers, sizes and intervals, a baseline, wording that fits the evidence, segment results, first-page limits) and rewrite a sentence that fails.",
+ "predict": {
+  "q": "You catch a bug. Your assistant reruns the analysis and regenerates the HTML report. Where is a wrong number most likely to survive?",
+  "options": [
+   "In the charts, because they are redrawn from scratch",
+   "In the sentences, where numbers typed around the first run stay put",
+   "In the appendix tables, which are the hardest part to rebuild",
+   "Nowhere: a rerun refreshes every number in the report"
+  ],
+  "answer": 1,
+  "reveal": "In the sentences: a typed number stays put while the chart beside it moves, and the lesson shows how to make that impossible and what else a report has to carry."
+ },
+ "segments": [
+  {
+   "narration": "Two reports on the same churn model. Same data, same test advertisers, both drafted by an assistant. The first is handsome: a gradient header, a bold headline, a confident summary. The second is plainer, and half a page longer. On Thursday one of them goes in front of the head of account management, and she will do what good stakeholders do: ask a question. Compared with what? How sure are you? So should we push tracking? The handsome report has nothing to say back. The plain one has already answered. The difference is not style. It is a short list of things you can check.",
+   "visual": {
+    "type": "title",
+    "kicker": "Module 7 · Lesson 4",
+    "title": "The report you can stand behind",
+    "sub": "Two reports, one model. Only one survives a question."
+   }
+  },
+  {
+   "narration": "Start with the headline sentence. [[1]] The handsome report says the model identifies at-risk advertisers with high accuracy. Nothing in that can be checked. And accuracy is a strange boast, when predicting that nobody leaves is already about 87 percent accurate. [[2]] The plain report says this. Of the 200 advertisers the model ranked highest, 136 really churned. A random 200 would hold about 26. The interval on that count runs from 123 to 150, which is roughly how far it moves with the luck of who landed in the test months. And it names the rows: 4,000 advertisers from May and June that the model never saw. A count, a baseline beside it, an interval, and the rows. Every part can be checked.",
+   "visual": {
+    "type": "compare",
+    "title": "The same result, written twice",
+    "left": {
+     "label": "Cannot be checked",
+     "value": "“High accuracy”",
+     "sub": "“The model identifies at-risk advertisers with high accuracy.”"
+    },
+    "right": {
+     "label": "Survives a question",
+     "value": "136 of the top 200 churned",
+     "sub": "random 200: about 26 · 95% interval 123 to 150 · 4,000 unseen advertisers, May–June"
+    }
+   }
+  },
+  {
+   "narration": "Now the failure you will meet most often. Remember the leaked column that produced a perfect list: all 200 of the top 200 churned. Suppose you catch it after the report is drafted. The assistant reruns, and the chart now shows 136. The paragraph under the chart still celebrates 200. Nothing crashed. That sentence was typed once, around the first result, and only the chart was regenerated. The cure is mechanical. Every number in the prose is inserted by the script, from the same results file that feeds the charts. Nothing is typed. Then a rerun moves the sentence and the chart together, and the assistant can list every number in the text beside its source.",
+   "visual": {
+    "type": "code",
+    "title": "Typed numbers go stale. Bound numbers cannot.",
+    "lang": "python",
+    "code": "# Typed: survives the rerun, wrongly\nsummary = \"All 200 of the top 200 churned.\"\n\n# Bound: read from the checked results\nr = results[\"top_200\"]\nsummary = (f\"Of the top {r['k']}, \"\n           f\"{r['churners']} churned.\")",
+    "note": "After the leak is fixed the results file says 136. Only the bound sentence follows it."
+   }
+  },
+  {
+   "narration": "Next, the verbs. The handsome report says conversion tracking reduces churn by 11 points. Reduces is a claim about changing something, and evidence comes in three tiers. [[1]] Observed: two groups were compared. With tracking, about 7 percent churned. Without it, about 18. That earns the words churned less, or is associated with. [[2]] Adjusted: the same comparison with the visible columns held fixed. The gap shrinks to about six and a half points, and the sentence says it remains after adjusting for what the table can see. [[3]] Tested: a coin decided who got the change. Only that tier earns the word reduces. This world is simulated, so the true effect can be looked up: about 2 points. On real data it cannot, so the verb has to carry the tier.",
+   "visual": {
+    "type": "table",
+    "title": "The verb must match the evidence",
+    "columns": [
+     "Evidence tier",
+     "What was done",
+     "Wording it earns"
+    ],
+    "rows": [
+     [
+      "Observed",
+      "Two groups compared: 7.2% vs 18.4% churn, gap 11.2 pts",
+      "“churned less”, “is associated with”"
+     ],
+     [
+      "Adjusted",
+      "Visible columns held fixed: gap 6.5 pts",
+      "“the gap remains after adjusting for …”"
+     ],
+     [
+      "Tested",
+      "A coin decided who got the change",
+      "“reduces”, with its interval"
+     ]
+    ],
+    "note": "True effect of tracking in this simulated world: 2.3 pts. Knowable only because it is simulated."
+   }
+  },
+  {
+   "narration": "The assistant drafts the prose as well, and its default register is confident. Hand it a bar chart and it writes a story. [[1]] Something like: gaming churn rose sharply in April, pointing to growing dissatisfaction in the vertical. Read that the way you would read its code. Sharply, against what? Dissatisfaction, measured where? [[2]] Underneath: 14 percent in March and 19 in April. Each month is about 250 advertisers. The interval on that difference runs from about minus 2 to plus 11 points. Zero is inside it. The dissatisfaction explains a rise that may not exist. Every comparison carries its group sizes and its interval, and the sentence may not say more than they do.",
+   "visual": {
+    "type": "compare",
+    "title": "Read the prose like the code",
+    "left": {
+     "label": "The assistant's sentence",
+     "value": "“Rose sharply”",
+     "sub": "“Gaming churn rose sharply in April, pointing to growing dissatisfaction.”"
+    },
+    "right": {
+     "label": "What the numbers support",
+     "value": "+4.9 pts, interval −1.7 to +11.4",
+     "sub": "14.2% of 253 advertisers, then 19.1% of 246: within noise"
+    }
+   }
+  },
+  {
+   "narration": "Last, the first page. Two things go there. [[1]] One is a provenance line: when the data was pulled, which rows were in, which model version. Here: 6,000 advertisers from January to March to train, April left out, 4,000 from May and June to test. The other is a short paragraph on what the reader should not conclude. [[2]] This model ranks risk. It does not say why advertisers leave, or that a call would keep them. [[3]] Its percentages run low. [[4]] And it does not serve every size equally. The working list catches about 55 percent of small churners and about 25 percent of large ones, though large accounts are two thirds of the dollars lost. Limits in an appendix are limits nobody read.",
+   "visual": {
+    "type": "bullets",
+    "title": "First page, before any chart",
+    "items": [
+     "Provenance: pull date · train Jan–Mar 6,000 · April out · test May–Jun 4,000 · model version",
+     "Ranks risk. Not why they leave, nor who a call would keep",
+     "Percentages run low: predicted 10.9%, actual 13.2%",
+     "Top 400 catch 55% of small churners, 25% of large (two thirds of lost spend)"
+    ]
+   }
+  },
+  {
+   "narration": "Brief and audit. The report is stage four, built only from numbers that passed the earlier gates. Ask for six things, and look for each in the output. [[1]] Every number in the text read from the results file, with a list of where each came from. [[2]] Group sizes and an interval beside every comparison. [[3]] The baseline next to the model, at the same list size. [[4]] Each finding labelled observed, adjusted or tested, with verbs to match. [[5]] Results by the segments the business cares about. [[6]] A first page with the provenance line and what not to conclude. Then read every sentence and ask which number on the page supports it. If none does, the sentence goes.",
+   "visual": {
+    "type": "table",
+    "title": "Brief and audit: six things a report must show",
+    "columns": [
+     "The report shows",
+     "The question it answers"
+    ],
+    "rows": [
+     [
+      "Numbers bound to computed results",
+      "Where did that number come from?"
+     ],
+     [
+      "Group sizes and an interval by each comparison",
+      "How sure are you?"
+     ],
+     [
+      "The baseline beside the model",
+      "Compared with what? Rule 246 of 711, model 321"
+     ],
+     [
+      "Wording that matches the evidence tier",
+      "So does it cause it?"
+     ],
+     [
+      "Results by segment",
+      "Who does it fail?"
+     ],
+     [
+      "First page: provenance and limits",
+      "What should I not conclude?"
+     ]
+    ]
+   }
+  },
+  {
+   "narration": "So. [[1]] A report you can stand behind is one where every number traces back to a computed result. [[2]] Every claim uses only the words its evidence has earned. [[3]] And the limits sit on the first page, where the reader will meet them. Handsome is optional. One lesson is left: the whole course folded into a path you can walk in the first ten minutes with a question you have never seen.",
+   "visual": {
+    "type": "bullets",
+    "title": "The report you can stand behind",
+    "items": [
+     "Every number traces back to a computed result",
+     "Every claim uses the words its evidence has earned",
+     "The limits are on the first page"
+    ]
+   }
+  }
+ ],
+ "takeaways": [
+  "Every number in the text is read from a computed result and carries its baseline, group size, interval and rows.",
+  "The verb matches the evidence tier: observed, adjusted or tested. Only a tested claim says reduces or drives.",
+  "Provenance and what not to conclude go on the first page; read the assistant's prose as critically as its code."
+ ],
+ "quiz": [
+  {
+   "id": "7-4-q1",
+   "concept": "the provenance line shows which rows a result was measured on",
+   "domain": "course",
+   "q": "The assistant sends a new draft of the churn report. The headline looks better than last week's, and the provenance line reads: 'Model trained on January to March. Headline result scored on all 12,000 advertisers, January to June.' What is the right read?",
+   "options": [
+    "Better: with three times as many rows, the headline is a more reliable estimate",
+    "Fine: the model was still trained only on January to March, as agreed",
+    "Not a test result: the headline now includes the model's own training rows",
+    "Acceptable, once an interval has been added beside the headline number"
+   ],
+   "answer": 2,
+   "why": "A result counts only on rows the model never saw, and half of those 12,000 are the rows it learned from, so the headline flatters it. More rows do narrow an interval, but a tight interval around a number measured on training rows is still the wrong number. The provenance line is what let you see it."
+  },
+  {
+   "id": "7-4-q2",
+   "concept": "wording matches the evidence tier",
+   "domain": "course",
+   "q": "The assistant's draft says: 'Optimisation reviews hurt performance: reviewed accounts hit their CPA goal 25 points less often. Recommend scaling reviews back.' The numbers are computed correctly. Which rewrite can you stand behind?",
+   "options": [
+    "'Optimisation reviews may hurt performance: reviewed accounts hit goal 25 points less often.'",
+    "'After adjusting for size, tenure and vertical, reviews lower the goal-hit rate by 25 points.'",
+    "'Reviews cause a 25-point drop in goal-hit rate (1,798 reviewed accounts against 5,218 not reviewed).'",
+    "'Reviewed accounts hit goal 25 points less often. Observed only: reviews go to struggling accounts.'"
+   ],
+   "answer": 3,
+   "why": "This is an observed gap, and reviews are given to accounts already in trouble, so it cannot show what a review does; in this simulated world the review actually helps by about 9 points. Adding 'may' keeps the causal verb and only sounds careful, and adjusting for the visible columns neither moves this gap nor turns it into a tested effect."
+  },
+  {
+   "id": "7-4-q3",
+   "concept": "numbers bound to results, never typed",
+   "domain": "other",
+   "q": "A creative-fatigue report drafted by an assistant says: 'Video creatives lose half their CTR 40 percent faster than static ones.' A join that double-counted impressions has since been fixed, and the chart under that sentence, regenerated, now shows a much smaller gap. The report goes out tomorrow. What do you ask for?",
+   "options": [
+    "Every number in the text read from the results by the script, then a full reread",
+    "That one sentence corrected by hand, so that it matches the regenerated chart",
+    "The earlier chart restored, so that the text and the chart agree with each other",
+    "A footnote under the chart, saying that figures quoted in the text are approximate"
+   ],
+   "answer": 0,
+   "why": "The sentence was typed around an earlier run, so nothing ties it to the results, and if one number went stale after the join was fixed, others probably did too. Correcting it by hand repairs today's symptom and sets the same trap for the next rerun; the request is for bound numbers, checked row counts, and a reread of every sentence."
+  },
+  {
+   "id": "7-4-q4",
+   "concept": "one overall claim hides the segments",
+   "domain": "course",
+   "q": "The assistant's segment section reads: 'Performance is consistent across account sizes: the ranking score is 0.840 for small accounts, 0.825 for medium and 0.851 for large.' The success team will work the 400 highest scores. What must be added before you sign that sentence?",
+   "options": [
+    "Nothing: near-equal ranking scores mean the list treats every size alike",
+    "For each size: the share of churners on the list, and the dollars they carry",
+    "The overall ranking score, so that readers can see the three segments agree with it",
+    "The same three scores on the training months, to rule out memorising"
+   ],
+   "answer": 1,
+   "why": "A ranking score is measured inside each segment; it says nothing about how one list of 400 is shared out between them. Here that list catches about 55 percent of small churners and about 25 percent of large ones, while large accounts are two thirds of the spend lost. 'Consistent' is true of the score and false of the thing the team will use."
+  }
+ ],
+ "review": [
+  {
+   "concept": "the verb must match the evidence tier",
+   "variants": [
+    {
+     "q": "A lead-scoring analysis finds that leads who attended a webinar became customers at 22 percent, against 9 percent for those who did not. Attending was each lead's own choice. Which sentence belongs in the report?",
+     "options": [
+      "Webinars more than double conversion and should be offered to every new lead",
+      "Webinar attendance drives conversion, at least among engaged leads",
+      "Attendees converted more often, 22 against 9 percent: observed, not tested",
+      "Nothing can be said about webinars until the sample is much larger"
+     ],
+     "answer": 2,
+     "why": "Leads chose to attend, so keen leads are over-represented among attendees: the gap is an observed association and the sentence has to say so. 'Drives' and 'double' describe what would happen if you pushed every lead into a webinar, which nothing here tested, and a bigger sample would only measure the same confounded gap more precisely."
+    },
+    {
+     "q": "A pricing team offered a lower minimum budget to a randomly chosen half of new advertisers. First-month activation was 4 points higher in that half, with an interval from 1 to 7 points. The assistant writes: 'A lower minimum budget is associated with higher activation.' What is the right edit?",
+     "options": [
+      "Leave it: 'associated with' is the safe wording for any finding, tested or not",
+      "Strengthen it: the lower minimum raised activation by about 4 points (1 to 7)",
+      "Weaken it: with an interval that wide, the difference may well be due to chance",
+      "Rewrite it around the two activation rates to more decimals, and drop the interval"
+     ],
+     "answer": 1,
+     "why": "A coin decided who got the lower minimum, so hidden differences between advertisers are balanced across the two halves: this is the tested tier, and the causal verb has been earned, as long as it travels with its interval. Hedging a tested result throws away what the experiment bought, and the interval already excludes zero."
+    },
+    {
+     "q": "After adjusting for the background columns in the table, advertisers on automated bidding churn about 4 points less than the rest. No experiment was run. Which sentence matches the evidence?",
+     "options": [
+      "After adjusting for what the table holds, a gap of about 4 points remains",
+      "Automated bidding lowers churn by 4 points, controlling for confounders",
+      "Automated bidding has no real effect, because the raw gap shrank when adjusted",
+      "Automated bidding is the main driver of retention among the practices"
+     ],
+     "answer": 0,
+     "why": "Adjusting removes only the differences the table can see; a trait that sits in no column can still be behind the gap, so the claim stays one tier below tested. 'Controlling for confounders' sounds rigorous, but it promises that all of them were controlled, which no table can guarantee."
+    }
+   ]
+  },
+  {
+   "concept": "a sentence that can be checked: count, baseline, interval, rows",
+   "variants": [
+    {
+     "q": "An assistant's report on a ticket-routing model says: 'The language model classifies tickets with excellent accuracy.' Which replacement could survive a question?",
+     "options": [
+      "'It reaches 96.0 percent accuracy across all six categories, well ahead of every other method tried.'",
+      "'I read 40 of its labels myself and found only one or two that I would have changed.'",
+      "'Of 450 unseen test tickets it got 432 right (interval 93.8 to 97.5 percent); keyword rules got 131.'",
+      "'The language model is highly accurate in most categories, and its few errors are on tangled tickets.'"
+     ],
+     "answer": 2,
+     "why": "A count on named rows, an interval and a baseline on the same tickets can each be checked; adjectives cannot. A decimal place looks precise but adds no evidence: a bare percentage still hides how many tickets, which tickets, and how far ahead of what. Forty labels read by hand is a count, but too few to carry an interval worth having, and with nothing beside it."
+    },
+    {
+     "q": "A report for finance says: 'The model forecasts daily platform spend very accurately.' Which version can you stand behind?",
+     "options": [
+      "'The model follows the last two years of daily spend almost exactly, weekends and holidays included.'",
+      "'Twelve forecasts from past dates forward missed by about 3 percent a day; same weekday last week, 6.'",
+      "'Across the full history the model's error averages about 3 percent, far better than any naive method.'",
+      "'The model includes trend, weekday and holiday effects, which is why its forecasts can be relied on.'"
+     ],
+     "answer": 1,
+     "why": "It says how the error was measured, from past dates forward and twelve times over, and puts the naive method's number beside it, so a reader can check both the test and the size of the gain. Following history closely, or a low error across the full history, is a score on days the model has already seen, and 'far better than any naive method' names no bar."
+    },
+    {
+     "q": "An invalid-traffic report says: 'The new detector catches bad traffic far better than the old threshold.' Which rewrite is the strongest?",
+     "options": [
+      "'The new detector flagged 60 publishers last month, against 35 for the old threshold: 71 percent more.'",
+      "'The new detector's scores separate normal and suspicious publishers far more sharply than before.'",
+      "'Three analysts reviewed 20 of the new detector's flags and judged every one of them convincing.'",
+      "'Of 50 planted incidents the detector caught 44 and the threshold 29, with 9 and 31 false alerts.'"
+     ],
+     "answer": 3,
+     "why": "Planted incidents have a known answer, so catches and false alerts can be counted for both methods on the same cases: a count, a baseline and the rows. Flagging more publishers is not evidence of catching more bad traffic; without known cases it may simply be more false alarms."
+    }
+   ]
+  }
+ ],
+ "drill": [
+  {
+   "q": "A report says that a practice reduces churn. Which three tiers of evidence do you check that verb against, and which one earns it?",
+   "a": "Observed, adjusted and tested. Only tested, where a coin decided who got the change, earns reduces or drives. An observed gap is associated with, and an adjusted gap remains after adjusting for what the table can see."
+  },
+  {
+   "q": "After a rerun, the chart in a report changed but the sentence under it did not. What went wrong, and what do you ask for so it cannot happen again?",
+   "a": "The number in the sentence was typed instead of read from the results. Ask for every number in the text to be inserted by the script from the same results file as the charts, with a list of where each one came from."
+  }
+ ],
+ "recall": {
+  "prompt": "A colleague is about to send out a model report that an assistant drafted. In thirty seconds, tell them what to check before it goes.",
+  "model_answer": "Check that every number in the text is read from the computed results, not typed, and that each comparison shows its group sizes, an interval and the baseline, on rows the model never saw. Check the verbs: an observed gap is associated with, an adjusted gap remains after adjusting, and only a tested effect reduces or drives. Make sure results are shown by segment, and that the first page carries a provenance line and a plain statement of what the reader should not conclude. Then read the prose as critically as the code: any sentence no number supports comes out."
+ },
+ "ask_assistant": "Build the report only from the results file we checked in the earlier stages: insert every number in the text from that file by code, and append a table listing each number in the prose with the result it was read from. Beside every comparison show both group sizes and a 95 percent interval, show the baseline next to the model on the same test rows, and give every headline result by size tier, vertical and account manager. Label each finding observed, adjusted or tested, and use causal verbs such as reduces or drives only for tested findings. Start the first page with a provenance line (data pull date, which rows were in and out, model version) and a short paragraph on what this report does not show.",
+ "audit_checklist": [
+  "A source table: every number in the prose matched to the computed result it was read from",
+  "Both group sizes and an interval beside every comparison, and the baseline beside every model result, on the same unseen rows and at the same list size",
+  "Each finding tagged observed, adjusted or tested, with no causal verb on an untested one",
+  "A first page with the provenance line and what not to conclude, and results broken out by segment"
+ ],
+ "transfer": [
+  "A creative-fatigue analysis: 'video fatigues faster' needs the number of creatives in each group, an interval, and a verb that fits an observed gap.",
+  "A spend forecast for finance: the error measured from past dates forward, the naive method's error beside it, and a range on the first page instead of a single figure.",
+  "An invalid-traffic review of publishers: the count of confirmed or planted cases each method caught, its false alerts, and how many clicks each publisher's rate rests on."
+ ],
+ "other_ways": [
+  {
+   "approach": "A one-page decision memo instead of a full report",
+   "when": "When the reader has one decision to make. It holds fewer numbers, and every one of them still needs its source, baseline, interval and tier."
+  },
+  {
+   "approach": "A live dashboard fed by the results tables",
+   "when": "When the numbers must stay current without a rerun. Binding comes free, but the evidence tier and the limits have to be written onto the page as fixed text."
+  },
+  {
+   "approach": "A second reader briefed to attack the draft: a colleague, or a fresh assistant session",
+   "when": "When the report feeds an expensive decision. Ask for a list of every sentence that no number on the page supports."
+  }
+ ],
+ "glossary": [
+  {
+   "term": "bound number",
+   "def": "A number in the text that the script inserts from the computed results, so it cannot disagree with the chart beside it."
+  },
+  {
+   "term": "stale sentence",
+   "def": "Prose that still quotes an earlier run's number after the analysis was rerun."
+  },
+  {
+   "term": "evidence tier",
+   "def": "How a claim was established: observed, adjusted or tested. It decides which verbs the sentence may use; a change measured against a similar untreated group sits between adjusted and tested."
+  },
+  {
+   "term": "provenance line",
+   "def": "One line saying when the data was pulled, which rows were in and out, and which model version produced the results."
+  }
+ ]
+}

@@ -1,0 +1,18 @@
+{
+  "base": "http://localhost:8788",
+  "out": "qa/shots",
+  "seed": "const s = __gt.store; const now = Date.now(); for (const id of ['1-1','1-2','1-3']) { s.put('lessons', id, {guess: 1, watched: now, quiz: {score: 3, of: 4}, done: now}); __gt.course.lessons.find(l => l.id === id).review.forEach((_, k) => { s.state.cards[id + '-c' + k] = {box: 0, due: now - 1000, n: 0, ok: 0, t: now}; }); } s.put('lessons', '1-4', {guess: 0, seg: 3}); await new Promise(r => setTimeout(r, 900));",
+  "shots": [
+    {"name": "m-home-dark", "url": "/#/", "w": 390, "h": 844, "mobile": true, "full": true},
+    {"name": "m-home-light", "url": "/#/", "w": 390, "h": 844, "mobile": true, "theme": "light"},
+    {"name": "m-guess", "url": "/#/lesson/2-2", "w": 390, "h": 844, "mobile": true},
+    {"name": "m-watch-title", "url": "/#/lesson/2-3/watch", "w": 390, "h": 844, "mobile": true},
+    {"name": "m-watch-widget", "url": "/#/lesson/2-3/watch", "w": 390, "h": 844, "mobile": true, "js": "await __gt.player.show(2, false); document.querySelector('.overlay').hidden = true; document.querySelectorAll('.cue.off').forEach(e => e.classList.remove('off'));"},
+    {"name": "m-watch-table", "url": "/#/lesson/2-3/watch", "w": 390, "h": 844, "mobile": true, "js": "await __gt.player.show(3, false); document.querySelector('.overlay').hidden = true; document.querySelectorAll('.cue.off').forEach(e => e.classList.remove('off'));"},
+    {"name": "m-check", "url": "/#/lesson/2-2/check", "w": 390, "h": 844, "mobile": true, "js": "document.querySelectorAll('.opt')[1].click();", "full": true},
+    {"name": "m-take", "url": "/#/lesson/2-2/take", "w": 390, "h": 844, "mobile": true, "full": true},
+    {"name": "m-review", "url": "/#/review", "w": 390, "h": 844, "mobile": true},
+    {"name": "m-guide", "url": "/#/guide", "w": 390, "h": 844, "mobile": true, "full": true},
+    {"name": "m-landscape-widget", "url": "/#/lesson/2-3/watch", "w": 844, "h": 390, "mobile": true, "js": "await __gt.player.show(2, false); document.querySelector('.overlay').hidden = true; document.querySelectorAll('.cue.off').forEach(e => e.classList.remove('off')); document.querySelector('.stage-wrap').scrollIntoView({block:'center'});"}
+  ]
+}

@@ -1,0 +1,113 @@
+{
+ "base": "http://localhost:8791",
+ "out": "qa/ux/shots",
+ "seed": "const s = __gt.store, now = Date.now(); s.put('lessons', '1-1', {guess: 2, watched: now}); await new Promise(r => setTimeout(r, 300));",
+ "shots": [
+  {
+   "name": "f01-p-check-q1",
+   "url": "/#/lesson/1-1",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "dark",
+   "js": "return {hash: location.hash, keys: getComputedStyle(document.querySelector('.keys')).display};"
+  },
+  {
+   "name": "f02-p-check-q1-wrong",
+   "url": "/#/lesson/1-1/check",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "dark",
+   "js": "{ const q = __gt.course.lessons.find(l => l.id === '1-1').quiz[0]; [...document.querySelectorAll('.opt')].find(b => (b.querySelector('span').textContent === q.options[q.answer]) === false).click(); } await new Promise(r => setTimeout(r, 600)); return scrollY;"
+  },
+  {
+   "name": "f03-p-check-q1-wrong-top",
+   "url": "/#/lesson/1-1/check",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "dark",
+   "js": "{ const q = __gt.course.lessons.find(l => l.id === '1-1').quiz[0]; [...document.querySelectorAll('.opt')].find(b => (b.querySelector('span').textContent === q.options[q.answer]) === false).click(); } await new Promise(r => setTimeout(r, 600)); window.scrollTo(0, 0);"
+  },
+  {
+   "name": "f04-p-check-score",
+   "url": "/#/lesson/1-1/check",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "dark",
+   "js": "{ const q = __gt.course.lessons.find(l => l.id === '1-1').quiz[0]; [...document.querySelectorAll('.opt')].find(b => (b.querySelector('span').textContent === q.options[q.answer]) === true).click(); } [...document.querySelectorAll('button, a.btn')].find(b => b.textContent.trim().startsWith(\"Next question\")).click(); { const q = __gt.course.lessons.find(l => l.id === '1-1').quiz[1]; [...document.querySelectorAll('.opt')].find(b => (b.querySelector('span').textContent === q.options[q.answer]) === true).click(); } [...document.querySelectorAll('button, a.btn')].find(b => b.textContent.trim().startsWith(\"Next question\")).click(); { const q = __gt.course.lessons.find(l => l.id === '1-1').quiz[2]; [...document.querySelectorAll('.opt')].find(b => (b.querySelector('span').textContent === q.options[q.answer]) === true).click(); } [...document.querySelectorAll('button, a.btn')].find(b => b.textContent.trim().startsWith(\"Next question\")).click(); { const q = __gt.course.lessons.find(l => l.id === '1-1').quiz[3]; [...document.querySelectorAll('.opt')].find(b => (b.querySelector('span').textContent === q.options[q.answer]) === false).click(); } await new Promise(r => setTimeout(r, 300)); [...document.querySelectorAll('button, a.btn')].find(b => b.textContent.trim().startsWith(\"Finish\")).click(); await new Promise(r => setTimeout(r, 400)); return [...document.querySelectorAll('.done-banner .btn')].map(b => b.textContent + '|' + getComputedStyle(b).display);"
+  },
+  {
+   "name": "f05-p-check-allfour-light",
+   "url": "/#/lesson/1-1/check",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "light",
+   "js": "{ const q = __gt.course.lessons.find(l => l.id === '1-1').quiz[0]; [...document.querySelectorAll('.opt')].find(b => (b.querySelector('span').textContent === q.options[q.answer]) === true).click(); } [...document.querySelectorAll('button, a.btn')].find(b => b.textContent.trim().startsWith(\"Next question\")).click(); { const q = __gt.course.lessons.find(l => l.id === '1-1').quiz[1]; [...document.querySelectorAll('.opt')].find(b => (b.querySelector('span').textContent === q.options[q.answer]) === true).click(); } [...document.querySelectorAll('button, a.btn')].find(b => b.textContent.trim().startsWith(\"Next question\")).click(); { const q = __gt.course.lessons.find(l => l.id === '1-1').quiz[2]; [...document.querySelectorAll('.opt')].find(b => (b.querySelector('span').textContent === q.options[q.answer]) === true).click(); } [...document.querySelectorAll('button, a.btn')].find(b => b.textContent.trim().startsWith(\"Next question\")).click(); { const q = __gt.course.lessons.find(l => l.id === '1-1').quiz[3]; [...document.querySelectorAll('.opt')].find(b => (b.querySelector('span').textContent === q.options[q.answer]) === true).click(); } await new Promise(r => setTimeout(r, 300)); [...document.querySelectorAll('button, a.btn')].find(b => b.textContent.trim().startsWith(\"Finish\")).click(); await new Promise(r => setTimeout(r, 400));"
+  },
+  {
+   "name": "f06-p-explain",
+   "url": "/#/lesson/1-1/explain",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "dark",
+   "js": "return [...document.querySelectorAll('.ghost')].map(e => e.textContent.trim().slice(0, 30) + '|' + getComputedStyle(e).visibility + '|' + getComputedStyle(e).display);"
+  },
+  {
+   "name": "f07-p-explain-shown",
+   "url": "/#/lesson/1-1/explain",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "dark",
+   "js": "[...document.querySelectorAll('button, a.btn')].find(b => b.textContent.trim().startsWith(\"Show a strong answer\")).click(); await new Promise(r => setTimeout(r, 300)); window.scrollTo(0, 99999); return scrollY;"
+  },
+  {
+   "name": "f08-p-take-top",
+   "url": "/#/lesson/1-1/take",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "dark"
+  },
+  {
+   "name": "f09-p-take-s2",
+   "url": "/#/lesson/1-1/take",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "dark",
+   "js": "window.scrollTo(0, 760);"
+  },
+  {
+   "name": "f10-p-take-s3",
+   "url": "/#/lesson/1-1/take",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "dark",
+   "js": "window.scrollTo(0, 1560);"
+  },
+  {
+   "name": "f11-p-take-bottom-light",
+   "url": "/#/lesson/1-1/take",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "light",
+   "js": "window.scrollTo(0, 99999);"
+  },
+  {
+   "name": "f12-p-home-after-one",
+   "url": "/#/",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "dark"
+  }
+ ]
+}

@@ -1,0 +1,841 @@
+[
+ {
+  "kind": "case",
+  "id": "c1",
+  "after": 1,
+  "title": "200 out of 200",
+  "blurb": "A first churn model comes back almost perfect. Decide whether it goes to the account team.",
+  "setup": "You asked your assistant for a first churn model on the advertiser table, so that account managers can call the advertisers most at risk. Four minutes later this report arrived. The head of account management wants to start working the list on Monday.",
+  "file": "churn_model_v1.html",
+  "report": [
+   {
+    "type": "h",
+    "text": "Churn model v1: results"
+   },
+   {
+    "type": "p",
+    "text": "I built a churn model on the advertiser table. It learned from the 6,000 advertisers in the January to March snapshots and was then checked on the 4,000 advertisers in the May and June snapshots, which it had not seen. The 2,000 April advertisers are set aside, because their outcomes would not yet be known on the day the May advertisers are scored. I started with a simple model (logistic regression). It is already excellent, so I did not try anything more complex."
+   },
+   {
+    "type": "kpi",
+    "items": [
+     {
+      "value": "200 of 200",
+      "label": "of the 200 highest scores, really churned"
+     },
+     {
+      "value": "0.970",
+      "label": "AUC, a ranking score (1.0 is perfect)"
+     },
+     {
+      "value": "4,000",
+      "label": "advertisers checked, none used for learning"
+     }
+    ]
+   },
+   {
+    "type": "p",
+    "text": "Every advertiser gets a churn score between 0 and 1. Sort by score and the top 200 are all churners, so the list can go to account managers as it stands."
+   },
+   {
+    "type": "h",
+    "text": "What the model relies on"
+   },
+   {
+    "type": "table",
+    "columns": [
+     "Rank",
+     "Feature",
+     "Read from"
+    ],
+    "rows": [
+     [
+      "1",
+      "days_since_last_spend",
+      "accounts"
+     ],
+     [
+      "2",
+      "spend_trend",
+      "snapshot_features"
+     ],
+     [
+      "3",
+      "active_days_28",
+      "snapshot_features"
+     ]
+    ]
+   },
+   {
+    "type": "p",
+    "text": "days_since_last_spend is far ahead of every other column. The typical advertiser who churned had gone 86 days without spending; the typical advertiser who stayed, 3 days."
+   },
+   {
+    "type": "code",
+    "text": "-- build_features.sql (extract)\nSELECT f.*,   -- 17 features from the 8 weeks before the snapshot\n       CURRENT_DATE - a.last_spend_date\n         AS days_since_last_spend\nFROM   snapshot_features f\nJOIN   accounts a   -- one row per advertiser\n  ON   a.advertiser_id = f.advertiser_id;"
+   },
+   {
+    "type": "h",
+    "text": "Recommendation"
+   },
+   {
+    "type": "p",
+    "text": "The model is ready for production. Score all active advertisers each month and send the top 200 to account management. Expect the same hit rate on live advertisers."
+   }
+  ],
+  "ask": "Would you forward this to the account team? Tick what you would send back.",
+  "findings": [
+   {
+    "text": "The strongest column, days_since_last_spend, is read from the accounts table using today's date, so it was recorded after the outcome.",
+    "real": true,
+    "why": "It fails the time-travel test: the value was read months after the snapshot, so it counts the empty days of the outcome itself and will not exist on scoring day. Ask for the same check without that column, on the same 4,000 advertisers; in this simulated data the count falls from 200 to 136.",
+    "marks": [
+     5,
+     7
+    ]
+   },
+   {
+    "text": "It used a simple model and never tried a more powerful one.",
+    "real": false,
+    "why": "Starting simple is the right order: you climb to a more complex model only when the step pays. Whatever is wrong with this report, it is not the kind of model."
+   },
+   {
+    "text": "It was checked only on the May and June advertisers, 4,000 of the 12,000 in the table.",
+    "real": false,
+    "why": "A result counts only on advertisers the model did not learn from, and later months are the closest rehearsal for how it will be used. Checking on all 12,000 would mix in the rows it learned from."
+   },
+   {
+    "text": "There is no baseline: nothing shows what a random list, or your spend-trend rule, would find among the same 4,000 advertisers.",
+    "real": true,
+    "why": "Without a baseline you cannot tell what the model adds; a random 200 of these advertisers would hold about 26 churners, and the report never says so. Ask for the rule you would write today (spend trend below 0.7) checked on the same advertisers, next to the model.",
+    "marks": [
+     2
+    ]
+   },
+   {
+    "text": "Spend trend is built from spend as well, so it must be leaking the outcome too.",
+    "real": false,
+    "why": "The test is when a value was recorded, not what it is called. Spend trend compares the last four weeks before the snapshot with the four before those, so it could have been computed on the snapshot date."
+   },
+   {
+    "text": "The report never says what counts as churned, what one row is, or which days the outcome covers.",
+    "real": true,
+    "why": "A model learns whatever definition it was given, so a result cannot be judged without the label in one sentence, the snapshot date and the outcome window. Ask for those first, with row counts and the churn rate by month.",
+    "marks": [
+     1
+    ]
+   }
+  ],
+  "verdict": "Do not ship. The perfect list comes from a column that already knows who left, so it will not survive the day you score live advertisers. Send one message: drop days_since_last_spend or rebuild it from dated spend up to each snapshot, rerun on the same 4,000 advertisers next to the spend-trend rule, and state the churn definition and outcome window at the top. This simulated leak is deliberately blatant; a quieter one only makes a model look somewhat better than it is, so ask when each top column was recorded every time."
+ },
+ {
+  "kind": "case",
+  "id": "c2",
+  "after": 2,
+  "title": "The 88.5 percent model",
+  "blurb": "A churn report leads with one confident number. Read the counts underneath it.",
+  "setup": "You asked your assistant how the churn model performs on the test months. Two decisions hang on the answer: whether account managers start working the flagged accounts, and whether finance uses the scores to estimate revenue at risk. This is the report you received.",
+  "file": "churn_model_test_results.html",
+  "report": [
+   {
+    "type": "h",
+    "text": "Churn model: results on the test months"
+   },
+   {
+    "type": "p",
+    "text": "The model was trained on the January to March snapshots and tested on May and June, which it never saw. April (2,000 advertisers) is left out, because its 60-day outcomes would not be known on the day the May advertisers are scored. No rows were resampled or rebalanced."
+   },
+   {
+    "type": "kpi",
+    "items": [
+     {
+      "value": "88.5%",
+      "label": "accuracy on the test months"
+     },
+     {
+      "value": "4,000",
+      "label": "test advertisers"
+     },
+     {
+      "value": "141",
+      "label": "advertisers flagged"
+     }
+    ]
+   },
+   {
+    "type": "p",
+    "text": "The model classifies 88.5% of test advertisers correctly. With nearly nine in ten right, account managers can rely on its flags to find the accounts that are about to leave."
+   },
+   {
+    "type": "table",
+    "columns": [
+     "Test months",
+     "Churned",
+     "Stayed"
+    ],
+    "rows": [
+     [
+      "Flagged",
+      "104",
+      "37"
+     ],
+     [
+      "Not flagged",
+      "423",
+      "3,436"
+     ]
+    ]
+   },
+   {
+    "type": "table",
+    "columns": [
+     "Rows",
+     "Advertisers",
+     "Churned",
+     "Churn rate",
+     "Average score"
+    ],
+    "rows": [
+     [
+      "Training: Jan-Mar",
+      "6,000",
+      "668",
+      "11.1%",
+      "0.111"
+     ],
+     [
+      "Test: May-Jun",
+      "4,000",
+      "527",
+      "13.2%",
+      "0.109"
+     ]
+    ]
+   },
+   {
+    "type": "h",
+    "text": "Using the scores"
+   },
+   {
+    "type": "p",
+    "text": "Each advertiser also gets a score between 0 and 1. Read it as the probability of churning: an advertiser scored 0.25 has a 25% chance of leaving in the next 60 days. Multiplying each score by 8-week spend gives the revenue at risk on that account, and the sum is a figure finance can plan on."
+   },
+   {
+    "type": "code",
+    "text": "# scores = model output for the 4,000 test advertisers, 0 to 1\ntest['churn_probability'] = scores\ntest['revenue_at_risk'] = (\n    test['churn_probability'] * test['spend_8w']\n)\ntotal_at_risk = test['revenue_at_risk'].sum()"
+   },
+   {
+    "type": "h",
+    "text": "Recommendation"
+   },
+   {
+    "type": "p",
+    "text": "Ship. Account managers work the flagged accounts each month, and finance receives the revenue-at-risk total."
+   }
+  ],
+  "ask": "Can the account team and finance rely on this report? Tick the real problems.",
+  "findings": [
+   {
+    "text": "The headline is 88.5% accuracy, but predicting that every advertiser stays would score 86.8%.",
+    "real": true,
+    "why": "Only 527 of the 4,000 churned, so calling everyone a stayer is right 3,473 times; accuracy mostly counts easy stayers. Ask for precision and recall, beside the same figures for both baselines: everyone stays, and the spend-trend rule.",
+    "marks": [
+     2
+    ]
+   },
+   {
+    "text": "The results cover only the May and June advertisers, not the whole table.",
+    "real": false,
+    "why": "That is the test set doing its job: a result counts only on rows the model never saw, from later months than it learned from. Numbers on all 12,000 advertisers would mix in the training rows."
+   },
+   {
+    "text": "No cut-off is stated: the report never says what score turns into a flag, or why.",
+    "real": true,
+    "why": "The four counts belong to one cut-off, almost certainly the default 0.5, and a different line gives a different table: at 0.2 this model flags 690 advertisers and catches about 60% of the churners. Ask for the cut-off to be stated and chosen for what the team can handle, or for a ranked list of that size.",
+    "marks": [
+     4
+    ]
+   },
+   {
+    "text": "The 2,000 April advertisers were left out of both training and testing, so a sixth of the data is wasted.",
+    "real": false,
+    "why": "Churn takes 60 days to show, so on the day you score May you would not yet know April's outcomes. Training on April would use answers that did not exist yet; leaving it out is the honest design."
+   },
+   {
+    "text": "Churn is 11.1% in the training months and 13.2% in the test months, so the two sets do not match and the test is unfair.",
+    "real": false,
+    "why": "A split by time is meant to show a later period as it really was, and churn rose. The mismatch is information, not a fault, and resampling the test rows to match would hide it."
+   },
+   {
+    "text": "By its own counts the model caught 104 of 527 churners, about one in five, yet the report says managers can rely on it to find accounts about to leave.",
+    "real": true,
+    "why": "That sentence reads accuracy as if it were recall. The flags it raises are usually right (104 of 141, about 74%), but 423 churners get no flag at all, and the team needs both numbers to decide whether that is good enough.",
+    "marks": [
+     3
+    ]
+   },
+   {
+    "text": "A score of 0.25 is read as a 25% chance and multiplied by spend, with no check that the percentages are right.",
+    "real": true,
+    "why": "Ranking well and being right about the percentage are separate claims, and the report's own table hints at trouble: the average score in the test months is 0.109 while 13.2% churned. In this data advertisers scored between 20% and 30% left at about 33%, so ask for a predicted-versus-actual table before any score is multiplied by money.",
+    "marks": [
+     7
+    ]
+   }
+  ],
+  "verdict": "Do not ship it as written. The model may well be worth using, but this report cannot show it: the headline sits under two points above doing nothing, the flags have no stated cut-off, and the scores run low as percentages. Send back: lead with precision and recall at a stated cut-off beside both baselines, and add a predicted-versus-actual table before finance multiplies anything by spend."
+ },
+ {
+  "kind": "case",
+  "id": "c3",
+  "after": 4,
+  "title": "Time to upgrade the model?",
+  "blurb": "The assistant says two tree models beat the one you use. Check the scoreboard.",
+  "setup": "The churn model in use is a logistic regression. You asked your assistant whether a more flexible model would do better, and it sent this comparison. The decision is whether to replace the current model before next month's scoring run.",
+  "file": "churn_model_comparison.html",
+  "report": [
+   {
+    "type": "h",
+    "text": "Churn model comparison"
+   },
+   {
+    "type": "p",
+    "text": "I compared the current logistic regression with two more flexible models, a random forest of 300 trees and gradient boosting, on the same 17 features. Training months: January to March (6,000 advertisers). Held out: May and June (4,000 advertisers). April is left out. Both tree models clearly outperform the current one."
+   },
+   {
+    "type": "kpi",
+    "items": [
+     {
+      "value": "0.982",
+      "label": "AUC, random forest"
+     },
+     {
+      "value": "0.874",
+      "label": "AUC, gradient boosting"
+     },
+     {
+      "value": "0.849",
+      "label": "AUC, logistic regression (current)"
+     }
+    ]
+   },
+   {
+    "type": "table",
+    "columns": [
+     "Model",
+     "AUC, Jan-Mar",
+     "AUC, May-Jun",
+     "Churners in top 200, May-Jun"
+    ],
+    "rows": [
+     [
+      "Random forest, 300 trees",
+      "0.982",
+      "0.831",
+      "126"
+     ],
+     [
+      "Gradient boosting, depth 2",
+      "0.874",
+      "0.836",
+      "132"
+     ],
+     [
+      "Logistic regression (current)",
+      "0.849",
+      "0.845",
+      "136"
+     ]
+    ]
+   },
+   {
+    "type": "p",
+    "text": "The forest's lower figure for May and June reflects a harder period, not a weaker model: churn was 13.2% in those months against 11.1% in training."
+   },
+   {
+    "type": "h",
+    "text": "Tuning and stability"
+   },
+   {
+    "type": "p",
+    "text": "For gradient boosting I tried two settings and kept the one with the higher AUC on May and June: depth 2 with 100 rounds (0.836) over depth 4 with 200 rounds (0.827)."
+   },
+   {
+    "type": "code",
+    "text": "GRID = [dict(max_depth=4, max_iter=200, learning_rate=0.05),\n        dict(max_depth=2, max_iter=100, learning_rate=0.1)]\nauc = []\nfor params in GRID:\n    gb = HistGradientBoostingClassifier(**params)\n    gb.fit(X_train, y_train)                # Jan-Mar\n    p = gb.predict_proba(X_test)[:, 1]      # May-Jun\n    auc.append(roc_auc_score(y_test, p))    # 0.827, 0.836\nbest = GRID[auc.index(max(auc))]            # depth 2, 100 rounds"
+   },
+   {
+    "type": "p",
+    "text": "Stability check: five-fold cross-validation on the training months. Fold AUCs run from 0.819 to 0.868 for logistic regression and from 0.813 to 0.868 for gradient boosting."
+   },
+   {
+    "type": "h",
+    "text": "Recommendation"
+   },
+   {
+    "type": "p",
+    "text": "Replace the logistic regression with the random forest. It has the highest AUC of the three by a wide margin, and tree models capture combinations of features that a weighted sum cannot. Gradient boosting is the fallback if the forest is too slow to score."
+   }
+  ],
+  "ask": "Would you replace the current model on this evidence? Tick the real problems.",
+  "findings": [
+   {
+    "text": "Cross-validation was run on the January to March rows only, so it never checked the models on May and June.",
+    "real": false,
+    "why": "That is where it belongs: cross-validation is the mock exam inside the training rows, and the test months stay sealed for the final check. Its fold scores also show the wobble, about 0.82 to 0.87 for the same model on different fifths of the rows."
+   },
+   {
+    "text": "The forest drops from 0.982 to 0.831, a gap so wide that it must be broken and should be thrown out.",
+    "real": false,
+    "why": "The gap says the forest's training score is worthless as evidence, not that the model is. The verdict is the held-out number, and 0.831 is a working model that simply does not beat 0.845."
+   },
+   {
+    "text": "The headline AUCs were measured on the training months; on May and June the order is reversed, with logistic regression first and the forest last.",
+    "real": true,
+    "why": "A score on rows a model has already seen says nothing about new advertisers, and the 'harder period' story fails because logistic regression barely moves between the two columns (0.849 and 0.845). Ask for a summary that quotes held-out scores only, each labelled with its rows.",
+    "marks": [
+     2
+    ]
+   },
+   {
+    "text": "The boosting settings were chosen by their AUC on May and June, so the test months helped build the model.",
+    "real": true,
+    "why": "Choosing is also learning: once settings are picked on the test rows, no untouched number is left to report. Ask for settings chosen by cross-validation on the training months, with the test months scored once at the end.",
+    "marks": [
+     6
+    ]
+   },
+   {
+    "text": "Testing complex models at all was a waste of time: on a table like this the simple model always wins.",
+    "real": false,
+    "why": "Running both is the right habit, because which one wins depends on the shape of the pattern and you cannot see that beforehand. On this same table, for the question of who will adopt video ads, boosting beats logistic regression by 0.040 (interval 0.031 to 0.049); the simple model's lead on churn is a property of this simulated data, not a rule."
+   },
+   {
+    "text": "Every figure is an overall one for all 4,000 held-out advertisers; nothing is cut by segment.",
+    "real": true,
+    "why": "An overall score is an average and can hide the group a model serves worst: with the current model, the top-400 list catches about 55% of small-account churners and 25% of large ones, though large accounts are about two thirds of the spend lost. Ask for every candidate by size tier, account manager and vertical before choosing.",
+    "marks": [
+     3
+    ]
+   },
+   {
+    "text": "'Clearly outperform' comes with no interval on the gap between any two models.",
+    "real": true,
+    "why": "A gap means little until it is held against the noise, in the units of the decision. On the held-out rows logistic regression leads boosting by 0.009 (interval 0.002 to 0.015), which in the top 200 is 136 churners against 132, inside the wobble of that count (about 123 to 150).",
+    "marks": [
+     1
+    ]
+   }
+  ],
+  "verdict": "Do not switch. On the rows that count, the current logistic regression is narrowly ahead of both tree models, and the report picked its winner on training scores. Send back: rank by held-out AUC, choose boosting settings by cross-validation on the training months, give each gap with an interval and as churners in the top 200, and repeat it by segment. Keep the simple model because it measured better here, not because simple always wins."
+ },
+ {
+  "kind": "case",
+  "id": "c4",
+  "after": 5,
+  "title": "The best-practices playbook",
+  "blurb": "Five practices, five recommendations, one rollout plan. Audit every layer.",
+  "setup": "The head of customer success asked what separates advertisers who hit their CPA goal from those who do not, and wants a best-practices playbook. You passed the question to your assistant and received this report. If you approve it, the recommendations go into next month's onboarding emails and account-manager scripts.",
+  "file": "cpa_goal_playbook.html",
+  "report": [
+   {
+    "type": "h",
+    "text": "What separates advertisers who hit their CPA goal"
+   },
+   {
+    "type": "p",
+    "text": "Scope: the 7,016 advertisers with conversion tracking (58.5% of all advertisers). Goal attainment cannot be measured without tracking, so these findings describe tracked advertisers only. An advertiser counts as hitting goal when their CPA over the 8 weeks before the snapshot was at or below their own target."
+   },
+   {
+    "type": "kpi",
+    "items": [
+     {
+      "value": "65.7%",
+      "label": "of tracked advertisers hit their CPA goal"
+     },
+     {
+      "value": "7,016",
+      "label": "advertisers analysed"
+     },
+     {
+      "value": "5",
+      "label": "practices compared"
+     }
+    ]
+   },
+   {
+    "type": "table",
+    "columns": [
+     "Practice",
+     "Advertisers with / without",
+     "Hit goal with",
+     "Hit goal without",
+     "Gap in points (95% interval)",
+     "Adjusted gap"
+    ],
+    "rows": [
+     [
+      "Automated bidding",
+      "4,240 / 2,776",
+      "73.3%",
+      "54.0%",
+      "+19.3 (17.0 to 21.6)",
+      "+15.2"
+     ],
+     [
+      "4 or more creatives per campaign",
+      "3,172 / 3,844",
+      "77.6%",
+      "55.9%",
+      "+21.7 (19.5 to 23.8)",
+      "+17.4"
+     ],
+     [
+      "Newest creative at most 14 days old",
+      "3,852 / 3,164",
+      "74.5%",
+      "54.9%",
+      "+19.6 (17.4 to 21.8)",
+      "+16.2"
+     ],
+     [
+      "Has an account manager",
+      "2,638 / 4,378",
+      "72.1%",
+      "61.8%",
+      "+10.4 (8.1 to 12.6)",
+      "+2.9"
+     ],
+     [
+      "Had an optimisation review",
+      "1,798 / 5,218",
+      "46.9%",
+      "72.2%",
+      "−25.3 (−27.9 to −22.7)",
+      "−25.5"
+     ]
+    ]
+   },
+   {
+    "type": "p",
+    "text": "Gaps are computed on unrounded rates. The adjusted gap controls for tenure, 8-week spend, number of campaigns, vertical and the other four practices."
+   },
+   {
+    "type": "h",
+    "text": "Recommendations"
+   },
+   {
+    "type": "table",
+    "columns": [
+     "Recommendation",
+     "Expected lift in goal attainment"
+    ],
+    "rows": [
+     [
+      "Run at least 4 creatives in every campaign",
+      "+21.7 points"
+     ],
+     [
+      "Refresh creatives at least every 14 days",
+      "+19.6 points"
+     ],
+     [
+      "Switch every advertiser to automated bidding",
+      "+19.3 points"
+     ],
+     [
+      "Assign an account manager to more accounts",
+      "+10.4 points"
+     ],
+     [
+      "Scale back optimisation reviews",
+      "reviews cost 25.3 points"
+     ]
+    ]
+   },
+   {
+    "type": "p",
+    "text": "These practices drive goal attainment. The review result is robust: the gap is unchanged after controls, so reviews are not helping and the team's time is better spent elsewhere. Next step: roll the playbook out in next month's onboarding emails and account-manager scripts."
+   },
+   {
+    "type": "h",
+    "text": "Does automated bidding also reduce churn?"
+   },
+   {
+    "type": "table",
+    "columns": [
+     "Comparison, all 12,000 advertisers",
+     "Churn gap, automated bidding vs not"
+    ],
+    "rows": [
+     [
+      "Raw: 7.3% against 16.2%",
+      "−8.9 points"
+     ],
+     [
+      "Adjusted for account background",
+      "−4.2 points"
+     ],
+     [
+      "Also adjusted for performance",
+      "−1.2 points"
+     ]
+    ]
+   },
+   {
+    "type": "code",
+    "text": "background = ['tenure_weeks', 'spend_8w', 'campaigns_active',\n              'creatives_per_campaign', 'creative_refresh_days',\n              'managed', 'has_conversion_tracking', 'vertical']\nperformance = ['cpa_vs_goal', 'spend_trend', 'active_days_28']\ngap_background = adjusted_gap('uses_auto_bidding', background)\ngap_full = adjusted_gap('uses_auto_bidding',\n                        background + performance)"
+   },
+   {
+    "type": "p",
+    "text": "The last row is the most rigorous, because it holds performance equal: CPA versus goal, spend trend and active days. With performance held equal, automated bidding has almost no effect on churn, so it should not be positioned as a retention feature."
+   }
+  ],
+  "ask": "Would you let this playbook go out? Tick every real problem, at every level.",
+  "findings": [
+   {
+    "text": "Gaps like these could simply be noise.",
+    "real": false,
+    "why": "Not here: each group holds thousands of advertisers and every interval sits far from zero, so the gaps are real as gaps. The weakness is what the report says they mean, not whether they exist."
+   },
+   {
+    "text": "The playbook calls gaps between groups 'expected lift' and says the practices 'drive' goal attainment, though nothing was tested.",
+    "real": true,
+    "why": "A gap, raw or adjusted, is an association: advertisers who adopt these practices differ in ways no column records, so the number mixes what the practice does with who chooses it. In this simulated world the true effect of automated bidding is 11.3 points, not 19.3; on real data only a randomised test could tell you, and until then the wording is 'is associated with'.",
+    "marks": [
+     6,
+     7
+    ]
+   },
+   {
+    "text": "It recommends scaling back optimisation reviews because reviewed accounts hit their goal 25.3 points less often.",
+    "real": true,
+    "why": "Reviews are not handed out at random: they go to accounts already struggling, for reasons the table does not record, so reviewed accounts look worse whatever the review does. In this simulated world the review helps by 8.8 points; in real life you would ask how reviews are assigned and run a test before cutting them.",
+    "marks": [
+     7
+    ]
+   },
+   {
+    "text": "It promises 10.4 points from assigning account managers, although its own adjusted gap is only 2.9.",
+    "real": true,
+    "why": "Most of that gap disappears once like is compared with like, which says it is mainly about which accounts get a manager. In this simulated world a manager has no effect on hitting the CPA goal; you could not know that from real data, but the report's own table is reason enough to strike the recommendation until it is tested.",
+    "marks": [
+     6
+    ]
+   },
+   {
+    "text": "It analysed only the 7,016 advertisers with conversion tracking and left out 4,984, so 42% of the table is missing.",
+    "real": false,
+    "why": "Dropping rows silently would be a bug, but here the outcome does not exist without tracking, and the report says so in its first line and limits its findings to tracked advertisers. Hold it to that limit: untracked advertisers are a different group, churning at about 18% against 7%."
+   },
+   {
+    "text": "The churn section adjusts for CPA versus goal, spend trend and active days, which automated bidding itself changes, and calls that row the most rigorous.",
+    "real": true,
+    "why": "If bidding keeps advertisers by improving their CPA, holding CPA equal removes the very effect being measured, so 'almost no effect' is produced by the controls. Adjust only for things fixed before the practice was adopted; in this simulated world automated bidding truly cuts churn by 2.6 points, and on real data only an experiment would show it.",
+    "marks": [
+     11
+    ]
+   },
+   {
+    "text": "The adjusted gap for reviews (−25.5) is almost the same as the raw gap (−25.3), so the adjustment must have been calculated wrongly.",
+    "real": false,
+    "why": "Adjusting can only remove differences the table records, and the reason an account gets a review is not a column, so there was nothing for it to remove. An adjusted gap that does not move is not a bug; the mistake is the report treating 'unchanged after controls' as proof."
+   },
+   {
+    "text": "The next step is a rollout, and no test is proposed for any of the five practices.",
+    "real": true,
+    "why": "Every claim here is observed or adjusted, never tested, and once everyone gets the playbook there is no comparison group left. Propose a randomised encouragement for the practice that matters most: to detect a 5-point lift from a 60% base you need about 1,470 advertisers in each group.",
+    "marks": [
+     7
+    ]
+   }
+  ],
+  "verdict": "Do not ship. The table is a sound description; the recommendations built on it are not, and in this simulated world one of them would cut a practice that helps while another would pay for one that does nothing for CPA. Send back: word every gap as an association beside its adjusted figure, drop the review and account-manager recommendations until you know how each is assigned, redo the churn question with background controls only, and design a randomised encouragement test for automated bidding. You know the true effects here only because the data is simulated; at work the experiment is how you find out."
+ },
+ {
+  "kind": "case",
+  "id": "c5",
+  "after": 6,
+  "title": "The forecast for finance",
+  "blurb": "A 28-day spend forecast, backtested and waiting for approval. Audit it anyway.",
+  "setup": "Finance plans each month on the platform's total spend for the next 28 days, and today uses 'same weekday last week' to estimate it. You asked your assistant to build something better and to prove it before finance relies on it. This is the report; if you approve it, the new model replaces the current method next month.",
+  "file": "spend_forecast_backtest.html",
+  "report": [
+   {
+    "type": "h",
+    "text": "Daily platform spend: 28-day forecast, backtest report"
+   },
+   {
+    "type": "p",
+    "text": "Model: a regression on the log of daily spend with a trend, a weekday effect, three yearly waves and flags for Black Friday week, Christmas and New Year's Day. Test: twelve backtests, one from the first day of each month from May 2025 to April 2026. Each trains only on earlier days and forecasts the next 28."
+   },
+   {
+    "type": "kpi",
+    "items": [
+     {
+      "value": "2.8%",
+      "label": "average daily error, 12 backtests"
+     },
+     {
+      "value": "3.5%",
+      "label": "worst of the 12 months"
+     },
+     {
+      "value": "1.0%",
+      "label": "typical error of the 28-day total"
+     }
+    ]
+   },
+   {
+    "type": "table",
+    "columns": [
+     "Method",
+     "Average daily error",
+     "Worst month",
+     "28-day total, typical error"
+    ],
+    "rows": [
+     [
+      "Yesterday's value carried forward",
+      "13.6%",
+      "27.3%",
+      "8.8%"
+     ],
+     [
+      "Same weekday last week (current method)",
+      "6.4%",
+      "23.6%",
+      "4.8%"
+     ],
+     [
+      "Average of the last 4 same weekdays",
+      "5.7%",
+      "9.8%",
+      "4.8%"
+     ],
+     [
+      "Boosted trees on calendar columns",
+      "5.4%",
+      "9.4%",
+      "3.8%"
+     ],
+     [
+      "Regression without the event dates",
+      "3.3%",
+      "6.3%",
+      "1.6%"
+     ],
+     [
+      "Regression with event dates (proposed)",
+      "2.8%",
+      "3.5%",
+      "1.0%"
+     ]
+    ]
+   },
+   {
+    "type": "table",
+    "columns": [
+     "Week ahead",
+     "Proposed model",
+     "Same weekday last week"
+    ],
+    "rows": [
+     [
+      "1",
+      "2.5%",
+      "5.1%"
+     ],
+     [
+      "2",
+      "3.2%",
+      "6.1%"
+     ],
+     [
+      "3",
+      "2.7%",
+      "5.8%"
+     ],
+     [
+      "4",
+      "2.7%",
+      "8.5%"
+     ]
+    ]
+   },
+   {
+    "type": "p",
+    "text": "What the model found: growth of 14.7% a year; Saturdays 17.9% and Sundays 21.9% below Mondays; Black Friday week 21.9% up; Christmas 19.4% and New Year's Day 26.2% down."
+   },
+   {
+    "type": "code",
+    "text": "origins = pd.date_range('2025-05-01', '2026-04-01', freq='MS')\nfor origin in origins:                      # 12 forecast dates\n    end = origin + pd.Timedelta(days=28)\n    train = daily[daily.date < origin]      # earlier days only\n    test = daily[(daily.date >= origin) & (daily.date < end)]\n    model = fit_regression(train, EVENT_DATES)\n    errors[origin] = pct_error(model.predict(test), test.spend)"
+   },
+   {
+    "type": "h",
+    "text": "Range"
+   },
+   {
+    "type": "p",
+    "text": "80% range for a single day, taken from the daily errors of the first six backtests: from 4.5% below the forecast to 3.8% above it. Checked on the six later backtests, which it was not built from, actual spend fell inside the range on 78% of days."
+   },
+   {
+    "type": "h",
+    "text": "What this cannot tell you"
+   },
+   {
+    "type": "p",
+    "text": "These scores are for ordinary days: the seven known incidents in the period (13 days in all, among them an outage, a tracking bug and a slow leak) were taken out before scoring. With them left in, the average daily error is 3.7% and the range holds on 71% of days. The model also cannot foresee a change it has never seen. In a test where spend stepped up by 12% from 1 November and stayed there, its error took four months to return to within a point of normal, while the four-week average recovered in one. If a pricing change or a large client move is coming, tell me and I will add a scenario with the change put in by hand."
+   },
+   {
+    "type": "p",
+    "text": "Recommendation: replace the current method with the proposed model, and quote each month's 28-day total with the 80% range above."
+   }
+  ],
+  "ask": "Finance is waiting. Would you approve it? Tick only what really needs fixing.",
+  "findings": [
+   {
+    "text": "It was tested by forecasting forward from twelve past dates, not by ordinary cross-validation on randomly held-out days.",
+    "real": false,
+    "why": "Forward from a past date is how the forecast will be used, so it is the honest test; random hold-outs let a model fill in days between days it has already seen. Twelve starting dates also show the spread that one lucky month would hide."
+   },
+   {
+    "text": "The 80% range is for a single day, but the recommendation quotes it around the 28-day total.",
+    "real": true,
+    "why": "Daily misses partly cancel in a sum, which is why the total's typical error is 1.0% against 2.8% for a day, so a daily band is the wrong width for a monthly number. Ask for a range built from the twelve backtest totals, since the total is what finance plans on.",
+    "marks": [
+     11
+    ]
+   },
+   {
+    "text": "The model is only a regression with calendar terms; a boosted model would surely be more accurate.",
+    "real": false,
+    "why": "The report measured that and did not assume it: boosted trees on the same calendar columns miss by 5.4% a day against 2.8%. Simple wins here because it scored better on this series, which is the only reason that counts."
+   },
+   {
+    "text": "The range was promised at 80% and held on only 78% of days, so it is wrong.",
+    "real": false,
+    "why": "78 against 80, on backtests the range was not built from, is as close as six months of checking can show. What matters is that the report tested the range on unseen backtests and printed the result."
+   },
+   {
+    "text": "The known incident days were taken out before scoring, which flatters the model.",
+    "real": false,
+    "why": "It would if it were hidden. The report says so and gives both figures (2.8% without them, 3.7% with, and the range down to 71%), which is the honest way to separate ordinary days from incidents no forecast could predict."
+   },
+   {
+    "text": "It admits it cannot foresee a pricing change or a large client leaving, so it is not ready.",
+    "real": false,
+    "why": "No forecast can see what has never happened; saying so, and offering a scenario with the change put in by hand, is what a sound report does. A forecast that claimed otherwise would be the one to send back."
+   },
+   {
+    "text": "Nothing says how the forecast will be watched once it is live: no forecast-against-actual check, no rule for when to refit.",
+    "real": true,
+    "why": "The report's own step-change test shows the model staying wrong for four months after a shift nobody announced, so someone has to notice. Ask for a monthly forecast-against-actual check and a written rule for when to refit or put a known change in by hand.",
+    "marks": [
+     11
+    ]
+   }
+  ],
+  "verdict": "Ship it. The forecast was tested the way it will be used, its average daily error is less than half that of the method it replaces, its range was checked on months it was not built from, and it says plainly what it cannot know. One note to send back: add how the forecast will be watched after launch (forecast against actual each month, and a rule for when to refit), and give finance a range for the 28-day total as well as for single days. The error levels are a best case from a stable, simulated series; what earns the approval is the testing, and an audit that comes back nearly clean is a result too."
+ }
+]

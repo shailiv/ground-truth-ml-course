@@ -1,0 +1,466 @@
+{
+  "id": "6-2",
+  "module": 6,
+  "title": "Backtesting and uncertainty",
+  "subtitle": "How do you test a forecast honestly, and how sure should you sound?",
+  "goal": "After this lesson you can insist that a forecast is tested from past dates forward, read its error by month and by distance ahead, and hand it over with a range and a plain statement of what that range does not cover.",
+  "predict": {
+    "q": "A boosted-tree forecasting model misses daily spend by about 3 percent when it is tested on randomly held-out days. What happens when it is tested on the four weeks after its training data ends?",
+    "options": [
+      "About the same: 3 percent",
+      "Slightly better: about 2 percent",
+      "Clearly worse: about 5 percent",
+      "It falls apart: over 20 percent"
+    ],
+    "answer": 2,
+    "reveal": "Clearly worse, about 5 percent: random hold-outs let it fill in gaps between days it already knows. The lesson shows the honest test."
+  },
+  "segments": [
+    {
+      "narration": "The assistant has a forecast ready for finance: boosted trees fed the calendar. Average miss, about 3 percent. It was tested with ordinary cross-validation: hold out a random fifth of the days, train on the rest, rotate. Before you forward it, ask what that test resembled. A held out Wednesday sits between a Tuesday and a Thursday the model has already seen. Finance is not asking you to fill in a missing Wednesday. They are asking about next month, where there are no neighbours to lean on.",
+      "visual": {
+        "type": "title",
+        "kicker": "Module 6 · Lesson 2",
+        "title": "Backtesting and uncertainty",
+        "sub": "Test a forecast the way it will be used"
+      }
+    },
+    {
+      "narration": "[[1]] That 3 percent came from random hold outs. [[2]] Now judge the same model the way it will be used: train up to a date, forecast the next 28 days, score only those. The miss is about 5 percent. The first test let the model fill gaps between days it knew; the second made it reach past the end of its data. It is module four's trap in time: there, one advertiser sat on both sides of a fold. A footnote: the plain regression from last lesson, the trend model for short, scored the same both ways, which you only learn by running the honest test.",
+      "visual": {
+        "type": "compare",
+        "title": "The same model, judged two ways",
+        "left": {
+          "label": "Random days held out",
+          "value": "3.2%",
+          "sub": "it trained on the days around them"
+        },
+        "right": {
+          "label": "The 28 days after training ends",
+          "value": "5.4%",
+          "sub": "the job it will really do"
+        }
+      }
+    },
+    {
+      "narration": "The honest test is called backtesting, and it is a rehearsal. [[1]] Pick a past date and pretend it is today. [[2]] Train on nothing after it. [[3]] Forecast the next 28 days. [[4]] Score that against what happened. [[5]] Then move on a month and repeat. Last lesson's scores came from twelve of these, because one rehearsal can be lucky. The trend model's monthly miss ranged from about 2 percent to about 3 and a half. One month alone shows nothing of that spread.",
+      "visual": {
+        "type": "flow",
+        "title": "A backtest is a rehearsal",
+        "steps": [
+          {
+            "label": "Pick a past date",
+            "sub": "pretend it is today"
+          },
+          {
+            "label": "Train",
+            "sub": "only on days before it"
+          },
+          {
+            "label": "Forecast",
+            "sub": "the next 28 days"
+          },
+          {
+            "label": "Score",
+            "sub": "against what happened"
+          },
+          {
+            "label": "Move on a month",
+            "sub": "repeat: 12 times here"
+          }
+        ]
+      }
+    },
+    {
+      "narration": "A backtest also shows how the miss behaves with distance. Copying last week forward is off by about 5 percent in the first week and more than 8 percent in the fourth. The trend model is about as good in week four as in week one. So when someone quotes one accuracy figure, ask how far ahead. Read that steadiness honestly: the incidents were removed from this series, the world is stable by construction, and the model has the same form as the equation behind the data. A best case, not a promise.",
+      "visual": {
+        "type": "line",
+        "title": "Error by how far ahead",
+        "xlabel": "Week ahead",
+        "ylabel": "Average daily error, %",
+        "x": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "series": [
+          {
+            "name": "Last week copied",
+            "values": [
+              5.07,
+              6.13,
+              5.77,
+              8.46
+            ]
+          },
+          {
+            "name": "4-week average",
+            "values": [
+              4.77,
+              5.44,
+              4.95,
+              7.61
+            ]
+          },
+          {
+            "name": "Trend model",
+            "values": [
+              2.48,
+              3.2,
+              2.69,
+              2.74
+            ]
+          }
+        ],
+        "note": "Twelve backtests on the series without incidents. A stable simulated world: a best case."
+      }
+    },
+    {
+      "narration": "Now the range, from the trend model's own track record. [[1]] Take its daily misses from the first six backtests. Find the band that held on four days in five. It runs from about 4 and a half percent below the forecast to about 4 percent above. [[2]] Check that band on the six backtests it was not built from. It held 78 percent of the time, against a promised 80. [[3]] Put the planted incidents back, and it holds only 71 percent of the time. A range built from past misses covers the kinds of days it has already seen. [[4]] And it is a range for one day. Over a four week total the daily misses partly cancel: the total was typically off by about 1 percent.",
+      "visual": {
+        "type": "stat",
+        "title": "A range from the model's own track record",
+        "stats": [
+          {
+            "value": "≈ ±4%",
+            "label": "daily band, −4.5% to +3.8%: held 4 days in 5 on the first six backtests"
+          },
+          {
+            "value": "78%",
+            "label": "of days inside it on the next six backtests (promised 80%)"
+          },
+          {
+            "value": "71%",
+            "label": "once incident days are back in the series"
+          },
+          {
+            "value": "1.0%",
+            "label": "typical miss of a 28-day total: daily misses partly cancel"
+          }
+        ]
+      }
+    },
+    {
+      "narration": "A harder test for the trend model and the four week average. From the first of November everything steps up by 12 percent and stays there, and neither is told. In November both are badly wrong. The four week average has a short memory: by December its error is exactly what it would have been. The trend model fits its whole history, so it keeps blending the new level with the old: still about 8 percent off in December and January. March looks normal, then April is off again. Quick to recover is not the same as accurate, though. The four week average's ordinary error from December to April runs from 3 to 10 percent. Even damaged, the trend model was closer in three of those five months.",
+      "visual": {
+        "type": "line",
+        "title": "A 12% step up on 1 November that nobody announced",
+        "xlabel": "Month forecast",
+        "ylabel": "Average daily error, %",
+        "x": [
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec",
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr"
+        ],
+        "series": [
+          {
+            "name": "Trend model",
+            "values": [
+              2.63,
+              2.44,
+              3.0,
+              3.26,
+              2.45,
+              2.4,
+              11.64,
+              7.96,
+              7.59,
+              5.26,
+              3.52,
+              4.4
+            ]
+          },
+          {
+            "name": "Trend, no shift",
+            "values": [
+              2.63,
+              2.44,
+              3.0,
+              3.26,
+              2.45,
+              2.4,
+              2.94,
+              3.51,
+              3.09,
+              2.19,
+              3.53,
+              1.9
+            ]
+          },
+          {
+            "name": "4-week average",
+            "values": [
+              2.92,
+              2.6,
+              3.12,
+              2.48,
+              9.01,
+              7.33,
+              18.62,
+              9.75,
+              5.35,
+              7.8,
+              5.85,
+              3.23
+            ]
+          }
+        ],
+        "note": "From December the 4-week average scores exactly what it scores with no shift; its 7–9% in September and October is the autumn climb, not the step. Trend model in April: 4.4% against a normal 1.9%."
+      }
+    },
+    {
+      "narration": "[[1]] Push the distance to a whole year. The trend model keeps up, which is no achievement in a simulated world that grows at a constant rate. [[2]] The same boosted trees, asked for the level of spend directly, come in about 9 percent low. A tree can only output values it has seen, so past the end of its data it repeats the latest level. [[3]] Take the trend out first, and the total lands about 4 percent high instead. So this is true of trees asked for a raw level, not of trees as such.",
+      "visual": {
+        "type": "bar",
+        "title": "Forecasting a year ahead: error of the year's total",
+        "unit": "%",
+        "data": [
+          {
+            "label": "Trend model",
+            "value": 0.12
+          },
+          {
+            "label": "Boosted trees, asked for the raw level",
+            "value": -8.89
+          },
+          {
+            "label": "Boosted trees, trend removed first",
+            "value": 4.19
+          }
+        ],
+        "note": "Trained through April 2025, forecasting 365 days. Average daily error: 2.7%, 10.2% and 5.7%. Last 90 days, raw level: 11.55% low."
+      }
+    },
+    {
+      "narration": "The brief. Ask for a test from past dates forward. [[1]] The output shows the forecast dates, each with its last training day. [[2]] The miss by month and by week ahead, beside the naive methods. [[3]] A range for the number asked for, a day or a total, and how often it held on rehearsals it was not built from. [[4]] For tree models, a long forecast against a growing series. [[5]] And one thing no backtest can supply: a forecast cannot see what has never happened. If a pricing change is coming, give finance scenarios: the forecast as it stands, and one with the change put in by hand.",
+      "visual": {
+        "type": "bullets",
+        "title": "Brief and audit",
+        "items": [
+          "Forecast dates, each with its last training day",
+          "Error by month and by week ahead, beside the naive methods",
+          "A range for the number asked for, and how often it held on backtests it was not built from",
+          "Tree models: a long forecast against a growing series",
+          "Scenarios for changes you know are coming"
+        ]
+      }
+    },
+    {
+      "narration": "To recap. Test a forecast the way it will be used: stand at a past date, forecast forward, repeat. Hand over a range, and say that it covers ordinary days only. After a change in level, expect a long memory to adjust slowly. And all of it was a best case: a clean series from a stable world. A forecast is also your best statement of what was expected. Next lesson uses that to decide whether yesterday's drop was unusual.",
+      "visual": {
+        "type": "quote",
+        "text": "Test from a past date forward, many times. Then give a range, and say what it does not cover.",
+        "sub": "A forecast cannot see what has never happened."
+      }
+    }
+  ],
+  "takeaways": [
+    "Test a forecast from a past date forward, many times; random hold-outs flatter a flexible model.",
+    "Give a range taken from past errors and say how often it held; it covers only the kinds of days it has seen.",
+    "After a change in level a long-memory model adjusts slowly, and trees fed a raw level cannot follow a trend."
+  ],
+  "quiz": [
+    {
+      "id": "6-2-q1",
+      "concept": "backtest, not shuffled folds",
+      "domain": "course",
+      "q": "The assistant's report on a spend forecast reads: 'Boosted trees on calendar features. 5-fold cross-validation, shuffled, on 851 days. Average error 3.2 percent.' What is the flaw in the evidence?",
+      "options": [
+        "Five folds are too few for 851 days: ten folds would make the score reliable enough to quote",
+        "Each tested day sits between days the model trained on; ask for forecasts from past dates forward",
+        "There is none: shuffled cross-validation is the standard method, and 3.2 percent is a good score",
+        "Boosted trees need far more than 851 days, so the reported score is, if anything, too pessimistic"
+      ],
+      "answer": 1,
+      "why": "A forecast is used beyond the end of its data, and shuffled folds never test that: here the same model went from about 3 percent on shuffled days to about 5 percent on the 28 days after training ended. More folds would repeat the same mistake more often."
+    },
+    {
+      "id": "6-2-q2",
+      "concept": "a range and what it covers",
+      "domain": "course",
+      "q": "Finance wants a daily spend forecast for next month to set pacing limits, and asks for 'just the numbers'. Your backtests show that actual daily spend fell within roughly 4 percent of the forecast on four days out of five. What do you send?",
+      "options": [
+        "The daily numbers alone, as requested: a range would only confuse whoever reads them",
+        "The daily numbers lowered by 4 percent, so that any surprise is a pleasant one for finance",
+        "Only the range for each day, with no central figure, so that nobody anchors on a number",
+        "The numbers with that range, how often it held in backtests, and what it does not cover"
+      ],
+      "answer": 3,
+      "why": "The range is part of the forecast: it tells finance how much weight each number can bear, and the backtest hit rate is the evidence for it. Quietly shaving the forecast swaps an honest estimate for a biased one and still says nothing about how wrong it could be."
+    },
+    {
+      "id": "6-2-q3",
+      "concept": "a change in level",
+      "domain": "other",
+      "q": "A support team forecasts daily ticket volume with a model fitted on three years of history. In March an acquisition doubles the customer base overnight. In June the forecast is still too low every single day. What is the best reading?",
+      "options": [
+        "A model fitted on its whole history is slow to accept a new level, so one-sided misses are expected",
+        "The model has stopped working altogether and should be replaced with a more complex one right away",
+        "Nothing needs doing: any model catches up with a new level within a week or two of seeing it",
+        "Ticket volume has become unpredictable since the acquisition, so forecasting should pause for a while"
+      ],
+      "answer": 0,
+      "why": "A long memory keeps blending the new level with years of the old one, so the misses all point the same way for months: on the course series a 12 percent step in November left the trend model well above its normal error through February, and off again in April. The practical fix is to tell the model about the break, or refit from it. A more complex model with the same long memory has the same problem, and a miss that always points one way is the opposite of unpredictable."
+    },
+    {
+      "id": "6-2-q4",
+      "concept": "trees and trends",
+      "domain": "course",
+      "q": "A boosted-tree model is trained on the raw level of monthly spend, which has grown steadily for three years. Its forecast for the next twelve months is a flat line at about today's level. The assistant comments that 'the model has learned that growth is ending'. What is the better explanation?",
+      "options": [
+        "The comment is right: the model has detected that this market is close to saturation",
+        "The model needs more trees and a higher learning rate before it can pick up the growth",
+        "A tree can only output values it has seen, so past its data it repeats the latest level",
+        "Three years of monthly data is too short for any model at all to learn a trend from"
+      ],
+      "answer": 2,
+      "why": "Holding the latest level is what trees asked for a raw level do beyond their data, whatever the future holds: on the course series that left the year's total about 9 percent low. Taking the trend out first, or predicting growth instead of level, deals with it; more trees would not change what a tree is able to output."
+    }
+  ],
+  "review": [
+    {
+      "concept": "test a forecast forward in time",
+      "variants": [
+        {
+          "q": "Two test designs for a daily spend forecast: design A holds out 20 percent of days at random; design B forecasts the 28 days after each of twelve past month starts, using only earlier data. A flexible model scores better under A. Which score do you report, and why?",
+          "options": [
+            "A, because it tests the model on more days and so gives a steadier number",
+            "B, because only B makes the model predict beyond its data, as it will in use",
+            "The average of A and B, since each design captures something the other misses",
+            "A, because random sampling is the unbiased way to choose a test set"
+          ],
+          "answer": 1,
+          "why": "A forecast is only ever used past the end of its training data, and design B is the one that rehearses that. Under design A every tested day has trained neighbours on both sides, so a flexible model scores well by filling gaps."
+        },
+        {
+          "q": "A retail client's analyst checks a weekly demand forecast by hiding 30 of the last 150 weeks at random and reports 4 percent error. The forecast will be used to order stock eight weeks ahead. What should replace that test?",
+          "options": [
+            "The same test with 60 hidden weeks instead of 30, so that the error is measured on more weeks",
+            "Training on all 150 weeks and reporting the error on those same weeks",
+            "Forecasts of the following eight weeks from several past dates, each using only earlier weeks",
+            "Nothing: 4 percent is low enough to start ordering on"
+          ],
+          "answer": 2,
+          "why": "The order decision needs eight weeks ahead with nothing known after the forecast date, so the test must do the same from several past dates. Hiding random weeks, however many, lets the model lean on the weeks either side."
+        },
+        {
+          "q": "A dashboard vendor says its forecast 'explains 97 percent of the variation in your historical daily revenue'. What does that leave unanswered?",
+          "options": [
+            "Nothing: a fit of 97 percent leaves very little variation unexplained, so the forecast is sound",
+            "How it performs on days after its training data ends, the only place a forecast is used",
+            "Whether the fit would reach 99 percent with more history",
+            "Which algorithm the vendor used to reach that figure"
+          ],
+          "answer": 1,
+          "why": "Fitting history well is the training-score problem from module four in a new costume; a forecast has to be scored on dates after the data it learned from. A better fit to the past is not evidence about the future."
+        }
+      ]
+    },
+    {
+      "concept": "a range covers only what it has seen",
+      "variants": [
+        {
+          "q": "Your spend forecast comes with a range built from last year's backtest errors. Next month the platform's first ever price change takes effect. How should the forecast be presented?",
+          "options": [
+            "As usual: a range built from a year of errors already allows for surprises like this one",
+            "With the range doubled, which is the cautious choice before any change of this kind",
+            "With the usual range for ordinary days, plus explicit scenarios for the price change",
+            "Not at all: a forecast made before a price change is not worth sending"
+          ],
+          "answer": 2,
+          "why": "A range built from past errors describes the kinds of days in those errors, and a first-ever price change is not one of them. Doubling the range is a guess with no evidence behind it; a named scenario says what you are assuming and can be argued with."
+        },
+        {
+          "q": "A support staffing forecast has a range that held on about four days in five in backtests. In a week with a major outage, actual tickets land outside the range on five days out of seven. What does that show?",
+          "options": [
+            "The range was miscalculated and should be thrown away before anyone relies on it again",
+            "The range was built from ordinary days and never described outage weeks",
+            "The backtests must have been run incorrectly, since four days in five did not hold",
+            "The forecast model has memorised its training data"
+          ],
+          "answer": 1,
+          "why": "On the course series the same band went from holding 78 percent of the time to 71 percent once incident days were included: a range covers what it has seen. That is a limit to state up front, not an error in the arithmetic."
+        },
+        {
+          "q": "A client's e-commerce team has a daily demand forecast whose range held well all year. They are planning their first ever site-wide flash sale and ask whether the upper end of the range is a safe stock level for that day. What do you tell them?",
+          "options": [
+            "No: the range reflects days like those in its history, and a first flash sale is not one of them",
+            "Yes: the upper end of a range that held all year is a conservative figure by construction",
+            "Yes, provided the range is recomputed on the most recent three months only",
+            "No: ranges are never reliable for single days, only for monthly totals"
+          ],
+          "answer": 0,
+          "why": "The range was cut from errors on ordinary days, so it says nothing about a kind of day that has never happened; the sale needs its own scenario, built from what the team expects the sale to do. Recomputing the range on recent months changes nothing, because those months contain no flash sale either."
+        }
+      ]
+    }
+  ],
+  "drill": [
+    {
+      "q": "Why is testing a flexible forecasting model on randomly held-out days too kind to it?",
+      "a": "Because each held-out day sits between days the model trained on, so it can fill in the gap. The real job is to predict beyond the end of the data, so test from a past date forward."
+    },
+    {
+      "q": "A forecast comes with a range built from its own past errors. What kind of day does that range not cover?",
+      "a": "Any kind it has not seen: an outage, a sudden change in level, something new. For those you need scenarios, not a slightly wider band."
+    }
+  ],
+  "recall": {
+    "prompt": "Explain how you would check a forecast before giving it to finance, and what you would hand over with it.",
+    "model_answer": "I would backtest it: stand at several past dates, train only on earlier days, forecast forward and compare with what happened, next to the naive methods. Random hold-outs are not enough, because the model can fill in between days it has seen. I would hand over the forecast with a range taken from those backtest errors, and say how often the range held on backtests it was not built from. And I would say what it cannot cover: changes that have never happened before, which need scenarios."
+  },
+  "ask_assistant": "Backtest this daily spend forecast: from the first day of each of the last twelve months, train only on earlier days and forecast the next 28. Report the average percentage error by month and by week ahead, for the model and for two naive methods. Build an 80 percent range from the errors of the first six backtests and report how often actual spend fell inside it on the last six. If the model uses trees, add a one-year-ahead forecast and compare its total with the actual total.",
+  "audit_checklist": [
+    "Every backtest lists its forecast date and its last training day, and the training day is always earlier",
+    "Errors are shown by month and by week ahead, beside the naive methods",
+    "The range is for the number you were asked for, a day or a total, and states how often it held on backtests it was not built from",
+    "A long forecast shows whether the model keeps up with a growing series"
+  ],
+  "transfer": [
+    "How many support agents are needed each day next month, and how wrong could that be?",
+    "How much stock should a client order for the next eight weeks?",
+    "Will this quarter's revenue target be met, and with what margin of doubt?"
+  ],
+  "other_ways": [
+    {
+      "approach": "Train only on a recent window of history",
+      "when": "When you suspect the level or the rhythm has changed and older data would mislead; check it with the same backtest."
+    },
+    {
+      "approach": "A separate range for each week ahead",
+      "when": "When error clearly grows with distance. Check each band on later backtests: with few of them the hit rates are noisy, here from 67% to 91%."
+    },
+    {
+      "approach": "Scenario forecasts built by hand on top of the model",
+      "when": "When a known change, such as a pricing move or a large client leaving, has no precedent in the history."
+    }
+  ],
+  "glossary": [
+    {
+      "term": "backtest",
+      "def": "A rehearsal of forecasting: pretend a past date is today, train only on earlier data, forecast forward and compare with what happened."
+    },
+    {
+      "term": "forecast range",
+      "def": "A band around the forecast inside which actual values are expected to fall a stated share of the time."
+    },
+    {
+      "term": "level shift",
+      "def": "A lasting step up or down in a series, as opposed to a one-day spike."
+    },
+    {
+      "term": "scenario",
+      "def": "A forecast made under a named assumption about a change the history cannot show, such as a price change."
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+ "issues": [
+  {
+   "where": "audit_checklist item 1",
+   "quote": "with rows equal to advertisers throughout",
+   "kind": "misleading",
+   "severity": "low",
+   "explanation": "Requiring only that rows equal distinct advertisers throughout catches fan-out joins, but passes both dropped-row steps and 1-to-1 inner joins, where rows and distinct advertisers fall together while staying equal (7,016 = 7,016 and 3,768 = 3,768). If an inner join silently deletes unmatched advertisers whose churn rate happens to be close to the dashboard rate, all four checklist items pass despite the missing customers.",
+   "evidence": "dirty_tables.dropna (7,016 rows, 7,016 advertisers) and dirty_tables.inner_join_drop (3,768 rows, 3,768 advertisers) both satisfy rows == advertisers; seg7 visual note states the complete rule: 'Rows should equal advertisers, and neither should change unless you asked for it.'",
+   "fix": "A step table: rows, distinct advertisers and churn rate after every step, with rows equal to advertisers throughout and neither count changing unless you asked to filter."
+  }
+ ],
+ "numbers_checked": 76,
+ "verdict": "Factually accurate across all 76 numeric claims, visuals, SQL/Python examples and quiz/review items; one minor omission in the audit checklist leaves out checking that counts do not drop across steps.",
+ "_hash": "616d16ed77d426b0",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_Chd0UlVDYTQ3Wk50ejV2ZElQb192cHFBTRIXdFJVQ2E0N1pOdHo1dmRJUG9fdnBxQU0 | tokens in=67938 out=314 thought=26711]"
+}

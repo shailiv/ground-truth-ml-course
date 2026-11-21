@@ -1,0 +1,331 @@
+{
+  "id": "7-5",
+  "module": 7,
+  "title": "Choosing an approach: the playbook",
+  "subtitle": "A question you have never seen arrives. What do you do in the first ten minutes?",
+  "goal": "After this lesson you can take an unfamiliar question through nine questions, from the decision it feeds to how the result will be watched, and say whether it needs a model, a rule or a report.",
+  "predict": {
+    "q": "The design team can replace twenty creatives a week and asks which new ones will burn out fastest. Past creatives have a known ending. Which framing serves that decision best?",
+    "options": [
+      "How many days each creative will last before it fatigues",
+      "Which groups of similar creatives exist, found by clustering",
+      "Whether each creative fatigues within two weeks, yes or no",
+      "What the average CTR across all creatives will be next month"
+    ],
+    "answer": 2,
+    "reveal": "The yes or no in a fixed window: a weekly list of twenty needs one score to rank by, while days until fatigue answers a different question, how long creatives last. The lesson walks nine such choices through three problems no lesson worked through."
+  },
+  "segments": [
+    {
+      "narration": "Monday morning. The head of creative strategy writes: can we predict which new creatives will burn out fastest? No lesson worked that problem through. Your assistant could put a model on your screen in ten minutes. Spend those ten minutes another way. Nine questions come before any code, and they are the same nine whatever the topic. To prove it, take two more requests from the same week. Supply wants publishers with suspicious traffic flagged. Support wants a forecast of next month's ticket volume. Three questions no lesson worked through. One path.",
+      "visual": {
+        "type": "title",
+        "kicker": "Module 7 · Lesson 5",
+        "title": "Choosing an approach: the playbook",
+        "sub": "Nine questions for a problem you have never seen"
+      }
+    },
+    {
+      "narration": "Three questions frame the problem. [[1]] What decision does it feed? Say the design team can replace twenty creatives a week. The output is a ranked list of twenty. [[2]] What kind of problem is it? Past creatives have a known ending, so there is an answer column. Fatigued within two weeks, yes or no, is classification. Days until fatigue is time to event, with running creatives censored. A ranked list wants the yes or no. [[3]] What is one row, the target and the timeline? One creative, three days after launch. Fatigued means CTR down by half, if the room agrees. Features come only from those three days. Last week's launches have no label yet.",
+      "visual": {
+        "type": "flow",
+        "title": "Frame it: the first three questions",
+        "steps": [
+          {"label": "1 · What decision?", "sub": "who acts, and on how many"},
+          {"label": "2 · What kind of problem?", "sub": "answer column? category, number, time, or a change?"},
+          {"label": "3 · Row, target, timeline?", "sub": "what is known when; has the outcome had time?"}
+        ]
+      }
+    },
+    {
+      "narration": "The same questions sort the other two requests, and question four gives each a bar to beat. [[1]] Creatives: classification, against the rule the team already uses on day three: the twenty whose CTR has fallen most since launch. [[2]] Suspicious publishers: nobody recorded which ones were bad, so there is no answer column. That makes it anomaly detection. Define normal, measure distance from it, choose a cut-off. The baseline is the threshold someone already eyeballs. [[3]] Ticket volume: time is the main axis, so it is forecasting, and the baseline is the same weekday last week. So before any model exists, each problem has a cheap method on the board.",
+      "visual": {
+        "type": "table",
+        "title": "Question 4: every problem gets a bar to beat",
+        "columns": ["Question", "Kind of problem", "First baseline"],
+        "rows": [
+          ["Which creatives fatigue fastest?", "Classification (or time to event)", "The team's day-three rule: the twenty steepest CTR drops"],
+          ["Which publishers look suspicious?", "Anomaly detection: no answer column", "The threshold someone eyeballs today"],
+          ["How many tickets next month?", "Forecasting", "Same weekday last week"]
+        ]
+      }
+    },
+    {
+      "narration": "Question five: how will we know it worked, and on which rows? The decision picks the measure. [[1]] A list of twenty is judged by how many of the twenty fatigued, next to the rule's twenty. [[2]] A publisher flag trades precision against recall, because a wrongly suspended partner and a missed fraud cost different money. [[3]] A staffing forecast is judged in tickets, with a range. The rows are ones the method never saw, split the way it will be used: later creatives, planted incidents, forecasts from past dates forward. Question six: simplest model first. Something more flexible stays only if its gain is bigger than the noise. Otherwise the cheaper method wins.",
+      "visual": {
+        "type": "table",
+        "title": "Question 5: the decision picks the measure",
+        "columns": ["Question", "Judged by", "On rows it never saw"],
+        "rows": [
+          ["Creatives", "Fatigued in the top twenty, model vs rule", "Creatives launched later"],
+          ["Publishers", "Precision and recall at the cut-off", "Planted incidents"],
+          ["Tickets", "Error in tickets, with a range", "Forecasts from past dates forward"]
+        ],
+        "note": "Question 6: simplest model first. Complexity stays only if its gain is bigger than the noise."
+      }
+    },
+    {
+      "narration": "The last three are about trust. [[1]] Who does it fail? Cut every result by segment. A fatigue model can score well overall and still miss every video creative. [[2]] Is this a prediction, or a claim about cause? Which creatives will fatigue is a prediction. Whether shorter headlines slow fatigue is a question about changing something. No model weight answers that. A test does. [[3]] How will it be used and watched? Name who acts and what they do. Leave a random slice untouched, so the action can be measured. Then track predicted against actual by segment, knowing the labels arrive late.",
+      "visual": {
+        "type": "flow",
+        "title": "Trust it: the last three questions",
+        "steps": [
+          {"label": "7 · Who does it fail?", "sub": "every result by segment"},
+          {"label": "8 · Prediction or cause?", "sub": "a weight is not an effect; a test is"},
+          {"label": "9 · Used and watched how?", "sub": "untouched slice; predicted vs actual"}
+        ]
+      }
+    },
+    {
+      "narration": "Sometimes the path ends early, and that is a result, not a failure. [[1]] A rule or a report already answers it. If the team's rule clears the bar, or a plain GROUP BY shows where the tickets pile up, ship that. [[2]] There are too few examples. A handful of confirmed bad publishers cannot teach a model a pattern that repeats. Use a rule, review by hand, and start recording outcomes. [[3]] Nobody will act on the output. Ask who does what differently on Tuesday. If the answer is nobody, stop.",
+      "visual": {
+        "type": "bullets",
+        "title": "When not to use ML",
+        "items": [
+          "A rule or a report already answers it",
+          "Too few examples to learn from",
+          "Nobody will act on the output"
+        ]
+      }
+    },
+    {
+      "narration": "Three duties come with using it. [[1]] A column can stand in for something you should not decide on. If the publisher flag leans on country, it has stopped judging traffic and started judging where someone is based. The check is one you know: cut the results by segment, this time by the groups that could be treated unfairly. [[2]] Client data stays in tools approved for it. That covers rows pasted into an assistant, and ticket text sent to an outside model. [[3]] A model in use changes the data it learns from next. Replace every flagged creative and you never see which ones would have fatigued. Keep the untouched slice.",
+      "visual": {
+        "type": "bullets",
+        "title": "Using it responsibly",
+        "items": [
+          "Columns that stand in for something you should not decide on",
+          "Client data stays in approved tools",
+          "A model in use changes the data it learns from"
+        ]
+      }
+    },
+    {
+      "narration": "Brief and audit, one last time. Do not ask for a model yet. Ask for a one-page plan before any code, and check the page for five things. [[1]] The decision, and who acts on it. [[2]] The kind of problem, with one other framing it considered. [[3]] One row, the target and the timeline, a sentence each. [[4]] The baseline, the measure and the held-out rows, fixed in advance, with a stop condition: the result at which the rule is enough. [[5]] How it will be trusted: the segments to cut by, prediction or cause, the slice left untouched. Often the best first request is smaller still: the baseline and the scoreboard, no model, so you learn what the cheap method scores. Then stages, gates, and evidence in the output, as always.",
+      "visual": {
+        "type": "bullets",
+        "title": "Brief and audit: the one-page plan",
+        "items": [
+          "The decision, and who acts on it",
+          "The kind of problem, plus one other framing",
+          "One row, the target, the timeline",
+          "Baseline, measure, held-out rows, stop condition: fixed in advance",
+          "Trust: segments to cut by, prediction or cause, untouched slice"
+        ]
+      }
+    },
+    {
+      "narration": "You will forget some of the numbers, so keep the nine questions and the habit of asking what the output shows, and use them on the unframed question already in your inbox. When you want more, the names to look for are recommendation, deeper causal methods and deep learning.",
+      "visual": {
+        "type": "table",
+        "title": "The course on one page",
+        "columns": ["Stage", "First", "Then", "Then"],
+        "rows": [
+          ["Frame it", "1 Decision", "2 Kind of problem", "3 Row, target, timeline"],
+          ["Score it", "4 Baseline", "5 Proof, on which rows", "6 Simplest that beats the noise"],
+          ["Trust it", "7 Who it fails", "8 Prediction or cause", "9 Used and watched"]
+        ],
+        "note": "Where next, by name: recommendation · deeper causal methods · deep learning"
+      }
+    }
+  ],
+  "takeaways": [
+    "Nine questions fit any problem: frame it, score it, then decide whether to trust it.",
+    "The question picks the kind of problem, the decision picks the measure, and the cheapest method that clears the bar wins.",
+    "Stop when a rule or a report is enough; mind stand-in columns, client data, and models that reshape their own data."
+  ],
+  "quiz": [
+    {
+      "id": "7-5-q1",
+      "concept": "the question picks the kind of problem",
+      "domain": "course",
+      "q": "Supply asks you to flag publishers with suspicious traffic. Nobody has ever recorded which publishers turned out to be bad. The assistant proposes: 'I will train a classifier to predict fraud and report its accuracy.' What is the right read?",
+      "options": [
+        "Ask for precision and recall too: flagging is yes or no, so classification fits",
+        "Better: cluster the publishers and treat the smallest cluster as the fraud",
+        "No answer column: define normal, set a cut-off, and test on planted incidents",
+        "Have a language model label each publisher, then train the classifier on its labels"
+      ],
+      "answer": 2,
+      "why": "A classifier needs past cases with a known answer, and there are none, so this is a question about what is unusual: say what normal looks like, measure distance from it, and choose the cut-off as a trade between precision and recall, checked on incidents you planted. Better measures cannot rescue a classifier with nothing to learn from. Clustering always returns groups, and nothing makes the smallest one fraud; a language model's guesses are not known outcomes either."
+    },
+    {
+      "id": "7-5-q2",
+      "concept": "the decision picks the measure",
+      "domain": "other",
+      "q": "The assistant's one-page plan for a lead-scoring model reads: 'Decision: sales calls the 50 best new leads each week. Row: one lead on the day it arrives. Target: paying customer within 90 days. Train: leads up to June. Test: leads from October on, whose 90 days have passed. Baseline: the current rule, company size above 200. Measure: accuracy on the test leads.' Which line has to change?",
+      "options": [
+        "The test: recent leads are few, so a random split of all the leads is safer",
+        "The measure: count customers in the top 50, model against rule, on the same leads",
+        "The baseline: a hand rule is too weak, so compare with a second model instead",
+        "The target: 90 days is a long wait, so use whether the lead replied to an email"
+      ],
+      "answer": 1,
+      "why": "The decision is a list of 50, so the proof is how many of a top 50 became customers, next to the rule's 50; accuracy mostly rewards saying no to everyone when few leads convert. The time-ordered test with its gap and the hand-rule baseline are exactly right, and swapping the target for a quicker stand-in would change the question being answered."
+    },
+    {
+      "id": "7-5-q3",
+      "concept": "the cheapest method that clears the bar wins",
+      "domain": "course",
+      "q": "Support operations ask for 'an ML forecast' of next month's ticket volume, for staffing. In twelve backtests from past dates, the average of the last four same weekdays stayed inside the error the staffing plan can absorb. A model with calendar effects did slightly better, by less than the wobble between backtests. What do you recommend?",
+      "options": [
+        "Use the four-week average, show the comparison, and re-test when the pattern shifts",
+        "Use the model: a lower average error is a lower error, however small the difference",
+        "Try a more flexible model: a gain that small means the first one was too simple",
+        "Average the two forecasts, so that neither method's mistakes can dominate the plan"
+      ],
+      "answer": 0,
+      "why": "The simple method already clears the bar the decision sets, and the model's edge is inside the noise, which makes it a tie; a tie goes to the cheaper method. Reaching for more flexibility treats 'use ML' as the goal, when the goal was a staffing plan that holds."
+    },
+    {
+      "id": "7-5-q4",
+      "concept": "a model in use changes the data it learns from",
+      "domain": "course",
+      "q": "A creative-fatigue model has been live for two months, and every creative it flags is replaced early. The assistant's monitoring note says: 'Precision has collapsed: almost none of the flagged creatives went on to fatigue. Recommend retraining on the last two months.' What is the right read?",
+      "options": [
+        "Retrain, but on the last six months, so that two odd months cannot dominate the model",
+        "Raise the cut-off, so that only the most certain creatives are flagged from now on",
+        "The model was overfitted from the start; replace it with a simpler one and re-test",
+        "Replaced creatives could not fatigue; judge the model on the untouched random slice"
+      ],
+      "answer": 3,
+      "why": "Acting on the list removed the outcome: a creative replaced early never gets the chance to fatigue, so 'did not fatigue' is no evidence that the flag was wrong. Retraining on those rows, two months of them or six, would teach the model that its own flags mean safe. The untouched random slice is the one place where prediction and outcome can still be compared."
+    }
+  ],
+  "review": [
+    {
+      "concept": "the question picks the kind of problem",
+      "variants": [
+        {
+          "q": "The pricing team asks: 'What happens to activation if we lower the minimum budget?' The assistant offers to train a model that predicts activation from account columns, including each advertiser's current minimum. What kind of problem is this?",
+          "options": [
+            "Classification: activation is yes or no, and the weight on the minimum is the answer",
+            "A question about a change: it needs a randomised test, not a model's weight",
+            "Regression: predict the activation rate at each budget level and pick the best",
+            "Clustering: group advertisers by their minimum and compare activation by group"
+          ],
+          "answer": 1,
+          "why": "'What happens if we change it' is a question about cause. A predictive model's weight only describes which advertisers had low minimums and activated, and those advertisers may differ in ways no column records. Randomising who gets the lower minimum is the design that removes that hidden difference."
+        },
+        {
+          "q": "Product asks: 'How long does a newly launched campaign typically keep running?' Half of the campaigns launched in the past year are still live. The assistant averages the run time of the campaigns that have ended. What is the right framing?",
+          "options": [
+            "Regression: predict run time from the campaigns that have already ended",
+            "Classification: label each campaign as ended or live, and report the share",
+            "Forecasting: project the monthly count of live campaigns forward in time",
+            "Time to event: a campaign still live counts as running at least this long"
+          ],
+          "answer": 3,
+          "why": "Campaigns that have not ended yet are censored: dropping them, whether to average or to fit a regression, keeps only the short ones and understates the typical run. A survival curve uses every campaign for as long as it was watched, while an ended-or-live label ignores how long each one has had in which to end."
+        },
+        {
+          "q": "The research team has four thousand free-text answers from an advertiser survey and asks: 'What are people telling us?' There is no category column. What is a sound first framing?",
+          "options": [
+            "Classification: train a model to predict the category of each answer",
+            "Anomaly detection: flag the answers that look least like all the others",
+            "No answer column: embed the answers, cluster them, read samples per group",
+            "Forecasting: project how many answers the next survey is likely to collect"
+          ],
+          "answer": 2,
+          "why": "With no labels there is nothing for a classifier to learn from. Embeddings turn the answers into a table, clustering proposes themes, and reading examples from each group is how you check the groups mean something, because clustering always returns groups. Unusual answers and future counts are different questions."
+        }
+      ]
+    },
+    {
+      "concept": "the cheapest method that clears the bar wins",
+      "variants": [
+        {
+          "q": "For an upsell list, a boosted model finds 3 more adopters in its top 200 than a simple weighted-sum model. The interval on that difference runs from 9 fewer to 15 more. The boosted model needs tuning and is harder to explain. Which do you ship?",
+          "options": [
+            "The boosted model: it found more adopters on the test rows, and that is the measure",
+            "The boosted model, once more tuning has made the gap on the test rows clearer",
+            "Neither: two models landing this close together means the test itself is broken",
+            "The simple model: the gap is inside the noise, which makes the comparison a tie"
+          ],
+          "answer": 3,
+          "why": "An interval that includes zero means the two models cannot be told apart on this test, and a tie goes to the one that is cheaper to run and to explain. Tuning until the gap looks bigger on the same test rows just fits the test."
+        },
+        {
+          "q": "An analyst has 14 publishers confirmed as fraudulent and several thousand that nobody has reviewed. The assistant offers to train a boosted classifier on the 14. What is the better plan?",
+          "options": [
+            "Train it: a flexible model makes the most of a small number of cases",
+            "Copy the 14 cases many times to balance the classes, and then train",
+            "A simple rule plus manual review, while confirmed outcomes are recorded",
+            "Train on the 14, then check the model by scoring those same 14 cases"
+          ],
+          "answer": 2,
+          "why": "Fourteen positives are too few to learn a pattern that repeats on new publishers: a flexible model will memorise their quirks, and copying rows adds no information. A rule with human review does the job now and produces the labelled cases a model would need later."
+        },
+        {
+          "q": "A sales director asks for 'a machine-learning model of which verticals are furthest from their CPA goals'. The table holds CPA versus goal and vertical for every tracked advertiser. What do you build?",
+          "options": [
+            "A report: goal-hit rate by vertical, with group sizes and intervals",
+            "A decision tree, so that the verticals are split in order of importance",
+            "A clustering of advertisers, to rediscover the verticals from behaviour",
+            "A boosted model, reporting its importance score for the vertical column"
+          ],
+          "answer": 0,
+          "why": "The question is about what is happening now, in groups you can already name, so a GROUP BY with sizes and intervals answers it completely: the lowest rung of the ladder. A model would add prediction machinery to a question that asks for none."
+        }
+      ]
+    }
+  ],
+  "drill": [
+    {
+      "q": "A question you have never worked on lands on your desk. Before any code is written, what do you pin down first?",
+      "a": "The decision it feeds, the kind of problem, and what one row is, with its target and timeline. Then the baseline, and how you will know it worked and on which rows."
+    },
+    {
+      "q": "Name three situations in which you should not reach for machine learning.",
+      "a": "When a rule or a report already answers the question, when there are too few examples of the outcome to learn from, and when nobody will act on the output."
+    }
+  ],
+  "recall": {
+    "prompt": "A colleague has been handed a question they have never modelled before. In thirty seconds, walk them through the path.",
+    "model_answer": "Start with the decision the answer feeds, then name the kind of problem and pin down one row, the target and the timeline. Set a baseline and decide how you will know it worked, on which unseen rows, before anything is built. Try the simplest model first and keep complexity only if its gain is bigger than the noise; then ask who it fails, whether you are predicting or claiming a cause, and how it will be used and watched. If a rule or a report clears the bar, stop there."
+  },
+  "ask_assistant": "Before any code, draft a one-page plan for [the question as asked]. State the decision it feeds and who acts, on [how many cases, how often]. Name the kind of problem, one other framing you considered, and whether it predicts or claims a cause. Define one row, the target with its [outcome window], and when each feature is known. Fix the simplest baseline ([today's rule or report]), the measure that matches the decision, and exactly which rows are held out. Say which [segments] results will be cut by and which random slice stays untouched. End with the result at which we stop at the baseline, and any column standing in for [something we must not decide on].",
+  "audit_checklist": [
+    "Frame: the decision with who acts and on how many cases; the kind of problem with one other framing considered; one row, the target and the timeline, a sentence each",
+    "Score: the baseline, the measure tied to the decision and the exact held-out rows are written in the plan before any model is fitted, and every later result repeats them unchanged",
+    "Trust: the segments every result will be cut by, a line saying prediction or claim about cause, and the random slice nobody acts on",
+    "Stop: the result, as a number, at which the baseline rule or report is enough, with any column that could stand in for something we must not decide on"
+  ],
+  "transfer": [
+    "Which leads should sales call first? A ranked list for a fixed number of calls, judged against the rule sales uses today, on leads whose outcome window has passed.",
+    "Should the minimum bid for a new placement go up? A question about changing something: the path ends in a randomised test, not in a predictive model.",
+    "How much will each client spend next quarter? A number per client, where run-rate is the bar to beat and the error measure depends on what a miss costs finance."
+  ],
+  "other_ways": [
+    {
+      "approach": "Start from a solved neighbour: adapt the plan of a past project whose row, target and decision look most like this one",
+      "when": "When the new question is an old one in different clothes. Still answer the nine questions, because the timeline and the cost of a miss rarely carry over unchanged."
+    },
+    {
+      "approach": "Baseline and test only: build the rule and the scoreboard, and no model yet",
+      "when": "When you doubt the question is worth a model. A week later you know what the cheap method scores, and whether there is a gap for a model to close."
+    },
+    {
+      "approach": "Have the people closest to the decision rank a sample by hand",
+      "when": "When there is no outcome data yet. Their ranking is a first baseline, and where two of them disagree is a ceiling on what any model can be shown to do."
+    }
+  ],
+  "glossary": [
+    {
+      "term": "the path",
+      "def": "The nine questions asked of any new problem, in order: frame it, score it, then decide whether to trust it."
+    },
+    {
+      "term": "stop condition",
+      "def": "The result, agreed in advance, at which the baseline rule or report is good enough and no model gets built."
+    },
+    {
+      "term": "stand-in column",
+      "def": "A column that carries information about something you should not decide on, such as where a publisher is based."
+    },
+    {
+      "term": "untouched slice",
+      "def": "A random part of the list that nobody acts on, kept so that the action and the model can still be measured."
+    }
+  ]
+}

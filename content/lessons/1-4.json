@@ -1,0 +1,373 @@
+{
+  "id": "1-4",
+  "module": 1,
+  "title": "Leakage: features that know the future",
+  "subtitle": "Why does a model that looks perfect on past data fail on the day you use it?",
+  "goal": "After this lesson you can test any feature for leakage by asking whether its value could have been computed on the snapshot date, and say what the assistant's output must show to prove it.",
+  "predict": {
+    "q": "An honest churn model picks its 200 highest-risk advertisers, and 136 of them really churn. The assistant adds one more column and the count becomes 200 out of 200. Which column is most likely to have done that?",
+    "options": [
+      "Support tickets in the last 8 weeks",
+      "Days since last login",
+      "Days since last spend",
+      "Payment failures in the last 8 weeks"
+    ],
+    "answer": 2,
+    "reveal": "Days since last spend. The name is innocent; the trouble is when it was read: months after the snapshot, when the churners had already stopped. The lesson shows why that is fatal and how to catch it."
+  },
+  "segments": [
+    {
+      "narration": "You ask your assistant for a churn model on the advertiser table. Four minutes later it is back, and the result is spectacular. Of the 200 advertisers it rated most at risk, all 200 really churned. Not most of them. All of them. Your first instinct is to forward it to the head of account management. Hold that thought for five minutes. A result this clean is not a reason to celebrate. It is a reason to ask one specific question, and this lesson is that question. It is the same question for any model, whether it predicts churn or which creatives will fatigue: was one of its columns recorded after the outcome?",
+      "visual": {
+        "type": "title",
+        "kicker": "Module 1 · Lesson 4",
+        "title": "Leakage",
+        "sub": "Features that know the future"
+      }
+    },
+    {
+      "narration": "First, how the result was measured. The model scored 4,000 advertisers it had not seen while learning. Sort them by score, take the top 200, and count how many really churned. [[1]] With every column the assistant found, the count is 200. [[2]] Take out one single column and repeat, on the same advertisers, and it falls to 136. That is the honest number, and it is still a strong list: among those 4,000 advertisers only about 13 percent churned. So one column accounts for the whole gap between very good and perfect. Be suspicious of any single column that powerful.",
+      "visual": {
+        "type": "compare",
+        "title": "Of the 200 highest-risk advertisers, how many really churned?",
+        "left": {
+          "label": "With one extra column",
+          "value": "200 of 200",
+          "sub": "too good to be true"
+        },
+        "right": {
+          "label": "Without it",
+          "value": "136 of 200",
+          "sub": "same advertisers, the honest result"
+        }
+      }
+    },
+    {
+      "narration": "The column is called days since last spend. It sounds like exactly the behaviour signal you would want. [[1]] For advertisers who churned, the typical value is 86 days. [[2]] For everyone else it is 3. Now remember how the label was defined: no spend at all in the 60 days after the snapshot. [[3]] And the assistant read the column from the accounts table on the day of the export, months after the snapshot. So it is counting the empty days of the outcome window itself. That is not a hint about who will churn. It is the answer, written in different units.",
+      "visual": {
+        "type": "stat",
+        "title": "The extra column: days since last spend",
+        "stats": [
+          {
+            "value": "86 days",
+            "label": "typical value, advertisers who churned"
+          },
+          {
+            "value": "3 days",
+            "label": "typical value, advertisers who stayed"
+          },
+          {
+            "value": "60–120 days",
+            "label": "after the snapshot: when the column was read"
+          }
+        ]
+      }
+    },
+    {
+      "narration": "Put it on the timeline from the last lesson. [[1]] Features describe the 8 weeks before the snapshot. [[2]] The label describes the 60 days after it. [[3]] This column was measured later still, once the outcome had already happened. That is leakage: a feature that carries information from after the moment of prediction. And it is useless, not just suspicious. On the day you score live advertisers, that future value does not exist. The value you can compute that day is small for nearly everyone, because anyone who had already stopped spending would not be on your list. The model learned to read tomorrow's newspaper. In production there is no newspaper.",
+      "visual": {
+        "type": "timeline",
+        "title": "When was each thing measured?",
+        "spans": [
+          {
+            "label": "Observation: 8 weeks",
+            "from": 0,
+            "to": 56,
+            "kind": "obs"
+          },
+          {
+            "label": "Outcome: 60 days",
+            "from": 56,
+            "to": 116,
+            "kind": "out"
+          },
+          {
+            "label": "Leaked column: read at export",
+            "from": 116,
+            "to": 176,
+            "kind": "bad"
+          }
+        ],
+        "marks": [
+          {
+            "at": 56,
+            "label": "Snapshot: the prediction moment"
+          }
+        ],
+        "note": "A feature may only use what lies before the snapshot. This one was read from the live accounts table, 60–120 days after it."
+      }
+    },
+    {
+      "narration": "Leaks come from four places. [[1]] First, current-state tables. An accounts table holds each advertiser as they are today, so anything read from it is today's truth, not the snapshot's. [[2]] Second, fields somebody fills in after the event, like a closure reason or a note from a win-back call. [[3]] Third, totals whose window runs past the snapshot. Lifetime spend sounds harmless, but read today it includes the weeks after the snapshot, when churners added nothing. [[4]] Fourth, the label itself in another form, which is what we just caught. Each one looks like an ordinary, helpful column.",
+      "visual": {
+        "type": "table",
+        "title": "Where leaks come from",
+        "columns": [
+          "Source",
+          "Looks like"
+        ],
+        "rows": [
+          [
+            "Current-state table",
+            "Account status or tier, as stored today"
+          ],
+          [
+            "Field filled in after the event",
+            "Closure reason, win-back call note"
+          ],
+          [
+            "Window that runs past the snapshot",
+            "Lifetime spend, quarter-to-date total"
+          ],
+          [
+            "The label in another form",
+            "Days since last spend, read at export"
+          ]
+        ]
+      }
+    },
+    {
+      "narration": "So here is the question to ask of every column. Could I have computed this exact value on the snapshot date, using only data up to that date? Call it the time-travel test. If the answer is no, or not sure, the column is out. The test is about when a value was recorded, not about its name. Days since last spend, counted up to the snapshot, is an honest feature. The same name, read months later, is the outcome. And do not wait for a perfect score. This data is simulated and its leak is deliberately blatant. A quieter leak just makes a model look somewhat better than it is.",
+      "visual": {
+        "type": "quote",
+        "text": "Could I have computed this exact value on the snapshot date, using only data up to that date?",
+        "sub": "The time-travel test: ask it of every column"
+      }
+    },
+    {
+      "narration": "The fix is one you could write yourself, because it is SQL. Features are built from dated events, like the daily spend log or the ticket log, and every one is filtered to dates on or before the snapshot. With that one condition in the join, nothing from the future can get in. Days since last spend becomes the snapshot date minus the last spend date before it. Same name, honest value. For fields that live only in the accounts table, ask whether the outcome could have changed them. Vertical and sign-up date cannot, so they are fine, with a note. Status, tier and last-activity dates can, so they need a copy dated at the snapshot.",
+      "visual": {
+        "type": "code",
+        "title": "The fix: dated events, filtered to the snapshot",
+        "lang": "sql",
+        "code": "SELECT a.advertiser_id,\n       a.snapshot_date - MAX(s.spend_date)\n         AS days_since_last_spend\nFROM   snapshots a\nJOIN   daily_spend s\n  ON   s.advertiser_id = a.advertiser_id\n AND   s.spend_date <= a.snapshot_date  -- the date filter\nGROUP  BY a.advertiser_id, a.snapshot_date;",
+        "note": "Same column name, honest value: no row dated after the snapshot can get in. Accounts-table fields: fine if the outcome cannot change them (vertical, sign-up date); otherwise use a copy dated at the snapshot."
+      }
+    },
+    {
+      "narration": "Brief and audit. [[1]] Put the rule in the brief: every feature built from dated events on or before each advertiser's snapshot date, and from the accounts table only fields the outcome cannot change, each one flagged. [[2]] Then make the output prove it, with a list of every feature, its source table and the latest date of data it used. [[3]] When a result arrives, ask which columns the model leans on most, and when each is recorded. [[4]] And when a number looks too good, ask for the same run without the suspect column, on the same advertisers. [[5]] If you want status or tier as features one day, start saving a dated copy of the accounts table now.",
+      "visual": {
+        "type": "bullets",
+        "title": "Brief and audit",
+        "items": [
+          "Brief: dated events up to the snapshot; from accounts, only fields the outcome cannot change",
+          "Show: each feature, its source table, the latest date it used",
+          "Show: the columns the model leans on, and when each is recorded",
+          "Too good? Rerun without the suspect column, same advertisers",
+          "Want status or tier? Start saving dated copies of the accounts table"
+        ]
+      }
+    },
+    {
+      "narration": "So when a result looks too good, ask which columns the model leans on and when each was recorded, before anyone else sees the number. Next we make that a routine: briefing the assistant in stages, so every output arrives with its own proof.",
+      "visual": {
+        "type": "bullets",
+        "title": "Leakage in three lines",
+        "items": [
+          "Recorded after the prediction moment: brilliant on the past, useless live",
+          "The check: the time-travel test, on every column",
+          "The fix: dated events with a date filter"
+        ]
+      }
+    }
+  ],
+  "takeaways": [
+    "A column recorded after the prediction moment hands the model the answer: brilliant on past data, useless live.",
+    "Time-travel test for every column: could I have computed this exact value on the snapshot date, from data up to then?",
+    "Build features from dated events with a date filter, and make the output list each feature's source and latest date."
+  ],
+  "quiz": [
+    {
+      "id": "1-4-q1",
+      "concept": "a result that is too good",
+      "domain": "course",
+      "q": "The assistant reports: 'Checked on 4,000 advertisers the model had not seen. Nearly all of the 200 highest-risk churned. Strongest columns: account status, spend trend, active days.' It adds that account status comes from the accounts table. What is the right read?",
+      "options": [
+        "It was checked on unseen advertisers, so the result is safe to share",
+        "The model has probably memorised its data; ask for a simpler one",
+        "Ask when account status is recorded: today's value may already show who left",
+        "Ask for the top 400 as well, to see whether the result holds on a longer list"
+      ],
+      "answer": 2,
+      "why": "A current-state column such as today's account status is written after the outcome, so it can carry the answer. Checking on unseen advertisers does not protect you, because the leaked column sits in their rows too."
+    },
+    {
+      "id": "1-4-q2",
+      "concept": "the time-travel test",
+      "domain": "course",
+      "q": "You are building the churn table with a snapshot date of 1 March; the data is exported in July. Which of these proposed columns fails the time-travel test?",
+      "options": [
+        "Average daily spend over the advertiser's whole history in the warehouse",
+        "Support tickets opened in the 8 weeks before 1 March, from the ticket log",
+        "Weeks between the advertiser's sign-up date and 1 March",
+        "Spend in the 4 weeks before 1 March divided by the 4 weeks before that"
+      ],
+      "answer": 0,
+      "why": "The whole-history average includes the months after 1 March, when churners spent nothing, so the outcome leaks in through the window. The ticket count sounds riskier, but it is dated and stops at the snapshot."
+    },
+    {
+      "id": "1-4-q3",
+      "concept": "fix the column, do not just drop it",
+      "domain": "other",
+      "q": "A lead-scoring model predicts which new leads will become paying advertisers. Its strongest column is 'calls with the sales team', taken from the CRM as it stands today. Sales calls a lead most in the weeks around signing. What should you ask for?",
+      "options": [
+        "Keep it as it is: sales contact is a genuine driver of conversion",
+        "The calls counted only up to the day each lead was scored",
+        "Every sales-activity column dropped, since they will always leak",
+        "More leads, so the model can learn the pattern properly"
+      ],
+      "answer": 1,
+      "why": "Today's count includes calls made after the scoring day, some of them because the deal was already closing, so it knows the outcome. Counted up to the scoring day it is honest and may still be useful, which is why dropping all sales activity overshoots."
+    },
+    {
+      "id": "1-4-q4",
+      "concept": "why a leak fails in production",
+      "domain": "course",
+      "q": "Against your advice, a churn model that leans on days since last spend, as exported months after the snapshot, goes live. On Monday it scores advertisers who are all currently active. What will most likely happen?",
+      "options": [
+        "It performs as in the report, since the column still exists",
+        "It crashes, because the column cannot be computed for advertisers who are live",
+        "It flags far too many advertisers, because the column is so strong",
+        "It flags almost nobody, because the live value is small for nearly everyone"
+      ],
+      "answer": 3,
+      "why": "The model learned that a large value means churn, and on scoring day active advertisers all have small values, so nearly everyone looks safe. The column can still be computed, which is exactly why nothing crashes and nobody notices."
+    }
+  ],
+  "review": [
+    {
+      "concept": "the time-travel test",
+      "variants": [
+        {
+          "q": "A model should flag invalid clicks at the moment a click arrives. Which of these columns fails the time-travel test?",
+          "options": [
+            "Clicks from the same IP address in the previous hour",
+            "Whether the advertiser was later refunded for the click",
+            "Seconds between the page loading and the click",
+            "The publisher's share of flagged clicks in the previous month"
+          ],
+          "answer": 1,
+          "why": "A refund is issued after the click has been investigated and judged invalid, so it is the label arriving late. The other three are known at or before the moment of the click, however suspicious they may sound."
+        },
+        {
+          "q": "You want to predict, on the day an invoice is issued, whether it will be paid late. The assistant's table includes 'payment reminders sent for this invoice'. What is the right read?",
+          "options": [
+            "Useful: reminders are a strong sign of a customer who pays slowly",
+            "Fine, as long as the invoice ID is left out",
+            "Leak: reminders go out only after an invoice is overdue",
+            "Harmless: a model learns to ignore weak columns"
+          ],
+          "answer": 2,
+          "why": "On the day of issue the reminder count is always zero; the exported value was written after the invoice went overdue, so it encodes the outcome. It will look like the strongest column precisely because it is the answer."
+        },
+        {
+          "q": "For a model predicting who will upgrade to a managed account in the next 60 days, the assistant reads 'has an account manager' from today's accounts table. What do you ask for?",
+          "options": [
+            "The flag as it stood on each advertiser's snapshot date",
+            "The flag as stored today: account type is a stable profile field",
+            "That flag removed, along with every other yes or no column",
+            "A longer outcome window, so more upgrades are captured"
+          ],
+          "answer": 0,
+          "why": "Anyone who upgraded since the snapshot now shows an account manager, so today's flag is the label in another form. A field the outcome can change needs its value as of the snapshot date; only fields the outcome cannot touch, such as vertical, are safe to read from today's table."
+        }
+      ]
+    },
+    {
+      "concept": "a leak passes the check on past data and fails live",
+      "variants": [
+        {
+          "q": "A stakeholder says: 'The model was checked on advertisers it had never seen, so a suspiciously good result must be real.' What is the best reply?",
+          "options": [
+            "Agreed: unseen advertisers rule out a model that is fooling itself",
+            "Unseen rows catch memorising, not a column carrying the answer",
+            "Only if the unseen group was large enough",
+            "Only if the check is repeated on a second unseen group"
+          ],
+          "answer": 1,
+          "why": "A leaked column is present in the unseen advertisers' rows too, so the check passes for the wrong reason. A bigger group or a repeat does not help when the answer is sitting among the features."
+        },
+        {
+          "q": "A model predicts which support tickets will escalate. On past tickets it is nearly perfect, and its top column is ticket priority. Agents raise priority to urgent when a ticket escalates. What happens when it scores brand-new tickets?",
+          "options": [
+            "It misses most escalations: new tickets all start at normal priority",
+            "It works as it did on past tickets: every ticket still has a priority",
+            "It flags nearly every ticket: priority is always filled in",
+            "It fails to run: priority is empty when a ticket is created"
+          ],
+          "answer": 0,
+          "why": "The model learned that urgent means escalated, but at creation no ticket is urgent yet, so the signal it relies on is absent. The column exists and is filled in, which is why nothing crashes and the failure is silent."
+        },
+        {
+          "q": "A model that predicts which creatives will fatigue next week comes back nearly perfect on creatives it had not seen. What is the most useful first request to the assistant?",
+          "options": [
+            "A longer report with more charts of the result",
+            "The same model retrained on twice as many creatives",
+            "A more complex model, to confirm the finding",
+            "The columns it leans on most and when each is recorded"
+          ],
+          "answer": 3,
+          "why": "A near-perfect result is the classic sign of a column recorded after the outcome, and the top columns with their recording times expose it in one step. More data or a fancier model would simply reproduce the leak."
+        }
+      ]
+    }
+  ],
+  "drill": [
+    {
+      "q": "What is leakage, and why does a model with a leak fail once it goes live?",
+      "a": "Leakage is a feature recorded after the moment of prediction, so it carries the answer. The model looks brilliant on past data, but on scoring day that future value does not exist yet."
+    },
+    {
+      "q": "What is the time-travel test for a feature?",
+      "a": "Ask whether you could have computed that exact value on the snapshot date, using only data up to that date. If not, or if you are not sure, the column stays out."
+    }
+  ],
+  "recall": {
+    "prompt": "Your assistant's model looks too good to be true. Explain what leakage is and how you would check for it without reading the code.",
+    "model_answer": "Leakage is when a feature was recorded after the moment the prediction is supposed to be made, so it carries the outcome in disguise; the model scores brilliantly on past data and fails live, because on scoring day that value does not exist yet. I would ask which columns the model leans on most and when each is recorded, and apply the time-travel test: could this exact value have been computed on the snapshot date from data up to then? Any column that fails comes out, or is rebuilt from dated events filtered to the snapshot, and the result is rerun on the same advertisers."
+  },
+  "ask_assistant": "Build every feature from dated event tables, such as [event tables], filtered to dates on or before each row's [prediction date]. From a table that only shows the present, such as [current-state table], use only fields the outcome cannot change, such as [stable fields], and flag each one; any other field needs a copy dated at the [prediction date]. In the output, list each feature with its source table and the latest date of data it used, next to the [prediction date]. After fitting, list the five columns the model relies on most and when each value is recorded. If a column cannot be computed as of that date, leave it out and tell me which.",
+  "audit_checklist": [
+    "A list of every feature with its source table and the latest date of data it used: none later than the snapshot date",
+    "Every field taken from a current-state table, each marked 'outcome cannot change it' (vertical, sign-up date) or 'copy dated at the snapshot' (status, tier, last-activity dates)",
+    "The columns the model relies on most, each with when its value is recorded",
+    "For any suspect column: the result with and without it, on the same advertisers"
+  ],
+  "transfer": [
+    "Which leads will convert? Check whether 'number of sales calls' was counted up to the scoring day, or includes calls made once the deal was already closing.",
+    "Which clicks are invalid? Check whether a 'refunded' or 'blocked' flag was set before the click was judged, or as a result of the judgement.",
+    "How much will each advertiser spend next month? Check that no input total includes days from the month being forecast."
+  ],
+  "other_ways": [
+    {
+      "approach": "Dated snapshots of current-state tables: keep a copy of the accounts table as it stood on each date",
+      "when": "When the columns you want (status, tier, account manager) live only in a table that shows the present, and you need them as honest features."
+    },
+    {
+      "approach": "Drop-one check: retrain without the suspect column and compare on the same advertisers",
+      "when": "When nobody can tell you when a field is written and you need a quick read on how much of the result depends on it."
+    },
+    {
+      "approach": "Scoring-day rehearsal: rebuild the features for a past date using only data loaded by that date, and compare with the training table",
+      "when": "Before a model goes live, when a silent leak would be expensive."
+    }
+  ],
+  "glossary": [
+    {
+      "term": "leakage",
+      "def": "A feature that carries information from after the moment of prediction, so the model is quietly handed the answer."
+    },
+    {
+      "term": "time-travel test",
+      "def": "The check for every column: could this exact value have been computed on the snapshot date, using only data up to then?"
+    },
+    {
+      "term": "current-state table",
+      "def": "A table that holds each record as it is today, with no history, such as an accounts table."
+    },
+    {
+      "term": "dated events",
+      "def": "Rows that each carry the date something happened, such as daily spend, so they can be filtered to before the snapshot."
+    }
+  ]
+}

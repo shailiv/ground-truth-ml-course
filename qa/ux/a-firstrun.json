@@ -1,0 +1,103 @@
+{
+ "base": "http://localhost:8791",
+ "out": "qa/ux/shots",
+ "shots": [
+  {
+   "name": "a01-home-laptop-dark",
+   "url": "/#/",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "return {ghosts: [...document.querySelectorAll('.ghost')].map(e => e.textContent.trim().slice(0, 30) + '|' + getComputedStyle(e).visibility + '|' + getComputedStyle(e).display), sw: document.documentElement.scrollHeight, nav: [document.querySelector('.nav').scrollWidth, document.querySelector('.nav').clientWidth]};"
+  },
+  {
+   "name": "a02-home-laptop-dark-s2",
+   "url": "/#/",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "window.scrollTo(0, 700);"
+  },
+  {
+   "name": "a03-home-laptop-dark-bottom",
+   "url": "/#/",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "window.scrollTo(0, 99999);"
+  },
+  {
+   "name": "a04-home-laptop-light",
+   "url": "/#/",
+   "w": 1366,
+   "h": 768,
+   "theme": "light"
+  },
+  {
+   "name": "a05-home-laptop-light-s2",
+   "url": "/#/",
+   "w": 1366,
+   "h": 768,
+   "theme": "light",
+   "js": "window.scrollTo(0, 620);"
+  },
+  {
+   "name": "a06-home-phone-dark",
+   "url": "/#/",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "dark",
+   "js": "return {ghosts: [...document.querySelectorAll('.ghost')].map(e => e.textContent.trim().slice(0, 30) + '|' + getComputedStyle(e).visibility + '|' + getComputedStyle(e).display), nav: [document.querySelector('.nav').scrollWidth, document.querySelector('.nav').clientWidth], h: document.documentElement.scrollHeight};"
+  },
+  {
+   "name": "a07-home-phone-dark-s2",
+   "url": "/#/",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "dark",
+   "js": "window.scrollTo(0, 800);"
+  },
+  {
+   "name": "a08-home-phone-dark-s3",
+   "url": "/#/",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "dark",
+   "js": "window.scrollTo(0, 1600);"
+  },
+  {
+   "name": "a09-home-phone-dark-bottom",
+   "url": "/#/",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "dark",
+   "js": "window.scrollTo(0, 99999);"
+  },
+  {
+   "name": "a10-home-phone-light",
+   "url": "/#/",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "light"
+  },
+  {
+   "name": "a11-home-tablet-light",
+   "url": "/#/",
+   "w": 820,
+   "h": 1100,
+   "theme": "light"
+  },
+  {
+   "name": "a12-home-short-dark",
+   "url": "/#/",
+   "w": 1280,
+   "h": 640,
+   "theme": "dark"
+  }
+ ]
+}

@@ -1,0 +1,32 @@
+[
+ {
+  "reviewer": "learner-2",
+  "lesson": "7-4",
+  "where": "seg4 narration, glossary 'evidence tier'",
+  "quote": "evidence comes in three tiers",
+  "kind": "not_usable",
+  "severity": "medium",
+  "problem": "5-3 gave me a fourth kind of evidence (the change minus the change). The tier table has no row and no verb for it, so I do not know how to word the ecommerce launch in a report. The answer is half-hidden in a glossary note.",
+  "fix": "Add the row: 'Compared with a similar untreated group: rose 4.7 points more than the comparison group (interval); assumes the two would have moved together'."
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "7-4",
+  "where": "placement (lesson 36 of 37), seg3",
+  "quote": "Typed numbers go stale. Bound numbers cannot.",
+  "kind": "not_usable",
+  "severity": "medium",
+  "problem": "This is the one lesson about what I ship every week, assistant-drafted HTML reports, and the stale-sentence check would have paid off from the first week. I only reach it if I survive six modules.",
+  "fix": "Move the bound-numbers and read-the-prose checks into module 1's staged-briefing lesson and keep 7-4 as the full checklist."
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "7-4",
+  "where": "seg4 narration",
+  "quote": "conversion tracking reduces churn by 11 points",
+  "kind": "boring",
+  "severity": "low",
+  "problem": "Third outing for the tracking example and its three numbers (5-1, the tiers in 5-2, here). Most of seg4 and seg6 restates what I have already passed quizzes on.",
+  "fix": "Use a claim I have not seen (a creative-fatigue or forecast sentence) so the tier check tests transfer."
+ }
+]

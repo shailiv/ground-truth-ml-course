@@ -1,0 +1,115 @@
+{
+ "base": "http://localhost:8791",
+ "out": "qa/ux/shots",
+ "shots": [
+  {
+   "name": "e01-p-guess-before",
+   "url": "/#/lesson/1-1",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "dark",
+   "js": "return [...document.querySelectorAll('.ghost')].map(e => e.textContent.trim().slice(0, 30) + '|' + getComputedStyle(e).visibility + '|' + getComputedStyle(e).display);"
+  },
+  {
+   "name": "e02-p-guess-wrong",
+   "url": "/#/lesson/1-1",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "dark",
+   "js": "const p = __gt.course.lessons.find(l => l.id === '1-1').predict; document.querySelectorAll('.opt')[(p.answer + 2) % 4].click(); await new Promise(r => setTimeout(r, 800)); return scrollY;"
+  },
+  {
+   "name": "e03-p-watch-arrive",
+   "url": "/#/lesson/1-1",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "dark",
+   "js": "return {hash: location.hash, fold: (() => { const c = document.querySelector('.controls')?.getBoundingClientRect(), s = document.querySelector('.stage')?.getBoundingClientRect(); return c ? {stageTop: Math.round(s.top), stageH: Math.round(s.height), stageW: Math.round(s.width), controlsBottom: Math.round(c.bottom), vh: innerHeight, cut: Math.max(0, Math.round(c.bottom - innerHeight))} : null; })(), overlay: document.querySelector('.overlay .box').innerText};"
+  },
+  {
+   "name": "e04-p-watch-playing-6s",
+   "url": "/#/lesson/1-1/watch",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "dark",
+   "js": "document.querySelector('.bigplay').click(); await new Promise(r => setTimeout(r, 6000)); return {time: document.querySelector('.time').textContent, paused: __gt.player.audio.paused, y: scrollY, fold: (() => { const c = document.querySelector('.controls')?.getBoundingClientRect(), s = document.querySelector('.stage')?.getBoundingClientRect(); return c ? {stageTop: Math.round(s.top), stageH: Math.round(s.height), stageW: Math.round(s.width), controlsBottom: Math.round(c.bottom), vh: innerHeight, cut: Math.max(0, Math.round(c.bottom - innerHeight))} : null; })()};",
+   "wait": 200
+  },
+  {
+   "name": "e05-p-slide1-code-cc-light",
+   "url": "/#/lesson/1-1/watch",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "light",
+   "js": "__gt.player.setCaptions(true); await __gt.player.show(1, false); document.querySelector('.overlay').hidden = true; document.querySelectorAll('.cue.off').forEach(e => e.classList.remove('off')); __gt.player.seekIn(12); document.querySelector('.stage-wrap').scrollIntoView({block:'start'});"
+  },
+  {
+   "name": "e06-p-slide2-table-cc",
+   "url": "/#/lesson/1-1/watch",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "dark",
+   "js": "__gt.player.setCaptions(true); await __gt.player.show(2, false); document.querySelector('.overlay').hidden = true; document.querySelectorAll('.cue.off').forEach(e => e.classList.remove('off')); __gt.player.seekIn(20); document.querySelector('.stage-wrap').scrollIntoView({block:'start'});"
+  },
+  {
+   "name": "e07-p-slide3-stat",
+   "url": "/#/lesson/1-1/watch",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "dark",
+   "js": "__gt.player.setCaptions(false); await __gt.player.show(3, false); document.querySelector('.overlay').hidden = true; document.querySelectorAll('.cue.off').forEach(e => e.classList.remove('off')); document.querySelector('.stage-wrap').scrollIntoView({block:'start'});"
+  },
+  {
+   "name": "e08-p-slide4-compare",
+   "url": "/#/lesson/1-1/watch",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "dark",
+   "js": "await __gt.player.show(4, false); document.querySelector('.overlay').hidden = true; document.querySelectorAll('.cue.off').forEach(e => e.classList.remove('off')); document.querySelector('.stage-wrap').scrollIntoView({block:'start'});"
+  },
+  {
+   "name": "e09-p-slide5-flow",
+   "url": "/#/lesson/1-1/watch",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "dark",
+   "js": "await __gt.player.show(5, false); document.querySelector('.overlay').hidden = true; document.querySelectorAll('.cue.off').forEach(e => e.classList.remove('off')); document.querySelector('.stage-wrap').scrollIntoView({block:'start'});"
+  },
+  {
+   "name": "e10-p-listen",
+   "url": "/#/lesson/1-1/watch",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "dark",
+   "js": "await __gt.player.show(2, false); document.querySelector('.overlay').hidden = true; document.querySelector('[aria-label^=\"Listening mode\"]').click(); document.querySelector('.stage-wrap').scrollIntoView({block:'start'});"
+  },
+  {
+   "name": "e11-p-below-transcript",
+   "url": "/#/lesson/1-1/watch",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "dark",
+   "js": "__gt.player.setListen(false); [...document.querySelectorAll('button, a.btn')].find(b => b.textContent.trim().startsWith(\"Show the transcript\")).click(); document.querySelector('.controls').scrollIntoView({block:'start'});"
+  },
+  {
+   "name": "e12-p-complete",
+   "url": "/#/lesson/1-1/watch",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "dark",
+   "js": "await __gt.player.show(8, false); document.querySelector('.overlay').hidden = true; document.querySelectorAll('.cue.off').forEach(e => e.classList.remove('off')); __gt.player.next(true); await new Promise(r => setTimeout(r, 900)); return scrollY;"
+  }
+ ]
+}

@@ -1,0 +1,383 @@
+{
+ "id": "3-2",
+ "module": 3,
+ "title": "Logistic regression: predicting yes or no",
+ "subtitle": "How does a table of columns become a probability, and what do the weights really tell you?",
+ "goal": "After this lesson you can read a logistic regression's weights as shifts in predicted probability, and say why a weight is not a cause.",
+ "predict": {
+  "q": "A churn model reports that a rising spend trend 'cuts the odds of churn by more than half'. On average, how much does that take off an advertiser's predicted probability of churning?",
+  "options": [
+   "More than 50 percentage points",
+   "About 25 percentage points",
+   "About 5 percentage points",
+   "Nothing: odds and probability are unrelated"
+  ],
+  "answer": 2,
+  "reveal": "About 5 points. 'Odds cut by more than half' sounds far bigger than it is, and the lesson shows how to translate one into the other."
+ },
+ "segments": [
+  {
+   "narration": "Ask an account manager which advertisers worry her, and she runs a scorecard in her head. Spend is sliding: bad. Hardly active this month: bad. Has conversion tracking: good. She adds it up and gets a feeling. It works well enough, but the weights are hers, and nobody ever checked them. Logistic regression is that scorecard, with the weights learned from 6,000 past advertisers whose outcome is already known. It is also the churn model you were judging all through module two.",
+   "visual": {
+    "type": "title",
+    "kicker": "Module 3 · Lesson 2",
+    "title": "Logistic regression",
+    "sub": "A scorecard with learned weights"
+   }
+  },
+  {
+   "narration": "Start from last lesson's idea: one weight per column, multiplied and added up. [[1]] Here the total is a number of points. Everyone starts from a negative number, because most advertisers stay. A sliding spend trend adds points. Conversion tracking takes some away. But a sum can come out as anything, and you want a probability. [[2]] So the total is pushed through an S-shaped curve that squeezes any number into the range between zero and one. [[3]] Zero points lands on 50 percent. Minus three lands near 5 percent, plus three near 95. That is the whole model: a weighted sum, then a squeeze.",
+   "visual": {
+    "type": "formula",
+    "title": "From points to a probability",
+    "lines": [
+     "points = −2.76 − 0.85 × spend trend − 0.59 × tracking + 0.65 × gaming + …",
+     "probability of churn = 1 ÷ (1 + e^−points)",
+     "−3 points → 5%      0 points → 50%      +3 points → 95%"
+    ],
+    "note": "Spend trend is counted in standard deviations from the average; tracking and gaming are 1 or 0. 22 learned numbers in all."
+   }
+  },
+  {
+   "narration": "Here is what it learned. Spend trend carries the heaviest weight. The assistant's output may report it as an odds ratio of about 0.43. Odds are the chance that something happens divided by the chance that it does not, and the ratio is a multiplier. So one typical step up in spend trend cuts the odds of churn by more than half. That sounds enormous. In plain terms, it takes about 5 points off the predicted probability of churn, on average. An average, because of the curve: the same push moves an advertiser near 50 percent a long way, and one near 2 percent hardly at all. When you are handed odds, ask for probability points.",
+   "visual": {
+    "type": "bar",
+    "title": "What each weight does to predicted churn",
+    "unit": "pts",
+    "data": [
+     {
+      "label": "Spend trend, one step up",
+      "value": -5.1
+     },
+     {
+      "label": "Has conversion tracking",
+      "value": -4.4
+     },
+     {
+      "label": "Active days, one step up",
+      "value": -3.0
+     },
+     {
+      "label": "Has an account manager",
+      "value": -3.0
+     },
+     {
+      "label": "Payment failures, one step up",
+      "value": 2.3
+     },
+     {
+      "label": "Tenure, one step up",
+      "value": -2.1
+     }
+    ],
+    "highlight": [
+     0
+    ],
+    "note": "Average shift in predicted churn probability, in points. Spend trend as an odds ratio: 0.43."
+   }
+  },
+  {
+   "narration": "What is a typical step? Before fitting, each continuous column is put on a common scale, so that one unit means one standard deviation of that column: about 0.4 for spend trend, about 5 days for active days. The reason is comparison. Left in their own units, a weight per dollar would be tiny and a weight per unit of spend trend large, and their sizes would say nothing about which matters more. Yes or no flags are left as they are, because yes versus no is already a natural step. So a weight always comes with a unit. And because the weights come from the data, a large positive weight proves that the column causes the outcome.",
+   "visual": {
+    "type": "table",
+    "title": "What one step means",
+    "columns": [
+     "Column",
+     "One step is"
+    ],
+    "rows": [
+     [
+      "Spend trend",
+      "0.41"
+     ],
+     [
+      "Active days in the last 28",
+      "5.3 days"
+     ],
+     [
+      "Tenure",
+      "34 weeks"
+     ],
+     [
+      "Tracking, account manager, auto-bidding",
+      "yes versus no"
+     ]
+    ],
+    "note": "Continuous columns: one standard deviation. Flags stay as 0 or 1."
+   }
+  },
+  {
+   "narration": "Does it hold up? [[1]] On the rows it learned from, its AUC is about 0.85. [[2]] On the test months, which it never saw, also about 0.85. That near match tells you it learned a pattern and did not simply memorise its training rows. [[3]] No surprise: the whole model is 22 numbers, which leaves no room to remember 6,000 advertisers one by one. [[4]] And it earns its place. At the same list size as your hand rule, the rule found 246 churners and the model found 321.",
+   "visual": {
+    "type": "stat",
+    "title": "Does it hold up on advertisers it never saw?",
+    "stats": [
+     {
+      "value": "0.849",
+      "label": "AUC on training rows (Jan–Mar)"
+     },
+     {
+      "value": "0.845",
+      "label": "AUC on test rows (May–Jun)"
+     },
+     {
+      "value": "22",
+      "label": "learned numbers in the whole model"
+     },
+     {
+      "value": "321 vs 246",
+      "label": "churners among 711 flagged: model vs hand rule"
+     }
+    ]
+   }
+  },
+  {
+   "narration": "The simplicity has a price. [[1]] Each column pushes one way, at a steady rate. If trouble only started once active days fell below ten, or if both very low and very high values were bad news, a single weight could not say so. [[2]] A column also adds the same points whatever the other columns say. The model cannot learn that a high click rate is good news in one vertical and bad news in another, unless somebody builds a column for it. [[3]] And columns that overlap share the credit. Days since login gets almost no weight here. Maybe logins do not matter. Maybe active days already said the same thing. The weight cannot tell you which.",
+   "visual": {
+    "type": "bullets",
+    "title": "What a weighted sum cannot say",
+    "items": [
+     "One direction, one steady rate per column: no thresholds, no U-shapes",
+     "The same points whatever the other columns say",
+     "Overlapping columns share the credit"
+    ]
+   }
+  },
+  {
+   "narration": "Which brings us to the misreading that matters most. Conversion tracking has one of the heaviest weights: about 4 points off predicted churn. It is tempting to write that up as, get advertisers to install tracking and churn falls by 4 points. The model never said that. It said that in this data, advertisers with tracking churned less than otherwise similar advertisers without it. Because this world is simulated, the real effect of switching tracking on is known: about 2 points, half of what the weight suggests. A later lesson takes that apart. For now, a weight is an association. Say goes with, never drives.",
+   "visual": {
+    "type": "quote",
+    "text": "A weight says what goes with churn in this table. It does not say what happens if you change it.",
+    "sub": "Tracking's weight: −4.4 points. True effect of switching it on, known only because the data is simulated: −2.3."
+   }
+  },
+  {
+   "narration": "Brief and audit. Ask for a logistic regression first, before anything fancier, and say what the output must show. [[1]] A table of weights in which every row states its unit and its average shift in predicted probability, in points. Odds ratios alone are not enough. [[2]] The score on training rows next to the score on test rows. [[3]] The hand rule at the same list size, so the model is compared with something. [[4]] And read the wording of the summary. If it says a column drives churn, or that a practice reduces it, send it back. The evidence supports the words is associated with, and nothing stronger.",
+   "visual": {
+    "type": "bullets",
+    "title": "Brief and audit",
+    "items": [
+     "Ask: a weights table with each unit and the shift in probability points",
+     "Check: AUC on training rows beside AUC on test rows",
+     "Check: the hand rule at the same list size",
+     "Check: 'is associated with', never 'drives' or 'reduces'"
+    ]
+   }
+  },
+  {
+   "narration": "To recap. [[1]] Logistic regression is a scorecard: points per column, added up, then squeezed into a probability. [[2]] Its weights are readable, provided you know the unit and translate odds into probability points. [[3]] And a weight tells you what goes with the outcome, not what would change it. Next, a model built the opposite way: no sum at all, just a flowchart of yes or no questions that the data chooses for itself.",
+   "visual": {
+    "type": "bullets",
+    "title": "Keep this",
+    "items": [
+     "A weighted sum, squeezed into a probability",
+     "Read a weight with its unit, in probability points",
+     "A weight is an association, not a lever"
+    ]
+   }
+  }
+ ],
+ "takeaways": [
+  "Logistic regression is a weighted sum of the columns, squeezed by an S-curve into a probability between 0 and 1.",
+  "Read each weight with its unit, and translate odds into a shift in probability points.",
+  "A weight is an association in this table, not the effect of changing that column."
+ ],
+ "quiz": [
+  {
+   "id": "3-2-q1",
+   "concept": "reading a weight",
+   "domain": "course",
+   "q": "The weights table shows spend trend with an odds ratio of 0.43 per standard deviation and an average probability shift of −5.1 points. An account manager asks what that means for her advertisers. Which summary is accurate?",
+   "options": [
+    "Advertisers whose spend trend is rising have a 43 percent chance of churning.",
+    "Every advertiser's churn probability drops by exactly 5.1 points for each step up in spend trend.",
+    "Among similar advertisers, a spend trend one step higher goes with predicted churn about 5 points lower, on average.",
+    "If she persuades an advertiser to raise their spend trend by one step, that advertiser's churn risk will fall by about 5 points."
+   ],
+   "answer": 2,
+   "why": "The weight compares otherwise similar advertisers, and the 5 points is an average. Reading 0.43 as a chance of churning confuses an odds ratio with a probability. The shift is not the same for everyone, because the S-curve moves mid-risk advertisers more than very safe ones. And nothing in a weight says what happens if you push an advertiser's spend up."
+  },
+  {
+   "id": "3-2-q2",
+   "concept": "weights need a common scale",
+   "domain": "course",
+   "q": "The assistant returns weights with no units: spend in the last 8 weeks −0.00004, active days −0.09, spend trend −2.1. Its summary says: 'Spend trend is by far the strongest factor; spend barely matters.' What is the flaw?",
+   "options": [
+    "The columns are in their own units, so the weights cannot be compared; ask for a common scale.",
+    "Nothing: weights can be compared directly, so the bigger the weight, the more the column matters.",
+    "Negative weights are a sign that the model is broken; in a sound model every weight is positive.",
+    "Spend should be dropped from the model, since a weight that close to zero adds nothing."
+   ],
+   "answer": 0,
+   "why": "A weight is per unit of its column. One dollar is a tiny step and one whole unit of spend trend is a huge one, so these sizes say nothing about which column matters more. Put continuous columns on a common scale, one standard deviation each, and then compare. A near-zero weight per dollar is no reason to drop a column."
+  },
+  {
+   "id": "3-2-q3",
+   "concept": "a weight is not a cause",
+   "domain": "other",
+   "q": "A lead-scoring model for a sales team gives 'attended a webinar' its largest positive weight. Marketing proposes enrolling every new lead in a webinar to lift conversion. What does the weight support?",
+   "options": [
+    "The plan: the largest weight marks the strongest lever the team can pull to raise conversion.",
+    "Nothing at all: the weights of a logistic regression are arbitrary numbers and carry no meaning.",
+    "The plan, but only if the model's AUC on the test rows is above 0.8, which makes its weights reliable.",
+    "That webinar attendees convert more than similar leads; whether enrolling leads helps needs a test."
+   ],
+   "answer": 3,
+   "why": "The weight describes who converts: leads who chose to attend a webinar were probably keener to begin with. It says nothing about what happens to a lead who is pushed into one. A high AUC makes the ranking trustworthy, not the weights causal. The weight is still useful for scoring; it is just not evidence for the plan."
+  },
+  {
+   "id": "3-2-q4",
+   "concept": "limits of a weighted sum",
+   "domain": "course",
+   "q": "An account manager believes creative refresh is risky at both extremes: advertisers who never refresh churn, and so do those who swap creatives frantically every day. The model has one weight for days since the last refresh. What will it do with that pattern?",
+   "options": [
+    "Capture it: the S-curve bends, so it can rise at one end of the column and fall at the other.",
+    "Fit one steady push in one direction and miss the U-shape, unless it is given a reshaped column.",
+    "Learn two weights for the column automatically, one for low values and one for high values.",
+    "Refuse to fit, and raise an error saying that the column is not suitable."
+   ],
+   "answer": 1,
+   "why": "One weight means one direction at a steady rate, so a risk that is high at both ends averages out to a weak push or none. The S-curve only squeezes the total into a probability; it never reverses a column's direction. To capture the pattern, someone has to build a column for it, or use a different kind of model."
+  }
+ ],
+ "review": [
+  {
+   "concept": "a weight is an association, not a lever",
+   "variants": [
+    {
+     "q": "In the churn model, having an account manager carries a weight worth about 3 points less predicted churn. A director wants to give every small account a manager 'to cut their churn by 3 points'. What is the right reading?",
+     "options": [
+      "Managed accounts churn less than similar unmanaged ones; what assigning a manager would do needs a test.",
+      "The plan is sound: with the other columns held fixed, the weight is exactly the effect of adding a manager.",
+      "The plan is sound only if the manager weight is larger than the weight for conversion tracking.",
+      "Weights below 5 points are within the noise, so the director should ignore this one altogether."
+     ],
+     "answer": 0,
+     "why": "A weight compares accounts that already differ in who got a manager, and nothing says managers were handed out at random. Holding the other columns fixed removes only the differences the table records. The weight is a fair description of the pattern, and no evidence about the result of changing it."
+    },
+    {
+     "q": "An upsell model gives 'opened the pricing page in the last 30 days' a large positive weight. A product manager suggests redirecting every customer to the pricing page after login, to raise upgrades. What does the model actually tell you?",
+     "options": [
+      "That the redirect will raise upgrades by roughly the size of the weight, measured in probability points.",
+      "That the pricing page is hard to find, which is the real reason so few customers upgrade.",
+      "That customers who chose to look at pricing upgrade more often; forcing the visit may change nothing.",
+      "That the model must be leaking the outcome, since no honest column could carry so much weight."
+     ],
+     "answer": 2,
+     "why": "Customers who open the pricing page on their own are already considering an upgrade, and the weight picks that up. Sending everyone there does not give them that intent. The column is a fine signal for ranking who to contact, and a poor argument for the redirect."
+    },
+    {
+     "q": "A model predicting which support tickets get escalated gives 'customer used live chat' a negative weight: fewer escalations. The support lead proposes routing every ticket through chat. What is the catch?",
+     "options": [
+      "There is none: a negative weight means that chat prevents escalations, so more chat means fewer of them.",
+      "The weight must first be converted to an odds ratio; after that the plan can go ahead as proposed.",
+      "Negative weights cannot be trusted in a logistic regression, so the column should be removed.",
+      "Customers with simpler problems may be the ones who choose chat; the weight may describe them, not the channel."
+     ],
+     "answer": 3,
+     "why": "The weight says chat tickets escalate less, other recorded columns being equal. It cannot say whether chat calms tickets down or simply attracts easy ones. Only changing the routing for a random share of tickets would separate the two. Converting the weight to another unit changes nothing about that."
+    }
+   ]
+  },
+  {
+   "concept": "odds are not probabilities",
+   "variants": [
+    {
+     "q": "About 60 percent of trial accounts convert to paid. A model reports 'invited a teammate: odds ratio 3'. A colleague writes in the summary: 'inviting a teammate makes conversion three times as likely.' What is wrong?",
+     "options": [
+      "Nothing: an odds ratio of 3 means the probability of converting is three times as high.",
+      "The odds tripled, not the probability, which cannot reach 180 percent; ask for the shift in points.",
+      "An odds ratio above 1 means that inviting a teammate makes conversion less likely, not more.",
+      "Odds ratios only apply to rare outcomes, so for an outcome as common as 60 percent this one is meaningless."
+     ],
+     "answer": 1,
+     "why": "Odds are the chance it happens divided by the chance it does not, so tripling the odds from a 60 percent start lands somewhere above 80 percent, not at 180. The plain-language figure is the shift in probability points. The odds ratio is valid for common outcomes too; it just must not be read as a multiple of the probability."
+    },
+    {
+     "q": "About 2 percent of clicks on a network are invalid. A traffic-quality model reports 'data-centre IP: odds ratio 4'. A manager concludes that most clicks from data-centre IPs are invalid. What is the right read?",
+     "options": [
+      "Correct: an odds ratio of 4 means that four clicks in five from those addresses are invalid.",
+      "Correct: any column with an odds ratio above 2 marks traffic that is mostly invalid.",
+      "Four times very small odds is still a small probability; ask for the predicted probability first.",
+      "The odds ratio cannot be read at all without first knowing the model's AUC on the test rows."
+     ],
+     "answer": 2,
+     "why": "Multiplying very small odds by four leaves a probability still under 10 percent: a real signal worth ranking on, and nowhere near 'most'. An odds ratio is a multiplier on odds, not a share of cases. Asking for the predicted probability, in points, settles what the number means for the decision."
+    },
+    {
+     "q": "A churn model has one weight for payment failures: an odds ratio of about 1.3 per step, the same for every advertiser. An analyst assumes each extra step adds the same number of points to everyone's churn probability. Is that right?",
+     "options": [
+      "No: the odds change by one factor, but the shift in points is larger for mid-risk advertisers.",
+      "Yes: one weight for the column means one fixed number of points for every advertiser.",
+      "Yes, as long as the column was put on a common scale before the model was fitted.",
+      "No: the shift in points is always largest for the advertisers who start out with the lowest risk of all."
+     ],
+     "answer": 0,
+     "why": "The weight is constant on the points scale, before the S-curve. After the curve, the same push moves an advertiser in the middle of the range a lot and one near zero or one very little. That is why the plain-language figure is quoted as an average shift across advertisers."
+    }
+   ]
+  }
+ ],
+ "drill": [
+  {
+   "q": "A logistic regression gives one column a large weight. What do you need to know before you can say what that weight means?",
+   "a": "Its unit, meaning one standard deviation or yes versus no, and what it does to the predicted probability in points. Even then it describes an association, not what happens if you change the column."
+  },
+  {
+   "q": "Someone tells you a column has an odds ratio of one half, so it halves the chance of churn. What is wrong with that?",
+   "a": "Odds are not probabilities. Halving the odds moves the probability by an amount that depends on where the advertiser started, so ask for the shift in probability points."
+  }
+ ],
+ "recall": {
+  "prompt": "Explain to a colleague how logistic regression turns an advertiser's columns into a churn probability, and what one of its weights does and does not tell you.",
+  "model_answer": "Each column gets a learned weight; the weighted columns are added into a total, and an S-shaped curve squeezes that total into a probability between 0 and 1. A weight is read with its unit, one standard deviation or yes versus no, and is best translated from odds into an average shift in probability points: about 5 points for spend trend here. It describes what goes with churn among otherwise similar advertisers in this table. It does not say what would happen if you changed that column."
+ },
+ "ask_assistant": "Fit a logistic regression for churned_next_60d on the training months only, with continuous columns standardised and yes/no flags left as 0 or 1, and score the test months. Show a weights table with each column's unit (per standard deviation, or yes versus no), its odds ratio, and the average shift in predicted probability in points. Report AUC on the training rows and on the test rows side by side, and how many churners the model finds at the hand rule's list size. Describe weights as associations; do not write that any column drives or reduces churn.",
+ "audit_checklist": [
+  "Every weight states its unit: per standard deviation for continuous columns, yes versus no for flags.",
+  "Weights are shown as average shifts in probability points, not only as odds ratios.",
+  "AUC on training rows and on test rows sit side by side, and are close.",
+  "The summary says 'is associated with', never 'drives', 'causes' or 'reduces'."
+ ],
+ "transfer": [
+  "Lead scoring: which form fields and behaviours go with a lead converting, and by how many points each?",
+  "Invalid traffic: how likely is a click source to be invalid, given its traffic pattern?",
+  "Upsell: which accounts are likely to take up a new ad format this quarter?"
+ ],
+ "other_ways": [
+  {
+   "approach": "A hand-built points scorecard",
+   "when": "When there are too few past cases to learn weights from, or the rule has to be explained in one sentence."
+  },
+  {
+   "approach": "A decision tree",
+   "when": "When you expect thresholds or 'it depends' patterns and want rules a person can read; the next lesson."
+  },
+  {
+   "approach": "A more flexible model",
+   "when": "When a measured gap on the test rows, larger than the noise, shows the weighted sum is missing something."
+  }
+ ],
+ "glossary": [
+  {
+   "term": "logistic regression",
+   "def": "A model that adds up weighted columns and squeezes the total through an S-curve into a probability."
+  },
+  {
+   "term": "weight (coefficient)",
+   "def": "How many points one step of a column adds to or takes off the total, with the other columns held fixed."
+  },
+  {
+   "term": "odds",
+   "def": "The chance that something happens divided by the chance that it does not."
+  },
+  {
+   "term": "odds ratio",
+   "def": "The factor by which the odds are multiplied for one step of a column; not a change in probability."
+  },
+  {
+   "term": "standardise",
+   "def": "Rescale a continuous column so that one unit equals one standard deviation, which makes weights comparable."
+  }
+ ]
+}

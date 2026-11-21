@@ -1,0 +1,373 @@
+{
+  "id": "5-5",
+  "module": 5,
+  "title": "From score to action",
+  "subtitle": "How far down the list should the team go?",
+  "goal": "After this lesson you can turn a cost, a value and a success rate into a cut-off on each advertiser's own probability, and say what must be checked and measured before anyone acts on it.",
+  "predict": {
+    "q": "Toy numbers: a call costs $30, a saved advertiser is worth $1,500, and a call saves one churner in five. Of the 4,000 scored advertisers, how many are worth calling?",
+    "options": [
+      "141: those scored above 0.5",
+      "About 400: the top tenth",
+      "About 1,300",
+      "All 4,000"
+    ],
+    "answer": 2,
+    "reveal": "About 1,300: every advertiser whose own churn probability is above 10 percent, and the lesson shows where that 10 percent comes from."
+  },
+  "segments": [
+    {
+      "narration": "The scored list is on the success team's desk, and somebody has to decide where it stops. The assistant's script already did: it flagged everyone scored above 0.5, which gives 141 names. Nobody chose that number. It is a default, and nothing about your costs or your team is in it. A call costs something. A saved advertiser is worth something. And a call does not always work. Put those three together and the cut-off becomes a decision you can defend.",
+      "visual": {
+        "type": "title",
+        "kicker": "Module 5 · Lesson 5",
+        "title": "From score to action",
+        "sub": "The cut-off comes from costs and capacity, not from a default"
+      }
+    },
+    {
+      "narration": "Start with one advertiser and some toy numbers. They are hypothetical and round, here only to show the method, so swap in your own. Say a call costs 30 dollars and a saved advertiser is worth 1,500. And say a call saves one churner in five. [[1]] The expected value of a call is the advertiser's probability of churning, times the chance the call works, times the value saved, minus the cost. Expected means on average, over many calls like it. [[2]] With these numbers each churner you reach is worth 300 dollars on average, and each call costs 30. [[3]] So a call pays for itself when the probability is 30 over 300. That is 10 percent.",
+      "visual": {
+        "type": "formula",
+        "title": "What one call is worth (hypothetical dollars)",
+        "lines": [
+          "expected value = probability × chance it works × value saved − cost",
+          "= probability × 0.2 × $1,500 − $30 = probability × $300 − $30",
+          "break-even probability = $30 ÷ ($1,500 × 0.2) = 0.10"
+        ],
+        "note": "Round numbers to show the method. Replace them with your own."
+      }
+    },
+    {
+      "narration": "Now the part that is easy to get wrong. That 10 percent is a test for one advertiser, using their own probability. It is not a target for the list's precision, its overall hit rate. Walk down the ranked list. Each name has a lower probability than the one before. You keep calling while the next name is above 10 percent, and you stop when it is not. The word for this is marginal: judge the next one, not the average so far. Everyone above the line is expected to return more than the call costs. Everyone below it is expected to lose money, however good the list looks as a whole.",
+      "visual": {
+        "type": "table",
+        "title": "Walking down the ranked list",
+        "columns": [
+          "Call the top…",
+          "Probability at the bottom of the list",
+          "Net value"
+        ],
+        "rows": [
+          [
+            "141",
+            "0.5 (the default)",
+            "$26,970"
+          ],
+          [
+            "400",
+            "0.299",
+            "$54,000"
+          ],
+          [
+            "800",
+            "0.174",
+            "$77,400"
+          ],
+          [
+            "1,311",
+            "0.10 (break-even)",
+            "$84,570"
+          ],
+          [
+            "1,600",
+            "0.073",
+            "$84,900"
+          ],
+          [
+            "4,000",
+            "near 0",
+            "$38,100"
+          ]
+        ],
+        "highlight": [
+          3
+        ],
+        "note": "Hypothetical dollars: $30 a call, $1,500 a save, one churner in five saved."
+      }
+    },
+    {
+      "narration": "Here is the mistaken version, because you will meet it. Break-even is 10 percent, so keep extending the list while its hit rate stays above 10 percent. [[1]] Call all 4,000 and about 13 percent of them are churners. That is above break-even, so by this reading you call everyone, and it earns about 38,000 dollars. [[2]] The rule about the next advertiser stops near 1,300 names and earns about 85,000. A strong top of the list holds the average up, while thousands of calls further down are each expected to lose money.",
+      "visual": {
+        "type": "compare",
+        "title": "One break-even, two readings",
+        "left": {
+          "label": "Average: the list's hit rate is above 10%",
+          "value": "$38,100",
+          "sub": "call all 4,000 · hit rate 13.2%"
+        },
+        "right": {
+          "label": "Marginal: the next advertiser's own probability is above 10%",
+          "value": "$84,570",
+          "sub": "call 1,311"
+        }
+      }
+    },
+    {
+      "narration": "As the list grows, net value climbs steeply, flattens, peaks at around 1,300 names, and then falls. The default of 141 names is worth about 27,000 dollars. The rule's list is worth roughly three times that. If the team can only make 400 calls, capacity decides instead, and you can read off what a second caller would add. The toy value is the same for every advertiser. Real accounts differ, as you saw when you ranked by probability times spend. So drag the list size to your own team's capacity, then switch the ranking to expected dollars and see who moves up.",
+      "visual": {
+        "type": "widget",
+        "name": "ranklist",
+        "title": "How far down the list?",
+        "note": "Drag the list size and watch churners reached and net value. Then rank by expected dollars instead of probability."
+      }
+    },
+    {
+      "narration": "All of this multiplies a probability by money, so it leans on two things. [[1]] First, the percentages must be right, not just the ranking. Here they run a little low: advertisers scored at about 7 percent left at a rate of nearly 10. So names just under the line were really at break-even, and going on to 1,600 earns about the same. This time it cost almost nothing. Do not count on that. [[2]] Second, one in five is a guess, and the last lesson showed a call does not work equally on everyone. [[3]] The pattern is general: the chance something happens, times what it is worth. Chance of staying times spend if they stay ties the best spend model from the regression lesson.",
+      "visual": {
+        "type": "bullets",
+        "title": "What the arithmetic leans on",
+        "items": [
+          "Percentages that are right, not just the ranking · rule's list $84,570, best in hindsight $85,170",
+          "A success rate that is a guess, and not the same for everyone",
+          "The general pattern: chance it happens × what it is worth"
+        ]
+      }
+    },
+    {
+      "narration": "A cut-off gives you a list, not an action. [[1]] Attach the reasons to each name, the pushes you met when we opened the black box. [[2]] Different reasons need different plays. An account with CPA far over goal needs an optimisation conversation. One with payment failures needs someone from billing. [[3]] Then, before anyone dials, set aside a random slice of the list and do not call it. [[4]] After the 60 days, compare churn among the called with churn in that slice. That gap is the only honest measure of whether the calls work, and it replaces the guessed one in five with a number you measured.",
+      "visual": {
+        "type": "flow",
+        "title": "From a list to an action you can measure",
+        "steps": [
+          {
+            "label": "Reasons",
+            "sub": "why each name is on the list"
+          },
+          {
+            "label": "Plays",
+            "sub": "a different action per reason"
+          },
+          {
+            "label": "Random holdout",
+            "sub": "a slice of the list nobody calls"
+          },
+          {
+            "label": "Measure",
+            "sub": "called vs holdout after 60 days"
+          }
+        ]
+      }
+    },
+    {
+      "narration": "Brief and audit. Give the assistant your three numbers, cost, value and success rate, and ask for the net value at every list size, not one recommended cut-off. What must the output show? [[1]] The assumptions in dollars, and the break-even probability they imply. [[2]] A predicted against actual table around the cut-off, so you know 10 percent means 10 percent. [[3]] The net value curve, with the default cut-off and your team's capacity marked. [[4]] And the holdout: how many names were held back, and that they were picked at random.",
+      "visual": {
+        "type": "bullets",
+        "title": "What the output must show",
+        "items": [
+          "The assumptions in dollars, and the break-even probability they imply",
+          "Predicted vs actual around the cut-off",
+          "Net value by list size, with the default cut-off and team capacity marked",
+          "The holdout: how many names, and that they were picked at random"
+        ]
+      }
+    },
+    {
+      "narration": "So the cut-off is not 0.5, and it is not a matter of taste. It is the cost of acting divided by what a successful action is worth, compared with each advertiser's own probability, and capped by what the team can handle. Then you measure whether the action worked. Next: what happens after you ship, when the world moves.",
+      "visual": {
+        "type": "quote",
+        "text": "Stop where the next advertiser's own probability no longer pays for the call.",
+        "sub": "cost ÷ (value × success rate), capped by capacity, then measured"
+      }
+    }
+  ],
+  "takeaways": [
+    "The cut-off is the cost of acting divided by what a successful action is worth, not the default 0.5.",
+    "It applies to each advertiser's own probability: judge the next name on the list, never the list's average hit rate.",
+    "The arithmetic needs trustworthy percentages and a measured success rate, so check calibration and hold back a random slice."
+  ],
+  "quiz": [
+    {
+      "id": "5-5-q1",
+      "concept": "marginal break-even",
+      "domain": "course",
+      "q": "You give the assistant a cost of $30 per call, a value of $1,500 per saved advertiser and a save rate of one in five. It replies: 'Break-even precision is 10 percent. The full scored list of 4,000 has a precision of 13 percent, so contacting all 4,000 is profitable. Recommended list size: 4,000.' What is the flaw?",
+      "options": [
+        "None: a list whose hit rate beats break-even is making money on its calls, so use all of it",
+        "It tested the list's average hit rate; the 10 percent applies to each advertiser's own probability",
+        "Break-even should be 50 percent, the standard cut-off for a model that predicts yes or no",
+        "It should have used recall: keep contacting until 10 percent of the churners are reached"
+      ],
+      "answer": 1,
+      "why": "The 10 percent is a test for the next advertiser's own probability; the list's average stays above it because the top of the list carries the bottom. Calling all 4,000 does end up positive, about $38,000, but the 1,311 names above the line earn about $85,000, because every call below the line is expected to cost more than it returns."
+    },
+    {
+      "id": "5-5-q2",
+      "concept": "calibration before money",
+      "domain": "course",
+      "q": "Break-even is a churn probability of 10 percent. The model ranks well, but a predicted-versus-actual table shows that advertisers it scores at around 8 percent actually churn about 12 percent of the time. What happens if you cut the list at a score of 0.10?",
+      "options": [
+        "You stop too early: some advertisers scored under 0.10 are really above break-even",
+        "Nothing: the model ranks well, and a good ranking is all that a cut-off needs",
+        "You call too many: the model is overstating risk, so the list is longer than it should be",
+        "The cut-off no longer matters; a model with wrong percentages has to be rebuilt first"
+      ],
+      "answer": 0,
+      "why": "A cut-off in percent is only as good as the percentages: here the scores run low, so advertisers worth calling sit just under the line. A good ranking is enough when you take a fixed top K, but not when you compare a probability with a number derived from money."
+    },
+    {
+      "id": "5-5-q3",
+      "concept": "measure the action",
+      "domain": "course",
+      "q": "The team called every advertiser above the cut-off. Sixty days later churn among them is 25 percent. The model's average prediction for the same advertisers was 31 percent, and the team lead reports 'six points of churn saved'. What is the right read?",
+      "options": [
+        "Correct: the model's prediction is what would have happened without the calls",
+        "The calls failed: 25 percent is still far above the churn rate of advertisers overall",
+        "Unproven: compare instead with the advertisers below the cut-off, who were not called",
+        "Unproven: only a random slice of the same list, left uncalled, can show that"
+      ],
+      "answer": 3,
+      "why": "A model's average prediction can be several points off with no calls at all, so it cannot stand in for the missing comparison, and advertisers below the cut-off are a different, lower-risk group. A random held-back slice of the same list is alike in everything except the call."
+    },
+    {
+      "id": "5-5-q4",
+      "concept": "cut-off from costs",
+      "domain": "other",
+      "q": "An invalid-traffic team reviews suspicious publisher batches by hand. A review costs $40. Catching a truly invalid batch avoids a $2,000 refund, and a review of an invalid batch catches it half the time. A model gives each batch a probability of being invalid. Which batches are worth a review?",
+      "options": [
+        "Batches scored above 0.5, where invalid is more likely than not",
+        "Batches down the ranking for as long as the reviewed list's hit rate stays above 4 percent",
+        "Each batch whose own probability is above 4 percent, as far as the team's time allows",
+        "Only batches scored above 0.96, so that almost no review is wasted"
+      ],
+      "answer": 2,
+      "why": "Break-even is the cost divided by value times success rate: 40 over 1,000, or 4 percent, applied to each batch's own probability and capped by capacity. The 0.5 default ignores the money, and a list's hit rate stays above 4 percent long after the individual reviews at the bottom have stopped paying."
+    }
+  ],
+  "review": [
+    {
+      "concept": "the cut-off comes from costs",
+      "variants": [
+        {
+          "q": "A call to an at-risk advertiser costs $40, a saved advertiser is worth $1,000, and calls save about one churner in five. From which churn probability is a call worth making?",
+          "options": [
+            "Above 4 percent",
+            "Above 20 percent",
+            "Above 50 percent",
+            "Above 80 percent"
+          ],
+          "answer": 1,
+          "why": "A churner reached is worth 1,000 times one in five, so $200 on average, and a $40 call pays when the probability is above 40 over 200: 20 percent. Four percent forgets that most calls fail, and 50 percent is only the default nobody chose."
+        },
+        {
+          "q": "A product demo by a sales engineer costs $300. An upgrade is worth $6,000, and a demo closes one interested customer in four. A model scores each customer's probability of being interested, and the assistant suggests demoing customers scored above 0.5. What is the better cut-off?",
+          "options": [
+            "Keep 0.5: below it a customer is more likely uninterested than interested, so a demo is wasted",
+            "About 0.05: the demo costs $300, a twentieth of the $6,000 an upgrade is worth",
+            "Whichever cut-off gives the highest accuracy on the test set, since that means fewest mistakes",
+            "About 0.20: the $300 cost against the $1,500 a demo returns on average when there is interest"
+          ],
+          "answer": 3,
+          "why": "An interested customer returns 6,000 times one in four, so $1,500 per demo on average, and a $300 demo pays above a probability of 0.20. The 0.5 default and best accuracy both ignore that a missed upgrade costs far more than a wasted demo; 0.05 forgets that three demos in four do not close."
+        },
+        {
+          "q": "A finance team can phone accounts with overdue invoices. A call costs $10 of staff time. When an account really was going to default, a call recovers the invoice, worth $400 on average, about half the time. A model gives each account a probability of defaulting. Which statement is right?",
+          "options": [
+            "Phone every account with a default probability above 5 percent, as far as staff time allows",
+            "Phone only accounts above 50 percent; below that a call is more likely wasted than not",
+            "Phone accounts above 2.5 percent, since the $10 call is a fortieth of the $400 invoice",
+            "The cut-off cannot be set until the model's AUC is known, since it depends on the ranking"
+          ],
+          "answer": 0,
+          "why": "Each real defaulter reached returns 400 times one half, $200 on average, so a $10 call pays above 10 over 200, or 5 percent. A call that is probably wasted can still be worth making when a miss is expensive, and AUC describes the ranking, not where to cut."
+        }
+      ]
+    },
+    {
+      "concept": "marginal, not average",
+      "variants": [
+        {
+          "q": "Break-even for a call is a churn probability of 15 percent. The top 1,000 advertisers on the ranked list have an overall hit rate of 35 percent. The 1,000th advertiser has a predicted probability of 9 percent. Should the list be extended to 1,500?",
+          "options": [
+            "Yes: at 35 percent the list is far above break-even, so there is plenty of room to grow",
+            "Yes, and keep going until the list's overall hit rate has fallen to 15 percent",
+            "No: each name past that point is below 15 percent; the list should have stopped sooner",
+            "It depends on the model's AUC: with a strong ranking the extra 500 will still pay"
+          ],
+          "answer": 2,
+          "why": "The test is each next advertiser's own probability, and at 9 percent the 1,000th is already under break-even. The list's 35 percent is held up by the names at the top; adding more names lowers it only slowly while every added call loses money."
+        },
+        {
+          "q": "A sales team calls leads in score order. The assistant reports: 'Across the first 2,000 leads called, revenue per call is $55 against a cost of $20, so keep going.' What should you ask for before agreeing?",
+          "options": [
+            "The revenue per call across every lead in the database, for a fuller average",
+            "The expected revenue of the next leads on the list, not the average so far",
+            "The model's accuracy at a 0.5 cut-off, to confirm the scores can be trusted",
+            "The total revenue to date, to check that the $55 figure was computed correctly"
+          ],
+          "answer": 1,
+          "why": "An average over the first 2,000 says the calls so far paid, not that the next one will; the decision to continue rests on what the next lead is expected to bring against the $20 cost. An average over even more leads blurs that further."
+        },
+        {
+          "q": "A team reviews flagged ad creatives for policy problems, most suspicious first, and every review costs the same. A review pays for itself when the chance of finding a problem is above 5 percent. After 500 reviews the day's hit rate is 30 percent, but the last 100 reviews found only two problems. What is the right call?",
+          "options": [
+            "Carry on: 30 percent is six times break-even, so the queue is clearly worth reviewing",
+            "Carry on until the day's overall hit rate has dropped all the way to 5 percent",
+            "Stop only when a run of reviews finds nothing at all, since any find beats zero",
+            "Stop about here: the latest reviews are finding only about 2 percent, below break-even"
+          ],
+          "answer": 3,
+          "why": "Whether to do the next review depends on what the next reviews are likely to find, and the most recent 100 are the best guide: about 2 percent, under break-even, whatever the day's average says. The day's 30 percent is history from the top of the queue."
+        }
+      ]
+    }
+  ],
+  "drill": [
+    {
+      "q": "A model gives each account a probability of leaving. How do you decide the cut-off for who gets contacted?",
+      "a": "Work out what a contact costs and what it is worth on average when the account really is leaving. Contact every account whose own probability is above the cost divided by that worth, up to what the team can handle."
+    },
+    {
+      "q": "Why is it a mistake to keep extending a contact list for as long as its overall hit rate stays above break-even?",
+      "a": "Because the average is held up by the strong names at the top. The test applies to the next account's own probability, and at the bottom of the list each extra contact loses money."
+    }
+  ],
+  "recall": {
+    "prompt": "A colleague says the 0.5 cut-off is what the model recommends. Explain in 30 seconds how the cut-off should really be chosen.",
+    "model_answer": "0.5 is a default, not a recommendation. A contact is worth making when the advertiser's own probability is above the cost divided by the value saved times the chance the contact works; with the lesson's hypothetical numbers that is 10 percent, about 1,300 advertisers instead of 141. It is a test for each next advertiser, not for the list's average hit rate, and it is capped by the team's capacity. Because it multiplies a probability by dollars, the percentages have to be checked, and a random slice of the list is held back to measure whether the action works."
+  },
+  "ask_assistant": "Using the churn scores on the test months, compute the net value of contacting the top N advertisers for every N, under these assumptions, which I may change: cost per contact 30 dollars, value of a saved advertiser 1,500 dollars, share of contacted churners saved 0.2. State the break-even probability these imply and apply it to each advertiser's own probability, not to the list's average hit rate. Show a predicted-versus-actual table for the score bands around the break-even, and mark the default 0.5 cut-off and a capacity of 400 calls on the curve. Then set aside a random 10 percent of the final list as a holdout that nobody contacts, and say how it was drawn.",
+  "audit_checklist": [
+    "The three assumptions in dollars, and the break-even probability they imply",
+    "Predicted versus actual churn for the score bands around the cut-off",
+    "Net value by list size, with the default 0.5 cut-off and the team's capacity marked",
+    "The holdout: how many names were held back, and that they were chosen at random"
+  ],
+  "transfer": [
+    "Which flagged traffic batches are worth a manual review, given what a review costs and what a caught batch saves?",
+    "Which leads deserve a sales call, given the cost of a call and the value of a closed deal?",
+    "Which overdue invoices are worth a phone call instead of an automated reminder?"
+  ],
+  "other_ways": [
+    {
+      "approach": "Take the top K the team can handle and skip the economics",
+      "when": "Capacity is far below the break-even point, so every name on the list clears it anyway"
+    },
+    {
+      "approach": "Rank by expected dollars: probability times the account's own value",
+      "when": "Accounts differ widely in value, and losing one large account matters more than losing several small ones"
+    },
+    {
+      "approach": "Replace probability times a fixed success rate with a predicted uplift for each advertiser",
+      "when": "You have randomised outreach data showing that the action works on some accounts and not on others"
+    }
+  ],
+  "glossary": [
+    {
+      "term": "expected value",
+      "def": "What an action is worth on average: the chance it pays off times what it pays, minus what it costs."
+    },
+    {
+      "term": "break-even probability",
+      "def": "The probability at which an action's expected value is zero: its cost divided by the value saved times the chance the action works."
+    },
+    {
+      "term": "marginal",
+      "def": "About the next case on its own, as opposed to the average of all the cases so far."
+    },
+    {
+      "term": "holdout (for an action)",
+      "def": "A randomly chosen slice of the list that is deliberately not acted on, so the effect of the action can be measured."
+    }
+  ]
+}

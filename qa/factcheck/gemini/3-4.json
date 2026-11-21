@@ -1,0 +1,17 @@
+{
+ "issues": [
+  {
+   "where": "ask_assistant",
+   "quote": "Do not drop rows with missing values: report how many values are missing in each column, fill them, and add a yes/no flag column for each column you filled.",
+   "kind": "misleading",
+   "severity": "medium",
+   "explanation": "Because this prompt is meant to be handed directly to a coding assistant and begins with 'Before any modelling, build the table step by step', a blanket instruction to fill missing values in 'each column' while building the table causes two real mistakes: (1) if the outcome/label column itself has missing values (for example, recent cohorts whose 60-day churn window has not closed, or untracked advertisers when CPA goal is the outcome), filling the outcome fabricates fake ground-truth labels; and (2) filling missing feature values on the whole table before the train/test split computes fill statistics using test rows, leaking test-set information into training.",
+   "evidence": "Supervised learning principle: targets/labels must never be imputed (compare facts.json happy.definition, where hit_cpa_goal is 'only knowable for advertisers with conversion tracking' on n_tracked = 7016), and feature imputation statistics (such as medians or means) must be fit on training rows only, never across the full table prior to splitting.",
+   "fix": "Do not drop rows because a feature is missing: report how many values are missing in each column, add a yes/no flag column for each feature with missing values, and fill missing feature values using statistics from the training split only (never fill a missing outcome; if outcomes are missing, separate and report those rows explicitly)."
+  }
+ ],
+ "numbers_checked": 77,
+ "verdict": "All 77 numeric claims, comparisons, visuals and quiz/review keys match facts.json accurately; only the copy-paste assistant prompt needs a guardrail so coding assistants do not impute missing outcomes or compute fill values across the train/test split.",
+ "_hash": "c25634709a0b06e1",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_ChdCOU1CYS0zTEg5Zk92ZElQczdiTHNRVRIXQjlNQmEtM0xIOWZPdmRJUHM3YkxzUVU | tokens in=67320 out=415 thought=27924]"
+}

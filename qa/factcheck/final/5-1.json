@@ -1,0 +1,26 @@
+{
+ "issues": [
+  {
+   "where": "seg7 narration (segments[6])",
+   "quote": "A weight in any model is the same kind of number: a gap, adjusted for the other columns.",
+   "kind": "wrong_concept",
+   "severity": "medium",
+   "explanation": "Only additive linear or generalised linear models (such as linear or logistic regression without interaction terms) have one weight per feature that represents a conditional outcome gap holding the other columns fixed. Tree-based models do not have per-feature weights, and in multi-layer neural networks (such as the 1,249-weight network elsewhere in this course) or language models, a weight connects internal hidden units and has no interpretation as an outcome gap adjusted for the other input columns.",
+   "evidence": "ML parameter interpretation across model families; compare facts.json logreg ('note': 'one weight per feature', n_weights: 22) with facts.json neural_net ('architecture': '2 hidden layers (32 and 16 units)', n_weights: 1249).",
+   "fix": "Change to: 'A feature weight in a linear or logistic model is the same kind of number: a gap, adjusted for the other columns.'"
+  },
+  {
+   "where": "quiz 5-1-q2 (options[3] and why     ",
+   "quote": "if they go to struggling accounts, the gap is backwards. ... reviewed accounts look worse whatever the review does",
+   "kind": "misleading",
+   "severity": "medium",
+   "explanation": "Assigning reviews to struggling accounts biases the naive gap downward; it does not guarantee that the gap has the wrong sign ('is backwards') or that reviewed accounts look worse 'whatever the review does'. If reviews genuinely hurt or did nothing, the negative gap would not be backwards, and if the review's positive effect exceeded the baseline deficit of struggling accounts, reviewed accounts would look better rather than worse. Presenting this simulation's sign reversal as an automatic consequence of targeting struggling accounts could lead a practitioner to assume a negative gap proves a positive effect or to excuse a genuinely harmful intervention.",
+   "evidence": "Causal selection bias identity (Naive gap = ATT + baseline selection bias); compare with seg8 narration ('you know which way the number leans') and other_ways[2] ('tells you which way a gap is biased').",
+   "fix": "Change options[3] to 'It never asks who gets a review: if they go to struggling accounts, the gap is biased against reviews and can even be backwards.' and change the start of why to 'Reviews are given to accounts already in trouble, which pulls the reviewed group's rate down and can outweigh a real benefit; in the simulation the review actually helps by about 9 points.'"
+  }
+ ],
+ "numbers_checked": 60,
+ "verdict": "All 60 numeric claims and comparisons match facts.json accurately, with honest rounding for speech and proper caveats about simulated counterfactuals. Two medium-severity conceptual/causal-inference overstatements should be tightened: seg7 generalizes regression-weight interpretation to 'any model', and quiz 5-1-q2 states that targeting struggling accounts automatically reverses the sign and makes treated accounts look worse 'whatever the review does' rather than biasing the comparison downward.",
+ "_hash": "31c77c4533fac4cf",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_ChdWeFlDYTVUT01meWt2ZElQdnMtb3FBSRIXVnhZQ2E1VE9NZnlrdmRJUHZzLW9xQUk | tokens in=67873 out=664 thought=31070]"
+}

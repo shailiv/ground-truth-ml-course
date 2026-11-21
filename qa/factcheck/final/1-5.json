@@ -1,0 +1,17 @@
+{
+ "issues": [
+  {
+   "where": "seg5 visual",
+   "quote": "missing     = cpa_vs_goal: 4,984 rows",
+   "kind": "number_mismatch",
+   "severity": "low",
+   "explanation": "The visual presents the audit block for the advertiser table after stage two (before stage three selects features), listing only cpa_vs_goal as having missing values. In the full 23-column advertiser table, hit_cpa_goal is also empty for those same 4,984 untracked advertisers; cpa_vs_goal is only the sole missing column once non-target outcome columns are excluded or restricted to the 17 feature columns.",
+   "evidence": "facts.json -> data.columns includes both \"cpa_vs_goal\" and \"hit_cpa_goal\"; data.outcome_columns.hit_cpa_goal states \"empty without conversion tracking\"; data.n_untracked = 4984.",
+   "fix": "Change the line to \"missing     = cpa_vs_goal, hit_cpa_goal: 4,984 rows\" (or clarify \"missing     = cpa_vs_goal: 4,984 rows (in features)\" if other outcome columns were already dropped)."
+  }
+ ],
+ "numbers_checked": 28,
+ "verdict": "Factually sound and well-aligned with facts.json and the brief. All 28 numeric claims (row counts, missing-row counts, monthly churn rates, split sizes, train/test churn rates, leakage top-200 reference, and dropna quiz counts) match facts.json, and all quiz and review items have unambiguous answers and sound ML reasoning. Only one minor omission in the stage-2 audit block visual: on the raw 23-column advertiser table, hit_cpa_goal is also missing for the same 4,984 untracked rows alongside cpa_vs_goal.",
+ "_hash": "2efefe939e081091",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_ChdNUkVDYS1pRUItMnl2ZElQaEpHSThBYxIXTVJFQ2EtaUVCLTJ5dmRJUGhKR0k4QWM | tokens in=67457 out=469 thought=26365]"
+}

@@ -1,0 +1,17 @@
+{
+ "issues": [
+  {
+   "where": "seg4 narration",
+   "quote": "A 95 percent interval tells you that 95 percent of the advertisers in the test set fall inside that range.",
+   "kind": "wrong_concept",
+   "severity": "high",
+   "explanation": "A 95% confidence interval estimates an unknown group parameter (here, the true difference in churn rates between April and March), not the distribution of individual advertisers. Individual advertisers have binary churn outcomes (0 or 1) and cannot fall inside a percentage-point range like -1.7 to +11.4 points; even for continuous metrics, a confidence interval around a summary statistic does not contain 95% of individual observations. This sentence also contradicts the correct definition given earlier in seg4 narration and in the glossary, and mislabels March and April (training and gap months) as the test set.",
+   "evidence": "Statistical definition of a 95% confidence interval (a procedure that covers the true parameter in 19 out of 20 repeated samples, matching LESSON.json glossary 'interval'); facts.json data.train_months = 'Jan-Mar', data.gap_month = 'Apr', data.test_months = 'May-Jun'.",
+   "fix": "Remove the final sentence of seg4 narration, or replace it with: 'A 95 percent interval is built so that, nineteen times in twenty, the true difference sits inside that range.'"
+  }
+ ],
+ "numbers_checked": 128,
+ "verdict": "All numbers, intervals, model comparisons, quiz questions, and review items match facts.json, but segment 4 narration ends with a high-severity statistical misconception stating that 95% of individual test-set advertisers fall inside a 95% confidence interval.",
+ "_hash": "8a55b90950986060",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_ChdZdElCYTZiVUV1UHFrZFVQdFlxSXdRbxIXWXRJQmE2YlVFdVBxa2RVUHRZcUl3UW8 | tokens in=67520 out=372 thought=30762]"
+}

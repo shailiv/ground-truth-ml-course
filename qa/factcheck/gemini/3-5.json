@@ -1,0 +1,17 @@
+{
+ "issues": [
+  {
+   "where": "seg4 visual",
+   "quote": "min_samples_leaf=5",
+   "kind": "unsupported_number",
+   "severity": "low",
+   "explanation": "The visual claims that RandomForestClassifier(n_estimators=300, min_samples_leaf=5) produces the 0.98 training AUC and 0.83 test AUC on the simulated churn table, but facts.json documents only n_trees = 300 (with train_auc = 0.982 and test.auc = 0.831) and never states min_samples_leaf = 5. Also, reusing X[train] and X[test] from seg3 visual without make_pipeline(prep, ...) would fail on the string column vertical.",
+   "evidence": "facts.json -> forest: {\"n_trees\": 300, \"train_auc\": 0.982, \"test\": {\"auc\": 0.831}}; model_table[3]: {\"model\": \"Random forest, 300 trees\"} (min_samples_leaf is absent from facts.json).",
+   "fix": "Omit min_samples_leaf=5 from the snippet (or add min_samples_leaf to forest in facts.json) and wrap the estimator in the pipeline from seg3: model = make_pipeline(prep, RandomForestClassifier(n_estimators=300))."
+  }
+ ],
+ "numbers_checked": 25,
+ "verdict": "Factually strong and conceptually sound lesson; all dataset counts, splits, feature totals, and AUC figures match facts.json, with only one minor unsupported hyperparameter (min_samples_leaf=5) in the seg4 code visual.",
+ "_hash": "89a8beaab994a09e",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_ChZiOU1CYTRhQkU1U00yOG9QdktuUldBEhZiOU1CYTRhQkU1U00yOG9QdktuUldB | tokens in=67549 out=370 thought=24121]"
+}

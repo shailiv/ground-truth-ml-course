@@ -1,0 +1,53 @@
+{
+ "issues": [
+  {
+   "where": "predict",
+   "quote": "How many days each creative will last before it fatigues",
+   "kind": "bad_question",
+   "severity": "high",
+   "explanation": "Option 0 ('How many days each creative will last before it fatigues') is at least as defensible as the keyed Option 2 ('Whether each creative fatigues within two weeks, yes or no'). Predicting days until fatigue for each creative produces one number per creative that can be sorted from shortest to longest to pick the twenty that will burn out fastest, especially since the stem states that 'Past creatives have a known ending' (and seg3 visual itself lists 'Classification (or time to event)' for this exact problem). Moreover, reveal falsely states that 'a weekly list of twenty needs one score to rank by, while days until fatigue answers a different question, how long creatives last', confusing per-creative duration predictions with a single cohort-wide summary.",
+   "evidence": "Principle of individual-level regression and time-to-event ranking; seg3 visual row 1 ('Classification (or time to event)'); facts.json time_to_event.the_classification_shortcut (fixed-window binary classification is a shortcut, not the only way to rank individuals).",
+   "fix": "Change Option 0 to a population-level summary that cannot rank individual creatives, such as 'What the median creative lifetime is across all past launches', and update reveal to say that a pool-wide median summarises all creatives together rather than giving one score per creative to rank by."
+  },
+  {
+   "where": "seg2 narration",
+   "quote": "Days until fatigue is time to event, with running creatives censored. A ranked list wants the yes or no.",
+   "kind": "misleading",
+   "severity": "medium",
+   "explanation": "First, a ranked list does not require a binary yes-or-no framing: time-to-event models (predicting hazard or survival time per creative) also produce one score per creative to rank by, as seg3 visual acknowledges with 'Classification (or time to event)'. Fixed-window classification is simply a practical shortcut once the outcome window has elapsed. Second, saying 'with running creatives censored' contradicts 'Past creatives have a known ending' two sentences earlier unless restricted to completed past creatives versus still-running ones.",
+   "evidence": "Principle of survival/time-to-event ranking; seg3 visual ('Classification (or time to event)'); facts.json time_to_event.the_classification_shortcut.",
+   "fix": "Change to: 'Completed creatives have a known ending, while still-running ones are censored. Days until fatigue is time to event; fatigued within two weeks, yes or no, turns the ranking into simple classification on creatives old enough to have a two-week outcome.'"
+  },
+  {
+   "where": "seg4 narration and visual",
+   "quote": "Precision and recall at the cut-off / Planted incidents",
+   "kind": "misleading",
+   "severity": "medium",
+   "explanation": "Presents an evaluation setup that worked in the course's clean simulation as a general rule for real unlabelled anomaly detection. In a real publisher table where nobody has ever recorded which publishers were bad (seg3), unknown fraudulent publishers already sit inside the unlabelled data. Injecting synthetic 'planted incidents' can sanity-check recall on synthetic fraud patterns you invented, but it cannot measure precision at the cut-off (or trade wrongly suspended partners against missed fraud), because you do not know whether real publishers flagged by the rule are false alarms or genuine unrecorded fraud without human review.",
+   "evidence": "facts.json forecast.two_versions and series_anomalies (precision on planted incidents was knowable only because the simulated baseline series was generated clean before planting 7 incidents); principle of evaluating unlabelled fraud/anomaly detection via manual audit of flagged cases (cf. seg6 narration and review 2 variant 2).",
+   "fix": "State in seg4 narration and seg4 visual row 2 that planted incidents sanity-check recall on known failure patterns, while precision at the cut-off requires manual review of a sample of flagged publishers."
+  },
+  {
+   "where": "quiz 7-5-q1",
+   "quote": "choose the cut-off as a trade between precision and recall, checked on incidents you planted",
+   "kind": "misleading",
+   "severity": "medium",
+   "explanation": "Repeats the simulation-only assumption that synthetic planted incidents let you measure both precision and recall on real unlabelled publisher traffic. On unlabelled historical data that already contains unknown bad actors, planted incidents only check sensitivity to patterns you synthesised yourself; estimating precision (how many flagged real publishers are false alarms versus real fraud) requires human investigation of flagged publishers.",
+   "evidence": "facts.json forecast.two_versions and series_anomalies; principle of anomaly-detection evaluation without ground-truth labels.",
+   "fix": "Update Option 2 to 'No answer column: define normal, set a cut-off, sanity-check on planted cases, and review flagged publishers by hand' and revise why to note that planted cases check recall on known patterns while manual review of flagged cases checks precision."
+  },
+  {
+   "where": "quiz 7-5-q3",
+   "quote": "did slightly better, by less than the wobble between backtests",
+   "kind": "wrong_concept",
+   "severity": "medium",
+   "explanation": "Comparing the average error improvement between two forecasting methods against 'the wobble between backtests' (how much error varies from one forecast month to another) is a statistical fallacy. Month-to-month wobble includes shared period difficulty (for example, holiday months where every method has higher error). One method can beat another consistently in every backtest by an amount smaller than the month-to-month spread and still be a clear winner; whether the edge is 'inside the noise' (a tie) depends on the variation of the paired differences across the twelve backtests, not the unpaired wobble between backtests.",
+   "evidence": "Principle of paired model comparison; facts.json regression.paired_differences ('a difference whose interval includes 0 is a tie') and forecast.level_shift.mape_by_month_normal_world (monthly MAPE wobbles from 2.48% to 9.75% across seasons).",
+   "fix": "In 7-5-q3, replace 'by less than the wobble between backtests' with 'with each method winning about half the backtests and the interval on their difference crossing zero'."
+  }
+ ],
+ "numbers_checked": 27,
+ "verdict": "Strong capstone structure with no factual mismatches against simulated numbers, but five conceptual/question issues need fixing: an ambiguous predict question with a false explanation about ranking, an overstatement that ranked lists require binary classification, presenting precision on planted incidents from the clean simulation as a real-world evaluation method for unlabelled fraud (in seg4 and quiz 7-5-q1), and a paired-vs-unpaired backtest noise fallacy in quiz 7-5-q3.",
+ "_hash": "bd0f421f70d6a0e6",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_ChdoQlVDYTZ2TEVQdjYyOG9QZ0pYcXdRSRIXaEJVQ2E2dkxFUHY2MjhvUGdKWHF3UUk | tokens in=67964 out=1474 thought=26128]"
+}

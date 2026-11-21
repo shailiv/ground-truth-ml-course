@@ -1,0 +1,383 @@
+{
+  "id": "6-4",
+  "module": 6,
+  "title": "When, not whether: time to event",
+  "subtitle": "How long do advertisers last, when half of them have not left yet?",
+  "goal": "After this lesson you can spot an average lifetime that ignores customers who are still active, ask for a survival curve instead, and say when a fixed-window yes/no label is safe to use.",
+  "predict": {
+    "q": "A table holds 6,000 advertisers who joined over the last two years. About half have churned, and those who churned lasted 21 weeks on average. After how many weeks have half of all advertisers left?",
+    "options": [
+      "About 10 weeks",
+      "About 21 weeks",
+      "About 43 weeks",
+      "Unknowable until everyone has churned"
+    ],
+    "answer": 2,
+    "reveal": "About 43 weeks, double the naive figure: the average left out everyone who is still active. The lesson shows how to count them."
+  },
+  "segments": [
+    {
+      "narration": "A product manager asks how long advertisers last. The assistant runs the obvious query: take everyone who has churned, and average the weeks between joining and leaving. About 21 weeks, and it goes on a slide. Computed properly, from the same table, the halfway point is 43 weeks: only then have half of all advertisers left. Double. The SQL was fine. What was wrong is who the query left out. One note: this is a separate small simulation, 6,000 advertisers who joined at different times over the last two years, built so that the true answer is known.",
+      "visual": {
+        "type": "title",
+        "kicker": "Module 6 · Lesson 4",
+        "title": "When, not whether",
+        "sub": "How long advertisers last, counted properly"
+      }
+    },
+    {
+      "narration": "Here is who is missing. A little over half of the 6,000 have churned. The 21 weeks is their average. The other 48 percent are still active. They have no end date, so the query dropped them. But they are not blanks. Say an advertiser joined 60 weeks ago and is still spending. That tells you something definite: a lifetime of at least 60 weeks. The word for that is censored. We know a floor, not the final figure. So an average of the leavers is an average of the quick leavers. The advertisers who last longest are still here.",
+      "visual": {
+        "type": "compare",
+        "title": "Two answers from one table",
+        "left": {
+          "label": "Average lifetime of those who churned",
+          "value": "21 weeks",
+          "sub": "3,099 advertisers; 2,901 still active left out"
+        },
+        "right": {
+          "label": "Week by which half of everyone has left",
+          "value": "43 weeks",
+          "sub": "all 6,000 advertisers counted"
+        }
+      }
+    },
+    {
+      "narration": "The fix is to ask a small question many times, instead of one question about a whole lifetime. [[1]] For each week of tenure: who was still active at the start of it, and still being watched? [[2]] Of those, what share left during that week? An advertiser who joined ten weeks ago counts in the first ten of these questions, then steps out. Nobody is thrown away, and nobody is assumed to have stayed or gone. [[3]] Multiply the shares who stayed, week after week, [[4]] and you get the share still active after any number of weeks. That is the Kaplan–Meier curve. From here on, the survival curve.",
+      "visual": {
+        "type": "flow",
+        "title": "A small question, asked every week",
+        "steps": [
+          {
+            "label": "Each week of tenure",
+            "sub": "who is still active and still being watched?"
+          },
+          {
+            "label": "Of those",
+            "sub": "what share left this week?"
+          },
+          {
+            "label": "Multiply",
+            "sub": "the shares who stayed, week after week"
+          },
+          {
+            "label": "Survival curve",
+            "sub": "share still active after each week"
+          }
+        ]
+      }
+    },
+    {
+      "narration": "After 13 weeks, three quarters of advertisers are still active. After a year, about 45 percent. And the curve crosses one half at 43 weeks. That is the typical lifetime: the week by which half have gone. Because this is a simulation, we can hold the estimate against the truth: they agree to within a point out to a year and a half. Two years out, it drifts. The curve says 26 percent where the truth is 28, because few advertisers have been watched that long. The far end of a survival curve rests on the fewest people. Try it now: pick a week and read off who is left, then split the curve by account manager.",
+      "visual": {
+        "type": "widget",
+        "name": "survival",
+        "title": "Share of advertisers still active",
+        "note": "Move the week slider: 13 weeks, one year, and where the curve crosses one half. Then split by account manager."
+      }
+    },
+    {
+      "narration": "The curve also answers something an average never can: when is the danger? Take the advertisers still active at the start of each 13 week block, and ask what share leave during it. [[1]] In the first block, a quarter. [[2]] In the second, about 18 percent. [[4]] Then it eases, [[6]] and after the first year it settles near one in eight per quarter. Risk falls with tenure. That changes the retention conversation: the expensive weeks are the first thirteen. In this simulation that falling risk was built in. On your own data it is something to measure, not to assume.",
+      "visual": {
+        "type": "bar",
+        "title": "Of those still active at the start of each quarter, the share who leave during it",
+        "unit": "%",
+        "data": [
+          {
+            "label": "Weeks 1–13",
+            "value": 25.2
+          },
+          {
+            "label": "Weeks 14–26",
+            "value": 17.9
+          },
+          {
+            "label": "Weeks 27–39",
+            "value": 14.4
+          },
+          {
+            "label": "Weeks 40–52",
+            "value": 14.3
+          },
+          {
+            "label": "Weeks 53–65",
+            "value": 12.0
+          },
+          {
+            "label": "Weeks 66–78",
+            "value": 11.3
+          }
+        ],
+        "highlight": [
+          0
+        ]
+      }
+    },
+    {
+      "narration": "You do not always need the curve. A yes or no label in a fixed window is a fine target for a model: here, churned within 26 weeks of joining. But it only works for advertisers you have watched for at least 26 weeks. [[1]] Here that is about 4,700 of the 6,000. The newest fifth is set aside, because their window has not closed. Among the rest, about 39 percent churned inside the window, which agrees with the curve. [[2]] Count everyone instead, and you get 36 percent. Too low, and wrong in a predictable direction: every not yet has been counted as a no.",
+      "visual": {
+        "type": "compare",
+        "title": "Churned within 26 weeks of joining",
+        "left": {
+          "label": "Only advertisers watched 26 weeks or more",
+          "value": "38.7%",
+          "sub": "4,734 usable · 1,266 set aside"
+        },
+        "right": {
+          "label": "Counting all 6,000",
+          "value": "36.0%",
+          "sub": "every 'not yet' counted as 'no'"
+        }
+      }
+    },
+    {
+      "narration": "So which framing, when? It follows the decision, as in module one. [[1]] If the team needs a list of who to call this quarter, a yes or no in a fixed window is the right target, built from advertisers whose window has closed. [[2]] If the question is how long advertisers last, [[3]] or in which weeks they are most at risk, that is the survival curve. [[4]] And when most of your customers are recent, only the curve can use them all.",
+      "visual": {
+        "type": "table",
+        "title": "Which framing for which question",
+        "columns": [
+          "The question",
+          "Use"
+        ],
+        "rows": [
+          [
+            "Who should we call this quarter?",
+            "Yes/no in a fixed window, closed windows only"
+          ],
+          [
+            "How long do advertisers last?",
+            "Survival curve: median lifetime"
+          ],
+          [
+            "When is the risk highest?",
+            "Survival curve: risk by block of tenure"
+          ],
+          [
+            "Most customers joined recently",
+            "Survival curve: it uses everyone"
+          ]
+        ]
+      }
+    },
+    {
+      "narration": "The brief. Ask for a survival curve, never an average lifetime, and four things in the output. [[1]] How many advertisers went in, and how many are still active. [[2]] How many are still being watched at each point on the curve. [[3]] The median lifetime, the halfway point, read from the curve. [[4]] And whenever it reports a rate like churned within 26 weeks, how many advertisers it left out because their window had not closed. If that number is zero, be suspicious. Ask for curves by segment too, and read any gap between them as module five taught: a gap between groups, not proof of what caused it.",
+      "visual": {
+        "type": "bullets",
+        "title": "Brief and audit",
+        "items": [
+          "Advertisers in, and how many are still active",
+          "Number still being watched at each point of the curve",
+          "Median lifetime, read from the curve",
+          "For any fixed-window rate: how many were left out because their window had not closed"
+        ]
+      }
+    },
+    {
+      "narration": "To recap. A customer who has not left yet is information, not a missing value. Average only the leavers and you count the quick ones. The survival curve uses everyone, for as long as they were watched. And a fixed window yes or no is fine, once the window has closed for everyone you count. Most lessons so far have leaned on an answer column of some kind. The next module starts with what you can learn when there is none.",
+      "visual": {
+        "type": "quote",
+        "text": "Not yet is not no.",
+        "sub": "Count every customer for as long as you watched them."
+      }
+    }
+  ],
+  "takeaways": [
+    "Customers who are still active are censored, not missing: you know they lasted at least this long.",
+    "Averaging only those who left counts the quick leavers; a survival curve uses everyone for as long as they were watched.",
+    "A fixed-window yes/no label is valid only for customers whose window has fully closed."
+  ],
+  "quiz": [
+    {
+      "id": "6-4-q1",
+      "concept": "censoring",
+      "domain": "course",
+      "q": "The assistant's report states: 'Average advertiser lifetime: 21 weeks, based on 3,099 churned advertisers.' The source table has 6,000 advertisers. What is the right response?",
+      "options": [
+        "Accept it: 3,099 advertisers is easily a large enough sample for a stable average lifetime",
+        "Ask for the median of those 3,099 instead of the mean, since lifetimes are skewed",
+        "Ask it to add the active advertisers, counting their tenure so far as their full lifetime",
+        "Ask for a survival curve over all 6,000: the 2,901 left out are mostly the long-lasting ones"
+      ],
+      "answer": 3,
+      "why": "The figure describes only advertisers who have already left, and those are disproportionately the quick leavers; the curve over everyone put the halfway point at 43 weeks. A median of the same 3,099 has the same blind spot, and treating tenure so far as a finished lifetime understates every advertiser who is still going."
+    },
+    {
+      "id": "6-4-q2",
+      "concept": "a window that has not closed",
+      "domain": "course",
+      "q": "A new self-serve tier launched 10 weeks ago. A dashboard tile reads 'churned within 26 weeks: 8 percent' for the new tier, against 39 percent for older advertisers. A stakeholder calls the launch a retention win. What is wrong?",
+      "options": [
+        "Nobody in the new tier has been watched for 26 weeks, so the tile counts 'not yet' as 'no'",
+        "Nothing: 8 percent against 39 percent is far too large a gap to be explained by noise",
+        "The new tier is a much smaller group, so its rate needs a margin of error before any comparison",
+        "The two groups joined in different seasons, so the rates need a seasonal adjustment"
+      ],
+      "answer": 0,
+      "why": "Nobody in the new tier has had 26 weeks in which to churn, so the 8 percent can only count those who left within 10 weeks and is bound to be too low, whatever the tier is really like. Compare the two groups at 10 weeks on survival curves instead; a margin of error would only put an interval around a number that measures the wrong thing."
+    },
+    {
+      "id": "6-4-q3",
+      "concept": "censoring",
+      "domain": "other",
+      "q": "To plan creative refreshes, the assistant measures how many days a creative runs before its click rate falls to half its launch level. It averages the creatives that have already reached that point: 9 days. Half of the creatives launched this quarter have not reached it yet. What does 9 days tell you?",
+      "options": [
+        "That the typical creative lasts about 9 days before it needs replacing, so plan refreshes weekly",
+        "Nothing at all: lifetimes cannot be analysed until every single creative has faded",
+        "The average of the fastest faders only; counting those still running, the typical life is longer",
+        "An overestimate, because the creatives still running are the ones about to fade"
+      ],
+      "answer": 2,
+      "why": "The creatives still running are censored: each has already lasted as long as it has run and will last longer, so leaving them out pulls the answer down. You do not have to wait for all of them to fade; a survival curve uses each creative for as long as it has been observed."
+    },
+    {
+      "id": "6-4-q4",
+      "concept": "which framing for which question",
+      "domain": "course",
+      "q": "The retention team asks two things: which current advertisers to call this month, and in which weeks of an advertiser's life the risk of leaving is highest. Which pairing fits?",
+      "options": [
+        "A survival curve for the call list; an average lifetime of churned advertisers for the timing",
+        "A fixed-window yes/no model for the call list; risk by tenure block for the timing",
+        "A fixed-window yes/no model for the call list, and the same model for the timing",
+        "An average lifetime of churned advertisers for the list and for the timing"
+      ],
+      "answer": 1,
+      "why": "A call list needs a score for each advertiser over a fixed period ahead, which the yes/no model gives; the overall survival curve has one value per week of tenure, the same for everyone, so it cannot rank individuals. When risk peaks is a question about tenure, which the curve answers block by block: here it fell from a quarter in the first 13 weeks to about one in eight per quarter later."
+    }
+  ],
+  "review": [
+    {
+      "concept": "still active means censored, not missing",
+      "variants": [
+        {
+          "q": "A support dashboard shows 'average resolution time: 2.1 days', computed from closed tickets. A fifth of this month's tickets are still open, some of them for more than two weeks. What is the right read?",
+          "options": [
+            "About right: closed tickets are the only ones with a known resolution time, so 2.1 days stands",
+            "Too low: open tickets are mostly the slow ones, and each has already lasted its age so far",
+            "Too high: the open tickets are about to close quickly and will pull the average down",
+            "Unknowable: nothing can be said about resolution time until every ticket has closed"
+          ],
+          "answer": 1,
+          "why": "Closed tickets are the ones that closed fast enough to be closed already; the slow ones are mostly still open, and each already counts for at least its age. Ignoring them as 'no data' is the same mistake as averaging only churned advertisers, and a survival curve shows you do not have to wait for all of them."
+        },
+        {
+          "q": "A growth analyst reports that new advertisers take 12 days on average to launch a first campaign, measured on those who have launched one. Forty percent of sign-ups from the last two months have not launched yet. What does the 12 days leave out?",
+          "options": [
+            "Nothing: advertisers who have not launched have no launch time, so they cannot be counted",
+            "The seasonal pattern in sign-ups over those two months, which shifts the average",
+            "A margin of error around the 12 days, which would make the figure safe to quote",
+            "Everyone still waiting, who will take longer than they have waited so far, or never launch"
+          ],
+          "answer": 3,
+          "why": "Sign-ups who have not launched are censored: each has already waited some days and will take longer, so the typical time is above 12 days. A margin of error would be an interval around a number that only describes the fast starters."
+        },
+        {
+          "q": "An agency client reports: 'Account managers who left stayed 14 months on average.' Most account managers hired in the last three years are still employed. How should the 14 months be used?",
+          "options": [
+            "As the expected tenure of a new hire, since it is the only tenure figure that is complete",
+            "As an upper limit on how long account managers stay with the agency",
+            "Not as typical tenure: it describes only those who left soon enough to have left already",
+            "As the median tenure, since mean and median are close for durations like these"
+          ],
+          "answer": 2,
+          "why": "The people still employed are the long-tenure ones and are missing from the average, so 14 months understates how long a typical hire stays. It errs on the low side, so it is no upper limit either; a survival curve over all hires gives the usable answer."
+        }
+      ]
+    },
+    {
+      "concept": "a fixed-window label needs a closed window",
+      "variants": [
+        {
+          "q": "You want the share of advertisers who churn within 26 weeks of joining. Your table includes advertisers who joined between 4 and 104 weeks ago. Which advertisers go into the calculation?",
+          "options": [
+            "All of them: more rows give a steadier rate, and the recent joiners are customers too",
+            "Only those who joined at least 26 weeks ago",
+            "Only those who have already churned, since their outcome is known",
+            "Only those who joined in the last 26 weeks, since they are the most relevant"
+          ],
+          "answer": 1,
+          "why": "An advertiser who joined 10 weeks ago cannot yet be a 'no' for a 26-week window; including them counts every 'not yet' as a stay. On the course data that pulled the rate down from about 39 percent to 36."
+        },
+        {
+          "q": "A lead-scoring model is trained on the label 'converted within 30 days'. The training table includes leads created up to yesterday, and any lead not yet converted is labelled 0. What is the effect?",
+          "options": [
+            "None: a lead that has not converted is correctly a 0 until the day it converts",
+            "The model will overstate the chance of conversion for every lead it scores",
+            "The label needs shortening to 'converted within 1 day' so that every lead has an answer",
+            "Recent leads that will still convert are labelled failures; drop leads younger than 30 days"
+          ],
+          "answer": 3,
+          "why": "A lead created last week has not had its 30 days, so a 0 on it means 'not yet', not 'no'. Training on those rows teaches the model that whatever is true of recent leads predicts failure, and makes the conversion rate look lower than it is."
+        },
+        {
+          "q": "A finance report shows the '90-day refund rate' by order month. The two most recent months show much lower rates than the older ones, and the assistant concludes that product quality has improved. What is the more likely explanation?",
+          "options": [
+            "Orders from the last two months have not yet had 90 days in which to be refunded",
+            "Customers have become more satisfied with the product since the last release",
+            "The refund policy was tightened two months ago, which mechanically lowers the rate",
+            "Ordinary month-to-month noise in refunds, which a margin of error would cover"
+          ],
+          "answer": 0,
+          "why": "A 90-day rate for an order placed 40 days ago is unfinished by construction, so recent months will always look better than they are. Check the mechanical explanation before the flattering one: recompute using only orders that are at least 90 days old."
+        }
+      ]
+    }
+  ],
+  "drill": [
+    {
+      "q": "Why does averaging the lifetimes of customers who have already left understate how long customers last?",
+      "a": "Because it leaves out everyone who is still active, and those are the ones lasting longest. You end up averaging the quick leavers."
+    },
+    {
+      "q": "You want the share of customers who churn within six months of joining. Which customers may you count?",
+      "a": "Only those who joined at least six months ago, so the window has fully closed. Counting newer customers treats not yet as no, and the rate comes out too low."
+    }
+  ],
+  "recall": {
+    "prompt": "Explain why 'average lifetime of churned customers' is misleading, and what to ask for instead.",
+    "model_answer": "It averages only customers who have already left and drops everyone still active, who are exactly the long-lasting ones; they are censored, meaning we know they lasted at least this long. A survival curve fixes that by asking, week by week, what share of those still active and still being watched left, so every customer counts for as long as they were observed. From it you read the median lifetime and when the risk is highest. A fixed-window yes/no label is also fine, but only for customers whose window has fully closed."
+  },
+  "ask_assistant": "Estimate how long advertisers last with a survival curve (Kaplan–Meier), not an average over churned advertisers. Treat advertisers who are still active as censored at their current tenure. Report how many advertisers went in, how many are still active, the share still active at 13, 26, 52 and 104 weeks with the number still being watched at each point, and the median lifetime. Add the churn risk per 13-week block of tenure. If you compute any 'churned within N weeks' rate, use only advertisers who joined at least N weeks ago and say how many you left out.",
+  "audit_checklist": [
+    "The output states how many advertisers are still active, and that they were kept in, not dropped",
+    "Each point on the curve shows how many advertisers were still being watched",
+    "The median lifetime comes from the curve, not from an average of churned advertisers",
+    "Any fixed-window churn rate states how many advertisers were left out because their window had not closed"
+  ],
+  "transfer": [
+    "How long does a creative run before its click-through rate fades to half its launch level?",
+    "How long do support tickets take to resolve, when some are still open?",
+    "How many days until a new sign-up launches a first campaign, when many have not yet?"
+  ],
+  "other_ways": [
+    {
+      "approach": "A fixed-window yes/no model",
+      "when": "When the decision is a list for a fixed period ahead, and enough customers have a fully closed window."
+    },
+    {
+      "approach": "A cohort retention table",
+      "when": "When you want the same picture in dashboard form: the share of each join month still active after each month, with unfinished cells left blank."
+    },
+    {
+      "approach": "A model of time to churn that uses features",
+      "when": "When you need to know which advertisers leave sooner, not only the overall curve; the same rule about censoring applies."
+    }
+  ],
+  "glossary": [
+    {
+      "term": "censored",
+      "def": "Observed only up to now: we know the customer lasted at least this long, not how long in the end."
+    },
+    {
+      "term": "survival curve",
+      "def": "The share of customers still active after each week of tenure, estimated by the Kaplan–Meier method so that every customer counts for as long as they were watched."
+    },
+    {
+      "term": "median lifetime",
+      "def": "The tenure by which half of customers have left, read where the survival curve crosses one half."
+    },
+    {
+      "term": "time to event",
+      "def": "Framing a question as how long until something happens, instead of whether it happens within a fixed window."
+    }
+  ]
+}

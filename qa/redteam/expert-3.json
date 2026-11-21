@@ -1,0 +1,278 @@
+{
+  "reviewer": "expert-3",
+  "lessons": ["4-3", "4-4", "4-5", "4-6", "5-1", "5-2", "5-3", "5-4", "5-5", "5-6"],
+  "findings": [
+    {
+      "lesson": "4-3",
+      "where": "seg5 visual (table, row 'Forest, 300 trees', column 'Churn top 200')",
+      "quote": "156",
+      "kind": "number_mismatch",
+      "severity": "high",
+      "problem": "The forest's churn top-200 count is printed as 156; the computed figure is 126. As printed, the forest finds 20 more churners than logistic regression (136), which reverses the lesson's churn conclusion in the very units it tells the learner to decide by.",
+      "evidence": "facts.json model_table[3] ('Random forest, 300 trees').top_200_churners = 126",
+      "fix": "\"126\""
+    },
+    {
+      "lesson": "4-3",
+      "where": "seg6 narration",
+      "quote": "In the top 200 it finds 155 adopters",
+      "kind": "number_mismatch",
+      "severity": "high",
+      "problem": "Tuned boosting finds 185 adopters in the video top 200, not 155. The narration contradicts its own visual (185 against 153) and shrinks a 32-adopter gap to 2, so 'Nobody needs an interval to feel that one' no longer follows.",
+      "evidence": "video.scoreboard 'Gradient boosting, tuned by cross-validation'.top_200_adopters = 185; 'Logistic regression'.top_200_adopters = 153",
+      "fix": "In the top 200 it finds 185 adopters. The weighted sum finds 153."
+    },
+    {
+      "lesson": "4-3",
+      "where": "seg7 visual (bullet 4)",
+      "quote": "wider than the 0.309 churn gap",
+      "kind": "number_mismatch",
+      "severity": "medium",
+      "problem": "The churn gap between logistic regression and tuned boosting is 0.009, not 0.309. As written the bullet is false (the run-to-run spread is 0.027) and disagrees with the narration and every other mention of the gap in the lesson.",
+      "evidence": "uncertainty.difference_point = 0.009; neural_net.test_auc_highest - test_auc_lowest = 0.835 - 0.808 = 0.027",
+      "fix": "Spread between runs (0.027): wider than the 0.009 churn gap"
+    },
+    {
+      "lesson": "4-3",
+      "where": "seg6 narration and visual; quiz 4-3-q1 why",
+      "quote": "That count itself wobbles by more than a dozen either way, so for the retention team the lists are interchangeable",
+      "kind": "wrong_concept",
+      "severity": "medium",
+      "problem": "The 123-to-150 range is the resampling wobble of ONE model's count. The two lists are scored on the same 4,000 advertisers and share most of their names, so the wobble of the DIFFERENCE between them is far smaller. Judging a paired gap against an unpaired interval is the overlapping-intervals fallacy, and the lesson's own AUC example shows it failing: the two AUC intervals overlap almost entirely, yet the interval on their difference excludes zero. Used at work, this ruler waves through real differences between models.",
+      "evidence": "uncertainty.top_200_churners_95 = [123, 150] (one model); logreg_auc_95 [0.827, 0.863] and boosting_auc_95 [0.817, 0.855] overlap while difference_logreg_minus_boosting_95 = [0.002, 0.015]. facts.json holds no interval on the difference in top-200 counts.",
+      "fix": "Make the practical argument instead of the noise one: 'Four more churners in 200 calls is too few to change what the retention team does, so the lists are interchangeable.' Or compute a paired interval on the count difference and quote that. Same change in the 4-3-q1 explanation ('the top-200 count wobbles by more than the four churners')."
+    },
+    {
+      "lesson": "4-3",
+      "where": "predict q; seg1 narration",
+      "quote": "built from hundreds of small trees",
+      "kind": "number_mismatch",
+      "severity": "low",
+      "problem": "The flexible model whose gaps the lesson quotes (0.009 and 0.040) is tuned boosting with 100 rounds on both questions: one hundred small trees. Only the forest has hundreds (300), and those are deep, not small.",
+      "evidence": "boosting.params.max_iter = 100; video.tuning.best.max_iter = 100; forest.n_trees = 300",
+      "fix": "'built from a hundred or more small trees' (predict) and 'built from many trees' (seg1)"
+    },
+    {
+      "lesson": "4-4",
+      "where": "predict reveal; seg8 visual; takeaway 1; drill 1; recall model_answer",
+      "quote": "columns 0.18 · the two best algorithms 0.01",
+      "kind": "misleading",
+      "severity": "low",
+      "problem": "The headline sets the full range across column sets (worst 0.661 to best 0.845) against the gap between only the two best algorithms. Like for like, weakest to best across algorithms is 0.084, so columns moved the score about twice as much, not eighteen times. Seg3 states the 0.08 once; the reveal, recap, take-away, drill and model answer drop it, and those are what the learner keeps.",
+      "evidence": "feature_groups.spread_across_feature_sets = 0.184; spread_across_algorithms.best_minus_worst = 0.084; gap_between_the_two_best = 0.009",
+      "fix": "'On this data the choice of columns moved the score by about 0.18 from thinnest to full; the choice of algorithm by about 0.08 from weakest to best, and 0.01 between the two best.'"
+    },
+    {
+      "lesson": "4-5",
+      "where": "seg2 narration",
+      "quote": "AUC falls by about 7.07",
+      "kind": "number_mismatch",
+      "severity": "high",
+      "problem": "The drop is 0.0749, about 0.07. An AUC cannot fall by 7; the spoken figure is roughly 100 times the value on the visual it is read over.",
+      "evidence": "importance.rows[0] (spend_trend).auc_drop = 0.0749",
+      "fix": "Shuffle spend trend, and AUC falls by about 0.07."
+    },
+    {
+      "lesson": "4-5",
+      "where": "seg5 visual (table row 1, column 'Average')",
+      "quote": "24.5",
+      "kind": "number_mismatch",
+      "severity": "medium",
+      "problem": "The training-month average of active days is 20.5, not 24.5. With 24.5 the row's own arithmetic breaks: weight times distance from average would give +1.67, not the +1.33 shown.",
+      "evidence": "data.feature_stats_train.active_days_28.mean = 20.511 (sd 5.304); logreg coef -0.455 x (5 - 20.511) / 5.304 = +1.33",
+      "fix": "\"20.5\""
+    },
+    {
+      "lesson": "4-5",
+      "where": "seg6 narration",
+      "quote": "your old rule of spend trend below 0.4 would have missed her",
+      "kind": "number_mismatch",
+      "severity": "medium",
+      "problem": "The hand rule used throughout the course is spend trend below 0.7. There is no 0.4 rule.",
+      "evidence": "baseline.rule = 'spend_trend < 0.7' (her spend trend is 0.886, so the 0.7 rule does miss her)",
+      "fix": "your old rule of spend trend below 0.7 would have missed her"
+    },
+    {
+      "lesson": "4-5",
+      "where": "seg5 visual (table row 2, 'CPA vs goal': her value 2.62, average 0.93) with seg5 narration",
+      "quote": "+1.29",
+      "kind": "misleading",
+      "severity": "low",
+      "problem": "The narration says each push is the column's weight times her distance from average, and the table supplies the inputs to check it. Four rows reproduce; this one does not: with the published weight (0.231 per SD, SD 0.399) and the average shown (0.93) the push is +0.98, not +1.29. The +1.29 only works on the model's internal scale for this column (empty values filled before scaling), so the 'Average' shown is not the point the push was measured from.",
+      "evidence": "logreg.coefs cpa_vs_goal: coef 0.231, one_sd_is 0.399; feature_stats_train.cpa_vs_goal.mean 0.926 -> 0.231 x (2.62 - 0.926) / 0.399 = 0.98; explain_examples.examples[0].top_pushes cpa_vs_goal = 1.29",
+      "fix": "Add to the note: 'CPA is scaled after its empty values are filled, so its push is not weight times the distance shown here', or show the reference value and SD the model actually used. See notes: the facts.json entry needs correcting too."
+    },
+    {
+      "lesson": "4-6",
+      "where": "review 1 variant 1 (question and option 0)",
+      "quote": "91 percent accurate overall",
+      "kind": "bad_question",
+      "severity": "low",
+      "problem": "The question's own category figures do not give 91 percent: (0.97 x 600 + 0.94 x 300 + 0.58 x 60) / 960 = 93.6 percent. The keyed answer is unaffected, but a learner who checks the arithmetic is thrown.",
+      "evidence": "Weighted average of the three stated categories = 898.8 / 960 = 0.936",
+      "fix": "'A ticket classifier is 94 percent accurate overall.' and '94 percent accuracy' in option 0."
+    },
+    {
+      "lesson": "5-1",
+      "where": "seg5 narration (last sentence)",
+      "quote": "Once you have adjusted for the other columns in the table, whatever gap is left is the causal effect of the practice.",
+      "kind": "wrong_concept",
+      "severity": "high",
+      "problem": "False, and the opposite of what the lesson teaches. Adjusting removes only differences the table records; a common cause that is not a column (sophistication here) stays inside the adjusted gap. The sentence contradicts seg4 ('still not the effect of acting'), seg6 and take-away 2, and it lands just before the widget where the learner compares adjusted with true.",
+      "evidence": "tracking_story: adjusted_diff_pts -6.5 vs truth.effect_pts -2.3. happy.adjusted_pts vs happy.truth: managed 2.9 vs 0; uses_auto_bidding 15.2 vs 11.3; had_optimisation_review -25.5 vs +8.8",
+      "fix": "Delete the sentence, or replace it with: 'Watch the adjusted gap as you go. It is usually closer to the truth, and it is never guaranteed to reach it.'"
+    },
+    {
+      "lesson": "5-1",
+      "where": "ask_assistant; audit_checklist item 3; seg8 narration",
+      "quote": "For each practice add one line on how advertisers come to have it: chosen by them, assigned by us, or triggered by poor performance",
+      "kind": "brief",
+      "severity": "medium",
+      "problem": "The lesson's point is that the reason an account gets a practice is not in the table. The assistant sees only the table, so this line can only be a guess, and a fluent guess in the output will be read as evidence. The one check that would have caught the review reversal is handed to the party that cannot know the answer; the lesson's own advice to ask the people who assign the practice sits in other_ways, outside both the brief and the checklist.",
+      "evidence": "happy.review_story ('reviews go to accounts that are struggling for reasons the table cannot see'); tracking_story.why ('it is not in the table'). Principle: the selection mechanism is domain knowledge, not something an output computed from the table can show.",
+      "fix": "Brief: 'For each practice I will tell you how advertisers come to have it, from the team that assigns it. You show how the two groups differ on the columns we have.' Checklist item 3: 'Who gets or chooses each practice, stated by you from the owning team, not inferred by the assistant.'"
+    },
+    {
+      "lesson": "5-1",
+      "where": "glossary (confounder)",
+      "quote": "so the two move together without one causing the other",
+      "kind": "misleading",
+      "severity": "low",
+      "problem": "A confounder does not mean the practice has no effect; it means the gap is not the effect. In this very lesson tracking has both a common cause and a real effect of about 2 points, and fresh creatives a real 13 points inside a 20-point gap.",
+      "evidence": "tracking_story.truth.effect_pts = -2.3 alongside tracking_story.why; happy.truth.fresh_creatives.effect_pts = 13.1 vs happy.naive.fresh_creatives.diff_pts = 19.6",
+      "fix": "'A trait that influences both the practice and the outcome, so the gap between the groups differs from what the practice itself does.'"
+    },
+    {
+      "lesson": "5-2",
+      "where": "seg4 narration (last sentence)",
+      "quote": "With a randomised experiment you no longer need a comparison group, because randomising removes the noise.",
+      "kind": "wrong_concept",
+      "severity": "high",
+      "problem": "Both halves are false. A randomised experiment IS a comparison against a control group (seg2 defines it); without one there is nothing to compare. And randomising removes bias from hidden common causes, not noise: noise is the reason the same segment has just sized the groups, and the reason seg5 and seg6 are about intervals.",
+      "evidence": "experiment.formula ('two-sided test of two proportions ... equal arms'); uplift.experiment_readout.all_advertisers: n_called 6052, n_not_called 5948, ci95_pts [1.8, 3.9]; uplift.many_experiments: measured effect 1.2 to 4.4 around a true 2.9",
+      "fix": "Delete the sentence. If a closing line is wanted: 'Randomising takes care of hidden causes. It does nothing about noise, which is what the group size is for.'"
+    },
+    {
+      "lesson": "5-3",
+      "where": "seg2 narration",
+      "quote": "from about 67 percent to about 17",
+      "kind": "number_mismatch",
+      "severity": "high",
+      "problem": "The comparison group rose from 66.8 to 71.1 percent. 'About 17' turns a 4-point climb into a 50-point collapse, contradicts 'climbed too' in the same sentence and the note on the visual, and removes the reason before-and-after fails.",
+      "evidence": "before_after.averages.comparison_before = 0.668, comparison_after = 0.711",
+      "fix": "from about 67 percent to about 71"
+    },
+    {
+      "lesson": "5-3",
+      "where": "seg3 visual (left value)",
+      "quote": "89.5%",
+      "kind": "number_mismatch",
+      "severity": "high",
+      "problem": "Ecommerce after launch is 69.5 percent. At 89.5 the card shows the treated group 18 points ABOVE the comparison group while the narration says it is 1.6 below, so the 'answer two' this segment exists to show disappears.",
+      "evidence": "before_after.averages.got_the_flow_after = 0.695; three_answers.treated_vs_comparison_after_launch_pts = -1.6",
+      "fix": "\"69.5%\""
+    },
+    {
+      "lesson": "5-3",
+      "where": "seg6 visual (right sub)",
+      "quote": "pre-launch drift 0.33 ± 0.13 pts a week",
+      "kind": "number_mismatch",
+      "severity": "medium",
+      "problem": "The margin is ± 0.31, not ± 0.13 (digits transposed). It disagrees with quiz 5-3-q2, which quotes 0.31. The real result only just clears zero; ± 0.13 makes the warning look far more clear-cut than it was.",
+      "evidence": "before_after.when_the_assumption_fails: pre_launch_drift_of_the_gap_pts_per_week 0.33, plus_minus 0.31",
+      "fix": "pre-launch drift 0.33 ± 0.31 pts a week"
+    },
+    {
+      "lesson": "5-3",
+      "where": "ask_assistant (last sentence); audit_checklist item 4",
+      "quote": "List anything else that changed for either group around week 13.",
+      "kind": "brief",
+      "severity": "low",
+      "problem": "An assistant working from the data cannot know about other launches, price changes or suspensions. It will return nothing or invent something, and an empty list reads as a clean bill. The guard against a coincident cause (the lesson's own review variant with the suspended publisher) has to come from the learner.",
+      "evidence": "Principle: events outside the dataset are not recoverable from it. The lesson's review 2 variant 3 turns on exactly such an event.",
+      "fix": "'I will list the other changes around week 13 that I know of. You report any break at week 13 in either group's size or mix that is visible in the data.' Checklist: 'Other changes around launch, listed by you; data-visible breaks, reported by the assistant.'"
+    },
+    {
+      "lesson": "5-5",
+      "where": "seg3 visual (table row '1,600', column 'Net value')",
+      "quote": "$48,900",
+      "kind": "number_mismatch",
+      "severity": "medium",
+      "problem": "Net value at 1,600 names is $84,900. As printed, value appears to fall by 40 percent 300 names past break-even, when it is in fact flat there (slightly above the rule's $84,570). It contradicts seg6, which says that going on to that size 'earns about the same'.",
+      "evidence": "economics.table (contacted 1600).net_value = 84900 (443 x $300 - 1,600 x $30)",
+      "fix": "\"$84,900\""
+    },
+    {
+      "lesson": "5-5",
+      "where": "seg6 narration",
+      "quote": "going on to 6,100 earns about the same",
+      "kind": "number_mismatch",
+      "severity": "medium",
+      "problem": "The list size meant is 1,600. Only 4,000 advertisers are scored, so 6,100 is impossible.",
+      "evidence": "economics.table: contacted 1600 -> net_value 84900, against list_from_the_rule.net_value 84570; data.n_test = 4000",
+      "fix": "going on to 1,600 earns about the same"
+    },
+    {
+      "lesson": "5-5",
+      "where": "seg9 narration",
+      "quote": "So the cut-off is not 3.5",
+      "kind": "number_mismatch",
+      "severity": "medium",
+      "problem": "The default cut-off the lesson argues against is 0.5. 3.5 is not a probability and appears nowhere else in the lesson or the facts.",
+      "evidence": "economics.default_cutoff_half (contacted 141); thresholds row with threshold 0.5",
+      "fix": "So the cut-off is not 0.5, and it is not a matter of taste."
+    },
+    {
+      "lesson": "5-5",
+      "where": "seg7 narration; ask_assistant (last sentence); audit_checklist item 4",
+      "quote": "it replaces the guessed one in five with a number you measured",
+      "kind": "brief",
+      "severity": "medium",
+      "problem": "The holdout comparison is given no interval and no size, in a course that sized experiments two lessons earlier. With the brief's own 10 percent holdout of the rule's list (131 names against 1,180 called), the churn gap has a margin of about ± 8 points, while the effect the toy numbers assume is about 6 points. One month's 'measured number' cannot tell a working call from a useless one, and a learner following the checklist would replace the guess with noise.",
+      "evidence": "economics.list_from_the_rule: contacted 1311, churners_reached 413 (31.5%); assumptions.share_of_contacted_churners_saved 0.2 -> expected gap about 6.3 pts; 1.96 x sqrt(0.315 x 0.685 / 131 + 0.252 x 0.748 / 1180) = about 8.3 pts. experiment.examples show a 5-point lift needing about 1,470 per group.",
+      "fix": "Narration: 'That gap, with its interval, is the only honest measure. A small slice gives a wide interval, so size it, or pool several months, before you replace the one in five.' Brief: 'report the called-versus-holdout gap with a 95 percent interval and say how large the holdout must be to detect a 5-point gap.' Checklist: add 'and the gap is reported with its interval'."
+    },
+    {
+      "lesson": "5-6",
+      "where": "seg2 narration",
+      "quote": "the model said about 41 percent, and the truth was about 31",
+      "kind": "number_mismatch",
+      "severity": "high",
+      "problem": "The model predicted about 14 percent for gaming in June (13.5), not 41. As spoken, the model OVER-predicts by 10 points; the real failure is an under-prediction of 17. It contradicts seg1, seg3, seg4 and the predict question, which all say 14.",
+      "evidence": "drift.gaming_jun: predicted 0.135, actual 0.305",
+      "fix": "the model said about 14 percent, and the truth was about 31"
+    },
+    {
+      "lesson": "5-6",
+      "where": "seg2 visual (left value)",
+      "quote": "13.5% → 50.5%",
+      "kind": "number_mismatch",
+      "severity": "high",
+      "problem": "Actual gaming churn in June was 30.5 percent, not 50.5. The card overstates the miss by 20 points and disagrees with the narration and with the seg4 chart (30.5).",
+      "evidence": "drift.gaming_jun.actual = 0.305 (actual_plus_minus 0.055, n 272)",
+      "fix": "\"13.5% → 30.5%\""
+    },
+    {
+      "lesson": "5-6",
+      "where": "seg5 visual (bullet 3)",
+      "quote": "After 40 days · predicted vs actual",
+      "kind": "number_mismatch",
+      "severity": "medium",
+      "problem": "Churn is defined over the 60 days after the snapshot, so labels are complete after 60 days, not 40. The narration ('takes 60 days'), the seg7 visual ('labels lag 60 days') and the glossary all say 60. A check run at day 40 counts advertisers who have not churned yet as stayers.",
+      "evidence": "data.outcome_columns.churned_next_60d ('no spend at all in the 60 days after the snapshot'); data.why_a_gap",
+      "fix": "After 60 days · predicted vs actual, by segment, with margins"
+    },
+    {
+      "lesson": "5-6",
+      "where": "quiz 5-6-q2 why; seg4 narration ('a narrow miss like that')",
+      "quote": "turns up by chance fairly often",
+      "kind": "misleading",
+      "severity": "low",
+      "problem": "With the figures given (22.6 against 14.9, margin ± 5.6) the prediction is 2.1 points outside a 95 percent margin: about 2.7 standard errors, roughly 1 in 150 for one segment and about 1 month in 25 across six verticals. That is not 'fairly often', and calling it a narrow miss trains the learner to wave through gaps of that size. What makes May unremarkable in this world is that predictions ran about two points low everywhere that month.",
+      "evidence": "drift.gaming_may: n 217, predicted 0.149, actual 0.226, actual_plus_minus 0.056 -> z about 2.7; drift.all_may: predicted 0.107 vs actual 0.127; drift.base_rate_creep",
+      "fix": "'One miss on one small group, among six checked every month and with predictions running a little low everywhere, is not proof of a shift; it earns attention, not a rebuild.' Drop 'fairly often'; in seg4 say 'a miss like that can turn up by chance'."
+    }
+  ],
+  "clean": ["5-4"],
+  "notes": "facts.json: (1) Two different depth-3 trees: tree.test.auc 0.761 / train_auc 0.786 (also model_table) against depth_sweep depth 3 test_auc 0.767 / train_auc 0.787; lesson 4-3 quotes 0.761 for 'Tree, depth 3' and 0.77 for 'the best single tree' side by side. (2) explain_examples.examples[0].top_pushes cpa_vs_goal = 1.29 cannot be reproduced from logreg.coefs (coef 0.231, one_sd_is 0.399) and feature_stats_train (mean 0.926): that gives 0.98, while the other four pushes reproduce exactly. 1.29 is what you get if the column was median-filled before scaling (mean about 0.90, sd about 0.31), so logreg.coefs.one_sd_is 0.399 for cpa_vs_goal is not the SD the model used and its 'per 1 SD' reading is off. (3) tracking_story.truth: if_everyone_did 0.107 and if_nobody_did 0.129 differ by 2.2, effect_pts is -2.3; the rounding mismatch is visible on the 5-1 seg2 card (10.7%, 12.9%, -2.3 pts). (4) partial_dependence.method says 'for every advertiser', but the cpa_vs_goal curve's level (2.4% to 10.7%, against an overall average prediction of 10.9%) fits advertisers with tracking only, which is what lesson 4-5 says. (5) uplift.policies_call_400.highest_churn_risk: 32 + 366 + 1 = 399, so churns_prevented is net of the one account pushed out (33 persuadables minus 1); the key name does not say net. (6) before_after.when_the_assumption_fails: 0.33 ± 0.31 is flagged drift_distinguishable_from_zero = true; it clears zero by 0.02, a borderline call the lesson states flatly. Not about facts.json: the keyed predict answer is the third option in 7 of these 10 lessons, six in a row from 4-6 to 5-5. All 100 quiz and review answer keys were checked and are correct; keyed options are not systematically the longest."
+}

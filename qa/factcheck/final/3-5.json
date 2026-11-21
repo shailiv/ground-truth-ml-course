@@ -1,0 +1,26 @@
+{
+ "issues": [
+  {
+   "where": "seg8 visual (segments[7]), glossary, ask_assistant, audit_checklist",
+   "quote": "plain predict returns only yes or no",
+   "kind": "misleading",
+   "severity": "medium",
+   "explanation": "The glossary, the seven-string search table (.predict( -> 'only where a hard yes or no is wanted', plus the note 'with no predict_proba, ask where the scores come from'), the assistant brief, and the audit checklist state without qualification that plain .predict() returns only yes/no and that every script needs predict_proba(). That is true only for binary classification. In scikit-learn, regression and forecasting models (which this lesson itself references in review 1 variant 3 and transfer 2) have no predict_proba() method and use .predict() to output continuous numeric predictions; multi-class classifiers (such as the six-category ticket classifier in review 1 variant 2 and review 2 variant 2) also return category labels rather than yes/no. Without the 'for a classifier' caveat, a learner applying these audit tools to a spend-prediction or forecasting script will falsely flag .predict() as a bug.",
+   "evidence": "scikit-learn estimator API: predict_proba() exists only on classifiers; regressors implement predict() returning continuous values, and multiclass classifiers return class labels from predict().",
+   "fix": "Qualify these rules as applying to classification (yes/no or category outcomes): e.g. in the glossary, 'On a classifier, the call that returns a probability score for each row; plain predict returns only a hard class label (such as yes or no). Models that predict a numeric amount use predict directly'; add the same 'on a classifier' caveat to the .predict( row and note in seg8 visual, ask_assistant, and audit_checklist."
+  },
+  {
+   "where": "seg4 visual (segments[3])",
+   "quote": "min_samples_leaf=5",
+   "kind": "unsupported_number",
+   "severity": "low",
+   "explanation": "The code snippet sets min_samples_leaf=5 on the 300-tree RandomForestClassifier and ties that exact specification to the simulated data's 0.98 training AUC and 0.83 test AUC, but facts.json does not record min_samples_leaf (or min_rows_per_leaf) for the random forest.",
+   "evidence": "facts.json -> forest: {\"test\": {\"auc\": 0.831, ...}, \"train_auc\": 0.982, \"n_trees\": 300} and model_table[3]: {\"model\": \"Random forest, 300 trees\", ...}; unlike tree (min_rows_per_leaf: 100) and boosting (params), no leaf-size parameter is given for forest.",
+   "fix": "Remove the unverified hyperparameter from the snippet (or note that tree-leaf settings are omitted for brevity, or record min_samples_leaf in facts.json if that was the generator setting)."
+  }
+ ],
+ "numbers_checked": 32,
+ "verdict": "All core data figures, row counts, month splits, leakage/split comparisons, and random-forest train/test AUCs (0.98 vs 0.83) match facts.json accurately, and all quiz and review questions have sound reasoning and unambiguous keys; only two fixes are needed: adding a 'for classification' caveat to the .predict() vs predict_proba() audit rule so learners do not misapply it to regression/forecasting scripts, and addressing the undocumented min_samples_leaf=5 parameter in the random-forest snippet.",
+ "_hash": "bbc934accb1bb3a0",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_ChdxUmNDYS02NU9KVHZ4czBQX01UV29BcxIXcVJjQ2EtNjVPSlR2eHMwUF9NVFdvQXM | tokens in=68687 out=765 thought=29791]"
+}

@@ -1,0 +1,26 @@
+{
+ "issues": [
+  {
+   "where": "seg5 narration",
+   "quote": "starts from a rough guess, measures how far its outputs are from what really happened to thousands of past advertisers, nudges the cut-offs and weights to shrink that miss, and repeats",
+   "kind": "wrong_concept",
+   "severity": "low",
+   "explanation": "Gradient-based models start from initial weights and iteratively nudge those weights, whereas cut-off-based models (decision trees and boosted trees) do not start from rough cut-offs and nudge them; hard step thresholds have zero gradient almost everywhere, so tree learners pick cut-offs by scanning candidate split points greedily. Also, at a single split a tree does check every distinct cut-off in the data; what nobody tries is every multi-column combination of rules.",
+   "evidence": "ML optimization principle: gradient methods iteratively nudge continuous weights, while tree algorithms find cut-offs by discrete search over candidate split values rather than nudging guessed thresholds.",
+   "fix": "Say instead: 'Nobody tries every possible multi-column rule. Instead, the computer tests candidate cut-offs or starts from rough weights and nudges them step by step, measuring how far its outputs are from what really happened to thousands of past advertisers and adjusting to shrink that miss.'"
+  },
+  {
+   "where": "takeaways, goal, recall, glossary, and review 1 variant 3",
+   "quote": "the frozen model then gives each new row a score between 0 and 1",
+   "kind": "contradiction",
+   "severity": "low",
+   "explanation": "The lesson goal says you can point to 'the score in any modelling task', and takeaways, recall, and the glossary state without qualification that a frozen model returns a score between 0 and 1. Yet review 1 variant 3 asks about a model predicting each client's quarterly revenue and says 'those are the rows you score'. A revenue or spend regression model outputs predicted dollar amounts, not a number between 0 and 1; a 0-to-1 score applies specifically to yes-or-no outcomes.",
+   "evidence": "BRIEF.md ('score (a number between 0 and 1, not a yes/no)'), facts.json regression.target ('spend_next_8w: dollars spent in the 8 weeks after the snapshot'), and LESSON.json review[0].variants[2] (predicting quarterly client revenue).",
+   "fix": "Scope the 0-to-1 score definition in goal, takeaways[1], recall.model_answer, and glossary to yes-or-no outcomes (e.g. 'For a yes-or-no outcome, the frozen model gives each new row a score between 0 and 1'), or change review 1 variant 3 to a yes-or-no outcome until Lesson 1-2 introduces regression."
+  }
+ ],
+ "numbers_checked": 56,
+ "verdict": "All 56 dataset figures, advertiser example rows, feature counts, and cut-offs match facts.json; only two minor conceptual and scoping points need tightening (describing cut-offs as learned by iterative nudging in seg5, and stating unconditionally that models output 0-to-1 scores while review 1 variant 3 uses a revenue regression task).",
+ "_hash": "667fd44548b4a526",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_ChZNUkVDYTdkVTk0bnN6d182cUtDSkJ3EhZNUkVDYTdkVTk0bnN6d182cUtDSkJ3 | tokens in=67886 out=666 thought=29793]"
+}

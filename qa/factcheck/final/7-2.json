@@ -1,0 +1,17 @@
+{
+ "issues": [
+  {
+   "where": "quiz 7-2-q4",
+   "quote": "A similarity score is a distance, not a probability",
+   "kind": "wrong_concept",
+   "severity": "low",
+   "explanation": "Similarity and distance have opposite directions in geometry and machine learning: distance is 0 for identical points and increases as points move farther apart, whereas a similarity score tops out at 1 for identical points and decreases as points move farther apart. Calling a similarity score 'a distance' inverts the scale that learners met in earlier distance and clustering lessons (and would invert what raising the cut-off from 0.90 to 0.95 in option 2 means).",
+   "evidence": "Standard ML definition of similarity vs distance, and LESSON glossary ('similarity score': 'A number for how close two embeddings are; it tops out at 1 for texts the model places at the same point').",
+   "fix": "Replace 'A similarity score is a distance, not a probability' with 'A similarity score measures closeness in coordinate space, not a probability'."
+  }
+ ],
+ "numbers_checked": 41,
+ "verdict": "Pass with one minor conceptual wording fix: every numeric claim in the narration, visuals, predict item, quiz, and review questions matches facts.json, simulation caveats are stated honestly, and only one quiz explanation conflates similarity with distance.",
+ "_hash": "e861f9803ab5482c",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_ChdreFFDYTZXdkpNM2puc0VQdFBXSXdRbxIXa3hRQ2E2V3ZKTTNqbnNFUHRQV0l3UW8 | tokens in=68195 out=333 thought=17756]"
+}

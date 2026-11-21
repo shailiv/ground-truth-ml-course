@@ -1,0 +1,258 @@
+{
+ "reviewer": "expert-4",
+ "lessons": ["6-1", "6-2", "6-3", "6-4", "7-1", "7-2", "7-3", "7-4", "7-5"],
+ "findings": [
+  {
+   "lesson": "6-1",
+   "where": "seg6 visual (compare, left panel 'Told the dates', value; sub 'worst month · average 2.8%')",
+   "quote": "5.5%",
+   "kind": "number_mismatch",
+   "severity": "high",
+   "problem": "The visual gives the full model's worst month as 5.5%; facts and the narration of the same segment say 3.5. With 5.5 beside 6.3 the screen no longer shows the 'close to double' jump that the whole segment is about, and it contradicts the voice.",
+   "evidence": "forecast.backtest.methods.trend_plus_seasonality_regression.mape_worst_month = 0.0353; regression_not_told_about_holidays.mape_worst_month = 0.0631. Narration seg6: 'the worst month 3.5'. Seg4 visual note: 'Worst month 3.5%'.",
+   "fix": "left.value = \"3.5%\""
+  },
+  {
+   "lesson": "6-1",
+   "where": "seg6 narration",
+   "quote": "Without them the average barely moves, to 3.7 percent.",
+   "kind": "number_mismatch",
+   "severity": "medium",
+   "problem": "The average error of the model without event dates is 3.3 percent, not 3.7. The narration contradicts its own visual ('average 3.3%') and quiz 6-1-q2 ('from 2.8 to 3.3 percent').",
+   "evidence": "forecast.backtest.methods.regression_not_told_about_holidays.mape = 0.0333",
+   "fix": "\"Without them the average barely moves, to 3.3 percent.\""
+  },
+  {
+   "lesson": "6-1",
+   "where": "seg4 visual (formula note)",
+   "quote": "Boosted trees on the same calendar columns: 7.4%.",
+   "kind": "number_mismatch",
+   "severity": "medium",
+   "problem": "Boosted trees on calendar columns score 5.4%, not 7.4%. The narration of the same segment says 'about 5 percent, level with the four week average' and other_ways says 5.4%; 7.4 would put the model behind both weekday baselines (6.4 and 5.7) and reverse that reading.",
+   "evidence": "forecast.backtest.methods.gradient_boosting_on_calendar.mape = 0.0541",
+   "fix": "\"Worst month 3.5%. Boosted trees on the same calendar columns: 5.4%.\""
+  },
+  {
+   "lesson": "6-1",
+   "where": "quiz 6-1-q2 (question stem and option B)",
+   "quote": "average daily error 3.1 percent over twelve monthly forecasts, against 6.4 percent for the baseline",
+   "kind": "unsupported_number",
+   "severity": "low",
+   "problem": "Course-domain question. The report it describes (trend, weekday and time of year, no event dates, twelve monthly forecasts, baseline 6.4) is exactly the facts' model without holidays, which scores 3.3 percent; 3.1 is in no fact, and the explanation of the same question then says 3.3.",
+   "evidence": "forecast.backtest.methods.regression_not_told_about_holidays.mape = 0.0333; same_weekday_last_week.mape = 0.0636",
+   "fix": "Use 3.3 percent in the stem."
+  },
+  {
+   "lesson": "6-1",
+   "where": "quiz (all 4) and review (5 of 6 variants)",
+   "quote": "keyed option is the longest option in 9 of 10 questions",
+   "kind": "bad_question",
+   "severity": "medium",
+   "problem": "Picking the longest option scores 9 out of 10 without reading the stem: the keyed answer is strictly the longest in every quiz question (by 10, 21, 24 and 34 characters) and in five of the six review variants. The distractors are short dismissals; the key is the only qualified sentence.",
+   "evidence": "Option lengths, keyed first: q1 91 vs 81/78/76; q2 108 vs 87/80/73; q3 104 vs 80/71/68; q4 117 vs 83/82/79; review 1 v1 85 vs 74, v3 79 vs 52; review 2 v1 66 vs 62, v2 68 vs 46, v3 88 vs 57. Only review 1 v2 breaks the pattern. Lessons 7-1 to 7-5 show it can be avoided (keyed longest in 9 of 50).",
+   "fix": "Lengthen two distractors per question to the key's length with an equally specific, wrong reason, or trim the keys."
+  },
+  {
+   "lesson": "6-2",
+   "where": "seg4 narration (last sentence)",
+   "quote": "Shuffling the days before you split is the fairest way to test a forecast, because it removes the calendar's influence.",
+   "kind": "wrong_concept",
+   "severity": "high",
+   "problem": "False, and the opposite of what the lesson teaches. Shuffled hold-outs put every tested day between days the model trained on, so a flexible model is flattered; they do not remove the calendar's influence, they leak it. It contradicts seg1, seg2, the predict reveal, quiz q1, both drills and the first take-away of the same lesson.",
+   "evidence": "forecast.shuffled_folds_vs_backtest.gradient_boosting_on_calendar: mape_shuffled_folds 0.0318 vs mape_backtest 0.0541. Principle: a forecast is evaluated out of time, from a past origin forward.",
+   "fix": "Delete the sentence. The segment should end on 'A best case, not a promise.'"
+  },
+  {
+   "lesson": "6-2",
+   "where": "quiz 6-2-q2, with seg5 narration and ask_assistant",
+   "quote": "Finance asks for next month's spend as 'just one number'. Your backtests show that actual spend fell within roughly 4 percent of the daily forecast on four days out of five.",
+   "kind": "misleading",
+   "severity": "medium",
+   "problem": "The only range the lesson builds is for one day's value (percentiles of daily percentage errors), yet the question, the opening ask and the transfer items hand it over with a monthly figure. A range for a total has to come from backtest errors of totals: daily misses partly cancel in a sum (or, after a level shift, do not), so the daily band is the wrong width for the month. Here it is about four times too wide, and nothing in the lesson says the band is per day only.",
+   "evidence": "forecast.interval.how: 10th and 90th percentiles of the regression's daily percentage errors, -0.0449 to +0.0381. forecast.backtest.methods.trend_plus_seasonality_regression.error_of_28_day_total_typical = 0.0097.",
+   "fix": "Add to seg5: 'That band is for a single day. For the month's total, build the range the same way from the backtests' 28-day totals; here the total typically misses by about 1 percent.' In q2 either ask about daily spend or quote a band measured on totals; add the totals band to ask_assistant."
+  },
+  {
+   "lesson": "6-2",
+   "where": "quiz (all 4) and review (5 of 6 variants)",
+   "quote": "keyed option is the longest option in 9 of 10 questions",
+   "kind": "bad_question",
+   "severity": "medium",
+   "problem": "Picking the longest option scores 9 out of 10. In all four quiz questions the key is longer than every distractor by 19 to 37 characters, and it is the longest in five of six review variants.",
+   "evidence": "Option lengths, keyed first: q1 102 vs 83/80/76; q2 113 vs 76/73/70; q3 115 vs 89/87/83; q4 111 vs 75/74/71; review 1 v2 93 vs 69, v3 87 vs 56; review 2 v1 84 vs 74, v2 71 vs 53, v3 60 vs 50.",
+   "fix": "Balance option lengths as in module 7."
+  },
+  {
+   "lesson": "6-3",
+   "where": "seg2 visual (stat 2, label 'of them on a Saturday or a Monday')",
+   "quote": "13%",
+   "kind": "number_mismatch",
+   "severity": "high",
+   "problem": "The share is 83%, not 13%. The narration of the same segment says 'More than four in five' and the predict reveal says the same; 13% would mean the alerts were not weekend artefacts at all, which reverses the point of the segment.",
+   "evidence": "series_anomalies.naive_rule.share_of_alerts_on_sat_or_mon = 0.831",
+   "fix": "value = \"83%\""
+  },
+  {
+   "lesson": "6-3",
+   "where": "seg3 visual (formula note)",
+   "quote": "Result: 47 alert days · 6 of 7 incidents · 9 false-alarm days",
+   "kind": "number_mismatch",
+   "severity": "medium",
+   "problem": "The weekday detector at a band of three raised 17 alert days, not 47. The narration says 'Alert days drop from 89 to 17', the seg4 and seg6 tables say 17, and 8 incident days plus 9 false-alarm days is 17.",
+   "evidence": "series_anomalies.seasonal_baseline.by_threshold[k=3]: alert_days 17, incident_days_caught 8, false_alert_days 9",
+   "fix": "\"Result: 17 alert days · 6 of 7 incidents · 9 false-alarm days, 7 on known holidays (2 left if holidays are skipped).\""
+  },
+  {
+   "lesson": "6-3",
+   "where": "seg6 narration",
+   "quote": "The price is 32 alert days, 32 of them false.",
+   "kind": "number_mismatch",
+   "severity": "high",
+   "problem": "At a band of two, 23 of the 32 alert days are false, not 32. As spoken it is also impossible: the previous sentence says this setting catches every incident, so some alert days must be incident days. The table on screen says 23.",
+   "evidence": "series_anomalies.seasonal_baseline.by_threshold[k=2]: alert_days 32, false_alert_days 23, incident_days_caught 9, incidents_caught 7",
+   "fix": "\"The price is 32 alert days, 23 of them false.\""
+  },
+  {
+   "lesson": "6-3",
+   "where": "quiz q3 and review 1 v2, review 2 v1, v2",
+   "quote": "keyed option is the longest option in 8 of 10 questions",
+   "kind": "bad_question",
+   "severity": "low",
+   "problem": "The keyed answer is the longest option in 8 of 10 questions. In four of them the margin is 1 to 3 characters, but in q3 and three review variants the key stands out by 16 to 28 characters.",
+   "evidence": "Option lengths, keyed first: q3 95 vs 76/75/68; review 1 v2 81 vs 53/50/42; review 2 v1 66 vs 50/48/46; review 2 v2 72 vs 50/46/32.",
+   "fix": "Lengthen the distractors in those four questions."
+  },
+  {
+   "lesson": "6-4",
+   "where": "seg6 narration",
+   "quote": "Here that is 6,734 of the 6,000.",
+   "kind": "number_mismatch",
+   "severity": "high",
+   "problem": "The usable count is 4,734 of 6,000. The spoken number is larger than the whole table, and it contradicts the visual of the same segment ('4,734 usable · 1,266 set aside') and the next sentence ('The newest fifth is set aside').",
+   "evidence": "time_to_event.the_classification_shortcut.advertisers_usable = 4734; advertisers_thrown_away = 1266; time_to_event.n = 6000",
+   "fix": "\"Here that is 4,734 of the 6,000.\""
+  },
+  {
+   "lesson": "6-4",
+   "where": "seg2 visual (compare, right sub)",
+   "quote": "all 8,000 advertisers counted",
+   "kind": "number_mismatch",
+   "severity": "medium",
+   "problem": "The simulation has 6,000 advertisers. The left panel of the same visual (3,099 churned + 2,901 still active) and the narration both say 6,000.",
+   "evidence": "time_to_event.n = 6000; churned_so_far 3099 + still_active_censored 2901",
+   "fix": "\"all 6,000 advertisers counted\""
+  },
+  {
+   "lesson": "6-4",
+   "where": "seg5 visual (bar label 3)",
+   "quote": "Weeks 72–39",
+   "kind": "number_mismatch",
+   "severity": "low",
+   "problem": "The third 13-week block is weeks 27 to 39; the label has the digits transposed and sits between 'Weeks 14–26' and 'Weeks 40–52'.",
+   "evidence": "time_to_event.risk_by_quarter_of_tenure.rows[2].weeks = \"27-39\"",
+   "fix": "\"Weeks 27–39\""
+  },
+  {
+   "lesson": "6-4",
+   "where": "seg3 narration",
+   "quote": "Nobody is thrown away, and nobody is assumed to have stayed or gone.",
+   "kind": "misleading",
+   "severity": "low",
+   "problem": "The curve does rest on an assumption that is never stated: advertisers who drop out of view face the same week-by-week risk as those still watched. With join dates spread over two years, the far end of the curve is estimated from the oldest cohorts only; if newer advertisers churn differently (a new acquisition channel, a product change) the median is wrong for today's customers. The lesson says the tail 'rests on the fewest people' but not that it rests on the earliest joiners.",
+   "evidence": "Principle: Kaplan-Meier requires censoring to be unrelated to churn risk (no cohort drift). time_to_event.setup: 'joined at different times over the last two years'.",
+   "fix": "Add one sentence: 'This assumes recent joiners behave like earlier ones at the same tenure; check it by drawing the curve separately by join period.' Add the by-join-period curve to the audit checklist."
+  },
+  {
+   "lesson": "6-4",
+   "where": "quiz q1-q3 and review (5 of 6 variants)",
+   "quote": "keyed option is the longest option in 9 of 10 questions",
+   "kind": "bad_question",
+   "severity": "medium",
+   "problem": "Picking the longest option scores 9 out of 10. The key is the longest in all four quiz questions and in five of six review variants, by 19 to 37 characters in most of them.",
+   "evidence": "Option lengths, keyed first: q1 93 vs 81/80/74; q3 105 vs 75/70/70; review 1 v1 100 vs 69, v2 90 vs 71, v3 88 vs 67; review 2 v2 91 vs 54, v3 80 vs 53. Only review 2 v1 is balanced.",
+   "fix": "Balance option lengths as in module 7."
+  },
+  {
+   "lesson": "7-1",
+   "where": "seg4 narration (last sentence)",
+   "quote": "The clustering algorithm also tells you the correct number of segments, so there is no judgement in choosing it.",
+   "kind": "wrong_concept",
+   "severity": "high",
+   "problem": "False. k-means takes k as an input and its error falls with every centre added, so nothing it returns identifies a correct number of segments. The sentence contradicts seg2 ('You choose k'), seg7 ('Nothing in the data says four'), quiz 7-1-q4 and the facts, and it undoes the lesson's main warning.",
+   "evidence": "segments.honesty_checks.no_elbow: 'nothing in the data says the right number of segments is four'; segments.inertia_by_k falls steadily from 78563 (k=2) to 51180 (k=8).",
+   "fix": "Delete the sentence. The segment should end on 'two yes-or-no columns you already had.'"
+  },
+  {
+   "lesson": "7-3",
+   "where": "seg3 narration",
+   "quote": "Keyword rules: 92 percent.",
+   "kind": "number_mismatch",
+   "severity": "high",
+   "problem": "Keyword rules score 29 percent (131 of 450), not 92. As spoken, the bottom rung beats every method except the strongest model and the ladder the lesson is built on inverts; the bar chart on screen says 29.1.",
+   "evidence": "tickets.methods.keyword_rules.accuracy = 0.291, correct = 131, n = 450",
+   "fix": "\"Keyword rules: 29 percent.\""
+  },
+  {
+   "lesson": "7-3",
+   "where": "seg8 narration",
+   "quote": "The cheap model's 18 percent hides that it catches only 60 percent of feature requests.",
+   "kind": "number_mismatch",
+   "severity": "high",
+   "problem": "The cheap language model scores 81 percent, not 18. Eighteen would be blind guessing (16.7) and contradicts seg3 ('81'), the predict reveal and the first take-away.",
+   "evidence": "tickets.methods.llm_zero_shot_cheap.accuracy = 0.809; per_category.feature_request.recall = 0.6",
+   "fix": "\"The cheap model's 81 percent hides that it catches only 60 percent of feature requests.\""
+  },
+  {
+   "lesson": "7-3",
+   "where": "seg2 narration",
+   "quote": "All five face the same 490 unseen test tickets",
+   "kind": "number_mismatch",
+   "severity": "medium",
+   "problem": "The test set has 450 tickets. The visual of the same segment, the title slide and every later segment say 450.",
+   "evidence": "tickets.n_test = 450",
+   "fix": "\"All five face the same 450 unseen test tickets\""
+  },
+  {
+   "lesson": "7-3",
+   "where": "other_ways item 2 ('Embeddings with a simple trained model'), and seg7 narration",
+   "quote": "When you have labelled examples and a high volume of text, or the text must not leave the building.",
+   "kind": "misleading",
+   "severity": "medium",
+   "problem": "In this course the embeddings come from a hosted embedding model, so the ticket text leaves the building exactly as it does for the language models; lesson 7-2 says so in its limits and its audit list. Seg7 also presents 'the text leaves the building' as a cost of the language-model rungs alone. A learner following this would route confidential text through an embedding service believing it stays in-house.",
+   "evidence": "tickets.embedding_model = \"gemini-embedding-2\", a vendor model from the same family as the two classifiers (tickets.models). Lesson 7-2 seg7: 'embedding a ticket means sending its text to a model. Know where it goes.'; 7-2 other_ways gives word counts, not embeddings, as the route when 'the text must stay in-house'.",
+   "fix": "other_ways: '...or, with an embedding model you run in-house, when the text must not leave the building.' Seg7: say that of the five rungs only keyword rules and the bag-of-words model keep the text in-house by default."
+  },
+  {
+   "lesson": "7-3",
+   "where": "ask_assistant",
+   "quote": "Classify the support tickets into our six categories with a language model given instructions only. Show me the exact instructions, the model name and version, and where the text is sent.",
+   "kind": "brief",
+   "severity": "low",
+   "problem": "The paste-ready brief has the assistant send client ticket text to a language model and report the destination afterwards. Unlike the 7-2 brief ('using an approved model') it sets no approval condition before any text is sent, against the course's own rule on client data (1-5, restated in 7-5).",
+   "evidence": "OUTLINE 1-5: 'do not paste client data into a tool that is not approved for it'; 7-5 seg7: 'Client data stays in tools approved for it ... ticket text sent to an outside model'.",
+   "fix": "\"...with an approved language model given instructions only. Before sending any ticket text, tell me the model and where the text will go.\""
+  },
+  {
+   "lesson": "7-3",
+   "where": "seg6 narration",
+   "quote": "no method can score above their agreement",
+   "kind": "misleading",
+   "severity": "low",
+   "problem": "Stated as a hard ceiling, which it is not: a model can match one labeller's key, or an adjudicated key, more often than a second person does. What disagreement caps is how much a score above it can mean. The glossary of the same lesson has the careful wording ('cannot be meaningfully scored above it').",
+   "evidence": "Principle: agreement between labellers bounds how far a score can be trusted, not its arithmetic value; a model fitted to one labeller's key routinely exceeds a second labeller's agreement with that key. The same loose wording is in the OUTLINE brief and in tickets.honest_limits[0] ('caps what any method can score'), so it should be tightened at the source too.",
+   "fix": "\"...two people often disagree about the main issue, and a score above their rate of agreement stops meaning anything.\""
+  },
+  {
+   "lesson": "7-5",
+   "where": "seg3 narration and seg4 narration/visual",
+   "quote": "against the rule the team already follows, replace anything older than a month ... next to the rule's twenty",
+   "kind": "contradiction",
+   "severity": "low",
+   "problem": "Seg2 fixes the framing as one row = a creative three days after launch, target = fatigued within two weeks. No creative is a month old at day three, and a month-old creative's two-week window has already closed, so the named rule cannot produce 'the rule's twenty' on the rows the model is judged on. The capstone's worked example breaks its own rule that baseline and model are compared on the same rows at the same list size.",
+   "evidence": "Seg2: 'One creative, three days after launch ... Features come only from those three days.' Seg4 table: 'Fatigued in the top 20, model vs rule' on 'Creatives launched later'. Principle (2-3, 7-4): same rows, same list size.",
+   "fix": "Name a baseline that exists at day three, for example 'the twenty with the steepest CTR drop over their first three days'; or reframe the row as a live creative today with target 'fatigues in the next two weeks', so the age rule applies."
+  }
+ ],
+ "clean": ["7-2", "7-4"],
+ "notes": "Every figure in all nine lessons was checked against facts.json individually (narration, visuals, predict, quiz, review, drills, take-aways, glossary, other_ways, briefs). 7-2 and 7-4 matched in full. The two wrong-concept sentences (6-2 seg4, 7-1 seg4) are each the last sentence of a narration and contradict the rest of their lesson. Points about facts.json itself: (1) tickets.paired.method says 'same 300 tickets' and tickets.learning_curve.how says 'the 300 test tickets', but n_test is 450 and the paired counts only reconcile with 450, e.g. (147-39)/450 = 24.0 points. (2) tickets.what says 'a third are deliberately hard'; honest_limits implies 150 of 600 training plus 300 of 450 test = 43 percent. (3) Bag-of-words trained on all 600 tickets is 0.542 in tickets.learning_curve but 0.531 (239/450) in tickets.methods, while embeddings agree at 0.749; probably two featurisations (words vs words and phrases) but facts do not say so, and 7-2 shows 54.2 where 7-3 shows 53.1. (4) tickets.llm_misses does not say which of the two language models made each miss; quiz 7-3-q4 attributes the first to the stronger model, which cannot be confirmed. (5) forecast.interval low_pct/high_pct: the sign convention (actual relative to forecast, or the reverse) is not stated; 6-2 reads it as actual relative to forecast. (6) forecast.level_shift.months_until_back_within_1_point_of_normal is 4 for the regression, yet April is again 2.5 points above normal (0.044 vs 0.019); 6-2's visual note says so, but the single number would mislead a later author. (7) series_anomalies.naive_rule.incidents_caught = 6 includes the five-day slow leak (only the weekend spike is listed as missed). A 15-percent-versus-yesterday rule can only have 'caught' it through its routine Saturday alert on 24 January 2026, so that count flatters the rule, and the OUTLINE line that the leak is one 'the others missed' disagrees with facts for the naive rule (the lesson text avoids the claim). (8) Outside my lessons: tree.test.auc and tree.train_auc (0.761, 0.786) differ from depth_sweep at depth 3 (0.767, 0.787). (9) Answer-length cue: in 6-1 to 6-4 the keyed option is the longest in 35 of 40 quiz and review questions; in 7-1 to 7-5 in 9 of 50."
+}

@@ -1,0 +1,369 @@
+{
+  "id": "2-3",
+  "module": 2,
+  "title": "Scores, cut-offs and ranked lists",
+  "subtitle": "The model gives a score. Who decides where to cut, and how do you judge the ranking?",
+  "goal": "After this lesson you can turn a model's scores into a list sized for the team, compare it fairly with a baseline, and say in one sentence what an AUC means.",
+  "predict": {
+    "q": "At the default cut-off of 0.5 the model flags 141 advertisers and catches about 20 percent of the churners. Lower the cut-off to 0.2 and it flags 690. What share of the churners does it catch now?",
+    "options": [
+      "About 25 percent",
+      "About 40 percent",
+      "About 60 percent",
+      "About 90 percent"
+    ],
+    "answer": 2,
+    "reveal": "About 60 percent, three times as many, while precision falls from about 74 to about 46 percent. The lesson shows how to choose that trade."
+  },
+  "segments": [
+    {
+      "narration": "Last lesson's model caught one churner in five, and the account lead is back with a fair question: can it be less timid? It can, without retraining anything. The model never said yes or no. It gave each of the 4,000 test advertisers a score between zero and one, and a line at 0.5 turned those scores into flags. That line was a default in the code. Nobody in your business chose it. So the question is not what the model flags. It is where you want the line.",
+      "visual": {
+        "type": "title",
+        "kicker": "Module 2 · Lesson 3",
+        "title": "Scores, cut-offs and ranked lists",
+        "sub": "Nobody said the cut-off had to be 0.5"
+      }
+    },
+    {
+      "narration": "[[1]] At 0.5 the model flagged 141 advertisers. Precision was about 74 percent and recall about 20. [[2]] Now slide the line down to 0.2. The model flags 690 advertisers. Recall triples, to about 60 percent: three churners in five now get a call. Precision drops to about 46 percent, so more than half the calls are false alarms. Nothing about the model changed: same scores, same order. You moved a line, and traded precision for recall. The assistant's code will call that line a threshold.",
+      "visual": {
+        "type": "compare",
+        "title": "Same model, same scores, two cut-offs",
+        "left": {
+          "label": "Cut-off 0.5",
+          "value": "141 flagged",
+          "sub": "precision 73.8% · recall 19.7%"
+        },
+        "right": {
+          "label": "Cut-off 0.2",
+          "value": "690 flagged",
+          "sub": "precision 45.7% · recall 59.8%"
+        }
+      }
+    },
+    {
+      "narration": "Every test advertiser's real score is loaded, and the cut-off is yours to drag. Start at 0.5, then pull it down and watch the four counts change. At 0.05 the model catches nine churners in ten, and flags nearly half of all advertisers to do it. At 0.7, nine flags in ten are right, but only 43 advertisers are flagged. With this model, no setting makes precision and recall both high. That is not a flaw. It is the trade you are choosing. Try it now, and find the cut-off that flags about as many advertisers as the hand rule did.",
+      "visual": {
+        "type": "widget",
+        "name": "threshold",
+        "title": "Drag the cut-off over the real test scores",
+        "note": "Try 0.5, then 0.2, then 0.05. Then find the cut-off that flags about 711 advertisers, the size of the hand rule's list."
+      }
+    },
+    {
+      "narration": "In practice a cut-off in score units is an awkward thing to pick. A list length is not. If account managers can call 200 advertisers this month, sort by score and take the top 200. In SQL terms: order by score descending, limit 200. The assistant will call it a top K list. That list holds 136 churners. Draw 200 advertisers at random and you would expect about 26. So the list is about five times richer than chance. Like any number from a sample it wobbles: on another draw of test advertisers, the count could be anywhere from 123 to 150.",
+      "visual": {
+        "type": "table",
+        "title": "Sort by score, take the top K",
+        "columns": [
+          "List size",
+          "Churners on the list",
+          "A random list would hold"
+        ],
+        "rows": [
+          [
+            "100",
+            "76",
+            "13.2"
+          ],
+          [
+            "200",
+            "136",
+            "26.4"
+          ],
+          [
+            "400",
+            "220",
+            "52.7"
+          ],
+          [
+            "800",
+            "338",
+            "105.4"
+          ]
+        ],
+        "highlight": [
+          1
+        ],
+        "note": "ORDER BY score DESC LIMIT 200"
+      }
+    },
+    {
+      "narration": "Earlier the bar was set: beat the hand rule with the same number of flags. Here is why. The rule flagged 711 advertisers and the default cut-off 141, so comparing their precision compares a long list with a short one, and a short list usually looks more precise. Give both the same length. [[1]] The rule's 711 advertisers hold 246 churners. [[2]] The model's top 711 hold 321. Same effort for the team, more churners reached, and the model is ahead on precision and recall at once. Here the model wins; elsewhere a rule might. Either way, the only fair comparison is at the same list size.",
+      "visual": {
+        "type": "compare",
+        "title": "Same list size: 711 advertisers",
+        "left": {
+          "label": "Hand rule: spend trend < 0.7",
+          "value": "246 churners",
+          "sub": "precision 34.6% · recall 46.7%"
+        },
+        "right": {
+          "label": "Model: top 711 by score",
+          "value": "321 churners",
+          "sub": "precision 45.1% · recall 60.9%"
+        }
+      }
+    },
+    {
+      "narration": "What you are judging, then, is the ranking. Sort all 4,000 test advertisers by score and cut the list into ten equal slices. [[1]] In the top slice, 55 percent churned. [[2]] In the second, about 30 percent. [[3]] In the third, about 14. [[4]] In the fourth, 12, already below the overall average of about 13. A good ranking looks like that: churners piled at the top, almost none at the bottom. The top two slices, a fifth of all advertisers, hold about 64 percent of the churners.",
+      "visual": {
+        "type": "bar",
+        "title": "Churn rate by slice of the ranked list (400 advertisers each)",
+        "unit": "%",
+        "data": [
+          {
+            "label": "Top 400",
+            "value": 55
+          },
+          {
+            "label": "Next 400",
+            "value": 29.5
+          },
+          {
+            "label": "Third 400",
+            "value": 14.2
+          },
+          {
+            "label": "Fourth 400",
+            "value": 12
+          }
+        ],
+        "highlight": [
+          0
+        ],
+        "note": "Test-month average: 13.2%. Six more slices follow, down to 0.5%."
+      }
+    },
+    {
+      "narration": "It helps to have one number for a ranking, with no cut-off involved. That number is AUC, short for area under the curve. Forget the curve. Pick one advertiser who churned and one who stayed, at random. AUC is how often the churner has the higher score. A coin flip gives 0.5. A perfect ranking gives 1. This model gets about 0.85: in 85 pairs out of a hundred, the churner comes out on top. Now what AUC hides. It averages over the whole list, so it says little about the top 200, the only part your team will touch. And it only checks order, so it cannot tell you whether a score of 0.3 really means 30 percent.",
+      "visual": {
+        "type": "quote",
+        "text": "AUC: pick one churner and one stayer at random. How often does the churner have the higher score?",
+        "sub": "0.5 = a coin · 1 = perfect · this model: 0.845"
+      }
+    },
+    {
+      "narration": "Brief and audit. [[1]] Ask the assistant for a score for every test advertiser, never just a yes or no. [[2]] Ask for precision and recall at several cut-offs, not one. [[3]] Ask for the top of the list at sizes your team could handle, with the count a random list would hold beside it. Then the evidence. [[4]] Every precision or recall figure must name the cut-off or list size behind it. [[5]] Any claim that the model beats a baseline must be made at the same list size. And AUC goes in the report on the test months, beside the top of the list, never instead of it.",
+      "visual": {
+        "type": "bullets",
+        "title": "Brief and audit",
+        "items": [
+          "Ask: a score per advertiser, not a yes or no",
+          "Ask: precision and recall at several cut-offs",
+          "Ask: top 100, 200, 400, 800 with the random-list count",
+          "Check: every figure names its cut-off or list size",
+          "Check: model and baseline at the same list size"
+        ]
+      }
+    },
+    {
+      "narration": "To recap. [[1]] A model hands you scores, and the cut-off is your decision, usually set by how many advertisers the team can handle. [[2]] A model and a rule are compared at the same list size, or not at all. [[3]] AUC sums up the ranking in one number: how often a random churner outscores a random stayer. One question is open. So far the score has only been an order. Next lesson: can it be read as a percentage? When the model says 30, do 30 in a hundred leave?",
+      "visual": {
+        "type": "bullets",
+        "title": "Keep this",
+        "items": [
+          "The model ranks; you choose where to cut",
+          "Compare lists at the same size",
+          "AUC: how often a churner outscores a stayer"
+        ]
+      }
+    }
+  ],
+  "takeaways": [
+    "A model outputs scores; where to cut is your decision, usually set by capacity or cost.",
+    "Compare a model and a rule at the same list size, never at different ones.",
+    "AUC is how often a random churner outscores a random stayer: it judges the ranking, not the top of the list and not the percentages."
+  ],
+  "quiz": [
+    {
+      "id": "2-3-q1",
+      "concept": "the cut-off is a decision",
+      "domain": "course",
+      "q": "The retention team can call 400 advertisers this month. The assistant's report uses the default cut-off of 0.5 and lists 141. The team lead says: 'The model only gives us 141 names, so we will fill the other 259 from the old rule.' What do you tell her?",
+      "options": [
+        "Good plan: the model has no opinion about anyone who scores below 0.5.",
+        "Take the model's top 400 by score: the 0.5 line was a default, not part of the model.",
+        "Ask the assistant to retrain until at least 400 advertisers score above 0.5.",
+        "Call only the 141: everyone else is predicted to stay."
+      ],
+      "answer": 1,
+      "why": "Every advertiser has a score, so the list can be any length: the top 400 by score hold 220 churners. Scoring below 0.5 does not mean 'predicted safe', only lower on the same ranking, so the model has an opinion about all 4,000. Retraining to push scores over an arbitrary line fixes nothing."
+    },
+    {
+      "id": "2-3-q2",
+      "concept": "compare at the same list size",
+      "domain": "course",
+      "q": "The assistant's summary says: 'The model clearly beats the hand rule: precision 73.8 percent against 34.6 percent.' The same output shows that the model flagged 141 advertisers and the rule 711. What is the flaw?",
+      "options": [
+        "None: precision is the right measure when the outcome is rare.",
+        "It should have compared recall: 19.7 against 46.7 percent shows the rule is better.",
+        "It should have compared accuracy, which uses all four boxes.",
+        "The lists differ in length: compare the rule with the model's top 711 instead."
+      ],
+      "answer": 3,
+      "why": "A list of 141 and a list of 711 are different jobs for the team, and a short list from a ranking usually looks more precise than a long one. At the same size the model holds 321 churners against the rule's 246, and that is the claim the evidence supports. Switching to recall repeats the same mistake in the other direction."
+    },
+    {
+      "id": "2-3-q3",
+      "concept": "what AUC means",
+      "domain": "other",
+      "q": "A lead-scoring model is reported with an AUC of 0.80. The sales manager says: 'So 80 percent of the leads it flags will convert.' What is the right read?",
+      "options": [
+        "No: a random converting lead outscores a random non-converting one 80 percent of the time.",
+        "Yes: AUC is the model's precision averaged over all cut-offs.",
+        "No: it means the model classifies 80 percent of leads correctly.",
+        "No: it means the model catches 80 percent of the leads that convert."
+      ],
+      "answer": 0,
+      "why": "AUC describes the ranking: how often a converter is placed above a non-converter. It is not precision, accuracy or recall, each of which needs a cut-off, so the share of a flagged list that converts has to be read from a top-K table. When few leads convert, that share can sit far below 80 percent even with a good AUC."
+    },
+    {
+      "id": "2-3-q4",
+      "concept": "moving the cut-off is a trade",
+      "domain": "course",
+      "q": "A stakeholder asks for a cut-off that 'catches 90 percent of churners and is right at least 70 percent of the time'. The assistant's table shows recall reaches 90 percent only at a cut-off of 0.05, where precision is 24 percent, and precision passes 70 percent only at 0.5, where recall is 20 percent. What do you reply?",
+      "options": [
+        "Use a cut-off halfway between the two, which gives both targets.",
+        "Use two cut-offs at once: 0.05 for recall and 0.5 for precision.",
+        "These scores offer no such cut-off: choose the trade by cost and capacity.",
+        "Rebalance the data so that both numbers rise together."
+      ],
+      "answer": 2,
+      "why": "Moving the cut-off slides along one trade-off: recall is bought with precision, and on these scores the two targets never meet. A halfway cut-off gives roughly half of each, not both. Only a model that ranks better would shift the whole trade, so the reply is a choice driven by what a miss and a false alarm cost."
+    }
+  ],
+  "review": [
+    {
+      "concept": "the cut-off is your decision",
+      "variants": [
+        {
+          "q": "A traffic-quality model scores every publisher from 0 to 1 for likely invalid traffic. At the default cut-off of 0.5 it flags 30 publishers. The review team can audit 150 publishers a week. What should the weekly list be?",
+          "options": [
+            "The 30 flagged publishers: the rest are predicted clean.",
+            "The 150 highest-scoring publishers.",
+            "The 30 flagged, plus 120 picked at random for fairness.",
+            "Whatever a cut-off of 0.25 produces, since that is half the default."
+          ],
+          "answer": 1,
+          "why": "The score ranks every publisher, so the team's capacity sets the list length: sort and take the top 150. The 0.5 line is a default, not a verdict, and publishers below it are simply lower on the same ranking. Random picks or an arbitrary new cut-off throw that ranking away."
+        },
+        {
+          "q": "An upsell model's list has 300 accounts, and 40 percent of them bought. The sales team's own rule produced a list of 1,200 accounts, and 25 percent bought. A manager concludes that the model is better. What is missing?",
+          "options": [
+            "Nothing: 40 percent beats 25 percent.",
+            "The accuracy of each list.",
+            "A comparison at one size: the model's top 1,200 against the rule's 1,200.",
+            "The rule's list cut down to its 300 biggest accounts."
+          ],
+          "answer": 2,
+          "why": "A list of 300 and a list of 1,200 are different jobs, and a short list from a ranking usually has the higher hit rate. The rule found 300 buyers; the question is how many buyers sit in the model's top 1,200. Only at equal size do you learn which finds more for the same effort."
+        },
+        {
+          "q": "After a staffing cut, the retention team can call 100 advertisers a month instead of 400. The model is unchanged. What should you expect when the list shrinks from the top 400 to the top 100?",
+          "options": [
+            "Precision rises and recall falls: a shorter list is purer and reaches fewer churners.",
+            "Precision and recall both fall, because the model is used on less data.",
+            "Nothing changes: precision and recall belong to the model, not the list.",
+            "The model has to be retrained for the new list size."
+          ],
+          "answer": 0,
+          "why": "The scores and their order stay the same; only the cut moves up the list. On the course data the top 400 are 55 percent churners and reach about 42 percent of all churners, while the top 100 are 76 percent churners and reach about 14 percent. Precision and recall describe a model plus a cut-off, never the model alone."
+        }
+      ]
+    },
+    {
+      "concept": "what AUC means and what it hides",
+      "variants": [
+        {
+          "q": "A model that scores support tickets for urgency has an AUC of 0.90. Which statement is true?",
+          "options": [
+            "90 percent of the tickets it flags as urgent really are urgent.",
+            "It finds 90 percent of all the urgent tickets in the inbox.",
+            "It gives the correct label to 90 percent of all tickets.",
+            "A random urgent ticket outscores a random non-urgent one 90 percent of the time."
+          ],
+          "answer": 3,
+          "why": "AUC is about pairs: take one urgent and one non-urgent ticket at random, and it is the chance the urgent one scores higher. The other three statements are precision, recall and accuracy, and each of those needs a cut-off that AUC never uses."
+        },
+        {
+          "q": "Two models rank creatives by risk of fatigue. Model X has an AUC of 0.88 and model Y 0.86. The design team can refresh only the 200 highest-ranked creatives. In the top 200, X has 80 that really fatigued and Y has 124. Which do you use?",
+          "options": [
+            "X: the higher AUC means the better ranking everywhere.",
+            "Y: the team only uses the top 200, and Y is better there.",
+            "Either: a gap of 0.02 in AUC means the two lists are the same.",
+            "Neither, until one of them passes 0.90."
+          ],
+          "answer": 1,
+          "why": "AUC averages ranking quality over the whole list, including the many creatives nobody will act on. The decision uses only the top 200, so judge the top 200: 124 against 80. A slightly higher AUC promises nothing about any one part of the list."
+        },
+        {
+          "q": "By mistake, the assistant's script divides every churn score by two before reporting. What happens to the AUC and to the top-200 list?",
+          "options": [
+            "Both get worse, because the scores are now wrong.",
+            "The AUC halves; the top-200 list is unchanged.",
+            "Neither changes: both depend only on the order of the scores.",
+            "The AUC is unchanged, but the list shrinks to a top 100."
+          ],
+          "answer": 2,
+          "why": "Halving every score keeps every advertiser in the same order, and AUC and a top-K list use nothing but the order. That is exactly why AUC cannot tell you whether scores are right as percentages: they have all just been cut in half, and AUC did not notice."
+        }
+      ]
+    }
+  ],
+  "drill": [
+    {
+      "q": "A model gives every customer a score between zero and one. Who decides where the cut-off goes, and how?",
+      "a": "You do, not the model. Usually by capacity: sort by score and take as many as the team can handle. The halfway line is only a default in the code."
+    },
+    {
+      "q": "What does an AUC of zero point eight five mean in plain words, and what does it not tell you?",
+      "a": "Pick one churner and one stayer at random: eighty-five times in a hundred, the churner has the higher score. It measures ranking only. It does not tell you how good the top of the list is, or whether the scores are right as percentages."
+    }
+  ],
+  "recall": {
+    "prompt": "The report says the model's precision is 74 percent and the hand rule's is 35 percent. Explain why that comparison is unfair, how to make it fair, and what single number sums up the ranking.",
+    "model_answer": "The model's figure is for 141 flagged advertisers and the rule's for 711, and a short list from a ranking usually looks more precise, so the two are not comparable. Sort by score and take the model's top 711: it holds 321 churners against the rule's 246, which is the fair comparison. To sum up the ranking in one number use AUC, the chance that a random churner outscores a random stayer, about 0.85 here. Read the top of the list as well, because AUC averages over everyone."
+  },
+  "ask_assistant": "Output a churn score for every test advertiser, not a yes or no. Show a table of number flagged, precision and recall at cut-offs 0.05, 0.1, 0.2, 0.3, 0.5 and 0.7. Show the top 100, 200, 400 and 800 by score, with the number of churners on each list and the number a random list of that size would hold. Compare the model with the rule 'spend trend below 0.7' at the rule's own list size, and report AUC on the test months.",
+  "audit_checklist": [
+    "Every precision or recall figure names the cut-off or list size it belongs to.",
+    "The model and the baseline are compared at the same number flagged.",
+    "Each top-K row shows what a random list of that size would hold.",
+    "AUC is stated for the test months and sits beside the top-of-list numbers, not in place of them."
+  ],
+  "transfer": [
+    "Which leads should sales call first, when the team can make 50 calls a day?",
+    "Which publishers should the traffic-quality team audit this week?",
+    "Which creatives should be refreshed first, before they fatigue?"
+  ],
+  "other_ways": [
+    {
+      "approach": "Set the cut-off from costs: the value of a catch against the cost of a false alarm",
+      "when": "When you can put dollars on both and the percentages can be trusted; a later lesson does this."
+    },
+    {
+      "approach": "Two cut-offs and three bands: act now, watch, leave alone",
+      "when": "When you have a cheap action and an expensive one for the same list."
+    },
+    {
+      "approach": "A precision-recall summary in place of AUC",
+      "when": "When the outcome is very rare and only the top of the list matters; it weights the top more heavily."
+    }
+  ],
+  "glossary": [
+    {
+      "term": "cut-off (threshold)",
+      "def": "The score above which a row is flagged; a decision you make, not something the model learns."
+    },
+    {
+      "term": "top K",
+      "def": "The K highest-scoring rows: a list sized by what the team can handle, judged against what a random list of that size would hold."
+    },
+    {
+      "term": "AUC",
+      "def": "The chance that a randomly chosen positive case scores higher than a randomly chosen negative one; 0.5 is a coin, 1 is perfect."
+    }
+  ]
+}

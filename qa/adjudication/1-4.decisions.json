@@ -1,0 +1,51 @@
+{
+ "lesson": "1-4",
+ "decisions": [
+  {
+   "n": 0,
+   "reviewer": "learner-1",
+   "finding": "'If a field exists only in a current-state table with no dated history, it stays out' bans vertical, managed and account manager, which the course's own model uses, and gives no rule for which columns are dangerous",
+   "decision": "accepted",
+   "reason": "Right, and it is the lesson-specific ruling: a field leaks only if the outcome can change it. facts data.feature_columns includes vertical and managed; facts leakage.why describes a field that the outcome did change.",
+   "change": "seg7 narration ends with the working rule (vertical and sign-up date cannot be changed by the outcome: fine, with a note; status, tier and last-activity dates can: a copy dated at the snapshot). The sentence 'Features are not read from a table that shows the present' was merged away because it now contradicted the rule. The same rule is in the seg7 code note, seg8 narration and bullets, the brief, checklist item 2 and the explanation of review 1 variant 3. 'Start saving a dated copy of the accounts table' is now spoken in seg8 (R6)."
+  },
+  {
+   "n": 1,
+   "reviewer": "learner-1",
+   "finding": "The guess is answered by the lesson title printed above it",
+   "decision": "accepted",
+   "reason": "With four real columns the learner has to reason from '200 of 200' to the column closest to the outcome, and the reveal then teaches what the title does not: the name is innocent, the reading date is the problem.",
+   "change": "Guess now asks which column is most likely to have done it: support tickets in the last 8 weeks, days since last spend (key), days since last login, payment failures in the last 8 weeks. Reveal rewritten."
+  },
+  {
+   "n": 2,
+   "reviewer": "learner-1",
+   "finding": "seg5: 'for a churner it stopped growing, and a model will notice' skips the step that a lifetime total read today includes the weeks after the snapshot",
+   "decision": "accepted",
+   "reason": "The missing step is the whole mechanism of this kind of leak.",
+   "change": "seg5: 'Lifetime spend sounds harmless, but read today it includes the weeks after the snapshot, when churners added nothing.'"
+  }
+ ],
+ "rulings": {
+  "R1": "seg1 now ends: 'It is the same question for any model, whether it predicts churn or which creatives will fatigue: was one of its columns recorded after the outcome?'",
+  "R2": "Not applicable.",
+  "R3": "ask_assistant rewritten as a template, 117 words, slots: [event tables], [prediction date], [current-state table], [stable fields]. It carries the working rule and keeps every demand for evidence (source table and latest date per feature beside the prediction date, the five columns relied on most and when each is recorded, columns left out named).",
+  "R4": "seg9 narration is 44 words, two sentences: when a result looks too good, ask which columns the model leans on and when each was recorded; then the pointer to 1-5. Cue markers removed; visual unchanged.",
+  "R5": "Keyed answer is the longest option in 1 of 10. Review 1 variant 3: 'Nothing: account type is a stable profile field' replaced by 'The flag as stored today: account type is a stable profile field'. Literal 'None:' / 'Nothing:' / 'Either' / 'Neither' / 'Both' options were replaced with a specific mistake. Options that accept the result FOR A STATED REASON (for example 'Trust the score: it was learned from thousands of advertisers') were kept: they are the tempting misreading the explanation argues against, not a bare 'nothing is wrong'.",
+  "R6": "'Dated snapshots of current-state tables' sat only in other_ways. seg8 now ends: 'If you want status or tier as features one day, start saving a dated copy of the accounts table now.' with a fifth bullet. The closing 'You are not reading code. You are reading a short list of dates.' was cut to make room (a learner also flagged that refrain as repeated).",
+  "R7": "Checklist item 2 was a prohibition ('No feature taken from a current-state table ...'); it is now a list to read: every field taken from a current-state table, each marked 'outcome cannot change it' or 'copy dated at the snapshot'. Items 1, 3 and 4 were already evidence.",
+  "specific": "Working rule given in seg7 and repeated in the seg7 code note, seg8, the brief, the checklist and one review explanation. On-screen wording checked against the reworded facts leakage.why ('read from the live accounts table when each month's snapshot was exported, 60-120 days AFTER that snapshot's date'): the guess reveal ('months after the snapshot'), the seg3 stat ('60-120 days after the snapshot: when the column was read'), the seg4 timeline (span 116-176 = 60 to 120 days after the snapshot at 56) and the seg5 table ('read at export') all agree; the seg4 timeline note now adds 'This one was read from the live accounts table, 60-120 days after it.' seg3 narration ('from the accounts table on the day of the export, months after the snapshot') is consistent and was left byte-identical."
+ },
+ "segments_changed": [
+  1,
+  5,
+  7,
+  8,
+  9
+ ],
+ "numbers_verified": 54,
+ "open_questions": [
+  "Narration is 911 words (was 882): above the 900 aim, under the 950 cap. The growth is the working rule the ruling asked for.",
+  "Visual-only change in segment 4 (timeline note); no re-recording needed there."
+ ]
+}

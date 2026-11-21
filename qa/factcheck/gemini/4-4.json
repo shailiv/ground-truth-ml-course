@@ -1,0 +1,7 @@
+{
+ "issues": [],
+ "numbers_checked": 50,
+ "verdict": "Pass. Every numeric claim, comparison, column count, date window, and model score matches facts.json (including cumulative and standalone group AUCs, algorithm spreads on churn and video, and the share of the video gap closed by hand-built flags). The SQL point-in-time aggregation, ML explanations, caveats against over-generalising from this dataset, and all quiz and review items are accurate and internally consistent.",
+ "_hash": "1fe22221c03fa7f8",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_ChdaOVFCYTRDUU5hT29rZFVQcDlXbzhRbxIXWjlRQmE0Q1FOYU9va2RVUHA5V284UW8 | tokens in=67693 out=128 thought=32272]"
+}

@@ -1,0 +1,18 @@
+{
+ "handsome": [
+  "'High accuracy' cannot be checked, and accuracy is the wrong boast: predicting that everyone stays is 86.8% accurate.",
+  "The summary says all 200 of the top 200 churned; the tile beside it says 136. The sentence was typed around an earlier, leaky run and never updated.",
+  "No baseline, no interval, and no word on which rows the results come from.",
+  "'Reduces churn by 11 points' is a causal verb on an observed gap. Adjusted, the gap is 6.5 points; in this simulated world the true effect is 2.3.",
+  "'Rose sharply ... growing dissatisfaction' explains a change of +4.9 points whose interval runs from -1.7 to +11.4: it may not exist.",
+  "The recommendation promises 11 points per account from a practice nobody has tested.",
+  "Nothing says what not to conclude, and nothing is cut by segment."
+ ],
+ "plain": [
+  "A count, a baseline beside it at the same list size, an interval, and the rows it was measured on.",
+  "Train and test scores side by side.",
+  "A 'what not to conclude' section on the first screen.",
+  "Each finding tagged observed, adjusted or tested, with wording to match.",
+  "A source table: every number in the prose with where it was read from."
+ ]
+}

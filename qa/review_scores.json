@@ -1,0 +1,73 @@
+{
+ "gemini": {
+  "lessons": 20,
+  "findings": 47,
+  "planted": 30,
+  "caught": 30,
+  "numbers": "24/24",
+  "concepts": "6/6",
+  "missed": []
+ },
+ "expert-1": {
+  "lessons": 9,
+  "findings": 20,
+  "planted": 14,
+  "caught": 14,
+  "numbers": "12/12",
+  "concepts": "2/2",
+  "missed": []
+ },
+ "expert-2": {
+  "lessons": 9,
+  "findings": 19,
+  "planted": 13,
+  "caught": 13,
+  "numbers": "9/9",
+  "concepts": "4/4",
+  "missed": []
+ },
+ "expert-3": {
+  "lessons": 10,
+  "findings": 27,
+  "planted": 17,
+  "caught": 17,
+  "numbers": "15/15",
+  "concepts": "2/2",
+  "missed": []
+ },
+ "expert-4": {
+  "lessons": 9,
+  "findings": 25,
+  "planted": 14,
+  "caught": 14,
+  "numbers": "12/12",
+  "concepts": "2/2",
+  "missed": []
+ },
+ "learner-1": {
+  "lessons": 16,
+  "findings": 95,
+  "planted": 25,
+  "caught": 25,
+  "numbers": "21/21",
+  "concepts": "4/4",
+  "missed": []
+ },
+ "learner-2": {
+  "lessons": 21,
+  "findings": 98,
+  "planted": 33,
+  "caught": 32,
+  "numbers": "26/27",
+  "concepts": "6/6",
+  "missed": [
+   {
+    "lesson": "4-5",
+    "where": "seg5 visual",
+    "type": "number",
+    "now": "24.5",
+    "was": "20.5"
+   }
+  ]
+ }
+}

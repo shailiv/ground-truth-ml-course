@@ -1,0 +1,426 @@
+{
+ "id": "7-2",
+ "module": 7,
+ "title": "Embeddings: meaning as coordinates",
+ "subtitle": "How can a model tell that two tickets with hardly a word in common are about the same thing?",
+ "goal": "After this lesson you can explain what an embedding is, use nearness to search, group or classify text, and say what must be checked before the result is trusted.",
+ "predict": {
+  "q": "Support tickets fall into six categories, so blind guessing scores about 17 percent. You label just twelve tickets, two per category, turn every ticket into an embedding and train a simple model. Roughly how accurate is it on tickets it has not seen?",
+  "options": [
+   "About 17 percent: twelve examples teach it nothing",
+   "About 30 percent",
+   "About 54 percent",
+   "About 90 percent"
+  ],
+  "answer": 2,
+  "reveal": "About 54 percent on average, and anywhere from 45 to 62 depending on which twelve you happened to label. The lesson shows where that head start comes from."
+ },
+ "segments": [
+  {
+   "narration": "Two tickets reach the support inbox. The first says the browser extension reports the base tag as installed, yet the conversions column shows a dash after 300 clicks. The second says they pasted the tracking code into their store theme, placed a test order, and no conversion appeared. Any account manager reads those as one problem: a pixel that is installed and counting nothing. A keyword search for the word tag finds the first and misses the second. Beyond small words, they share almost nothing. You need to match on meaning, not spelling.",
+   "visual": {
+    "type": "title",
+    "kicker": "Module 7 · Lesson 2",
+    "title": "Embeddings: meaning as coordinates",
+    "sub": "Two tickets, hardly a word in common, one broken pixel"
+   }
+  },
+  {
+   "narration": "The tool for that is an embedding. [[1]] You hand a ticket's text to an embedding model. [[2]] That model is a neural network: a stack of the weighted sums you met in module three, with a bend between the layers so the stack can learn curves. Trained on enormous amounts of text, it works out its own features. [[3]] What comes back is a list of numbers, 256 for each ticket. [[4]] So a thousand tickets become a table with 256 numeric columns. No single column means anything you could name. Position carries the meaning. Think of the numbers as coordinates: tickets that mean similar things land close together.",
+   "visual": {
+    "type": "flow",
+    "title": "From text to columns",
+    "steps": [
+     {
+      "label": "Ticket text",
+      "sub": "what the customer typed"
+     },
+     {
+      "label": "Embedding model",
+      "sub": "a neural network trained on text"
+     },
+     {
+      "label": "256 numbers",
+      "sub": "the ticket's coordinates"
+     },
+     {
+      "label": "A table",
+      "sub": "one row per ticket, 256 columns"
+     }
+    ]
+   }
+  },
+  {
+   "narration": "[[1]] Near means similar. Check it. Take the first ticket, the one with the dash in the conversions column, and pull the three tickets closest to it. Closeness is a similarity score that tops out at one. [[2]] The nearest: a pixel helper shows a green checkmark, yet the dashboard shows zero results. [[3]] Next, the test order. [[4]] Then conversions that appear in another analytics tool but not on the platform. Three customers, three vocabularies, one broken pixel. This ticket's similarity to others in its category averages about 0.81. To tickets in other categories, about 0.72. A gap, though not a wide one.",
+   "visual": {
+    "type": "table",
+    "title": "One ticket and its three nearest neighbours",
+    "columns": [
+     "Ticket",
+     "Filed under",
+     "Similarity"
+    ],
+    "rows": [
+     [
+      "My browser extension says the base tag is installed correctly, so why does the conversions column still just show a dash after 300 clicks?",
+      "tracking setup",
+      "the query"
+     ],
+     [
+      "Pixel helper extension shows green checkmark on our thank-you page but your dashboard still shows 0 results after $800 spent. Is the traffic even real?",
+      "performance",
+      "0.880"
+     ],
+     [
+      "Pasted the tracking code in theme liquid file on our store. Did a test order with real credit card, no conversion in campaign dashboard…",
+      "tracking setup",
+      "0.872"
+     ],
+     [
+      "Conversions showing … but zero in your platform. Pixel helper extension says tag is loaded and event fired on the order confirmation page.",
+      "tracking setup",
+      "0.871"
+     ]
+    ],
+    "highlight": [
+     0
+    ],
+    "note": "Average similarity to this ticket: same category 0.809, other categories 0.716."
+   }
+  },
+  {
+   "narration": "Nobody can picture 256 directions, so the map squashes them down to two. Every dot is a ticket, and dots that sit close together are tickets the model considers similar. The squashing loses a lot, so expect neighbourhoods with blurred edges, not islands. And nobody told the embedding model about our six categories. Whatever grouping appears comes from the text alone. Take a minute with the map. Find where one category gathers, then find a border where two of them run into each other.",
+   "visual": {
+    "type": "widget",
+    "name": "ticket_map",
+    "title": "Tickets as dots: near means similar",
+    "note": "256 numbers squashed to 2 for drawing. Find where a category gathers, and a border where two blur."
+   }
+  },
+  {
+   "narration": "Once text is numbers, everything from earlier in the course applies. Run k-means on the embeddings, ask for six groups, and never show it a category. Each cluster turns out to be dominated by a different category, and about three quarters of its tickets belong to it. Topics fall out of the text with no labels at all: a decent first read of an unsorted inbox. Now last lesson's honesty. We asked for six because we knew there were six. On a real inbox you would not know. And roughly one ticket in four sits in the wrong pile.",
+   "visual": {
+    "type": "table",
+    "title": "k-means on the embeddings: six clusters, no labels used",
+    "columns": [
+     "Cluster's main category",
+     "Tickets in cluster",
+     "From that category"
+    ],
+    "rows": [
+     [
+      "billing",
+      "198",
+      "75.3%"
+     ],
+     [
+      "tracking setup",
+      "198",
+      "72.7%"
+     ],
+     [
+      "ad review",
+      "190",
+      "74.2%"
+     ],
+     [
+      "performance",
+      "168",
+      "76.8%"
+     ],
+     [
+      "feature request",
+      "161",
+      "78.3%"
+     ],
+     [
+      "account access",
+      "135",
+      "83.0%"
+     ]
+    ],
+    "note": "Overall, 76.3% of tickets sit with their cluster's main category. Six was our choice, not the data's."
+   }
+  },
+  {
+   "narration": "The second move is the one you will use most. Label a handful of tickets by hand and train plain logistic regression on the 256 columns. With two labelled tickets per category, twelve in all, it sorts unseen tickets with about 54 percent accuracy. Blind guessing gets 17. The figure wobbles with which twelve you picked, from about 45 to 62 percent. With 600 labelled tickets it reaches about 75. Now see what the embedding bought. Feed the same model plain word counts, and it needs all 600 tickets to match what the embedding managed with twelve. Most of the learning was done before you arrived.",
+   "visual": {
+    "type": "line",
+    "title": "Accuracy on unseen tickets, by how many you labelled",
+    "xlabel": "Labelled tickets used for training",
+    "ylabel": "Accuracy, %",
+    "x": [
+     12,
+     30,
+     60,
+     120,
+     300,
+     600
+    ],
+    "series": [
+     {
+      "name": "Embeddings",
+      "values": [
+       54.3,
+       63.5,
+       67.0,
+       69.8,
+       72.3,
+       74.9
+      ]
+     },
+     {
+      "name": "Word counts",
+      "values": [
+       28.5,
+       34.8,
+       40.8,
+       45.4,
+       50.9,
+       54.2
+      ]
+     }
+    ],
+    "note": "Averages over 20 random draws. Guessing scores 16.7%. With 12 labels the embedding route ranged from 44.7% to 62.0%."
+   }
+  },
+  {
+   "narration": "Now the limits, plainly. [[1]] An embedding captures topic far better than fine distinctions. That nearest neighbour was filed under performance: same pixel, but the customer's real question was whether the traffic is genuine. Trained on all 600 labels, the model gets about 94 percent of ordinary test tickets right. On tickets that tangle two issues, about 65. [[2]] These tickets are synthetic, written to order by language models. A real inbox is messier. [[3]] The labelled tickets came from one writer and the test tickets from another, with far more tangled ones. That handicaps the trained model, and it is realistic: what arrives later rarely matches what you trained on. [[4]] And embedding a ticket means sending its text to a model. Know where it goes.",
+   "visual": {
+    "type": "bullets",
+    "title": "What an embedding cannot do, and what these numbers cannot say",
+    "items": [
+     "Topic, not fine distinctions: 94.0% on ordinary tickets, 65.3% on tangled ones",
+     "Synthetic tickets, written to order by language models",
+     "Trained on one writer, tested on another with more tangled tickets",
+     "Embedding a ticket means sending its text to a model"
+    ]
+   }
+  },
+  {
+   "narration": "Brief and audit. [[1]] Ask the assistant which embedding model it used and where the ticket text was sent. [[2]] Ask for a nearest-neighbour check: five tickets you choose, each with its closest matches, so you can read whether near means similar. [[3]] If it trains a model, the rules from module two still hold: labelled test tickets the model never saw, with blind guessing beside it. [[4]] Ask for accuracy at several training sizes, repeated on different random draws, so you see the curve and the wobble. [[5]] And ask for ordinary and tangled tickets separately.",
+   "visual": {
+    "type": "bullets",
+    "title": "Brief and audit",
+    "items": [
+     "Show: which embedding model, and where the text was sent",
+     "Show: nearest neighbours for five tickets you chose",
+     "Show: accuracy on unseen labelled tickets, beside guessing",
+     "Show: accuracy by training size, with the range over repeats",
+     "Show: ordinary and tangled tickets separately"
+    ]
+   }
+  },
+  {
+   "narration": "To recap. [[1]] An embedding turns a piece of text into coordinates, placed so that similar meanings sit close together. [[2]] After that, text is just another table. You can search it, cluster it, or train a simple model on a few labelled rows. [[3]] It is strong on topic, weak on fine distinctions, and tested like any other model. Next, the obvious question. If a model already knows this much about language, why train anything? Hand it the tickets and the category names, and see how it scores.",
+   "visual": {
+    "type": "bullets",
+    "title": "Keep this",
+    "items": [
+     "An embedding: text as coordinates, similar meanings close together",
+     "Then text is a table: search it, cluster it, train on a few labels",
+     "Strong on topic, weak on fine distinctions: test it like any model"
+    ]
+   }
+  }
+ ],
+ "takeaways": [
+  "An embedding turns a piece of text into a list of numbers placed so that similar meanings sit close together, whatever words were used.",
+  "Once text is numbers it is just another table: search by nearness, cluster it, or train a simple model on a few labelled rows.",
+  "Embeddings catch topic far better than fine distinctions, so the usual rules apply: unseen labelled examples, a baseline, and a look at the hard cases."
+ ],
+ "quiz": [
+  {
+   "id": "7-2-q1",
+   "concept": "meaning, not spelling",
+   "domain": "course",
+   "q": "An account manager searches last month's tickets for the word 'pixel', finds 40, and reports that tracking problems are rare. You suspect an undercount. What is the best next step?",
+   "options": [
+    "Add synonyms such as 'tag', 'snippet' and 'tracking code' to the search until the count stops rising.",
+    "Embed the tickets, pull those nearest to known tracking tickets, read a sample.",
+    "Accept the 40: a word either appears in a ticket or it does not, so the count is exact.",
+    "Cluster all the tickets into two groups and report the size of the smaller group."
+   ],
+   "answer": 1,
+   "why": "Customers describe the same broken pixel in many vocabularies, and nearness between embeddings finds them by meaning; reading a sample confirms that near really is similar. A synonym list only finds the words you thought of, which is why it feels sufficient and is not. The count of 40 is exact about spelling, not about the problem."
+  },
+  {
+   "id": "7-2-q2",
+   "concept": "text is a table: the same rules apply",
+   "domain": "course",
+   "q": "The assistant reports: 'Embedded 1,050 tickets, 256 columns each. Trained logistic regression on all 1,050 labelled tickets. Accuracy: 99 percent.' What is the flaw?",
+   "options": [
+    "The embedding already contains each ticket's category, so the features leak the label.",
+    "Accuracy is the wrong measure whenever there are more than two categories.",
+    "The model was scored on the tickets it trained on, so the figure shows memory.",
+    "A table with 256 columns is too wide for logistic regression to be fitted at all."
+   ],
+   "answer": 2,
+   "why": "With 256 columns a model can fit its own training rows almost perfectly, so only labelled tickets it never saw can tell you how it sorts new ones. Text does not change that rule. The leak answer is tempting, but an embedding is computed from the ticket's words alone and never sees the label."
+  },
+  {
+   "id": "7-2-q3",
+   "concept": "search by nearness",
+   "domain": "other",
+   "q": "The ad review team has 30 headlines that were rejected last quarter for misleading health claims. The wording varies a lot. They want a shortlist of live headlines that deserve a second look. What do you ask the assistant for?",
+   "options": [
+    "A keyword filter built from the words that appear in the 30 rejected headlines.",
+    "A neural network trained from scratch, using the 30 rejected headlines as its examples.",
+    "K-means with two clusters on the live headlines, treating the smaller cluster as risky.",
+    "Embeddings for all headlines, then the live ones nearest the 30, sampled by hand."
+   ],
+   "answer": 3,
+   "why": "The claim can be made in endless wordings, so the shortlist has to be built on meaning: embed everything and rank live headlines by nearness to the known bad ones, then check a sample by hand. A keyword filter catches only wordings already seen. Thirty examples are far too few to train a network from nothing, and two clusters have no reason to line up with 'risky'."
+  },
+  {
+   "id": "7-2-q4",
+   "concept": "topic, not fine distinctions",
+   "domain": "course",
+   "q": "Two tickets have a similarity of 0.90. One asks for a refund of a double charge. The other says: 'Charged twice, but I do NOT want a refund, just correct the invoice.' A colleague wants each new ticket routed to the queue of its nearest labelled neighbour, with separate queues for refunds and invoice corrections. What is the right read?",
+   "options": [
+    "Risky: both are billing tickets, and the split turns on a detail. Test it on labelled examples first.",
+    "Fine: a similarity of 0.90 means a 90 percent chance that both belong in the same queue.",
+    "Fine, provided the similarity needed for a match is raised from 0.90 to 0.95.",
+    "Unworkable: embeddings can be used for search but never for routing tickets."
+   ],
+   "answer": 0,
+   "why": "Embeddings place same-topic tickets close together, and both of these are about a double charge; whether they also separate 'refund' from 'correct the invoice' is exactly the kind of fine distinction where they were weakest in this lesson, so measure it on labelled tickets from both queues. A similarity score is a distance, not a probability, and raising a cut-off without a test is a guess."
+  }
+ ],
+ "review": [
+  {
+   "concept": "near in an embedding means similar in meaning, not shared words",
+   "variants": [
+    {
+     "q": "A product team has 5,000 free-text answers to 'why did you cancel?'. A word count shows 'price' in 12 percent of them, and a manager concludes that 12 percent left over cost. What would embeddings add?",
+     "options": [
+      "Nothing: the share of answers containing the word already is the share that left over cost.",
+      "Answers like 'could not justify the bill' sit near the 'price' ones and get counted.",
+      "A fix for plurals, so that answers containing the word 'prices' are also counted.",
+      "Nothing until every one of the 5,000 answers has been labelled by hand."
+     ],
+     "answer": 1,
+     "why": "People give the same reason in different words: 'too expensive', 'cheaper elsewhere', 'could not justify the bill'. Embeddings place those near the answers that say 'price', so you can count the theme instead of one spelling of it. Handling plurals helps a little, but still only finds words you thought to look for."
+    },
+    {
+     "q": "Support wants to merge duplicate questions in the help centre. Two of them read 'How do I change the card on file?' and 'Update payment method?'. Which approach will find pairs like this one?",
+     "options": [
+      "Lower-case the questions, strip punctuation, and look for exact matches.",
+      "Count the words each pair shares and list the pairs with the highest overlap.",
+      "Sort the questions alphabetically so that duplicates end up next to each other.",
+      "Embed every question and list the closest pairs for a person to confirm."
+     ],
+     "answer": 3,
+     "why": "These two questions mean the same thing and share no content words, so any method that compares spelling scores them as unrelated. Embeddings compare meaning, which puts them close together. A person should still confirm the pairs, because close does not always mean duplicate."
+    },
+    {
+     "q": "Another team searches its support inbox for 'login' and gets 60 tickets. A search for the tickets nearest to five known login tickets returns 140, including 'cant get in since I changed phone' and 'the two step code never arrives'. Their manager says the extra 80 must be errors, since none of them contains the word. What is the right response?",
+     "options": [
+      "Read a sample of the 80: the same problem in other words is the point.",
+      "Agree: a ticket that never mentions the word login cannot be about logging in.",
+      "Keep only the tickets that appear in both searches, to be on the safe side.",
+      "Discard the keyword search entirely, because embeddings are always more accurate."
+     ],
+     "answer": 0,
+     "why": "A missing keyword is not evidence that a ticket is about something else; customers rarely use the support team's vocabulary. Whether the 80 belong is settled by reading a sample of them, not by checking for a word. Keeping only the overlap throws away exactly the tickets the keyword could not find."
+    }
+   ]
+  },
+  {
+   "concept": "embedded text is just another table: the same rules of evidence apply",
+   "variants": [
+    {
+     "q": "Sales reps write free-text notes after each call. You want every note tagged 'budget', 'timing', 'competitor' or 'no need'. You have 40 hand-tagged notes and 20,000 untagged ones. What is a sensible first plan?",
+     "options": [
+      "Wait until about 5,000 notes are tagged by hand; text needs far more examples than a table.",
+      "Cluster the notes into four groups and treat the four clusters as the four tags.",
+      "Embed the notes, train a simple model on part of the 40, score it on the rest.",
+      "Train a simple model on all 40 tagged notes and report its accuracy on those 40."
+     ],
+     "answer": 2,
+     "why": "In this lesson a simple model on embeddings got a long way with a few dozen labels, and holding some of them back is the only way to see how far yours gets. Waiting for thousands of labels assumes the answer before measuring it. Four clusters need not match your four tags, and scoring on the training notes shows memory, not skill."
+    },
+    {
+     "q": "A vendor says: 'Our embeddings understand language, so the review classifier needs no evaluation. Here are ten app reviews it sorted correctly.' Your team has 300 reviews already tagged by hand into five themes. What do you do?",
+     "options": [
+      "Accept it: ten correct out of ten is a perfect score, and the vendor knows the product.",
+      "Ask the vendor for twenty more examples of reviews it sorted correctly.",
+      "Check first that the embedding has enough dimensions to separate five themes.",
+      "Score it on your 300 tagged reviews, beside the commonest theme's share."
+     ],
+     "answer": 3,
+     "why": "Ten examples chosen by the seller are a demo, not a score. Your 300 hand-tagged reviews are labelled rows the classifier has not seen, which is what any model is judged on, and the commonest theme is the baseline it has to beat. However the columns were made, the rules of evidence are the ones from module two."
+    },
+    {
+     "q": "The assistant embeds support tickets, trains on 60 labelled ones, and reports 67 percent accuracy on 450 unseen labelled tickets in six equally common categories. A stakeholder says 67 percent sounds poor. Which comparison should come first?",
+     "options": [
+      "With 100 percent, the score that a perfect classifier would get on these tickets.",
+      "With blind guessing, which scores about 17 percent on six equal categories.",
+      "With the churn model's AUC of about 0.85 from earlier in the course.",
+      "With its own accuracy on the 60 tickets it was trained on."
+     ],
+     "answer": 1,
+     "why": "A score means something only beside its baseline: with six equally common categories guessing gets about one in six, so 67 percent from 60 labels is a large step; after that, ask what more labels would add. An AUC and an accuracy are different measures on different problems and cannot be set side by side. Accuracy on the training tickets only shows what the model memorised."
+    }
+   ]
+  }
+ ],
+ "drill": [
+  {
+   "q": "In a sentence or two, what is an embedding?",
+   "a": "A list of numbers that a model produces for a piece of text, placed so that texts with similar meanings get similar numbers. Once you have it, text behaves like any other table of numeric columns."
+  },
+  {
+   "q": "Why can an embedding search find a support ticket that a keyword search misses?",
+   "a": "Because customers describe the same problem in different words. A keyword matches spelling. An embedding places texts by meaning, so two tickets about the same problem sit close together even with no words in common."
+  }
+ ],
+ "recall": {
+  "prompt": "Explain to a colleague what an embedding is, what you can do once you have one, and one thing it is bad at.",
+  "model_answer": "An embedding is a list of numbers a neural network produces for a piece of text, arranged so that similar meanings land close together even when the words differ. Once every ticket has one, text is an ordinary table: I can find the nearest tickets to an example, cluster them into topics, or train a simple model on a few labelled rows. It is good at topic and weak at fine distinctions, such as which of two tangled issues is the main one, so I would still score it on labelled tickets it has not seen."
+ },
+ "ask_assistant": "Turn each support ticket's text into an embedding using an approved model, and tell me which model, how many columns per ticket, and where the text is sent. Show five tickets I name, each with its five nearest neighbours and similarity scores. Then train logistic regression on the embeddings using a few labelled tickets per category, score it on labelled tickets it never saw, and report accuracy at several training sizes with the range over repeated random draws, beside the accuracy of blind guessing. Split the final accuracy by ordinary and multi-issue tickets.",
+ "audit_checklist": [
+  "The embedding model is named, with the number of columns per text and where the text was sent.",
+  "Nearest neighbours are shown for tickets you chose, so you can read whether near means similar.",
+  "Accuracy is measured on labelled tickets not used in training, with the guessing baseline beside it.",
+  "Accuracy is shown at several training sizes with a range over repeated draws, not one run."
+ ],
+ "transfer": [
+  "Which live ad headlines resemble ones that were rejected before, whatever words they use?",
+  "What themes run through thousands of open-text survey answers nobody has had time to read?",
+  "Which questions in the help centre are duplicates of each other in different words?"
+ ],
+ "other_ways": [
+  {
+   "approach": "A keyword rule or a LIKE search",
+   "when": "When the thing you want has a fixed spelling: an error code, a product name, an invoice number."
+  },
+  {
+   "approach": "Word counts with a simple model",
+   "when": "When you have many labelled examples, the text must stay in-house, and you want to read which words carry the weight."
+  },
+  {
+   "approach": "Ask a language model directly, with instructions and no training",
+   "when": "When you have no labelled examples to train on; the next lesson scores it against this one."
+  }
+ ],
+ "glossary": [
+  {
+   "term": "embedding",
+   "def": "A list of numbers a model produces for a piece of text, arranged so that similar meanings get nearby numbers."
+  },
+  {
+   "term": "embedding model",
+   "def": "A neural network, trained on large amounts of text, that turns a piece of text into its embedding."
+  },
+  {
+   "term": "neural network",
+   "def": "A model built from stacked layers of weighted sums with a bend between the layers, which learns its own features from data."
+  },
+  {
+   "term": "similarity score",
+   "def": "A number for how close two embeddings are; it tops out at 1 for texts the model places at the same point."
+  }
+ ]
+}

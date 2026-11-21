@@ -1,0 +1,72 @@
+{
+  "lesson": "3-3",
+  "decisions": [
+    {
+      "n": 0,
+      "reviewer": "expert-2",
+      "finding": "Seg 5 offers the 2x2 table as an 'it depends' that a weighted sum cannot express, but low activity multiplies the odds by about 4 in both columns.",
+      "decision": "accepted",
+      "reason": "Checked from tree.root: 0.053 to 0.182 is odds x3.98, and 0.211 to 0.544 is odds x4.46. One weight per column reproduces that through the S-curve, so the table does not show an interaction on the scale the weighted sum works on.",
+      "change": "Seg 5 rewritten. The gap is stated in points (13 when spend is holding, 33 when it is shrinking), followed by 'as a ratio, low activity roughly triples churn either way'. The 'it depends' point now rests on what a tree does differently: every branch chooses its own next question and cut-off (size on one branch, click rate on the other). The table has a third row with the two gaps (12.9 and 33.3 points)."
+    },
+    {
+      "n": 1,
+      "reviewer": "expert-2",
+      "finding": "Quiz q2 states results for a leaky tree (AUC above 0.95, a split at 30 days, 94 and 1 percent) that are not in facts.json.",
+      "decision": "accepted",
+      "reason": "facts.leakage holds the leak's effect on the logistic regression only (auc_with_leak 0.97, medians 86 and 3); no tree was fitted with the leaked column.",
+      "change": "Stem now reads: 'a test AUC far above the weighted sum's 0.85. The first question is about days since last spend, and it separates churners from stayers almost perfectly.' The distractor that quoted 0.95 now says 'just as high'."
+    },
+    {
+      "n": 2,
+      "reviewer": "learner-1",
+      "finding": "'It depends comes free' is not a sentence when read aloud.",
+      "decision": "accepted",
+      "reason": "Correct by ear; the quotation marks that made it work on paper are not spoken.",
+      "change": "Replaced by 'A tree can ask something different in every corner of the table, so an answer that depends on something else costs nothing extra.' The same phrase is gone from the recap."
+    },
+    {
+      "n": 3,
+      "reviewer": "learner-1",
+      "finding": "Seg 3 reads two full paths, six cut-offs and two counts with no reveal; highlight each box in sync and round the counts.",
+      "decision": "partly",
+      "reason": "Rounding is within SPEC rule 3 (numbers rounded for speech). Highlighting in sync is a change to the tree widget (site/public/js/widgets.js: it opens on the first narrated path and is click-driven), which is outside the lesson file.",
+      "change": "Seg 3 now says 'about 200 advertisers' (199) and 'about 3,400 advertisers' (3,363). The widget request is passed to the course owner."
+    },
+    {
+      "n": 4,
+      "reviewer": "learner-1",
+      "finding": "'Low activity matters far more when spend is also falling' is true in points and not as a ratio; a stakeholder would challenge it.",
+      "decision": "accepted",
+      "reason": "18.2 vs 5.3 is 3.4 times and 12.9 points; 54.4 vs 21.1 is 2.6 times and 33.3 points (tree.root).",
+      "change": "Seg 5 says which reading: 13 and 33 points, and 'Say points when you report it: as a ratio, low activity roughly triples churn either way.'"
+    },
+    {
+      "n": 5,
+      "reviewer": "learner-1",
+      "finding": "ID columns appear as a distractor, in the brief and in the checklist, but nothing in the narration mentions them.",
+      "decision": "accepted",
+      "reason": "True; the topic is taught in 3-4, one lesson later.",
+      "change": "Seg 7 adds: 'And send back any tree that asks about an ID: an ID says nothing about behaviour.' I kept to that claim rather than 'the tree is memorising rows', which is not accurate for a three-question tree with a minimum leaf size."
+    }
+  ],
+  "rulings": {
+    "R1": "Seg 1 adds: 'The data can design one for any outcome you have past answers for, which advertisers will hit their CPA goal, for instance.'",
+    "R2": "Not applicable.",
+    "R3": "ask_assistant is a template (96 words) with slots [yes/no outcome], [training period], [small depth, such as 3], [minimum rows], [test period], [my simpler model or rule], [prediction date]. Evidence demands kept: rules printed, row count and rate per leaf, AUC on training and test rows with row counts beside the simpler model, the list of columns with when each is recorded.",
+    "R4": "Recap is 48 spoken words in two sentences and no longer reads the take-aways. 'Keep this' bullets stay; their cue markers were removed.",
+    "R5": "Keyed answer longest in 2 of 10 before, 1 of 10 now. The 'None: any 100 accounts...' distractor is replaced by a specific wrong diagnosis.",
+    "R6": "The plain GROUP BY was only in other_ways. Seg 7 now ends: 'If you know which columns define your segments, skip the tree: a plain GROUP BY gives the rates', with a fifth bullet.",
+    "R7": "Checklist rewritten as output evidence: row count and rate on every leaf, none below the minimum you set; the printed rules name each question's column and the column list shows when each is recorded; AUC on training and test rows with row counts, the simpler model on the same test rows.",
+    "R8": "Segments 2, 4 and 6 are byte-identical. Drill, recall and take-aways untouched.",
+    "R9": "69 course figures checked against facts.json (tree.root, tree.test.auc, tree.train_auc, tree.min_rows_per_leaf, model_table, logreg.test.auc, baseline.rule, uncertainty.difference_logreg_minus_tree_95).",
+    "specific": "Only facts.tree appears in this lesson; depth_sweep is not quoted, so there are not two depth-3 trees to reconcile here. The lesson's own stopping rule is now stated: the flow card says 'three questions deep, at least 100 advertisers per leaf' (tree.min_rows_per_leaf), seg 7 asks for a minimum number of advertisers per leaf, the bullet says 'depth 3, 100+ advertisers per leaf', and the template has a [minimum rows] slot. The train and test AUCs (0.786, 0.761) moved from speech to the bullet. 897 spoken words."
+  },
+  "segments_changed": [1, 3, 5, 7, 8],
+  "numbers_verified": 69,
+  "open_questions": [
+    "The tree widget does not light up boxes as the voice names them (learner-1). It would need a change in site/public/js/widgets.js; seg 3 names two full paths.",
+    "A learner who runs the old brief (maximum depth 3, no minimum leaf) gets the depth_sweep tree (AUC 0.787 / 0.767), not the lesson's (0.786 / 0.761). The new template has the slot; the lab for this lesson should set it to 100 so the numbers match.",
+    "ID columns are now mentioned in one sentence here, one lesson before 3-4 teaches them. If you would rather keep the topic for 3-4, remove the sentence in seg 7 together with the ID distractors (quiz q3, review 2 variant 2) and the ID clause in the brief and checklist."
+  ]
+}

@@ -1,0 +1,62 @@
+{
+ "lesson": "2-5",
+ "decisions": [
+  {
+   "n": 0,
+   "reviewer": "learner-1",
+   "finding": "Guess question: 'Can ... still' invites yes, and two 'Only if' options are not believable.",
+   "decision": "accepted",
+   "reason": "A guess with one plausible option teaches nothing. The toy from seg4 gives a real surprise (equal average miss) and the lesson answers it.",
+   "change": "Guess replaced: Model 1 off by $1,000 on all 100 advertisers, Model 2 exact on 99 and off by $100,000 on one; which has the larger average miss? Answer: neither. Reveal rewritten. Toy numbers only, labelled made-up."
+  },
+  {
+   "n": 1,
+   "reviewer": "learner-1",
+   "finding": "Seg7 brings in a third, unnamed model; the tier table is about neither A nor B.",
+   "decision": "partly",
+   "reason": "Facts hold the size-tier cut for one model only (regression.by_size_tier.model = two-stage, MAE 1,416), so the table cannot be shown for model A. The reviewer's 1,428 is the log model of 3-1; 1,416 is regression.models.two_stage_chance_of_staying_x_average, which lesson 5-5 introduces, so the figure itself is right.",
+   "change": "Seg7 now says 'Leave A and B for a moment and take the stronger spend model you will meet in module five', and the table note reads 'A stronger spend model, from lesson 5-5'."
+  },
+  {
+   "n": 2,
+   "reviewer": "learner-1",
+   "finding": "Seg7: seven figures in thirty seconds, in a lesson that speaks about thirty dollar amounts.",
+   "decision": "accepted",
+   "reason": "SPEC rule 3 (screen-first, ear-safe). The exact figures are in the visuals.",
+   "change": "Seg7 speaks the two ends (about 170, over 3,300) and the 133,000 account; the middle tier, the overall MAE and the 46%/5% split stay on screen ('a small group of advertisers carries nearly half of all its error'). Lesson-wide: seg2 drops the three toy dollar amounts, seg3 gives A and B as 'about 1,700 each' with the 58 dollar gap said once and the interval rounded (about 180, about 70). Spoken dollar amounts in those segments: 16 before, 9 now; exact figures unchanged on screen."
+  },
+  {
+   "n": 3,
+   "reviewer": "learner-1",
+   "finding": "'Comes later' promises never say which lesson (pattern across modules 1 to 3).",
+   "decision": "partly",
+   "reason": "Fair for this lesson; the pattern in other lessons belongs to their editors. Naming the method aloud would break SPEC rule 7, so the pointer goes on screen.",
+   "change": "Seg3 note adds 'Inside the models: A in lesson 3-1, B in lesson 4-3'; seg7 note names lesson 5-5. The course-wide part is out of scope here."
+  }
+ ],
+ "rulings": {
+  "R1": "Seg1 ends: 'The same holds for any model that predicts a number, such as the CPA a new campaign will reach.' The phrase 'a model that predicts a number' is used before any course model is named in general statements.",
+  "R2": "Not applicable.",
+  "R3": "Brief rewritten as a template: slots for the number, the unit, the training period, the test rows, the baselines, the segment and the length of the largest-misses list; no months or column names. It adds the row count behind any percentage error and the zero-safe percentage. 113 words.",
+  "R4": "Recap cut from 61 to 48 words: one sentence (answer 'which forecast is better' with 'what does a big miss cost, and a small one'), one pointing to 2-6 through the 58 dollar gap. It no longer recites the three measures; the quote visual is kept.",
+  "R5": "Key longest in 3 of 10 (was 8), shortest in 2. The 'Nothing: that MAE is acceptable' option in q2 is gone; q2 now asks what to check before finance uses the sum, with four specific checks.",
+  "R6": "The usable alternative to a broken percentage error sat only in other_ways. Brief and audit now says: 'Need a percentage? Ask for total absolute error divided by total actual spend, which a zero cannot break', with a fifth bullet on screen (regression.definitions.wape).",
+  "R7": "Item 4 was a statement by the assistant ('what any percentage error did with them'); it is now two counts in the output: rows with zero actual spend, and the row count behind any percentage error. Items 1 to 3 were already evidence.",
+  "specific": "Coordinator instruction (wall of spoken dollar figures): see finding 2. Every spoken sentence has at most two numbers, rounded; exact figures stay in the visuals."
+ },
+ "segments_changed": [
+  1,
+  2,
+  3,
+  7,
+  8,
+  9
+ ],
+ "numbers_verified": 116,
+ "open_questions": [
+  "Narration is 919 words after the R1 and R6 sentences: over the 900 target, under the 950 cap. Segments 4, 5 and 6 were left byte-identical; cutting further means re-recording one of them.",
+  "The size-tier table exists in facts only for the two-stage model of 5-5. If the owner wants it on model A, the analysis has to produce by_size_tier for linear_regression_dollars_plus_run_rate. Lesson 5-5 could also point back ('the model whose size tiers you saw in 2-5').",
+  "Seg6 (unchanged) says the same-as-last total is 'about 23 percent low' for -23.5%; it follows the outline's wording.",
+  "Model B is gradient boosting with squared loss (MAE 1,675); no later lesson returns to that exact model, so 'B in lesson 4-3' points to where boosting is explained, not to this model's numbers."
+ ]
+}

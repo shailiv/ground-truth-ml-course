@@ -1,0 +1,101 @@
+{
+ "base": "http://localhost:8791",
+ "out": "qa/ux/shots",
+ "seed": "const s = __gt.store, now = Date.now(); s.put('lessons', '1-1', {guess: 2, watched: now, quiz: {score: 2, of: 4, t: now}, done: now}); s.seed('1-1-c0'); s.seed('1-1-c1'); await new Promise(r => setTimeout(r, 300));",
+ "shots": [
+  {
+   "name": "d01-explain-empty",
+   "url": "/#/lesson/1-1/explain",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "return [...document.querySelectorAll('.ghost')].map(e => e.textContent.trim().slice(0, 30) + '|' + getComputedStyle(e).visibility + '|' + getComputedStyle(e).display);"
+  },
+  {
+   "name": "d02-explain-shown-notyped",
+   "url": "/#/lesson/1-1/explain",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "[...document.querySelectorAll('button, a.btn')].find(b => b.textContent.trim().startsWith(\"Show a strong answer\")).click(); await new Promise(r => setTimeout(r, 300)); const r = [...document.querySelectorAll('.panel .row')].at(-1).getBoundingClientRect(); return {rateRowTop: Math.round(r.top), vh: innerHeight, y: scrollY};"
+  },
+  {
+   "name": "d03-explain-typed-bottom",
+   "url": "/#/lesson/1-1/explain",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "const ta = document.querySelector('textarea'); ta.value = 'A rule is written by a person; a model learns the weights from past examples and is judged on rows it has not seen.'; [...document.querySelectorAll('button, a.btn')].find(b => b.textContent.trim().startsWith(\"Show a strong answer\")).click(); window.scrollTo(0, 99999);"
+  },
+  {
+   "name": "d04-explain-rated",
+   "url": "/#/lesson/1-1/explain",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "[...document.querySelectorAll('button, a.btn')].find(b => b.textContent.trim().startsWith(\"Show a strong answer\")).click(); [...document.querySelectorAll('button, a.btn')].find(b => b.textContent.trim().startsWith(\"Partly\")).click(); await new Promise(r => setTimeout(r, 500)); return {hash: location.hash, tabs: [...document.querySelectorAll('.steps button')].map(b => b.textContent.trim() + (b.classList.contains('done') ? ':done' : ''))};"
+  },
+  {
+   "name": "d05-take-top",
+   "url": "/#/lesson/1-1",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "return {hash: location.hash, ghosts: [...document.querySelectorAll('.ghost')].map(e => e.textContent.trim().slice(0, 30) + '|' + getComputedStyle(e).visibility + '|' + getComputedStyle(e).display)};"
+  },
+  {
+   "name": "d06-take-s2",
+   "url": "/#/lesson/1-1/take",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "window.scrollTo(0, 600);"
+  },
+  {
+   "name": "d07-take-bottom",
+   "url": "/#/lesson/1-1/take",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "window.scrollTo(0, 99999);"
+  },
+  {
+   "name": "d08-take-next-click",
+   "url": "/#/lesson/1-1/take",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "[...document.querySelectorAll('button, a.btn')].find(b => b.textContent.trim().startsWith(\"Next:\")).click(); await new Promise(r => setTimeout(r, 900)); return {hash: location.hash, y: scrollY};"
+  },
+  {
+   "name": "d09-home-after-one",
+   "url": "/#/",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark"
+  },
+  {
+   "name": "d10-home-after-one-s2",
+   "url": "/#/",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "window.scrollTo(0, 430);"
+  },
+  {
+   "name": "d11-review-after-one",
+   "url": "/#/review",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark"
+  },
+  {
+   "name": "d12-take-last-of-module",
+   "url": "/#/lesson/1-5/take",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "window.scrollTo(0, 520); return [...document.querySelectorAll('h3')].map(h => h.textContent);"
+  }
+ ]
+}

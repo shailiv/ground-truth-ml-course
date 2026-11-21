@@ -1,0 +1,23 @@
+[
+ {
+  "reviewer": "expert-3",
+  "lesson": "5-6",
+  "where": "quiz 5-6-q2 why; seg4 narration ('a narrow miss like that')",
+  "quote": "turns up by chance fairly often",
+  "kind": "misleading",
+  "severity": "low",
+  "problem": "With the figures given (22.6 against 14.9, margin ± 5.6) the prediction is 2.1 points outside a 95 percent margin: about 2.7 standard errors, roughly 1 in 150 for one segment and about 1 month in 25 across six verticals. That is not 'fairly often', and calling it a narrow miss trains the learner to wave through gaps of that size. What makes May unremarkable in this world is that predictions ran about two points low everywhere that month.",
+  "evidence": "drift.gaming_may: n 217, predicted 0.149, actual 0.226, actual_plus_minus 0.056 -> z about 2.7; drift.all_may: predicted 0.107 vs actual 0.127; drift.base_rate_creep",
+  "fix": "'One miss on one small group, among six checked every month and with predictions running a little low everywhere, is not proof of a shift; it earns attention, not a rebuild.' Drop 'fairly often'; in seg4 say 'a miss like that can turn up by chance'."
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "5-6",
+  "where": "seg7 narration",
+  "quote": "Retrain on a schedule, and whenever a check trips.",
+  "kind": "not_usable",
+  "severity": "low",
+  "problem": "Gaming has just tripped the check, but there will be no labels from after the shift for two more months. What I do meanwhile (correct the percentages for that segment, fall back to a rule) is only in other_ways.",
+  "fix": "Say the interim move in the brief segment."
+ }
+]

@@ -1,0 +1,106 @@
+{
+  "lesson": "3-1",
+  "decisions": [
+    {
+      "n": 0,
+      "reviewer": "learner-1",
+      "finding": "The brief (seg 8) introduces three new things at once (fitted on stayers only, predicts spend for churners, the correction now makes the total worse); 'this is where I would quit'.",
+      "decision": "accepted",
+      "reason": "True of the old segment 8: it carried the row filter, both all-4,000 totals (regression.models.log_model_typical_value.total_error +0.021, log_model_average_value.total_error +0.061) and 'two errors pull in opposite directions' inside the brief. Matches the lesson-specific ruling.",
+      "change": "The zero-spend row filter is now its own 58-word segment (new seg 5, card 'Rows fitted, rows scored') between the log-scale explanation and the ladder card. Seg 8 is four plain asks plus one sentence on keeping the run-rate. 'Two errors cancel' and the +2.1% figure are gone from the lesson; the all-4,000 corrected total (+6.1%) appears once, in quiz q2's explanation, labelled with its group."
+    },
+    {
+      "n": 1,
+      "reviewer": "gemini",
+      "finding": "Stat label calls $904 vs $490 the 'miss for the advertiser in the middle', but they are median absolute errors over all 4,000.",
+      "decision": "accepted",
+      "reason": "regression.models.linear_regression_dollars.median_abs_error = 904 and regression.models.run_rate.median_abs_error = 490: the middle miss when misses are ranked, not the miss on the median-spend advertiser ($1,694).",
+      "change": "Label is now 'middle miss (median): raw-dollar regression vs run-rate'."
+    },
+    {
+      "n": 2,
+      "reviewer": "gemini",
+      "finding": "Quiz q2's keyed answer says typical values 'sum below the real total', which is only true on the 3,473 who kept spending; on all 4,000 the total runs high.",
+      "decision": "accepted",
+      "reason": "regression.typical_vs_average (-0.036, +0.001) is measured on advertisers_who_kept_spending = 3,473; regression.models.log_model_typical_value.total_error = +0.021 and log_model_average_value.total_error = +0.061 are on all 4,000 (build/analysis2.py scores med_if_stay on every test row).",
+      "change": "Stem now says the output states neither the conversion nor the rows the total covers. Keyed option: 'How the predictions became dollars, typical or corrected, and predicted total beside actual, with its row count'. The explanation gives -3.6% for the 3,473 who kept spending and +6.1% (corrected) over all 4,000, each with its group. The reviewer's exact option wording was not used because it would have been the longest option by far (R5)."
+    },
+    {
+      "n": 3,
+      "reviewer": "learner-1",
+      "finding": "The log model is called 'the best so far' before I learn it was fitted on different rows; was its 1,428 scored on the same 4,000? The ladder card does not say.",
+      "decision": "accepted",
+      "reason": "It was: every entry of regression.models is scored on regression.test_rows = 4,000; only the fit is restricted (regression.log_model.what: 'fitted on training advertisers who kept spending').",
+      "change": "Ladder card title is now 'The ladder: average miss (MAE), same 4,000 test advertisers'. The fitting filter is stated in seg 5, immediately before the log model goes on the ladder: fitted on training advertisers who kept spending, scored on all 4,000, zeros included."
+    },
+    {
+      "n": 4,
+      "reviewer": "learner-1",
+      "finding": "'The run-rate combines two of them ... by multiplying and dividing' skips the step; it sounded like a trick.",
+      "decision": "accepted",
+      "reason": "The table has spend_8w and spend_trend (last 4 weeks / first 4), not the last four weeks; run-rate = 2 x spend_8w x trend / (1 + trend) (build/analysis2.py, regression.definitions.run_rate).",
+      "change": "Seg 3 now uses the reviewer's wording: 'The table has eight-week spend and the trend ratio, but not the last four weeks alone. Getting them back takes a multiply and a divide, and a weighted sum can only add.'"
+    },
+    {
+      "n": 5,
+      "reviewer": "learner-1",
+      "finding": "Model A is identified only in an unspoken bar label and model B never; the 'more flexible model' misses by 1,500 while B missed by 1,675.",
+      "decision": "accepted",
+      "reason": "Model A of 2-5 is linear_regression_dollars_plus_run_rate (1,733). Model B is gradient_boosting_squared_loss (1,675). The lesson's 1,500 is gradient_boosting_absolute_loss: the same kind of model fitted to absolute misses. The paired interval in facts is against the 1,500 version (paired_differences: -72, [-155, -5]), so that comparison stays.",
+      "change": "Seg 3 says aloud 'That is model A from the last module'. Seg 6 says 'a more flexible model, the kind model B was in the last module, fitted in dollars and tuned for the average miss: about 1,500'. The bar is relabelled 'Model B's kind, aimed at the average miss, in dollars' and the note adds 'Model B itself, fitted to squared misses: $1,675'. 'It comes back in module 4' was not added (word budget)."
+    },
+    {
+      "n": 6,
+      "reviewer": "learner-1",
+      "finding": "The longest option is correct in 4 of 4 quiz questions and 6 of 6 review variants.",
+      "decision": "accepted",
+      "reason": "Confirmed with build/validate.py: 10 of 10, an ERROR under the new rule.",
+      "change": "Options rewritten in all 10 questions so that distractors are as specific and as long as the answer; the keyed answer is now the longest in 2 of 10 (quiz q4 and review 1 variant 3, by 6 characters or fewer). The 'Nothing: that is exactly what the weight means' option was replaced by a specific misreading."
+    },
+    {
+      "n": 7,
+      "reviewer": "learner-1",
+      "finding": "'On average miss the two versions are close, and nothing here shows that gap is more than noise' - two versions of what, which gap?",
+      "decision": "partly",
+      "reason": "The sentence was unclear, and its second half had no backing: facts hold no paired interval for typical versus corrected MAE (1,428 vs 1,453). 'That is fine for one account and wrong for a total' already says when each version applies.",
+      "change": "Sentence removed rather than reworded. The temptation it described ('the typical version has the lower average miss') is now a distractor in review 2 variant 3, with the explanation."
+    },
+    {
+      "n": 8,
+      "reviewer": "learner-1",
+      "finding": "Two new ideas (one steady rate, extrapolation) appear for the first time in the recap with no example.",
+      "decision": "accepted",
+      "reason": "Correct, and R4 limits the recap to two sentences anyway. The reviewer offered 'or leave them out of the recap'; a fourth idea in the body would break the three-idea ruling.",
+      "change": "Recap rewritten (41 words). The limit now lives in other_ways[0].when ('one steady rate ... extends its line past the largest account it has seen'). The glossary entry 'extrapolation' is replaced by 'correction to averages', a term the narration does introduce."
+    },
+    {
+      "n": 9,
+      "reviewer": "learner-1",
+      "finding": "The narration never says the input spend columns are logged too; it is only in a bullet and the brief.",
+      "decision": "accepted",
+      "reason": "True, and it is how the model was built: spend_8w on a log scale plus a logged run-rate column (build/analysis2.py, XL / log_run_rate).",
+      "change": "Seg 6 opens: 'Fit the same weighted sum to the log of spend, with the past-spend columns on the same scale.'"
+    }
+  ],
+  "rulings": {
+    "R1": "Seg 1 now ends: 'It is the lesson for any model that predicts a number, whether spend or what a new lead will be worth: the columns you feed it and the scale you fit it on matter more than a cleverer algorithm.' The recap says 'a number model' and 'a yes or no question'.",
+    "R2": "Not applicable (not 2-1, 2-4 or 4-4).",
+    "R3": "ask_assistant is a paste-ready template (111 words) with slots [numeric outcome], [skewed size columns], [my baseline rule], [training period], [test period], [units]. It keeps every demand for evidence: baseline beside both fits, MAE, RMSE, predicted versus actual total, bootstrap interval on each gap, rows fitted and scored, zero rows, the back-conversion with and without the correction, weights with units.",
+    "R4": "Recap is 41 spoken words in two sentences (what to check when a number model disappoints; next lesson). It does not repeat the take-aways. Quote visual kept.",
+    "R5": "Keyed answer longest in 10 of 10 before, 2 of 10 now. One 'nothing is wrong' distractor replaced. Every keyed answer re-read for ambiguity; q2 reworked so it is right for either group of rows.",
+    "R6": "'Keep the run-rate rule' was only in other_ways. Seg 8 now says: 'If a rough forecast is enough, or the interval on the model's gain over the run-rate includes zero, keep the run-rate. Nobody has to maintain a multiplication.'",
+    "R7": "All four audit items are things to find in the output: units in the weights table (dollars per unit vs percent per unit), row counts fitted / scored / zero-outcome, predicted total beside actual with the row count each total covers, baseline in the same table with an interval on each gap.",
+    "R8": "Segment 2 (the weighted sum) is byte-identical. Every other segment changed, because the restructure re-cut segments 4 to 9. Drill, recall and take-aways untouched.",
+    "R9": "74 course figures checked one by one against facts.json (regression.*, data.n_feature_columns); toy numbers in other-domain questions excluded. Narration and visuals agree.",
+    "specific": "Three ideas: (1) the baseline ladder, segs 1-3 and the ladder card in seg 6; (2) why raw dollars mislead and the log scale, seg 4, result in seg 6; (3) typical versus average, seg 7. The zero-spend row filter has its own short segment (5) before the ladder card. The brief makes four plain asks. 'Two errors cancel' is dropped. To make room, the old segment 6 (log weights as percentages, with the effects table) became one spoken sentence and a line in the ladder note. 899 spoken words. The two sets of total-error figures: regression.typical_vs_average (-3.6%, +0.1%, x1.039) is attached to the 3,473 test advertisers who kept spending in the narration, the card title and the card sub; regression.models.*.total_error (all 4,000) appears once, +6.1% for the corrected log model, in quiz q2's explanation with the words 'over all 4,000'; the +2.1% figure is left out."
+  },
+  "segments_changed": [1, 3, 4, 5, 6, 7, 8, 9],
+  "numbers_verified": 74,
+  "open_questions": [
+    "The segment order changed from segment 4 on, so data/audio_manifest.json for 3-1 must be rebuilt, not patched: only segment 2 keeps its recording.",
+    "The OUTLINE's 'table (log-model effects)' visual is gone and the limits (steady rate, extrapolation) are no longer spoken; they sit in other_ways. If you want either back in the narration, something else has to leave: the lesson is at 899 words and 9 segments.",
+    "Seg 7 tells the learner that the total 'leaves out the advertisers who left and spent nothing' and that a later lesson adds that piece. Please check 5-5 still makes that link (regression.models.two_stage_chance_of_staying_x_average); 2-5 quotes totals for models A and B on all 4,000 (+5.7%, +6.2%), so a learner comparing them with this lesson's +0.1% needs to see the row counts, which the card now shows.",
+    "Segs 3 and 6 rely on 2-5 still calling its candidates 'model A' and 'model B'.",
+    "facts.json has no paired interval for the log regression against model B itself (1,675) or for typical versus corrected MAE; adding both would let the lesson compare with B directly."
+  ]
+}

@@ -1,0 +1,7 @@
+{
+ "issues": [],
+ "numbers_checked": 35,
+ "verdict": "Pass. Every numeric claim in the narration, visuals, questions and glossary matches facts.json, all conceptual explanations of unit/grain, observation and outcome windows, eligibility, right-censoring in open windows and proxy blind spots are sound, and all quiz, guess and review items have uniquely defensible keyed answers.",
+ "_hash": "24d55bf3eb2208ee",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_ChdNQkVDYV8ySE9KZm1uc0VQenB2YXNBbxIXTUJFQ2FfMkhPSmZtbnNFUHpwdmFzQW8 | tokens in=67711 out=107 thought=19457]"
+}

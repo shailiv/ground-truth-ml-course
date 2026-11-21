@@ -1,0 +1,60 @@
+{
+ "lesson": "5-2",
+ "decisions": [
+  {
+   "n": 0,
+   "reviewer": "learner-2",
+   "finding": "The test gives the effect of a prompt that perhaps 40 percent followed; the lesson never shows how to word that for a playbook.",
+   "decision": "partly",
+   "reason": "Right, and it is the lesson-specific ruling. facts.json has no encouragement experiment (experiment holds sample sizes only; uplift is a call with no uptake rate), so the sentence uses numbers the voice labels as made up, as SPEC rule 5 allows. I did not add 'the practice's own effect is larger': that holds only if the prompt works solely through the switch, and the segment already says the practice's effect is not what is measured.",
+   "change": "Seg 3: 'So word it that way. With made-up numbers: advertisers prompted to switch hit their goal 3 points more often, give or take 2. About 40 percent of them switched.' New fourth bullet with the template: 'Write: \"prompted advertisers hit goal X pts more often (interval); N% switched\"'. Brief now asks for 'the share who took the change up'."
+  },
+  {
+   "n": 1,
+   "reviewer": "learner-2",
+   "finding": "The two designs I could get approved (random holdout, rollout in random order) sit only in other_ways; same pattern in 5-4, 6-2, 6-4, 7-1.",
+   "decision": "accepted",
+   "reason": "This is ruling R6. For 5-2 and 5-4 (mine) it is fixed; 6-2, 6-4 and 7-1 belong to other editors under the same ruling.",
+   "change": "Seg 8 ends: 'If the change cannot be withheld, propose a random holdout, or a rollout in random order: accounts still waiting are the control group.' The brief template asks for the same fallback."
+  },
+  {
+   "n": 2,
+   "reviewer": "learner-2",
+   "finding": "Seg 7 says the three practices sit at tier two, but seg 1 said I hold 'three gaps' and nothing was adjusted in this lesson.",
+   "decision": "accepted",
+   "reason": "The practices were adjusted in 5-1 (happy.adjusted_pts: 15.2, 17.4, 16.2), so tier two is right; the slip was seg 1 calling them just 'three gaps'. Fixing it there keeps seg 7 byte-identical.",
+   "change": "Seg 1: 'What you hold is three gaps, raw and adjusted.'"
+  },
+  {
+   "n": 3,
+   "reviewer": "learner-2",
+   "finding": "My own A/B tests randomise impressions and have millions; the lesson never says the unit here is the advertiser.",
+   "decision": "accepted",
+   "reason": "True and general: the count that sets the margin is the number of randomised units (experiment.examples are per-arm counts of advertisers).",
+   "change": "Seg 4: 'Count advertisers, not impressions: the coin is flipped once per advertiser.' Table note and the glossary entry for group size say the same; the brief asks the assistant to propose the unit."
+  }
+ ],
+ "rulings": {
+  "R1": "Seg 1 now ends: 'There is one dependable way to get that, for a playbook practice or a new rule for routing support tickets alike: let chance decide who gets the change.'",
+  "R2": "Not applicable.",
+  "R3": "ask_assistant rewritten as a template ([change or encouragement], [outcome], [window], unit, [smallest lift worth acting on], [baseline rate]); 115 words; adds the holdout/random-order fallback, the uptake share and the list of dates on which results were computed.",
+  "R4": "Seg 9 cut from 82 to 46 words; quote visual kept.",
+  "R5": "Keyed answer longest in 2 of 10 (was 4). Two 'Nothing: ...' options replaced with specific mistakes (scale the 14 points by uptake; confirm on a second metric), their 'why' texts extended. Quiz 4 rewritten as 'Which design tells you what the call does?' because three of its four options denied the premise of the old stem. Options tightened to about fifteen words (finding 7 of 5-1).",
+  "R6": "Random holdout and rollout in random order are spoken in seg 8.",
+  "R7": "Item 1: a plan dated before launch. Item 3: the result table's counts match the assigned counts and uptake is a separate line. Item 4: planned group sizes beside a list of every date results were computed (was 'read once ... with no early stop', a promise).",
+  "specific": "The encouragement sentence is given in seg 3 and on its card. It could not use facts: there is no encouragement experiment in facts.json, so the numbers are labelled as made up."
+ },
+ "segments_changed": [
+  1,
+  3,
+  4,
+  8,
+  9
+ ],
+ "numbers_verified": 111,
+ "open_questions": [
+  "The ruling asked for the encouragement sentence 'using facts'. facts.json has no randomised encouragement (no uptake rate, no prompted-versus-not gap). If you add one, replace '3 points, give or take 2' and '40 percent' in seg 3 and re-record that segment.",
+  "Narration is 933 words (target 900, hard cap 950) after R1, the sentence, the unit and R6; all segments are at or under 122.",
+  "5-2-q1 uses invented scenario figures (3,000 per group, 40 percent uptake, 14 points) in a course-domain question; they are an assistant's hypothetical output, not claims about the tables, and were there before."
+ ]
+}

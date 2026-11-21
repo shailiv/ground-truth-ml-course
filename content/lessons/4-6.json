@@ -1,0 +1,389 @@
+{
+  "id": "4-6",
+  "module": 4,
+  "title": "Who is the model wrong about?",
+  "subtitle": "What does one overall score hide, and what should the list be ranked by?",
+  "goal": "After this lesson you can ask for a model's results cut by business segment, read where the list falls short, and put what the list is ranked by in front of the business as a decision.",
+  "predict": {
+    "q": "The list of the 400 highest-risk advertisers catches about 42 percent of all churners. Among the largest third of accounts, what share of churners does the same list catch?",
+    "options": [
+      "About 60 percent",
+      "About 42 percent, the same as overall",
+      "About 25 percent",
+      "Under 10 percent"
+    ],
+    "answer": 2,
+    "reveal": "About 25 percent, against about 55 percent for small accounts. The lesson shows why, and why the model is not actually worse at ranking large accounts."
+  },
+  "segments": [
+    {
+      "narration": "The list of the 400 highest-risk advertisers has been your best exhibit for weeks. More than half of them really churn. That is about four times what a random list would give you. Then someone on the commercial side sorts it by account size. 259 of the 400 are small accounts. Only 47 are large. Nothing is broken. The overall result was true, and it was hiding this. One number for everyone is an average, and an average can look healthy while one group inside it is poorly served. That is true of any model judged by one headline number, a list of leads likely to convert as much as this one. So before the list goes anywhere, cut the result open.",
+      "visual": {
+        "type": "title",
+        "kicker": "Module 4 · Lesson 6",
+        "title": "Who is the model wrong about?",
+        "sub": "The list of 400 looks great. 259 of the 400 are small accounts."
+      }
+    },
+    {
+      "narration": "Take the same list and cut it into three tiers by spend. [[1]] Among small accounts, 245 churned, and the list caught about 55 percent of them. [[2]] Among medium accounts it caught about a third. [[3]] Among large accounts, 117 churned, and the list caught about 25 percent. Recall, the share of churners you reach, is more than twice as high for small accounts as for large ones. Now weigh that against the money. Count what each churner was spending in the eight weeks before the snapshot, and large accounts are about two thirds of everything that walked out. The list is weakest exactly where a miss costs the most.",
+      "visual": {
+        "type": "table",
+        "title": "The top-400 list, cut by account size",
+        "columns": [
+          "Size tier",
+          "Churners",
+          "On the list",
+          "Churners caught",
+          "Spend lost"
+        ],
+        "rows": [
+          [
+            "Small",
+            "245",
+            "259",
+            "54.7%",
+            "$137,088"
+          ],
+          [
+            "Medium",
+            "165",
+            "94",
+            "34.5%",
+            "$311,575"
+          ],
+          [
+            "Large",
+            "117",
+            "47",
+            "24.8%",
+            "$924,403"
+          ]
+        ],
+        "highlight": [
+          2
+        ],
+        "note": "Test months, tiers are thirds by spend. Spend lost = what the tier's churners spent in the 8 weeks before the snapshot; $1,373,066 in all."
+      }
+    },
+    {
+      "narration": "So is the model worse at large accounts? No, and this is the part worth remembering. Score each tier separately, and the ranking is about equally good in all three, an AUC close to 0.84. Inside any tier, churners sit above stayers just as reliably. What differs is the level. Small accounts churn at about 18 percent and large ones at about 8, so small accounts carry higher scores across the board. One list, sorted by probability across everyone, fills up with small accounts before it ever reaches a risky large one. The ranking is sound inside each tier. The list is lopsided across them. That tilt is how this simulated world was built. Your own data may tilt another way, which is why you look.",
+      "visual": {
+        "type": "table",
+        "title": "Equal ranking, unequal list",
+        "columns": [
+          "Size tier",
+          "AUC inside the tier",
+          "Churn rate",
+          "Places on the list"
+        ],
+        "rows": [
+          [
+            "Small",
+            "0.840",
+            "18.3%",
+            "259"
+          ],
+          [
+            "Medium",
+            "0.825",
+            "13.0%",
+            "94"
+          ],
+          [
+            "Large",
+            "0.851",
+            "8.4%",
+            "47"
+          ]
+        ],
+        "note": "Everyone: AUC 0.845, churn rate 13.2%, 400 places."
+      }
+    },
+    {
+      "narration": "That raises a question nobody asked when the list was built: what should it be sorted by? [[1]] Sort by churn probability, as now, and the list holds about 42 percent of all churners, but only about a quarter of the spend that was lost. [[2]] Sort by probability times spend, the dollars you expect to lose, and the same slots hold fewer churners, about 29 percent, and 57 percent of the lost spend. The typical account on the first list spent under a thousand dollars in eight weeks. On the second, nearly five thousand. Same model, same scores, same number of slots. Only 137 names appear on both.",
+      "visual": {
+        "type": "compare",
+        "title": "Same model, same 400 slots, two ways to rank",
+        "left": {
+          "label": "Rank by churn probability",
+          "value": "More churners",
+          "sub": "220 churners (41.7%) · 25.3% of lost spend · median account $744"
+        },
+        "right": {
+          "label": "Rank by probability × spend",
+          "value": "More dollars",
+          "sub": "151 churners (28.7%) · 57.0% of lost spend · median account $4,891"
+        }
+      }
+    },
+    {
+      "narration": "Neither list is the correct one. If the action is a cheap automated email, you want heads, and the first list reaches more of them. If it is an hour of a senior account manager's time, you probably want dollars. The model cannot make that choice. It belongs to whoever owns the retention budget. Your part is to put both lists side by side, so that the choice is made out loud and not by default. Sorting by probability was never neutral. It was a decision nobody noticed making.",
+      "visual": {
+        "type": "quote",
+        "text": "What you rank by is a decision. Make it out loud.",
+        "sub": "Heads or dollars: the model cannot choose for you."
+      }
+    },
+    {
+      "narration": "The same cut works for any grouping the business cares about. [[1]] Overall, the list catches about 42 percent of churners. [[2]] [[3]] By size, you have seen the gap. [[4]] [[5]] By account manager there is another: about 45 percent for accounts without one, 28 for accounts with. [[6]] [[7]] By tenure there is hardly any gap at all. Then cut the percentages the same way. For large accounts the model predicts about 5 and a half percent, and about 8 and a half percent leave. The dollar ranking multiplies that low percentage by spend, so it still undercounts them. This is also how you check that a model is not quietly failing one group of clients. And remember that each slice is a smaller group, so its numbers wobble more.",
+      "visual": {
+        "type": "bar",
+        "title": "Share of churners the list catches, by segment",
+        "unit": "%",
+        "data": [
+          {
+            "label": "Everyone",
+            "value": 41.7
+          },
+          {
+            "label": "Small accounts",
+            "value": 54.7
+          },
+          {
+            "label": "Large accounts",
+            "value": 24.8
+          },
+          {
+            "label": "No account manager",
+            "value": 44.6
+          },
+          {
+            "label": "Has account manager",
+            "value": 28.3
+          },
+          {
+            "label": "New (under 12 weeks)",
+            "value": 42.8
+          },
+          {
+            "label": "Established",
+            "value": 41.4
+          }
+        ],
+        "note": "Bars: share of churners caught. A separate check, predicted vs actual churn — small: 17.6% vs 18.3% · large: 5.5% vs 8.4% · new accounts: 12.6% vs 17.7% (caught as often as established accounts, but percentages 5 points low)"
+      }
+    },
+    {
+      "narration": "So, the brief and the audit. [[1]] Ask for every headline result again, cut by the segments the business cares about: size, account manager, tenure, vertical. For each slice the output must show four things. [[2]] The number of advertisers and of churners, so you can judge the wobble. [[3]] How many places on the list the slice got, and the share of its churners caught. [[4]] Predicted churn next to actual churn. [[5]] And the list built both ways, by probability and by probability times spend, with churners reached and dollars reached for each. If the business wants every tier covered, there is a third way: reserve places for each tier and take the riskiest accounts within it. A report with one overall number and no slices is not finished.",
+      "visual": {
+        "type": "bullets",
+        "title": "Brief and audit",
+        "items": [
+          "Every headline result by size, account manager, tenure, vertical",
+          "Per slice: advertisers and churners",
+          "Places on the list, and share of its churners caught",
+          "Predicted churn next to actual churn",
+          "The list ranked both ways: churners reached, dollars reached"
+        ]
+      }
+    },
+    {
+      "narration": "So before a list leaves your hands, cut its results by the segments the business cares about, and get someone to choose what it is ranked by. The next module opens with the question stakeholders ask about a model's top column: if we change it, will churn go down?",
+      "visual": {
+        "type": "bullets",
+        "title": "Before the list leaves your hands",
+        "items": [
+          "One overall score is an average: cut it by segment",
+          "Equal ranking inside each tier can still give a lopsided list",
+          "Heads or dollars: what you rank by is a decision"
+        ]
+      }
+    }
+  ],
+  "takeaways": [
+    "One overall score is an average: the same list caught about 55 percent of small churners and 25 percent of large ones.",
+    "Equal ranking inside each segment can still produce a lopsided list.",
+    "What you rank by, heads or dollars, is a decision to make on purpose."
+  ],
+  "quiz": [
+    {
+      "id": "4-6-q1",
+      "concept": "equal AUC by slice is not an equal list",
+      "domain": "course",
+      "q": "The assistant's report says: AUC is 0.84 for small, 0.83 for medium and 0.85 for large accounts, so the model serves all sizes equally and the top-400 list needs no further checks by size. What is missing?",
+      "options": [
+        "A separate model trained for each size tier, since one model cannot rank three sizes equally",
+        "Places on the list and churners caught per tier: one cut-off can still starve a tier",
+        "A significance test showing whether 0.85 for large accounts is truly higher than 0.83",
+        "The same three AUC figures recomputed on the training months, to confirm they are stable"
+      ],
+      "answer": 1,
+      "why": "AUC inside a tier says churners outrank stayers within that tier. The list applies one cut-off across tiers whose churn levels differ, so a low-churn tier can get few places and low recall despite an equal AUC: here 47 places and about 25 percent for large accounts. Equal AUC is reassuring, and is the tempting place to stop."
+    },
+    {
+      "id": "4-6-q2",
+      "concept": "what you rank by is a decision",
+      "domain": "course",
+      "q": "The retention team has 400 call slots. Ranked by churn probability, the list reaches about 42 percent of churners and a quarter of the lost spend; ranked by probability times spend, about 29 percent and 57 percent. The head of sales asks which ranking is the right one. What do you say?",
+      "options": [
+        "Probability: it is what the model was trained to predict, so it is the unbiased choice of the two",
+        "Probability times spend: it reaches more than twice the dollars, so it wins outright",
+        "Average the two rankings, so that the final list is not tilted towards either goal",
+        "Neither by itself: one reaches more accounts, the other more money; what is a call for?"
+      ],
+      "answer": 3,
+      "why": "The two lists serve different goals with the same model, so choosing between them is a business decision about the action and its cost. Using what the model predicts sounds neutral, but sorting by probability is itself a choice, one that here sends most slots to small accounts."
+    },
+    {
+      "id": "4-6-q3",
+      "concept": "an average hides the segment that matters",
+      "domain": "other",
+      "q": "An invalid-traffic detector reports 80 percent recall overall. Cut by publisher size, it catches 86 percent of bad traffic on small publishers and 31 percent on the ten largest, which carry most of the spend. What is the right read?",
+      "options": [
+        "The average hides that the detector is weakest where most of the money flows; report by tier",
+        "The overall figure is what counts; ten publishers is too small a group to conclude anything",
+        "The detector is unfair to small publishers and should be loosened for them",
+        "Recall of 80 percent is strong, so the figure for the large publishers must be a data error"
+      ],
+      "answer": 0,
+      "why": "The overall rate is dominated by the many small publishers, so it can look fine while the detector misses most of the bad traffic that costs money. A small group does mean a wobbly number, which is a reason to show the counts and look closer, not to ignore the slice that matters most."
+    },
+    {
+      "id": "4-6-q4",
+      "concept": "percentages by segment before multiplying by money",
+      "domain": "course",
+      "q": "You rank by probability times spend. A check by size shows predicted against actual churn of 17.6 and 18.3 percent for small accounts, and 5.5 and 8.4 percent for large ones. What does this do to the dollar-ranked list?",
+      "options": [
+        "It leaves the list as it was: a ranking depends only on the order of scores, not on their level",
+        "Large accounts are over-represented, because their probabilities are too high",
+        "Large accounts' expected loss is understated, so they still get too few places",
+        "The list is fine, but the model must now be retrained on large accounts alone"
+      ],
+      "answer": 2,
+      "why": "Multiplying by spend turns a probability into expected dollars, so a probability that runs low for large accounts shrinks their expected loss by the same proportion. That only the order matters is true when everyone is sorted by probability alone; it stops being true once percentages that are off by different amounts in different groups are multiplied by money."
+    }
+  ],
+  "review": [
+    {
+      "concept": "one overall score can hide the segment where the model fails",
+      "variants": [
+        {
+          "q": "A ticket classifier is 94 percent accurate overall. By category: billing 97 percent on 600 tickets, how-to questions 94 percent on 300, account lockouts 58 percent on 60. Lockouts are the urgent ones. What do you report?",
+          "options": [
+            "94 percent accuracy: the classifier is ready to be switched on for every category",
+            "The lockout figure rests on only 60 tickets, so it is too noisy to report",
+            "Strong on routine tickets, weak on the urgent ones; lockouts need a fix or a human",
+            "Accuracy recomputed after removing the lockout tickets from the test set"
+          ],
+          "answer": 2,
+          "why": "The overall figure is carried by the large, easy categories and hides the one that matters most. Sixty tickets makes 58 percent a wobbly number, which is a reason to show the count beside it, not to drop the only slice where a miss is costly."
+        },
+        {
+          "q": "A spend forecast is off by 3 percent across all markets combined. The three established markets are each within 2 percent; a market launched this year is off by 19 percent. Finance is using the forecast to set the new market's budget. What is the right read?",
+          "options": [
+            "Good in total, poor for the decision it is being used for; show the error by market",
+            "An error of 3 percent is excellent, so the forecast is fit to use for every market",
+            "The new market's error will average out against the others, as the total already shows",
+            "The forecast is wrong everywhere and should be rebuilt from scratch before anyone uses it"
+          ],
+          "answer": 0,
+          "why": "The total is dominated by the established markets, so its error says little about the new one, and the new one is the decision at hand. Errors do offset in a total, which is exactly why the total cannot be used to judge a single slice."
+        },
+        {
+          "q": "A lead-scoring list of 200 contains 120 leads that convert, far better than chance. Cut by region, enterprise leads from one region are 40 percent of pipeline value and hold 9 of the 200 places. The model's AUC is nearly the same in every region. What should you ask for next?",
+          "options": [
+            "An interval on each region's AUC, since nine places out of 200 must mean one of them is lower",
+            "A more complex model, since this one is clearly biased against leads from that region",
+            "A longer list, so that the region's number of places rises in proportion to its value",
+            "Places on the list and converters caught per region: equal ranking, unequal list"
+          ],
+          "answer": 3,
+          "why": "AUC within a region measures the ordering inside it. One list across regions also depends on how common conversion is in each, so a valuable region with a low rate can get almost no places. A fancier model does not change that arithmetic."
+        }
+      ]
+    },
+    {
+      "concept": "what you rank by, heads or dollars, is a decision",
+      "variants": [
+        {
+          "q": "An upsell model scores every account's chance of upgrading. Sales has 50 demo slots. Ranked by probability, the 50 are mostly tiny accounts; ranked by probability times upgrade value, they are larger accounts with lower odds. A manager asks you to send the correct list. What is the best response?",
+          "options": [
+            "Send the probability list: it has the likeliest upgraders, which is what the model is for",
+            "Send the value-weighted list: revenue is always the goal of an upsell campaign",
+            "Send a random 50, since the two lists disagree and neither can be trusted",
+            "Send both, with upgrades and revenue expected from each, and ask what the demos are for"
+          ],
+          "answer": 3,
+          "why": "The model supplies probabilities; whether to maximise upgrades or revenue is a choice about the goal and the cost of a slot. The lists disagreeing is not a flaw in the model. It is the decision showing itself."
+        },
+        {
+          "q": "Investigators can review 30 publishers a week. Ranked by probability of fraud, the top 30 are mostly tiny publishers; ranked by probability times spend at stake, they hold fewer confirmed cases but far more money. Which statement is correct?",
+          "options": [
+            "The probability ranking is correct, because it finds the most fraud for each review spent",
+            "Both are valid; the choice depends on whether the aim is cases closed or money protected",
+            "The money ranking is correct, because small publishers are never worth an investigator's time",
+            "The two should match; a difference means the model's percentages are wrong"
+          ],
+          "answer": 1,
+          "why": "Same scores, different objectives. Most cases per review and most money per review are both defensible, so the ranking rule is a policy to be chosen. The two lists differ whenever size and risk are not the same thing."
+        },
+        {
+          "q": "The team switches the churn list from ranking by probability to ranking by probability times spend. Next month's report says the model has got worse: churners on the list fell from 220 to 151. What is the right read?",
+          "options": [
+            "The model did not change, the goal did: judge the new list by lost spend reached",
+            "Correct: fewer churners on the list means the model's ranking has degraded since last month",
+            "The model should be retrained, since a drop of that size is well beyond noise",
+            "The switch was a mistake, and the probability ranking should be restored"
+          ],
+          "answer": 0,
+          "why": "The scores are identical; only the sort key changed, trading churners reached for dollars reached, here from about a quarter of the lost spend to 57 percent. Measuring the new list with the old yardstick makes a deliberate trade look like a failure."
+        }
+      ]
+    }
+  ],
+  "drill": [
+    {
+      "q": "A model has a strong overall score. Why is that not enough before you hand its list to the business?",
+      "a": "Because one overall score is an average. It can hide a segment where the list catches far fewer cases, and that may be the segment that matters most in money. So you ask for the same results cut by the segments the business cares about."
+    },
+    {
+      "q": "You can sort a risk list by probability, or by probability times spend. Which one is correct?",
+      "a": "Neither is correct in itself. Sorting by probability reaches more of the customers who leave. Sorting by probability times spend reaches more of the money. Which you want depends on the action and what it costs, so it is a decision someone should make on purpose."
+    }
+  ],
+  "recall": {
+    "prompt": "The churn list has a strong overall hit rate. Explain why you would still cut the results by account size before handing it over, and what the cut showed in this course's data.",
+    "model_answer": "An overall number is an average and can hide a group the list serves badly. Cut by size, the top-400 list caught about 55 percent of small churners but only about 25 percent of large ones, although large accounts were about two thirds of the spend lost. The model ranked equally well inside each tier; the list was lopsided because small accounts churn more and one list sorted by probability fills up with them. Ranking by probability times spend reaches fewer churners and more dollars, so what to rank by is a decision for the business, made with both lists side by side."
+  },
+  "ask_assistant": "Take [model]'s scores on [held-out rows] and the top [list size] list. Recompute every headline result by [segments the business cares about]: for each slice print the rows, the [outcome] cases, the places on the list, the share of its [outcome] cases caught, [ranking metric] within the slice, and predicted against actual [outcome] rate. Show that the slice counts add up to the totals. Then build the list a second way, ranked by probability times [value at stake], and print for both lists the [outcome] cases reached, the [value] reached and how many names they share. Do not recommend a ranking; lay out the trade.",
+  "audit_checklist": [
+    "Every headline number repeated by segment, with the count of advertisers and churners in each; the segment counts add up to the totals",
+    "Per segment: places on the list, share of churners caught, and AUC within the segment",
+    "Predicted churn beside actual churn for each segment",
+    "The list built both ways, by probability and by probability × spend, with churners and dollars reached"
+  ],
+  "transfer": [
+    "Invalid traffic: does the detector catch as much on the largest publishers as on the long tail of small ones?",
+    "A spend forecast for finance: is the error for the newest market anything like the error for the total?",
+    "Lead scoring: which regions or deal sizes get almost no places on the list, and should it be ranked by chance of converting or by expected deal value?"
+  ],
+  "other_ways": [
+    {
+      "approach": "Reserve places for each tier: take the riskiest accounts within each size tier",
+      "when": "When the business wants guaranteed coverage of every tier and a rule that is easy to explain."
+    },
+    {
+      "approach": "Separate lists per segment, each worked by the team that owns it",
+      "when": "When segments get different actions, such as a call for large accounts and an email for small ones."
+    },
+    {
+      "approach": "Correct the percentages per segment before multiplying by spend (recalibration)",
+      "when": "When you rank by expected dollars and the percentages are off by different amounts in different segments."
+    }
+  ],
+  "glossary": [
+    {
+      "term": "slice",
+      "def": "The same result recomputed for one group of customers only, such as large accounts."
+    },
+    {
+      "term": "expected loss",
+      "def": "The probability that a customer leaves times what they spend: the dollars you expect to lose."
+    },
+    {
+      "term": "ranking rule",
+      "def": "What a list is sorted by; choosing it decides who gets the limited places."
+    }
+  ]
+}

@@ -1,0 +1,323 @@
+{
+ "id": "1-5",
+ "module": 1,
+ "title": "Brief in stages, audit by evidence",
+ "subtitle": "How do you get work from an AI assistant that you can actually check?",
+ "goal": "After this lesson you can brief an assistant in four gated stages and name what each output must show before you let the next stage start.",
+ "predict": {
+  "q": "You need a churn model and a report from your AI assistant. Which way of asking is most likely to give you numbers you can trust?",
+  "options": [
+   "One long, detailed prompt that specifies everything up front",
+   "Four short requests, checking each output before the next",
+   "One prompt, then ask the assistant to double-check its own work",
+   "One prompt, then read the Python it wrote line by line"
+  ],
+  "answer": 1,
+  "reveal": "Short requests with a check between them. The lesson shows what to check at each step, and why a perfect prompt cannot replace those checks."
+ },
+ "segments": [
+  {
+   "narration": "It is Thursday afternoon and the head of account management wants a churn model. You type one long, careful prompt: build a model from the advertiser table and write me a report. Ten minutes later you have a beautiful HTML page. Charts, a headline number, confident paragraphs. Now the uncomfortable question. Which of those numbers do you trust? You cannot tell. Everything arrived at once, and anything that went wrong in the first step is buried under everything built on top of it. Last lesson's leak looked exactly like this: a polished result with the flaw four layers down.",
+   "visual": {
+    "type": "title",
+    "kicker": "Module 1 · Lesson 5",
+    "title": "Brief in stages, audit by evidence",
+    "sub": "Getting work from an assistant that you can check"
+   }
+  },
+  {
+   "narration": "[[1]] The one-shot prompt asks you to inspect a finished building. [[2]] The alternative is to inspect it floor by floor. You ask for one small piece of work, you look at what came back, and only then do you ask for the next. Each of those checkpoints is a gate. The reason is not that the assistant is careless. It is that it cannot know what one row should be in your business, or when a column was recorded, and nothing in a one-shot prompt makes it stop and ask. A wrong assumption in the first step flows silently into every later one. Gates are where your knowledge gets in.",
+   "visual": {
+    "type": "compare",
+    "title": "Two ways to ask",
+    "left": {
+     "label": "One prompt",
+     "value": "0 gates",
+     "sub": "every number arrives at once"
+    },
+    "right": {
+     "label": "Four stages",
+     "value": "4 gates",
+     "sub": "one small output to check before the next begins"
+    }
+   }
+  },
+  {
+   "narration": "There are four stages. [[1]] Stage one is the table. Before any model: what one row is, how many rows there are, what dates they cover, whether any advertiser appears twice, and which columns have gaps. [[2]] Stage two is the target and the split: the exact definition of the label, its rate month by month, and which rows the model will learn from and which are held back to check it. [[3]] Stage three is a baseline, then the model. A baseline is the simple answer you would give with no model at all, like your spend trend rule. Both are judged on the same held-back rows. [[4]] Stage four, and only then, is the report, built from numbers you have already checked.",
+   "visual": {
+    "type": "flow",
+    "title": "Four stages, each with a gate",
+    "steps": [
+     {
+      "label": "1 · The table",
+      "sub": "one row is…, counts, dates, duplicates, gaps"
+     },
+     {
+      "label": "2 · Target and split",
+      "sub": "definition, rate by month, learn rows vs held-back rows"
+     },
+     {
+      "label": "3 · Baseline, then model",
+      "sub": "both on the same held-back rows"
+     },
+     {
+      "label": "4 · The report",
+      "sub": "only from checked numbers"
+     }
+    ]
+   }
+  },
+  {
+   "narration": "To make a gate something you can check, every output the assistant sends ends with the same short section. Call it the audit block. [[1]] Row counts after every step, so you can see where rows appeared or vanished. [[2]] The date range the data covers. [[3]] The label rate, overall and by month. [[4]] The list of features, each with the table it came from. [[5]] And once there is a model, the baseline right next to it. Notice what kind of things these are. Counts, dates and rates. You have been sanity-checking counts, dates and rates on dashboards for years.",
+   "visual": {
+    "type": "bullets",
+    "title": "The audit block: every output ends with it",
+    "items": [
+     "Row counts after every step",
+     "Date range of the data",
+     "Label rate, overall and by month",
+     "Each feature and where it came from",
+     "The baseline next to the model"
+    ]
+   }
+  },
+  {
+   "narration": "Here is the audit block for the advertiser table after stage two. Twelve thousand rows, one per advertiser, nobody appearing twice. CPA versus goal is empty for nearly five thousand of them, and you know why: those advertisers have no conversion tracking. The assistant does not know that. The label runs at about 11 percent in the rows the model learns from, and about 13 percent in the rows held back. And 2,000 April rows are set aside altogether, which should make you ask why. Good. The next lesson answers it. Every line is something you can compare with a dashboard, or question out loud. None of it required reading Python.",
+   "visual": {
+    "type": "code",
+    "title": "An audit block, after stage two",
+    "lang": "text",
+    "code": "AUDIT BLOCK - stage 2\none row     = one advertiser, seen once\nrows        = 12,000    duplicates = 0\nsnapshots   = Jan to Jun, 2,000 a month\nmissing     = cpa_vs_goal: 4,984 rows\nlabel       = churned_next_60d: 11.8% overall\nlearn from  = Jan-Mar   6,000 rows   churn 11.1%\nleft out    = Apr       2,000 rows\nheld back   = May-Jun   4,000 rows   churn 13.2%",
+    "note": "Counts, dates and rates: all checkable without reading code."
+   }
+  },
+  {
+   "narration": "A gate is also where you push back. Suppose stage three arrives and the model looks far too good, like 200 out of 200. You do not open the script and hunt for the bug. You send one line: show me the top five columns and when each was recorded. That turns a suspicion into evidence you can read. And if a gate fails, the rule is simple. You do not carry on with a caveat. The assistant fixes that stage, reruns it, and shows the audit block again. At the gate, a problem costs you minutes. In the finished report, it costs you credibility.",
+   "visual": {
+    "type": "quote",
+    "text": "Show me the top five columns and when each was recorded.",
+    "sub": "What to send back when a number looks too good"
+   }
+  },
+  {
+   "narration": "Brief and audit. [[1]] Open every project with a standing instruction: work one stage at a time, and after each stage stop and wait for my go-ahead. [[2]] End every output with the audit block. [[3]] Then keep your side of the bargain. If the block is missing, or a count in it does not match what you know, the next stage does not start. [[4]] One rule sits above all of this. Advertiser data goes only into tools your company has approved for it. If you are not sure a tool is approved, treat the answer as no until someone confirms.",
+   "visual": {
+    "type": "bullets",
+    "title": "Brief and audit",
+    "items": [
+     "One stage per request, then stop and wait",
+     "Every output ends with the audit block",
+     "No audit block, no next stage",
+     "Client data only in approved tools"
+    ]
+   }
+  },
+  {
+   "narration": "So the pattern is four stages: the table, the target and the split, a baseline and then a model, and last the report. Each one ends in an audit block, and you check evidence in the output, not Python. The list of checks will grow, because each later lesson adds a line to it. That closes the first module. Next we start on the scoreboard, with two questions hiding inside stages two and three: which rows a model should be judged on, and what it has to beat.",
+   "visual": {
+    "type": "quote",
+    "text": "Four stages, four gates. Check evidence in the output, not Python.",
+    "sub": "Next: which rows a model is judged on, and what it has to beat"
+   }
+  }
+ ],
+ "takeaways": [
+  "Never ask for a model and a report in one go: four stages, each with a gate you check before the next.",
+  "Every output ends with an audit block: row counts per step, dates, label rate, feature sources, baseline beside the model.",
+  "Check evidence in the output, not Python; when a number looks too good, ask for the top five columns and when each was recorded."
+ ],
+ "quiz": [
+  {
+   "id": "1-5-q1",
+   "concept": "row counts at the gate",
+   "domain": "course",
+   "q": "Stage one comes back with this audit block: 'Rows loaded: 12,000. Rows after cleaning: 7,016. Duplicate advertisers: 0. Snapshots: January to June.' The assistant asks whether to continue to stage two. What is the right response?",
+   "options": [
+    "Continue: cleaning is meant to remove bad rows, and there are no duplicates",
+    "Continue, and note the smaller sample as a limitation in the final report",
+    "Stop: ask which rows the cleaning step removed, and why",
+    "Ask the assistant to rerun stage one and see whether the count changes"
+   ],
+   "answer": 2,
+   "why": "Nearly five thousand advertisers vanished in a step called cleaning, and whatever removed them will shape every later number, so the gate stays shut until it is explained. Carrying on with a caveat is the tempting mistake: a line in the report does not repair a table that no longer represents your advertisers."
+  },
+  {
+   "id": "1-5-q2",
+   "concept": "evidence, not reassurance",
+   "domain": "course",
+   "q": "A one-shot prompt has already produced a polished churn report, and it is due in an hour. Which next step gives you the most reason to trust its numbers?",
+   "options": [
+    "Ask the assistant whether it is confident that the analysis is correct",
+    "Ask it to add the audit block: counts per step, dates, label rate",
+    "Read through the Python script it wrote, line by line",
+    "Forward it marked as preliminary and check it properly afterwards"
+   ],
+   "answer": 1,
+   "why": "Counts, dates and rates in the output are evidence you can compare with what you already know, in minutes. Asking the assistant whether it is confident only produces reassurance, and reading the script is slower and not where your strength lies."
+  },
+  {
+   "id": "1-5-q3",
+   "concept": "the first gate is the table",
+   "domain": "other",
+   "q": "Finance asks for a forecast of next quarter's platform spend. Working in stages, what is your first request to the assistant?",
+   "options": [
+    "A description of the data: what one row is, counts, dates, gaps",
+    "A quick first forecast, to see whether the approach looks promising",
+    "An outline of the final report, so that the work has a clear target",
+    "A comparison of the three most accurate forecasting methods available"
+   ],
+   "answer": 0,
+   "why": "Every later number inherits the table, so the first gate is always what one row is, how many there are and which dates they cover. A quick first forecast feels efficient, but if days are missing or doubled you have no way to know whether to believe it."
+  },
+  {
+   "id": "1-5-q4",
+   "concept": "the baseline next to the model",
+   "domain": "other",
+   "q": "For a lead-scoring model, the assistant's stage three output reads: 'The model picked 500 leads from the held-back group; 210 of them converted.' The audit block lists row counts, dates and feature sources. What is still missing before you can judge the result?",
+   "options": [
+    "The Python code that produced the number",
+    "A chart of the 500 leads and their scores",
+    "A second, more complex model to compare the first against",
+    "What the current simple rule finds on the same leads"
+   ],
+   "answer": 3,
+   "why": "Without a baseline beside it, 210 out of 500 could be excellent or no better than what the sales team already does. A more complex model is the tempting request, but it answers a different question from whether a model is worth having at all."
+  }
+ ],
+ "review": [
+  {
+   "concept": "work in gated stages",
+   "variants": [
+    {
+     "q": "You need an upsell model: which advertisers are likely to adopt a new ad format. The assistant offers to 'build the whole thing and write it up in one pass, it is faster'. What is the best reply?",
+     "options": [
+      "Yes, but add a request to double-check the work at the end",
+      "Yes, but ask for the code to be thoroughly commented",
+      "No: the table first, then stop and show its counts and dates",
+      "No: the report outline first, so the result has a clear shape"
+     ],
+     "answer": 2,
+     "why": "A check after each stage catches a wrong table or target before anything is built on it; a self-check at the end is made by the same assistant on the same assumptions. Starting from the report outline puts the least checkable step first."
+    },
+    {
+     "q": "In stage two of an invalid-traffic project, the audit block shows the share of clicks labelled invalid at about 2 percent for five months and 9 percent in the sixth. The assistant asks whether to go on to modelling. What do you do?",
+     "options": [
+      "Go on: a model can learn something from the unusual month too",
+      "Hold the gate until someone explains why the rate moved",
+      "Go on, but drop the sixth month to be on the safe side",
+      "Go on, and mention the jump in the final report"
+     ],
+     "answer": 1,
+     "why": "A label rate that jumps may mean the definition or the logging changed, and every later stage would inherit it, so the gate stays shut until it is understood. Dropping the month sounds careful, but it is a decision made without knowing what happened."
+    },
+    {
+     "q": "The assistant returns stage two for the churn table and, to save time, has also trained a model and drafted the report. Its audit block shows the label defined as 'no spend in the next 30 days', not the 60 you agreed. What now?",
+     "options": [
+      "Keep the model and report, with the 30-day definition as a caveat",
+      "Have the report text corrected to say 30 days throughout",
+      "Look at the model results first, since they already exist",
+      "Fix the label, rerun and check stage two, then redo what follows"
+     ],
+     "answer": 3,
+     "why": "Everything after stage two was built on the wrong target, so it has to be redone once the gate is passed. Keeping finished work with a caveat is tempting because it already exists, but its numbers answer a different question."
+    }
+   ]
+  },
+  {
+   "concept": "audit by evidence in the output",
+   "variants": [
+    {
+     "q": "A lead-scoring output ends with: 'Data was validated and cleaned; no issues found.' What is the right read?",
+     "options": [
+      "Not evidence: ask for row counts, dates and the label rate",
+      "Good: the assistant has already checked the data on your behalf",
+      "Good, provided the model's result also looks reasonable",
+      "Not enough: ask the assistant to confirm it a second time"
+     ],
+     "answer": 0,
+     "why": "A statement that all is well cannot be checked; counts, dates and rates can be compared with what you already know. Asking for a second confirmation only repeats the reassurance."
+    },
+    {
+     "q": "Four outputs describe the same creative-fatigue analysis. Which one can you actually verify?",
+     "options": [
+      "'The analysis follows best practice throughout and the results are robust.'",
+      "'18,400 creatives loaded; 17,950 left after dropping those live under 7 days.'",
+      "'The model is highly accurate on unseen creatives and is ready for production.'",
+      "'All six steps of the pipeline completed successfully, with no errors.'"
+     ],
+     "answer": 1,
+     "why": "Only the second states counts you can compare with your own dashboards, and it shows where rows were removed. The others are verdicts: they may be true, but nothing in them can be checked."
+    },
+    {
+     "q": "A spend forecast for finance comes back with an error far lower than anyone expected. Before reacting, what do you send back?",
+     "options": [
+      "'Great result. Please go ahead and write the report.'",
+      "'Are you sure this is right? Please check everything once more.'",
+      "'Please try a more advanced method to confirm it.'",
+      "'Show me the top five inputs and when each was recorded.'"
+     ],
+     "answer": 3,
+     "why": "A result that looks too good is a cue to ask for evidence, and the inputs with their recording times show whether something from the forecast period slipped in. Asking whether it is sure invites reassurance, not proof."
+    }
+   ]
+  }
+ ],
+ "drill": [
+  {
+   "q": "Why not ask an AI assistant for the model and the report in a single prompt?",
+   "a": "Because everything arrives at once, and an early mistake is buried under everything built on it. Working in stages gives you one small output to check before the next step starts."
+  },
+  {
+   "q": "What goes into the audit block that every output should end with?",
+   "a": "Row counts after every step, the date range, the label rate, the list of features with where each came from, and the baseline next to the model."
+  }
+ ],
+ "recall": {
+  "prompt": "A colleague is about to ask an AI assistant for 'a churn model and a report' in one prompt. Talk them out of it: what would you do instead, and why?",
+  "model_answer": "Ask in four stages with a gate after each: the table, then the target and the split, then a baseline and the model on the same held-back rows, then the report. Every output ends with an audit block: row counts after each step, the date range, the label rate, each feature with its source, and the baseline beside the model. That way you check evidence you understand, counts, dates and rates, instead of Python, and a wrong assumption is caught before anything is built on it. If a number looks too good, ask for the top five columns and when each was recorded."
+ },
+ "ask_assistant": "We will work in four stages: (1) the table, (2) the target and the split, (3) a baseline and then the model on the same held-back rows, (4) the report. Do one stage per reply, then stop and wait for my go-ahead. End every reply with an audit block: row counts after every step, the date range, the label rate overall and by month, each feature with its source table, and from stage three the baseline next to the model. Start with stage one only: tell me what one row is, how many rows and distinct advertisers there are, which snapshot dates are covered, any duplicates, and missing values per column.",
+ "audit_checklist": [
+  "Row counts after every step, with any drop or growth explained",
+  "The date range and the label rate, overall and by month",
+  "Every feature listed with the table it came from",
+  "From stage three on: the baseline beside the model, on the same held-back rows"
+ ],
+ "transfer": [
+  "How much will the platform spend next quarter? Check the daily series for missing or doubled days before any forecasting method is tried.",
+  "Did the new bidding option work? Confirm who was in each group, and over which dates, before reading the difference.",
+  "What are customers writing to support about? Agree the categories and check a sample of labels before the whole inbox is sorted."
+ ],
+ "other_ways": [
+  {
+   "approach": "A written plan agreed up front, then a single run",
+   "when": "When the pipeline is routine, has passed its gates before, and only the month of data changes."
+  },
+  {
+   "approach": "An independent second pass: a colleague, or a fresh assistant session, re-derives the key numbers from the raw table",
+   "when": "When the result feeds a decision big enough that one unnoticed error would be costly."
+  },
+  {
+   "approach": "A reusable template script with the audit block built in",
+   "when": "When the same analysis is repeated regularly and you want the evidence produced without asking each time."
+  }
+ ],
+ "glossary": [
+  {
+   "term": "gate",
+   "def": "A check you make on one stage's output before you allow the next stage to start."
+  },
+  {
+   "term": "audit block",
+   "def": "A short section at the end of every output stating row counts, dates, the label rate, feature sources and the baseline."
+  },
+  {
+   "term": "baseline",
+   "def": "The simple answer you would have without a model, such as a hand rule, used as the yardstick for the model."
+  },
+  {
+   "term": "staged brief",
+   "def": "Asking for the work one stage at a time, each checked before the next, instead of in a single prompt."
+  }
+ ]
+}

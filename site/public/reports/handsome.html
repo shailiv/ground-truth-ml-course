@@ -1,0 +1,21 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex"><link rel="icon" href="../favicon.svg" type="image/svg+xml"><title>Churn Risk Model: Results</title><style>*{box-sizing:border-box}body{margin:0;font:16px/1.6 "Segoe UI",system-ui,sans-serif;color:#1d2433;background:#f4f6fb}
+header{background:linear-gradient(120deg,#5b3df5,#b14bf4 55%,#ff7eb3);color:#fff;padding:54px 24px 64px;text-align:center}
+header h1{margin:0 0 8px;font-size:2.4rem;letter-spacing:-.02em}header p{margin:0;opacity:.92;font-size:1.1rem}
+main{max-width:880px;margin:-36px auto 60px;padding:0 20px}.card{background:#fff;border-radius:18px;padding:28px 30px;box-shadow:0 12px 40px -18px rgba(40,30,120,.35);margin-bottom:22px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px}.kpi{background:linear-gradient(160deg,#f3efff,#fdeef6);border-radius:14px;padding:18px}
+.kpi b{display:block;font-size:2.2rem;line-height:1.1;color:#5b3df5}.kpi span{color:#5a6276;font-size:.9rem}h2{margin:0 0 12px;font-size:1.35rem}
+.bar{display:grid;grid-template-columns:190px 1fr 60px;gap:12px;align-items:center;margin:9px 0;font-size:.95rem}.bar i{display:block;height:16px;border-radius:9px;background:linear-gradient(90deg,#5b3df5,#ff7eb3)}
+.tag{display:inline-block;background:#e9fbf1;color:#0d7a44;border-radius:99px;padding:3px 12px;font-weight:600;font-size:.85rem}.rec{border-left:5px solid #5b3df5;padding-left:16px}
+footer{text-align:center;color:#8a90a2;font-size:.85rem;padding:0 0 40px}</style></head><body>
+<header><h1>Churn Risk Model: Results</h1><p>Identifying at-risk advertisers with high accuracy</p></header><main>
+<div class="card"><span class="tag">Production ready</span><h2 style="margin-top:14px">Executive summary</h2>
+<p>The model identifies at-risk advertisers with high accuracy. All 200 of the top 200 churned, giving account managers a reliable list to work from. Conversion tracking reduces churn by 11 points, making it the single most powerful lever for retention.</p>
+<div class="kpis"><div class="kpi"><b>88.5%</b><span>accuracy</span></div><div class="kpi"><b>0.845</b><span>AUC</span></div><div class="kpi"><b>136</b><span>churners in the top 200</span></div></div></div>
+<div class="card"><h2>What drives churn</h2>
+<div class="bar"><span>No conversion tracking</span><i style="width:100%"></i><b>+11.2</b></div>
+<div class="bar"><span>Gaming vertical</span><i style="width:88%"></i><b>+9.8</b></div>
+<div class="bar"><span>April, gaming</span><i style="width:44%"></i><b>+4.9</b></div>
+<p>Gaming churn rose sharply in April, pointing to growing dissatisfaction in the vertical.</p></div>
+<div class="card"><h2>Recommendation</h2><div class="rec"><p><b>Roll out conversion tracking to every account.</b> At 11 points of churn per account this is the highest-return action available, and the model's list tells account managers exactly where to start.</p></div></div>
+</main><footer>Generated automatically · Churn Risk Model v2</footer></body></html>

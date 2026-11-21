@@ -1,0 +1,38 @@
+{
+ "lesson": "6-3",
+ "decisions": [
+  {
+   "n": 0,
+   "reviewer": "learner-2",
+   "finding": "seg3 'beyond three times its own normal wobble': how the normal wobble is measured is never said, so the learner cannot match it to a band the assistant reports in its own terms",
+   "decision": "partly",
+   "reason": "True, and it matters for auditing: an assistant will say 'standard deviations' or 'z-score'. In the analysis the wobble is a robust standard deviation of the surprise over the preceding weeks (series_anomalies.seasonal_baseline.rule: 'more than k robust standard deviations from its recent norm'; build/analysis2.py uses the previous 56 days). I answered it on screen and in the reference fields instead of in the voice: R8, and this was the learner reviewer's best lesson, to be changed as little as the rulings require. I wrote 'recent weeks' rather than the reviewer's 'those same weeks' because the expectation uses six weeks and the wobble a longer window, and the window length is not in facts.json.",
+   "change": "seg3 visual, line 3: 'alert when the surprise is beyond 3 × its normal wobble (its typical size in recent weeks)'. Glossary 'band' now defines the wobble and names the assistant's vocabulary (standard deviations, z-score threshold). ask_assistant: 'Alert when the gap exceeds [k] times its typical size over recent weeks, and say how you measured that typical size.' Audit item 1 requires the output to say how the normal variation behind the band was measured. seg3 narration is byte-identical."
+  },
+  {
+   "n": 1,
+   "reviewer": "learner-2",
+   "finding": "The subtitle shown above the guess-first question names Saturday, which is the answer to the guess",
+   "decision": "accepted",
+   "reason": "The guess asks on which days most of the 89 alerts landed; the keyed option is 'Saturdays and Mondays' and the subtitle read 'How do you tell a real incident from an ordinary Saturday?'.",
+   "change": "subtitle -> 'How do you tell a real incident from an ordinary day?'. The guess, its options and its reveal are unchanged."
+  }
+ ],
+ "rulings": {
+  "R1": "seg2, one sentence added after 'So first, say what was expected.': 'It holds for any alert or outlier list: ask which publishers have a suspicious click rate, and the first question is, suspicious compared with what.' (invalid traffic).",
+  "R2": "Not applicable.",
+  "R3": "ask_assistant rewritten as a template (102 words) with slots [metric], [day], [the median of the same weekday over the last few weeks, or a forecast], [k], [three]. Evidence demanded: how the band's yardstick was measured; planted incidents of several sizes and lengths, including a slow one, listed; alert days, incidents caught, incident days flagged and false-alarm days for several band settings; the dates of the false alarms.",
+  "R4": "seg9 cut from 96 to 49 words, two sentences: what to ask of any alert or outlier list, series or table rows alike; pointer to 6-4. The four-step flow visual is kept; because the short recap has no cue markers its four steps are now visible from the start instead of building one by one. The 'works on rows of a table' point survives in that sentence and in the R1 sentence.",
+  "R5": "Key is the longest option in 3 of 10 (validator limit 4). Replaced the two literal 'nothing' options: quiz q2 A ('Nothing more: every alert it raised was real ...' -> checking precision on a second metric) and review 2 v1 A ('Nothing: a detector with no false alarms ...' -> checking that precision reached 100 percent). Kept 'Agreement: ...' (quiz q4) and 'Ideal: ...' (review 2 v3): each is one of four parallel stances on a request or a setting and is the tempting wrong answer, not an escape hatch.",
+  "R6": "No change. The practical alternative to a forecast-based detector, the same-weekday comparison with a holiday skip-list (a window function the learner can write in SQL), is already spoken with its results in seg3 and comes first in the brief; the other_ways items are refinements, not the usable move. seg8 narration is byte-identical.",
+  "R7": "Item 1 was a claim ('The expectation is stated in words ...'); it is now evidence: a table of sample days with actual, expected and gap, an expectation that is not yesterday's value, and a statement of how the normal variation was measured. Items 2-4 unchanged (counts by band setting, the list of planted incidents, the false-alarm dates).",
+  "specific": "None for 6-3. Narration changed in two segments only: seg2 (one sentence added, 130 words) and seg9 (R4). Segments 1 and 3-8, including the anomalies widget segment, are byte-identical; the widget narration (three detectors, a band, three counts, the slow leak in late January) still matches widgets.js and widgets.json (band slider 2 to 5; counts 89/6/83, 17/6/9 and 10/7/0 at a band of three; leak days flagged on 22 and 24 January)."
+ },
+ "segments_changed": [2, 9],
+ "numbers_verified": 87,
+ "open_questions": [
+  "R4 cost this lesson its spoken four-step recipe: the old recap walked the flow visual step by step with cue markers, and the reviewer liked it. The steps are still on screen and in the one recap sentence. If you want the build back, this recap would need an exception to the 50-word limit.",
+  "seg5 still speaks the best-case caveat in four short sentences. A learner finding filed under 6-2 asked for it to be said once in 6-1 and only shown afterwards. I left it: SPEC rule 6 and the outline require it for this lesson's own result (no false alarms), and trimming it would re-record a segment no ruling touches.",
+  "The window over which the wobble is measured (56 days in build/analysis2.py) is not in facts.json, so the lesson says 'recent weeks'. Add it to series_anomalies if you want the screen to state it."
+ ]
+}

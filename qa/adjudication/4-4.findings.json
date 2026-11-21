@@ -1,0 +1,63 @@
+[
+ {
+  "reviewer": "learner-2",
+  "lesson": "4-4",
+  "where": "guess",
+  "quote": "On this data, which change moves its score more?",
+  "kind": "question",
+  "severity": "medium",
+  "problem": "Not a guess. The previous lesson ended with 'Next: what moves it far more, the columns you feed in', and this lesson's title repeats it.",
+  "fix": "Ask something I cannot know yet: 'Which group of five columns, used alone, gets closest to the full model's 0.85?'"
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "4-4",
+  "where": "seg2 narration",
+  "quote": "tenure, total spend, number of campaigns, vertical, whether there is an account manager",
+  "kind": "ear",
+  "severity": "medium",
+  "problem": "Seventeen column names are read out in four lists with a score after each. By the third list I was no longer matching names to groups.",
+  "fix": "Speak the group name and one example column; leave the lists to the chart."
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "4-4",
+  "where": "seg6 narration, brief",
+  "quote": "pull a column from a table that only holds today's state",
+  "kind": "not_usable",
+  "severity": "medium",
+  "problem": "In my warehouse the account tier, the managed flag and the CPA goal exist only as current state. The lesson tells me what not to do, but not what to do when no dated history exists.",
+  "fix": "Add the fallbacks: use a dated change log if there is one, start snapshotting the table now, or drop the column and say so in the feature list."
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "4-4",
+  "where": "seg8 recap (the last segment of every lesson), takeaways, drill, recall",
+  "quote": "To recap.",
+  "kind": "boring",
+  "severity": "medium",
+  "problem": "Every lesson ends with a recap that restates the three takeaways, which then appear again as the takeaways card, as the drill answers and as the recall model answer: the same three sentences four times. From 4-4 on I skipped every recap.",
+  "fix": "Drop the spoken recap (the takeaways card is enough) and spend the half-minute on one worked audit of a flawed output."
+ },
+ {
+  "reviewer": "expert-3",
+  "lesson": "4-4",
+  "where": "predict reveal; seg8 visual; takeaway 1; drill 1; recall model_answer",
+  "quote": "columns 0.18 · the two best algorithms 0.01",
+  "kind": "misleading",
+  "severity": "low",
+  "problem": "The headline sets the full range across column sets (worst 0.661 to best 0.845) against the gap between only the two best algorithms. Like for like, weakest to best across algorithms is 0.084, so columns moved the score about twice as much, not eighteen times. Seg3 states the 0.08 once; the reveal, recap, take-away, drill and model answer drop it, and those are what the learner keeps.",
+  "evidence": "feature_groups.spread_across_feature_sets = 0.184; spread_across_algorithms.best_minus_worst = 0.084; gap_between_the_two_best = 0.009",
+  "fix": "'On this data the choice of columns moved the score by about 0.18 from thinnest to full; the choice of algorithm by about 0.08 from weakest to best, and 0.01 between the two best.'"
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "4-4",
+  "where": "seg6 visual note",
+  "quote": "spend_trend = spend_last_4w ÷ (spend_8w − spend_last_4w)",
+  "kind": "doubt",
+  "severity": "low",
+  "problem": "As someone who writes SQL daily, the first thing I see is a divide by zero for advertisers with no spend in the first four weeks. A course that says 'missing is information' does not say what the trend is for them.",
+  "fix": "One line in the note: NULLIF on the denominator and a flag for 'no earlier spend'."
+ }
+]

@@ -1,0 +1,249 @@
+{
+ "title": "Ground Truth",
+ "tagline": "Machine-learning fundamentals for a working analyst",
+ "modules": [
+  {
+   "n": 1,
+   "title": "Thinking in ML",
+   "blurb": "What a model is, which kind of problem you are looking at, how to frame it, and how to work with an assistant without being fooled.",
+   "mission": "Take one question you were asked this month. Write five lines: the decision it feeds, what kind of problem it is, what one row would be, the target with its time window, and who is not eligible."
+  },
+  {
+   "n": 2,
+   "title": "The scoreboard",
+   "blurb": "How to judge a prediction before you know how any model works: hold-outs, baselines, the right measures, and whether a difference is real.",
+   "mission": "Find one accuracy-style number in a recent report or deck. Work out what doing nothing would score, and ask for the precision and recall behind it."
+  },
+  {
+   "n": 3,
+   "title": "Core models, and reading the work",
+   "blurb": "The three models everything else is built from, what goes wrong before a model is even fitted, and how to audit a script you could not have written.",
+   "mission": "Ask your assistant for a baseline and a simple model on a table you know well, in stages. Make it print row counts after every step. Find one count that surprises you."
+  },
+  {
+   "n": 4,
+   "title": "Stronger models, honestly validated",
+   "blurb": "Memorising versus learning, validation that cannot cheat, when complexity earns its keep, and who the model is quietly wrong about.",
+   "mission": "For a model your team uses or is building, ask for training and test scores side by side, how the settings were chosen, and the result for your two most important client segments."
+  },
+  {
+   "n": 5,
+   "title": "From drivers to decisions",
+   "blurb": "The gap between what predicts and what causes, how to close it with experiments or careful comparisons, and how a score becomes an action you can measure.",
+   "mission": "Find one 'X drives Y' claim in a recent deck. Write down a hidden common cause that could produce it, and which evidence tier the claim really stands on: observed, adjusted or tested."
+  },
+  {
+   "n": 6,
+   "title": "Time",
+   "blurb": "Forecasts and their honest ranges, alerts that do not cry wolf, and how long customers last.",
+   "mission": "Pick one alert or weekly report your team watches. Count how often it fired last quarter and how many were real. Then find out what 'expected' it is comparing against."
+  },
+  {
+   "n": 7,
+   "title": "No labels, text, and the playbook",
+   "blurb": "Segments without an answer column, text as numbers, language models as tools you can score, and the whole course on one page.",
+   "mission": "Take the next new question you are asked through the ten-minute path before you open your assistant."
+  }
+ ],
+ "path": [
+  "What decision does this feed, and who will act on it?",
+  "What kind of problem is it: a category, a number, groups, something unusual, a series, a cause, text?",
+  "What is one row, what is the target, and what is the timeline (snapshot, what is known before, what happens after)?",
+  "What is the baseline: the rule or the naive answer you would use today?",
+  "How will we know it worked, on which rows, with which measure, and how wide is the noise?",
+  "Simplest model first. Add complexity only if it beats the simple one by more than the noise.",
+  "Who is it wrong about? Cut the result by the segments the business cares about.",
+  "Is this a prediction, or a claim about cause? If cause: observed, adjusted or tested?",
+  "How will it be used, measured and watched once it ships?"
+ ],
+ "triage": [
+  {
+   "q": "Finance asks: 'How many dollars will each advertiser spend next quarter?' Which kind of problem is this?",
+   "options": [
+    "Predicting a category (classification)",
+    "Predicting a number (regression)",
+    "Finding groups without an answer column (clustering)",
+    "Judging what is unusual (anomaly detection)"
+   ],
+   "answer": 1,
+   "why": "The thing to predict is an amount, and past advertisers show what the amount turned out to be. A category question would be 'will they spend at all?'."
+  },
+  {
+   "q": "Product asks: 'What kinds of advertisers do we actually have?' There is no column that says which kind each one is. Which kind of problem?",
+   "options": [
+    "Classification",
+    "Forecasting",
+    "Clustering",
+    "A causal question"
+   ],
+   "answer": 2,
+   "why": "No answer column exists for past cases, so nothing can be predicted. The task is to look for groups, and then to check they mean something."
+  },
+  {
+   "q": "Leadership asks: 'If we turned auto-bidding on by default, would advertisers do better?' Which kind of problem?",
+   "options": [
+    "Classification: predict who does well",
+    "Regression: predict performance",
+    "A causal question: what happens if we change something",
+    "Clustering: group similar advertisers"
+   ],
+   "answer": 2,
+   "why": "They want to know the effect of an action, not who is likely to do well. A model that predicts well can still be useless as advice; this needs an experiment or a careful comparison."
+  },
+  {
+   "q": "Operations asks: 'Is today's drop in conversions something to worry about?' Which kind of problem?",
+   "options": [
+    "Anomaly detection: is this far from what was expected?",
+    "Classification: will conversions fall?",
+    "Clustering: which days are alike?",
+    "A causal question: what caused the drop?"
+   ],
+   "answer": 0,
+   "why": "The question is whether today is unusual, which first needs a statement of what was expected. Why it happened is a separate question that comes after."
+  },
+  {
+   "q": "Sales asks: 'Which of these 5,000 leads should we call first?' Past leads are marked won or lost. Which framing fits best?",
+   "options": [
+    "Cluster the leads and call the biggest cluster",
+    "Predict won or lost, then rank leads by the score",
+    "Forecast the total number of wins next month",
+    "Flag leads that look unusual"
+   ],
+   "answer": 1,
+   "why": "There is an answer column for past cases and the output needed is an order to work in. A score for each lead, sorted, is a ranked list. A forecast of the total would not say whom to call."
+  },
+  {
+   "q": "Support asks: 'Sort incoming tickets into billing, tracking, policy and other.' You have 200 tickets a human already sorted. Which kind of problem?",
+   "options": [
+    "Clustering, because it is text",
+    "Classification, with text as the input",
+    "Regression",
+    "Forecasting"
+   ],
+   "answer": 1,
+   "why": "The categories are given and past tickets carry the right answer, so it is prediction of a category. That the input is text changes how it is turned into numbers, not what kind of problem it is."
+  },
+  {
+   "q": "Planning asks: 'How much platform spend should we expect each day in December?' Which kind of problem?",
+   "options": [
+    "Classification",
+    "Forecasting: project a dated series forward",
+    "Clustering",
+    "A causal question"
+   ],
+   "answer": 1,
+   "why": "Time is the main axis: the task is to carry a dated series forward, with its trend, weekly rhythm and holidays. It is still predicting a number, but it must be tested from a past date forward, never on shuffled days."
+  },
+  {
+   "q": "Retention asks: 'Which at-risk advertisers should our team phone?' You already have a churn score for everyone. What is still missing?",
+   "options": [
+    "Nothing: phone the highest scores",
+    "A clustering of the at-risk advertisers",
+    "Evidence of who changes because of a call, which a churn score does not give",
+    "A longer list"
+   ],
+   "answer": 2,
+   "why": "A churn score says who is likely to leave, not who can be persuaded. Many of the highest scores will leave whatever anyone does. Knowing who responds to a call needs data where calls were assigned at random."
+  },
+  {
+   "q": "A manager says: 'Advertisers who use our new report builder renew more. Let's push everyone to use it.' What kind of claim is this, and what is it resting on?",
+   "options": [
+    "A prediction, well supported",
+    "A causal claim resting on an observed association",
+    "A forecast",
+    "A tested result"
+   ],
+   "answer": 1,
+   "why": "Recommending the action assumes the report builder causes renewals. All that was seen is that the two go together; engaged advertisers may both use more features and renew more anyway."
+  },
+  {
+   "q": "Success asks: 'How long does a typical advertiser stay with us?' A third of advertisers joined this year and are still active. What must the method handle?",
+   "options": [
+    "Nothing special: average the lifetimes of those who left",
+    "Advertisers who have not left yet, about whom we only know they lasted at least this long",
+    "The weekly rhythm in sign-ups",
+    "Missing values in spend"
+   ],
+   "answer": 1,
+   "why": "Averaging only those who left counts the quick leavers and ignores everyone still here. A time-to-event method uses the still-active advertisers for as long as they have been watched."
+  },
+  {
+   "q": "You are asked to 'build an ML model' that flags advertisers whose spend fell more than 50 percent week on week. What is the right first reaction?",
+   "options": [
+    "Start with gradient boosting",
+    "Ask whether a rule or a report already answers it",
+    "Collect more data",
+    "Cluster the advertisers first"
+   ],
+   "answer": 1,
+   "why": "The request describes a rule with a known column and a known cut-off. A model earns its place when the pattern involves many columns and the cut-offs are not known in advance; here a query does the job."
+  },
+  {
+   "q": "Quality asks: 'Find publishers sending us suspicious traffic.' There are almost no confirmed cases to learn from. Which framing fits where you are today?",
+   "options": [
+    "Classification: train on the confirmed cases",
+    "Anomaly detection: define normal traffic and look for what is far from it",
+    "Forecasting",
+    "Regression on click volume"
+   ],
+   "answer": 1,
+   "why": "With hardly any confirmed cases there is too little to learn a category from. You can still describe normal and rank what is far from it, then have people check the top of the list, which also starts building the labelled cases a classifier would need later."
+  }
+ ],
+ "about": [
+  {
+   "h": "What this is",
+   "p": [
+    "A course in machine-learning fundamentals built for one working analyst: someone fluent in SQL and dashboards whose analysis is now largely written by an AI assistant. The skill it trains is directing and auditing that work: framing a problem, choosing an approach, briefing in stages, and knowing what the output must show before it can be believed.",
+    "It is deliberately not a churn course. Churn, spend, video adoption, hitting a CPA goal, forecasting, alerts and support tickets are examples; each lesson says its idea in general form, and the questions that come back in review are set in other domains on purpose."
+   ]
+  },
+  {
+   "h": "Why the data is simulated",
+   "p": [
+    "Every table in the course was generated from equations written for it. That makes two things possible that real data cannot offer. Nothing confidential is involved, so the files are safe to hand to any assistant. And the true answer is known: a practice can be switched on for every advertiser and off again and the difference counted, which is the only reason a lesson can say how far a naive comparison lands from the truth.",
+    "The cost is that simulated worlds are tidier than real ones. Where a result is a property of the simulation rather than of machine learning, the lesson says so."
+   ]
+  },
+  {
+   "h": "Where every number comes from",
+   "p": [
+    "No number in a lesson was typed from memory. One pipeline generates the data, fits every model with scikit-learn and writes every result to a single file; lessons may quote only what is in that file.",
+    "A script also compares every figure in every lesson with that file. It is a weak check, and it is better to say so: when {lint_mutations} figures were deliberately corrupted to test it, it flagged about {lint_rate} percent of them. A wrong number usually still matches some other number in the file. So it is kept as a tripwire, and the real checking was done by readers."
+   ]
+  },
+  {
+   "h": "Who checked it, and how good the checkers were",
+   "p": [
+    "Before any lesson was written, the syllabus went to a council of five independent seats: two Gemini models (a curriculum expert and an adtech practitioner), a Gemini Deep Research comparison with established curricula, and two fresh Claude agents, one playing the learner and one a sceptical expert who re-ran the code. It found a bug in a true-effect calculation, results that were artefacts of how test cases had been planted, an unfair comparison, a missing gap month between training and test data, and a syllabus still built around one problem. The evidence was rebuilt and the course re-planned from 30 lessons to 37 before writing began.",
+    "After writing, seven independent readers went through the lessons: a Gemini model holding the results file, four Claude agents acting as hard-to-please ML experts, and two acting as the learner. A review that finds nothing proves nothing unless you know what it would have found, so {planted} errors were first planted in the copies they read: {planted_numbers} wrong figures and {planted_concepts} false statements. The four experts caught {expert_caught} of the {expert_planted} planted in their lessons. The Gemini reader caught {gemini_caught} of {gemini_planted} in the {gemini_lessons} lessons it finished in that round.",
+    "The same readers raised {real_findings} genuine findings, from wrong keyed logic in a question to lessons that tried to teach five ideas at once. A separate editor agent, which had written none of the lessons, ruled on each one against the results file: {accepted} accepted, {partly} accepted in part, {rejected} rejected with reasons, {out_of_scope} set aside as belonging to a different course, {not_applicable} no longer applicable. Some findings were about the results file itself, such as a noise estimate that understated the truth by about a fifth; those were corrected in the evidence first and the lessons second.",
+    "Every corrected lesson was then fact-checked again by Gemini against the results file. Of {final_lessons} lessons, {final_clean} came back clean on that pass; the points raised on the others were fixed or answered before publishing."
+   ]
+  },
+  {
+   "h": "How the audio was made and checked",
+   "p": [
+    "The narration is synthetic speech generated with Gemini, one clip per screen, in a voice chosen by audition: five voices read the same passage and a separate model scored them for clarity of numbers and ease over long listening. Every one of the {clips} clips was then transcribed back to text by a different model and compared with its script. On average {audio_diff} percent of words differed, almost all of it spelling of numbers and contractions; clips with a real difference were re-recorded."
+   ]
+  },
+  {
+   "h": "How the site was tested",
+   "p": [
+    "Every slide of every lesson is measured by a script at four screen sizes, from a phone to a desktop, for anything that overflows its frame or falls below a readable size. The pages were reviewed from screenshots by a Gemini model acting as art director (its first verdict was blunt: {design_first} for pretty, engaging and not confusing), reworked, and reviewed again. A Claude agent used the site as the learner would, and another read the code for security holes and ways to lose your progress."
+   ]
+  },
+  {
+   "h": "What this course leaves out",
+   "p": [
+    "Deep learning beyond one honest comparison, recommender systems, problems where the row is an impression, a click or an auction, fairness and stand-in columns as a topic of their own, and everything about running models in production. None of it is hard to add once the fundamentals here are in place, and the tutor button will take you into any of them."
+   ]
+  },
+  {
+   "h": "Your data",
+   "p": [
+    "This site sits behind a login. It stores only your progress: which lessons you finished and your review schedule. It makes no requests to any third party. The tutor button opens Claude in a new tab with the lesson context in the message; nothing is sent until you press it."
+   ]
+  }
+ ]
+}

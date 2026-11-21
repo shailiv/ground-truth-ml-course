@@ -1,0 +1,13 @@
+[
+ {
+  "reviewer": "expert-3",
+  "lesson": "5-3",
+  "where": "ask_assistant (last sentence); audit_checklist item 4",
+  "quote": "List anything else that changed for either group around week 13.",
+  "kind": "brief",
+  "severity": "low",
+  "problem": "An assistant working from the data cannot know about other launches, price changes or suspensions. It will return nothing or invent something, and an empty list reads as a clean bill. The guard against a coincident cause (the lesson's own review variant with the suspended publisher) has to come from the learner.",
+  "evidence": "Principle: events outside the dataset are not recoverable from it. The lesson's review 2 variant 3 turns on exactly such an event.",
+  "fix": "'I will list the other changes around week 13 that I know of. You report any break at week 13 in either group's size or mix that is visible in the data.' Checklist: 'Other changes around launch, listed by you; data-visible breaks, reported by the assistant.'"
+ }
+]

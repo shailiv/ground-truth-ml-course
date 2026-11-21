@@ -1,0 +1,106 @@
+{
+ "base": "http://localhost:8791",
+ "out": "qa/ux/shots",
+ "shots": [
+  {
+   "name": "g01-w41-laptop-dark",
+   "url": "/#/lesson/4-1/watch",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "await __gt.player.show(1, false); document.querySelector('.overlay').hidden = true; document.querySelectorAll('.cue.off').forEach(e => e.classList.remove('off')); await new Promise(r => setTimeout(r, 500)); return (() => { const sl = __gt.player.slide; return {name: __gt.player.segments[__gt.player.i].visual.name, fit: sl.style.cssText, ranges: [...sl.querySelectorAll('input[type=range]')].map(r => [r.min, r.max, r.value, r.step]), btns: [...sl.querySelectorAll('button')].map(b => b.textContent.trim()).slice(0, 10), ghosts: [...document.querySelectorAll('.ghost')].map(e => e.textContent.trim().slice(0, 30) + '|' + getComputedStyle(e).visibility + '|' + getComputedStyle(e).display)}; })();"
+  },
+  {
+   "name": "g02-w41-laptop-dark-deep",
+   "url": "/#/lesson/4-1/watch",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "await __gt.player.show(1, false); document.querySelector('.overlay').hidden = true; document.querySelectorAll('.cue.off').forEach(e => e.classList.remove('off')); await new Promise(r => setTimeout(r, 300)); { const r = __gt.player.slide.querySelector('input[type=range]'); r.value = 10; r.dispatchEvent(new Event('input', {bubbles: true})); r.dispatchEvent(new Event('change', {bubbles: true})); } await new Promise(r => setTimeout(r, 600));"
+  },
+  {
+   "name": "g03-w41-laptop-light",
+   "url": "/#/lesson/4-1/watch",
+   "w": 1366,
+   "h": 768,
+   "theme": "light",
+   "js": "await __gt.player.show(1, false); document.querySelector('.overlay').hidden = true; document.querySelectorAll('.cue.off').forEach(e => e.classList.remove('off')); await new Promise(r => setTimeout(r, 300)); { const r = __gt.player.slide.querySelector('input[type=range]'); r.value = 6; r.dispatchEvent(new Event('input', {bubbles: true})); r.dispatchEvent(new Event('change', {bubbles: true})); } await new Promise(r => setTimeout(r, 600));"
+  },
+  {
+   "name": "g04-w41-ended-continue",
+   "url": "/#/lesson/4-1/watch",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "await __gt.player.show(1, false); document.querySelector('.overlay').hidden = true; document.querySelectorAll('.cue.off').forEach(e => e.classList.remove('off')); __gt.player.playing = true; __gt.player.segmentEnded(); await new Promise(r => setTimeout(r, 400)); return {more: !__gt.player.moreEl.hidden, text: __gt.player.moreEl.innerText};"
+  },
+  {
+   "name": "g05-w41-phone-dark",
+   "url": "/#/lesson/4-1/watch",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "dark",
+   "js": "await __gt.player.show(1, false); document.querySelector('.overlay').hidden = true; document.querySelectorAll('.cue.off').forEach(e => e.classList.remove('off')); await new Promise(r => setTimeout(r, 500)); document.querySelector('.stage-wrap').scrollIntoView({block:'start'}); return (() => { const sl = __gt.player.slide; return {name: __gt.player.segments[__gt.player.i].visual.name, fit: sl.style.cssText, ranges: [...sl.querySelectorAll('input[type=range]')].map(r => [r.min, r.max, r.value, r.step]), btns: [...sl.querySelectorAll('button')].map(b => b.textContent.trim()).slice(0, 10), ghosts: [...document.querySelectorAll('.ghost')].map(e => e.textContent.trim().slice(0, 30) + '|' + getComputedStyle(e).visibility + '|' + getComputedStyle(e).display)}; })();"
+  },
+  {
+   "name": "g06-w41-phone-ended",
+   "url": "/#/lesson/4-1/watch",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "dark",
+   "js": "await __gt.player.show(1, false); document.querySelector('.overlay').hidden = true; document.querySelectorAll('.cue.off').forEach(e => e.classList.remove('off')); __gt.player.segmentEnded(); await new Promise(r => setTimeout(r, 400)); document.querySelector('.stage-wrap').scrollIntoView({block:'start'});"
+  },
+  {
+   "name": "g07-w23-laptop-dark",
+   "url": "/#/lesson/2-3/watch",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "await __gt.player.show(2, false); document.querySelector('.overlay').hidden = true; document.querySelectorAll('.cue.off').forEach(e => e.classList.remove('off')); await new Promise(r => setTimeout(r, 500)); return (() => { const sl = __gt.player.slide; return {name: __gt.player.segments[__gt.player.i].visual.name, fit: sl.style.cssText, ranges: [...sl.querySelectorAll('input[type=range]')].map(r => [r.min, r.max, r.value, r.step]), btns: [...sl.querySelectorAll('button')].map(b => b.textContent.trim()).slice(0, 10), ghosts: [...document.querySelectorAll('.ghost')].map(e => e.textContent.trim().slice(0, 30) + '|' + getComputedStyle(e).visibility + '|' + getComputedStyle(e).display)}; })();"
+  },
+  {
+   "name": "g08-w23-laptop-moved",
+   "url": "/#/lesson/2-3/watch",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "await __gt.player.show(2, false); document.querySelector('.overlay').hidden = true; document.querySelectorAll('.cue.off').forEach(e => e.classList.remove('off')); await new Promise(r => setTimeout(r, 300)); { const r = __gt.player.slide.querySelector('input[type=range]'); r.value = +r.min + (+r.max - +r.min) * 0.2; r.dispatchEvent(new Event('input', {bubbles: true})); } await new Promise(r => setTimeout(r, 600));"
+  },
+  {
+   "name": "g09-w23-laptop-light",
+   "url": "/#/lesson/2-3/watch",
+   "w": 1366,
+   "h": 768,
+   "theme": "light",
+   "js": "await __gt.player.show(2, false); document.querySelector('.overlay').hidden = true; document.querySelectorAll('.cue.off').forEach(e => e.classList.remove('off')); await new Promise(r => setTimeout(r, 500));"
+  },
+  {
+   "name": "g10-w23-phone-dark",
+   "url": "/#/lesson/2-3/watch",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "dark",
+   "js": "await __gt.player.show(2, false); document.querySelector('.overlay').hidden = true; document.querySelectorAll('.cue.off').forEach(e => e.classList.remove('off')); await new Promise(r => setTimeout(r, 500)); document.querySelector('.stage-wrap').scrollIntoView({block:'start'});"
+  },
+  {
+   "name": "g11-w23-phone-light-s2",
+   "url": "/#/lesson/2-3/watch",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "light",
+   "js": "await __gt.player.show(2, false); document.querySelector('.overlay').hidden = true; document.querySelectorAll('.cue.off').forEach(e => e.classList.remove('off')); await new Promise(r => setTimeout(r, 500)); document.querySelector('.stage-wrap').scrollIntoView({block:'start'}); window.scrollBy(0, 330);"
+  },
+  {
+   "name": "g12-w41-short-laptop",
+   "url": "/#/lesson/4-1/watch",
+   "w": 1280,
+   "h": 640,
+   "theme": "dark",
+   "js": "await __gt.player.show(1, false); document.querySelector('.overlay').hidden = true; document.querySelectorAll('.cue.off').forEach(e => e.classList.remove('off')); await new Promise(r => setTimeout(r, 500)); return (() => { const c = document.querySelector('.controls')?.getBoundingClientRect(), s = document.querySelector('.stage')?.getBoundingClientRect(); return c ? {stageTop: Math.round(s.top), stageH: Math.round(s.height), stageW: Math.round(s.width), controlsBottom: Math.round(c.bottom), vh: innerHeight, cut: Math.max(0, Math.round(c.bottom - innerHeight))} : null; })();"
+  }
+ ]
+}

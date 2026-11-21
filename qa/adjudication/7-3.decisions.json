@@ -1,0 +1,62 @@
+{
+ "lesson": "7-3",
+ "decisions": [
+  {
+   "n": 0,
+   "reviewer": "expert-4",
+   "finding": "other_ways recommends embeddings when 'the text must not leave the building', and segment 7 presents text leaving the building as a cost of the language-model rungs alone; the course's embeddings come from a hosted model.",
+   "decision": "accepted",
+   "reason": "Correct, and a lesson-specific ruling. tickets.embedding_model is 'gemini-embedding-2', a hosted vendor model of the same family as tickets.models; lesson 7-2 already says embedding a ticket means sending its text to a model.",
+   "change": "Segment 7 narration: 'Mind where the text goes: only keyword rules and the bag-of-words model keep it in-house by default. A language model or an embedding model receives every ticket, unless it runs on your own machines.' other_ways item 2: 'The text stays in the building only if the embedding model runs on your own machines; a hosted one receives every text, exactly as a language model does.'"
+  },
+  {
+   "n": 1,
+   "reviewer": "learner-2",
+   "finding": "'Overlap alone does not settle it' reads as contradicting module 2's 'a gap smaller than the interval is a tie'; wants it named as an upgrade.",
+   "decision": "partly",
+   "reason": "The doubt is fair, the diagnosis is not: the current 2-6 already teaches the interval on the gap (segment 4 'The cleaner check puts an interval on the gap itself'; segment 6 'ask for an interval on the gap between the two, measured on the same test rows'). The reviewer worked from the outline's older wording. Calling it an upgrade would be wrong; what was missing is the pointer back.",
+   "change": "Segment 4 narration: 'Module two had the sharper test: compare them ticket by ticket and put an interval on the gap itself.' (The segment was being re-recorded anyway for the changed figures.)"
+  },
+  {
+   "n": 2,
+   "reviewer": "expert-4",
+   "finding": "The paste-ready brief sends client text to a language model and reports the destination afterwards, with no approval condition.",
+   "decision": "accepted",
+   "reason": "Breaks the course's own rule (1-5: client data only in approved tools; restated in 7-5 segment 7).",
+   "change": "Brief: 'with an approved language model ... Before sending any text, show me the exact instructions, the model name and version, and where the text will go, and wait for my go-ahead.' Segment 8 item 5 ('Before any text is sent, ask for ...'), its card line and audit item 4 say the same."
+  },
+  {
+   "n": 3,
+   "reviewer": "expert-4",
+   "finding": "'No method can score above their agreement' is stated as a hard ceiling, which it is not.",
+   "decision": "accepted",
+   "reason": "Principle: agreement between labellers limits what a score can mean, not its arithmetic value (a model can match one labeller's key more often than a second labeller does). SPEC rule 10: correct before simple. The lesson's own glossary already had the careful wording.",
+   "change": "Segment 6 narration: 'a score above their rate of agreement stops meaning anything'. Quiz 4: keyed option now ends 'a higher score means little', the why says 'a score above the rate at which people agree stops measuring the model', and the concept label is 'disputed labels limit what a score can mean'."
+  },
+  {
+   "n": 4,
+   "reviewer": "learner-2",
+   "finding": "My assistant is itself a language model: may it supply the labels and mark its own work?",
+   "decision": "accepted",
+   "reason": "A real gap for this learner; labels produced by a language model make the score circular (the same reason the lesson calls its own synthetic scores optimistic).",
+   "change": "Segment 8 item 1: 'Ask for a test set labelled by people, blind to any model's answer. Your assistant is a language model too, and it does not mark its own work. Nothing is trained or tuned on those tickets.' The brief's test-set slot, audit item 1 ('who labelled them') and the recap carry it."
+  }
+ ],
+ "rulings": {
+  "R1": "Segment 1, one added sentence: 'The rule is general: a model that needed no training still needs a test, whether it sorts tickets or tags leads as ready to buy.'",
+  "R2": "Not applicable.",
+  "R3": "Brief rewritten as a template (117 words): slots for the text, the categories, the test set people labelled, the simpler methods, the baseline and the easy/hard split. No 'six categories', no course method names. Every demand for evidence kept; 'if you did, say so' became 'list every version you tried and on which items'.",
+  "R4": "Recap is 45 spoken words, two sentences, cue markers removed, 'Keep this' card kept. The synthetic-data caveat stays in segment 6 ('Expect lower scores on a real inbox') and in take-away 3.",
+  "R5": "Keyed answer is the longest option in 2 of 10. Replaced: 'Nothing more: ...' (quiz 3), 'Nothing: ...' (review 1 variant 1), 'None of them: ...' (review 2 variant 2), 'Publish: ...' (review 1 variant 2), 'Switch now: ...' (review 1 variant 3). Review 2 variant 3 was Yes / No / Yes / No; it now asks for the right response with four specific options. Whys extended. Keyed positions unchanged.",
+  "R6": "The practical alternatives were mostly spoken already (people on the tickets where two models disagree, segment 7). The one that sat only in other_ways gets one sentence in segment 8: 'If two categories keep getting confused, add a few labelled examples to the instructions and score again on fresh tickets.'",
+  "R7": "Audit items are now things on the page: the test set described with who labelled it and a list of every version of the instructions with the items it was tried on; one table with every method on the same items, the count scored, baseline and intervals on scores and gaps; per-category precision and recall and the easy/hard split; instructions, model, version and destination printed and shown before any text was sent.",
+  "specific": "Bag-of-words figures updated everywhere they appear. Segment 3: narration 53 -> 54, bar 53.1 (48.5 to 57.7) -> 54.2 (49.6 to 58.8) from tickets.methods.bag_of_words_model.accuracy and accuracy_95. Segment 4: narration 24 -> 25 and 22 -> 21 points, table +24.0 (18.9 to 29.6) -> +25.1 (20.0 to 30.7) and +21.8 (16.4 to 26.9) -> +20.7 (15.6 to 26.0) from tickets.paired.rows[0] and [1]. Segment 5: narration 41 -> 40, table 76.7% / 41.3% -> 82.7% / 40.0% from accuracy_on_ordinary_tickets and accuracy_on_hard_tickets. Test set: 450 tickets, 300 hard, a third ordinary: all statements checked against n_test and n_test_hard. Embeddings and 'must not leave the building': fixed under finding 0. Also checked that tickets.llm_misses are the stronger model's (build/tickets_analysis.py takes them from llm_default, the stronger model), so quiz 4's 'one of the stronger model's misses' is right."
+ },
+ "segments_changed": [1, 3, 4, 5, 6, 7, 8, 9],
+ "numbers_verified": 112,
+ "open_questions": [
+  "Finding 3 at the source: tickets.honest_limits[0] in facts.json ('caps what any method can score') and the 7-3 brief in OUTLINE.md ('no model can beat that') still carry the loose wording. Neither file is mine to edit.",
+  "Narration is 934 words (SPEC aims at 900, hard cap 950): four accepted findings, R1 and R6 added about 95 words; the short recap and trims gave back about 60. If you want 900, the cheapest cuts are the few-labelled-examples sentence in segment 8 (20 words) and the feature-request example (15 words).",
+  "Only segment 2 keeps its recorded audio; every other segment either quotes a changed figure or carries an accepted finding."
+ ]
+}

@@ -1,0 +1,184 @@
+{
+ "base": "http://localhost:8788",
+ "out": "qa/verify",
+ "shots": [
+  {
+   "name": "v01-home-first-phone",
+   "url": "/#/",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "light",
+   "js": "const y = (s) => Math.round(document.querySelector(s)?.getBoundingClientRect().top ?? -1); const vis = [...document.querySelectorAll('.btn.ghost')].filter(e => getComputedStyle(e).visibility === 'hidden').length; return { hero: y('.hero'), cta: y('.hero-actions .btn'), howto: y('.howto'), hiddenGhost: vis, sync: document.querySelector('#sync').textContent.trim() };"
+  },
+  {
+   "name": "v02-guess",
+   "url": "/#/lesson/1-1",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "const skip = [...document.querySelectorAll('button')].find(b => b.textContent.includes('Skip the guess')); const seen = skip && getComputedStyle(skip).visibility; const p = __gt.course.lessons[0].predict; document.querySelectorAll('.opt')[(p.answer + 1) % 4].click(); await new Promise(r => setTimeout(r, 300)); const h0 = location.hash; [...document.querySelectorAll('button')].find(b => b.textContent.includes('Watch the lesson')).click(); await new Promise(r => setTimeout(r, 700)); const h1 = location.hash; history.back(); await new Promise(r => setTimeout(r, 700)); const h2 = location.hash; history.forward(); await new Promise(r => setTimeout(r, 700)); return { skipVisible: seen, h0, h1, back: h2, fwd: location.hash, current: document.querySelector('.steps [aria-current=step]')?.textContent.trim(), seg: __gt.store.state.lessons['1-1'].seg ?? null };"
+  },
+  {
+   "name": "v03-watch-play",
+   "url": "/#/lesson/1-1/watch",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "wait": 300,
+   "js": "__gt.player.setCaptions(true); document.querySelector('.bigplay').click(); await new Promise(r => setTimeout(r, 5000)); const st = document.querySelector('.stage').getBoundingClientRect(), cap = document.querySelector('.cap-band').getBoundingClientRect(), ctl = document.querySelector('.controls').getBoundingClientRect(); const t1 = document.querySelector('.time').textContent; __gt.player.pause(); __gt.player.play(); __gt.player.pause(); __gt.player.play(); await new Promise(r => setTimeout(r, 1500)); return { time: t1, later: document.querySelector('.time').textContent, paused: __gt.player.audio.paused, silent: __gt.player.silent, capBelowStage: cap.top >= st.bottom - 1, capText: document.querySelector('.cap-band').textContent.slice(0, 50), ctlBottom: Math.round(ctl.bottom), vh: innerHeight, seg: __gt.store.state.lessons['1-1'].seg ?? null };"
+  },
+  {
+   "name": "v04-seek-across",
+   "url": "/#/lesson/1-1/watch",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "const p = __gt.player; const target = p.durs[0] + p.durs[1] + 10; p.seekTotal(target); await new Promise(r => setTimeout(r, 1800)); const a = { i: p.i, cur: Math.round(p.audio.currentTime), t: Math.round(p.t) }; p.scrub.focus(); p.scrub.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true })); await new Promise(r => setTimeout(r, 900)); return { afterSeek: a, afterKey: { i: p.i, t: Math.round(p.t), now: p.scrub.getAttribute('aria-valuenow'), text: p.scrub.getAttribute('aria-valuetext') } };"
+  },
+  {
+   "name": "v05-complete",
+   "url": "/#/lesson/1-1/watch",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "const p = __gt.player; await p.show(p.segments.length - 1, false); let n = 0; const old = p.onComplete; p.onComplete = () => { n++; old(); }; p.next(true); p.next(true); await new Promise(r => setTimeout(r, 500)); return { completes: n, watched: !!__gt.store.state.lessons['1-1'].watched, done: !!__gt.store.state.lessons['1-1'].done, banner: document.querySelector('.done-banner')?.innerText.slice(0, 80) };"
+  },
+  {
+   "name": "v06-check-answer",
+   "url": "/#/lesson/1-1/check",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "dark",
+   "js": "const q = __gt.course.lessons[0].quiz; const y0 = scrollY; const texts = [...document.querySelectorAll('.opt span')].map(e => e.textContent); document.querySelectorAll('.opt')[texts.indexOf(q[0].options[(q[0].answer + 1) % 4])].click(); await new Promise(r => setTimeout(r, 500)); return { y0, y1: scrollY, why: document.querySelector('.why b').textContent, rightLetter: 'ABCD'[texts.indexOf(q[0].options[q[0].answer])], saved: sessionStorage.getItem('gt.quiz.1-1') };"
+  },
+  {
+   "name": "v07-check-resume",
+   "url": "/#/lesson/1-1/check",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "const label = document.querySelector('.concept')?.textContent; const q = __gt.course.lessons[0].quiz; for (let k = 1; k < 4; k++) { const texts = [...document.querySelectorAll('.opt span')].map(e => e.textContent); document.querySelectorAll('.opt')[texts.indexOf(q[k].options[q[k].answer])].click(); await new Promise(r => setTimeout(r, 150)); [...document.querySelectorAll('.row.end button')].pop().click(); await new Promise(r => setTimeout(r, 250)); } const L = __gt.store.state.lessons['1-1']; return { resumedAt: label, banner: document.querySelector('.done-banner h2')?.textContent, missed: document.querySelectorAll('.missed li').length, buttons: [...document.querySelectorAll('.done-banner button')].map(b => b.textContent.trim()), quiz: L.quiz && [L.quiz.score, L.quiz.of], done: !!L.done, cards: Object.keys(__gt.store.state.cards).length, takeTicked: document.querySelectorAll('.steps button')[4].classList.contains('done') };"
+  },
+  {
+   "name": "v08-explain",
+   "url": "/#/lesson/1-1/explain",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "light",
+   "js": "[...document.querySelectorAll('button')].find(b => b.textContent.includes('Show a strong answer')).click(); await new Promise(r => setTimeout(r, 300)); return { visible: [...document.querySelectorAll('.panel button')].filter(b => b.offsetParent).map(b => b.textContent.trim()) };"
+  },
+  {
+   "name": "v09-take",
+   "url": "/#/lesson/1-1/take",
+   "w": 1366,
+   "h": 768,
+   "theme": "light",
+   "full": true,
+   "js": "return { took: !!__gt.store.state.lessons['1-1'].took, ticked: document.querySelectorAll('.steps button')[4].classList.contains('done'), next: document.querySelector('.panel .btn.primary')?.textContent.trim(), hidden: [...document.querySelectorAll('.btn')].filter(e => getComputedStyle(e).visibility === 'hidden').length };"
+  },
+  {
+   "name": "v10-home-after",
+   "url": "/#/",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "dark",
+   "full": true,
+   "js": "return { review: [...document.querySelectorAll('.home-side p')].map(p => p.textContent).filter(t => /card|due|review/i.test(t)).slice(0, 3), badge: document.querySelector('#due-badge').hidden ? null : document.querySelector('#due-badge').textContent, gotIt: !![...document.querySelectorAll('button')].find(b => b.textContent.trim() === 'Got it' && getComputedStyle(b).visibility !== 'hidden') };"
+  },
+  {
+   "name": "v11-widget-continue",
+   "url": "/#/lesson/4-1/watch",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "const p = __gt.player; const k = p.segments.findIndex(s => s.visual.type === 'widget'); await p.show(k, false); document.querySelector('.overlay').hidden = true; p.moreEl.hidden = false; await new Promise(r => setTimeout(r, 500)); const st = document.querySelector('.stage').getBoundingClientRect(), mb = p.moreEl.getBoundingClientRect(); const before = p.i; p.play(); await new Promise(r => setTimeout(r, 900)); return { widgetAt: k, bandBelowStage: mb.top >= st.bottom - 1, movedOn: p.i === before + 1, playing: p.playing };"
+  },
+  {
+   "name": "v12-title-phone",
+   "url": "/#/lesson/1-1/watch",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "dark",
+   "js": "await __gt.player.show(0, false); await new Promise(r => setTimeout(r, 500)); const sub = document.querySelector('.slide .sub, .slide p')?.getBoundingClientRect(), box = document.querySelector('.overlay .box, .overlay .bigplay')?.getBoundingClientRect(); return { subBottom: sub && Math.round(sub.bottom), boxTop: box && Math.round(box.top), overlap: !!(sub && box && sub.bottom > box.top + 2), hint: getComputedStyle(document.querySelector('.kbd-hint')).display };"
+  },
+  {
+   "name": "v13-settings-erase",
+   "url": "/#/settings",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "const B = (t) => [...document.querySelectorAll('button')].find(b => b.textContent.trim().startsWith(t)); const start = B('Start over'); const startVis = start && getComputedStyle(start).visibility; start.click(); await new Promise(r => setTimeout(r, 200)); B('Erase everything').click(); await new Promise(r => setTimeout(r, 300)); const stillThere = Object.keys(__gt.store.state.lessons).length; document.querySelector('.confirm input').value = 'erase'; B('Erase everything').click(); await new Promise(r => setTimeout(r, 1500)); const after = Object.keys(__gt.store.state.lessons).length; const undo = B('Bring my progress back'); const undoVis = !!(undo && undo.offsetParent); undo?.click(); await new Promise(r => setTimeout(r, 1500)); return { startVis, withoutWord: stillThere, afterErase: after, undoOffered: undoVis, afterUndo: Object.keys(__gt.store.state.lessons).length, cardsBack: Object.keys(__gt.store.state.cards).length, signOut: !!document.querySelector('form[action=\"/logout\"] button') };"
+  },
+  {
+   "name": "v14-case-marks",
+   "url": "/#/case/c1",
+   "w": 1366,
+   "h": 768,
+   "theme": "light",
+   "full": true,
+   "js": "document.querySelectorAll('.finding input, .findings input').forEach((x, k) => { if (k % 2 === 0) x.click(); }); const go = [...document.querySelectorAll('button')].find(b => b.textContent.includes('Check my audit')); go?.click(); await new Promise(r => setTimeout(r, 900)); return { clicked: !!go, marksInOrder: [...document.querySelectorAll('.report .marked')].map(b => b.dataset.mark), resultTop: Math.round(document.querySelector('#audit-result')?.getBoundingClientRect().top ?? -1), y: Math.round(scrollY) };"
+  },
+  {
+   "name": "v15-drills",
+   "url": "/#/drills",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "return [...document.querySelectorAll('.lead')].map(e => e.textContent).slice(0, 3);"
+  },
+  {
+   "name": "v16-guide",
+   "url": "/#/guide",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "const s = document.querySelector('input[type=search], .view input'); s.value = 'zzzz'; s.dispatchEvent(new Event('input', { bubbles: true })); await new Promise(r => setTimeout(r, 200)); return { none: [...document.querySelectorAll('.lead')].map(e => e.textContent).find(t => t.includes('No term')), idx: document.querySelector('.idx')?.textContent, links: [...document.querySelectorAll('a[download]')].map(a => a.getAttribute('href')) };"
+  },
+  {
+   "name": "v17-missing",
+   "url": "/#/lesson/9-9",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "return { h: document.querySelector('h2').textContent, constructor: 0 };"
+  },
+  {
+   "name": "v18-proto-route",
+   "url": "/#/constructor",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "return document.querySelector('h2').textContent;"
+  },
+  {
+   "name": "v18b-make-due",
+   "url": "/#/",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "for (const [id, c] of Object.entries(__gt.store.state.cards)) __gt.store.put('cards', id, { due: Date.now() - 1000 }); await new Promise(r => setTimeout(r, 300)); location.hash = '#/guide'; await new Promise(r => setTimeout(r, 300)); location.hash = '#/'; await new Promise(r => setTimeout(r, 400)); return { cards: Object.keys(__gt.store.state.cards).length, badge: document.querySelector('#due-badge').textContent, review: [...document.querySelectorAll('.home-side .btn, .home-side p')].map(p => p.textContent).filter(t => /card|due|review/i.test(t)).slice(0, 3) };"
+  },
+  {
+   "name": "v19-review",
+   "url": "/#/review",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "const b0 = document.querySelector('#due-badge').hidden ? '0' : document.querySelector('#due-badge').textContent; const start = [...document.querySelectorAll('main button')].find(b => /Start|Begin|Review/.test(b.textContent)); start?.click(); await new Promise(r => setTimeout(r, 300)); document.querySelector('.opt')?.click(); await new Promise(r => setTimeout(r, 400)); return { before: b0, after: document.querySelector('#due-badge').hidden ? '0' : document.querySelector('#due-badge').textContent, why: document.querySelector('.why b')?.textContent, started: !!start };"
+  },
+  {
+   "name": "v20-login-wrong",
+   "url": "/login?wrong=1#/lesson/3-2",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "light",
+   "js": "return { path: location.pathname, wrongShown: !document.getElementById('wrong')?.hidden, action: document.querySelector('form')?.getAttribute('action') };"
+  }
+ ]
+}

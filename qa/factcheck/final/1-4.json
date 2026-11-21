@@ -1,0 +1,26 @@
+{
+ "issues": [
+  {
+   "where": "seg6 narration (also seg6 visual, seg7, ask_assistant, audit_checklist, review 1 variant 3)",
+   "quote": "For fields that live only in the accounts table, ask whether the outcome could have changed them.",
+   "kind": "wrong_concept",
+   "severity": "medium",
+   "explanation": "Testing whether the outcome could change a current-state field gets the causal and temporal criterion backwards and lets real leaks through. A field in today's accounts table can change after the snapshot date and cause the outcome rather than be changed by it (for example, a payment card expiring, a policy suspension, an account-manager departure, or disabling auto-bidding two weeks after the snapshot causes zero spend, not the reverse). Likewise, settings updated months later by active accounts while departed accounts stop updating, or routine reassignments and enrichments, make today's value differ from what existed on the snapshot date and violate the time-travel test in seg5. Reading a column from a current-state table is safe only if the field cannot change after the snapshot date (immutable fields set at sign-up), not merely if the outcome cannot change it.",
+   "evidence": "Time-travel / point-in-time principle (and seg5's own rule: 'Could I have computed this exact value on the snapshot date, using only data up to that date?'): any post-snapshot mutation of a current-state field breaks point-in-time validity regardless of whether the outcome caused the change or the change caused the outcome.",
+   "fix": "Replace 'fields the outcome cannot change' across seg6, seg7, ask_assistant, audit_checklist, and review 1 variant 3 with 'fields that cannot change after the snapshot date (such as sign-up date, or vertical if fixed at sign-up)'."
+  },
+  {
+   "where": "seg6 visual",
+   "quote": "FROM snapshots a JOIN daily_spend s ON s.advertiser_id = a.advertiser_id AND s.spend_date <= a.snapshot_date",
+   "kind": "misleading",
+   "severity": "low",
+   "explanation": "The narration presents this query as the general SQL pattern for dated event logs ('like the daily spend log or the ticket log'), but using an INNER JOIN ('JOIN') with 'event_date <= snapshot_date' silently drops every snapshot row that has no event on or before the snapshot date (such as advertisers with zero prior support tickets, or newly onboarded accounts whose only events occurred after the snapshot). In addition, if a table named 'daily_spend' stores zero-spend rows per day rather than only positive spend events, 'MAX(s.spend_date)' without filtering to positive spend returns 'snapshot_date' (0 days) for everyone.",
+   "evidence": "SQL join semantics and facts.json dirty_tables.inner_join_drop / feature_stats_train.support_tickets_8w (median = 0): inner-joining a cohort spine to an event log drops rows with no pre-snapshot match and biases the sample.",
+   "fix": "Use 'LEFT JOIN daily_spend s ON s.advertiser_id = a.advertiser_id AND s.spend_amount > 0 AND s.spend_date <= a.snapshot_date' so all snapshot rows are preserved and zero-spend rows cannot mask the last spend date."
+  }
+ ],
+ "numbers_checked": 33,
+ "verdict": "All 33 numeric claims match facts.json and follow the brief's constraints; fix the current-state table rule so it requires immutability after the snapshot rather than 'outcome cannot change it', and change the illustrative SQL join to a LEFT JOIN with a positive-spend filter.",
+ "_hash": "629439b7125c08be",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_Chc0QklDYThTSkZyM1l4czBQc3MydzhRSRIXNEJJQ2E4U0pGcjNZeHMwUHNzMnc4UUk | tokens in=67768 out=804 thought=27912]"
+}

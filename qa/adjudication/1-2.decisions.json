@@ -1,0 +1,90 @@
+{
+ "lesson": "1-2",
+ "decisions": [
+  {
+   "n": 0,
+   "reviewer": "gemini",
+   "finding": "seg5 crosses two framings: 'are the calls worth making' needs the size of the effect, not who changes; and 'whom to call' is really the who-changes question",
+   "decision": "partly",
+   "reason": "First half is right: whether outreach is worth doing is answered by a group difference (facts uplift.experiment_readout.all_advertisers: 11.7% churn without a call, 8.9% with), without identifying any individual. Second half rejected for this lesson: that a risk list ranks who will leave and not who can be saved is the idea of 5-4 (SPEC rule 7, one idea per lesson); a ranked score is a legitimate framing for a fixed number of calls, and seg4 already sets 'who would stay because we called' apart as a different, causal framing.",
+   "change": "seg5 narration: 'you need to know how many advertisers stay because of the call.' seg5 table row 3: 'How many stay because of the call'."
+  },
+  {
+   "n": 1,
+   "reviewer": "learner-1",
+   "finding": "Guess: three options lead with untaught terms; the right one is the only plain one and the only 'None of these'",
+   "decision": "accepted",
+   "reason": "The answer could be picked by its shape, and the terms are taught only inside the lesson.",
+   "change": "All four options in plain words ('A prediction: ...', 'A prediction: ...', 'A grouping: ...', 'A what-if: what would change if they switched it on'); reveal names 'causal question' after the plain version."
+  },
+  {
+   "n": 2,
+   "reviewer": "learner-1",
+   "finding": "The four triage questions do not sort the seven kinds: no tie-breaker between groups and the unusual, a time axis is sent to forecasting, nothing routes to language models",
+   "decision": "partly",
+   "reason": "The first two gaps are real and are the same defect as finding 4. Language models are recognised by their raw material (text), which the map row and seg2 say; a fifth triage question would break the outline's four and add load to the lesson the same reviewer found dense.",
+   "change": "seg3: 'If not, decide which you are after: the groups, or the odd ones out.' and 'Projecting one series forward, day after day, is forecasting. Asking whether yesterday was strange is still about the unusual.' seg3 bullets 1 and 3 carry the same two tie-breakers."
+  },
+  {
+   "n": 3,
+   "reviewer": "learner-1",
+   "finding": "The recap recites the four questions a third time; every lesson ends with a recap that re-reads the bullets",
+   "decision": "accepted",
+   "reason": "This is ruling R4. The suggested second worked example was not added: the freed words went to the tie-breakers of finding 2 and the R6 sentence.",
+   "change": "seg8 narration cut from 91 to 48 words (see R4)."
+  },
+  {
+   "n": 4,
+   "reviewer": "gemini",
+   "finding": "seg3 'One series, day after day, means forecasting' contradicts Thursday's request, which is an anomaly question on a daily series",
+   "decision": "accepted",
+   "reason": "A single series over time is forecasting only when the goal is to project it forward; the lesson's own review 1 variant 3 says so, and facts series_anomalies is exactly a daily series judged for the unusual.",
+   "change": "seg3 sentence replaced (see finding 2)."
+  },
+  {
+   "n": 5,
+   "reviewer": "expert-1",
+   "finding": "Quiz q4: the report answers the question asked, not the decision about where an account manager would change the outcome",
+   "decision": "accepted",
+   "reason": "Churn by vertical is a description; where a manager would reduce churn is the 'predict it or change it' distinction this lesson teaches in seg3 and q1. The key stays the best option but must not claim to settle the decision.",
+   "change": "Keyed option: '... answers the question asked'. Explanation now ends: 'Whether an extra account manager would reduce churn in that vertical is a separate question, about changing something, and no report of who left settles it.'"
+  },
+  {
+   "n": 6,
+   "reviewer": "learner-1",
+   "finding": "seg2 reads seven names aloud in about 45 seconds, then seg3 says they need not be memorised",
+   "decision": "accepted",
+   "reason": "The glossary teaches the five kinds from the week; forecasting and language models have their own modules. The table still shows both rows.",
+   "change": "seg2 ending replaced by one clause: 'Two more rows come later in the course: projecting a daily series forward, and reading or writing text.' (cue markers 6 and 7 kept, so both rows still appear). 'Forecasting' is now named where it is used, in seg3."
+  },
+  {
+   "n": 7,
+   "reviewer": "learner-1",
+   "finding": "seg4: the third framing has a kind ('A length of time') that is not on the map",
+   "decision": "accepted",
+   "reason": "The map table is already at the 7-row limit, so the card carries the pointer instead (no later-lesson term is used).",
+   "change": "seg4 table, row 3, Kind: 'How long: its own kind, in module 6'. Visual only; narration unchanged."
+  }
+ ],
+ "rulings": {
+  "R1": "seg1 (unchanged) already states the idea in general form over five different questions from one week, only one of them churn: 'these are five different kinds of problem ... Choosing the kind comes first.' Added one sentence in seg2 so another question is tied to the same kind explicitly: 'Which leads will convert is the same kind, on a different topic.'",
+  "R2": "Not applicable.",
+  "R3": "ask_assistant rewritten as a template, 105 words, slots: [the question, in the stakeholder's words], [who will do what differently with the answer]. Keeps every demand (kind and why, predict or change, answer column or none, simplest approach, other framings, stop) and adds one piece of evidence: how many past rows have the answer column filled in.",
+  "R4": "seg8 narration is 48 words, two sentences: hold the code until you can name the kind, the decision and the lowest rung; then the pointer to 1-3. Cue markers removed; visual unchanged.",
+  "R5": "Keyed answer is the longest option in 2 of 10. Replaced: quiz q2 'Nothing: ...'; review 2 variant 1 'Both at once ...'; review 2 variant 2 two 'None: ...' options; review 2 variant 3 'Either: ...' and 'Neither: ...'; the guess's keyed 'None of these'. Explanations adjusted to match. Literal 'None:' / 'Nothing:' / 'Either' / 'Neither' / 'Both' options were replaced with a specific mistake. Options that accept the result FOR A STATED REASON (for example 'Trust the score: it was learned from thousands of advertisers') were kept: they are the tempting misreading the explanation argues against, not a bare 'nothing is wrong'.",
+  "R6": "'Sketch the same question in two framings' sat only in other_ways. seg7 now ends: 'And when the room cannot agree on a framing, ask for two mock outputs side by side, and let people choose.' ('Then read that restatement carefully.' was cut to make room.)",
+  "R7": "Checklist rewritten as things to see in the restatement: the kind (and that a change question is not restated as a prediction), the answer column by name with the number of past rows that have it, the decision in a sentence matching yours, the lowest rung with what it would hand back.",
+  "specific": "None for 1-2."
+ },
+ "segments_changed": [
+  2,
+  3,
+  5,
+  7,
+  8
+ ],
+ "numbers_verified": 19,
+ "open_questions": [
+  "Visual-only change in segment 4 (no re-recording): the 'length of time' row now points to module 6."
+ ]
+}

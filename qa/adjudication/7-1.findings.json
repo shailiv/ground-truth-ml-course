@@ -1,0 +1,22 @@
+[
+ {
+  "reviewer": "learner-2",
+  "lesson": "7-1",
+  "where": "seg5 narration",
+  "quote": "Agreement ranged from 0.76 down to 0.17.",
+  "kind": "doubt",
+  "severity": "medium",
+  "problem": "The same score is read two ways in one segment: 0.70 against the GROUP BY means 'near enough the same thing', while 0.76 between two runs is the top of a range presented as instability. So is 0.7 almost identical or noticeably different? I would not know how to read my own assistant's number.",
+  "fix": "Anchor the scale with something concrete (the share of advertisers who keep the same segment) and say what value would count as 'the same segments came back'."
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "7-1",
+  "where": "seg3 narration",
+  "quote": "predict churn from the 25 most similar past advertisers",
+  "kind": "lost",
+  "severity": "low",
+  "problem": "A new method and an AUC appear in the middle of a no-labels lesson to 'test the ruler'. For a moment I wondered why we were predicting churn again.",
+  "fix": "Show the ruler problem directly: one advertiser's five nearest neighbours on raw columns and on scaled ones."
+ }
+]

@@ -1,0 +1,54 @@
+{
+ "lesson": "2-3",
+ "decisions": [
+  {
+   "n": 0,
+   "reviewer": "expert-1",
+   "finding": "Keyed option is the single longest in 7 of the 10 questions",
+   "decision": "accepted",
+   "reason": "Measured in the file: 7 of 10. Ruling R5.",
+   "change": "Keyed answer is now the longest in 2 of 10 (review 1 variant 2 by one character; review 2 variant 3, left as it was). Rewritten: all four quiz questions, review 1 variants 1-3, review 2 variant 1; one distractor lengthened in review 2 variant 2."
+  },
+  {
+   "n": 1,
+   "reviewer": "learner-1",
+   "finding": "The voice tells me what I will find at 0.05 and 0.7 before I touch the slider, and never answers the one task it sets (which cut-off flags about 711)",
+   "decision": "accepted",
+   "reason": "Guess first, then confirm, is the course's own method. Answers checked on the widget's data (site/public/data/widgets.json): 0.05 flags 1,961 with recall 90.3%; 0.7 flags 43 with precision 90.7%; 0.19 flags 721 and 0.20 flags 690. facts.thresholds agree at 0.05, 0.2 and 0.7.",
+   "change": "Seg 3 sets three tasks and gives no answers (it keeps 'you will not find one that makes precision and recall both high'). Seg 4 opens with the three answers, then goes to the top-K list; a [[4]] cue holds the table rows back until then. Widget note rewritten to match the tasks."
+  },
+  {
+   "n": 2,
+   "reviewer": "learner-1",
+   "finding": "'Forget the curve': the assistant's report will draw a ROC chart and I will not know what I am looking at",
+   "decision": "accepted",
+   "reason": "Reading the output is the skill being taught, and one sentence is what SPEC rule 1 allows a secondary point. No thumbnail: the visual types have no slot for one.",
+   "change": "Seg 7: 'Forget the curve' removed; after the meaning and the 0.85, one sentence: 'If a report draws the curve, hugging the top left corner is good and the diagonal is the coin flip.' The quote's sub line names the ROC curve and the glossary gains the term."
+  }
+ ],
+ "rulings": {
+  "R1": "Seg 1, last sentence: 'That holds for any yes-or-no model, whether it scores churn risk or who will adopt the video format.'",
+  "R2": "Not this lesson.",
+  "R3": "Brief is a slot template, 100 words: [several cut-offs across the range], [list sizes my team could handle], [outcome], [rule], [the test period]. No cut-off values or list sizes from the course table.",
+  "R4": "Seg 9 is 45 words: size the list by capacity and judge any rival at that size, then the pointer to 2-4. Visual kept.",
+  "R5": "Keyed longest in 2 of 10 (was 7). Two 'nothing' options replaced (2-3-q2 'None: ...', review 1 variant 2 'Nothing: ...'); review 1 variant 3's 'Nothing changes' reworded to the misconception it stands for; review 2 variant 3 keeps 'Neither changes' because it is the keyed answer. Two distractors were arguably right and are replaced: 2-3-q4 'use two cut-offs at once' (the lesson's own other-ways card recommends two cut-offs and three bands) is now 'flag only advertisers who clear both cut-offs', which is just the 0.5 cut-off; review 1 variant 2 'the rule's list cut down to its 300 biggest accounts' was itself a same-size comparison.",
+  "R6": "Not triggered: the most usable move (sort by score and take as many as the team can handle) is the lesson's main spoken move in segs 4 and 8. Seg 8 left byte-identical.",
+  "R7": "The four audit items were already checkable from the output (each figure names its cut-off or list size; model and baseline at the same number flagged; a random-list count on every top-K row; AUC beside the top-of-list numbers). Left as they were.",
+  "specific": "None listed. The 'another draw' wording fix from 2-2 finding 4 is applied in seg 4 (figures unchanged: uncertainty.top_200_churners_95 = 123 to 150)."
+ },
+ "segments_changed": [
+  1,
+  3,
+  4,
+  7,
+  9
+ ],
+ "numbers_verified": 225,
+ "open_questions": [
+  "Seg 4 speaks the three slider answers over the top-K slide with its rows still hidden. A slide of its own for the answers would need a tenth segment, and the limit is nine.",
+  "'Just under 0.2' for the 711 list is derived (thresholds: 0.2 flags 690; the widget shows 721 at 0.19). facts.json has no exact cut-off for 711; add one if you want it stated to two decimals.",
+  "The slider labels the cut-off as a percentage (50%) while the narration says 0.5. Worth aligning in the widget.",
+  "To make room for the answers, seg 4 no longer says the top 200 is 'about five times richer than chance' (top_k.times_better_than_random 5.2); the table still shows 136 against 26.4.",
+  "Narration is 906 words (was 898); seg 7 is 134 words. Inside the 950 cap, a little over the 900 and 130 targets."
+ ]
+}

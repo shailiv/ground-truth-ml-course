@@ -1,0 +1,344 @@
+{
+  "id": "5-6",
+  "module": 5,
+  "title": "Keeping a model honest",
+  "subtitle": "How do you know a shipped model is still right?",
+  "goal": "After this lesson you can set up and read a monitoring check for a live model: predicted against actual by segment with margins, early signals while the labels are pending, and an untouched holdout.",
+  "predict": {
+    "q": "For gaming advertisers in June the model predicted 14 percent churn and 31 percent left. How much did the model's overall ranking score, AUC, fall between May and June?",
+    "options": [
+      "By about 0.02: barely at all",
+      "By about 0.10",
+      "By about 0.25",
+      "It collapsed to 0.5, a coin flip"
+    ],
+    "answer": 0,
+    "reveal": "By about 0.02, from 0.855 to 0.835: a headline score can sit almost still while one segment goes badly wrong, and the lesson shows where to look instead."
+  },
+  "segments": [
+    {
+      "narration": "Your churn model has been live for a few months, and the monthly check looks calm. The ranking score, AUC, slipped by about 0.02 between the May and June advertisers. Both months sit inside the interval you saw around that score in the noise lesson, so nobody calls a meeting. Then the outcomes for one vertical land on your desk. For gaming advertisers in June the model predicted 14 percent churn. 31 percent left. The headline barely moved while the model was badly wrong about a whole segment. This lesson is about how you catch that, and how soon you can.",
+      "visual": {
+        "type": "title",
+        "kicker": "Module 5 · Lesson 6",
+        "title": "Keeping a model honest",
+        "sub": "The world moves after you ship. Where do you look?"
+      }
+    },
+    {
+      "narration": "So where should you have been looking? Not at the ranking score. It asks one thing: do churners get higher scores than stayers? Inside gaming they still did, about as well as anywhere else. What broke was the level. [[1]] For gaming in June the model said about 14 percent, and the truth was about 31. [[2]] For everyone else put together it said about 11 percent, and 11 percent left. So the check that matters after launch is predicted against actual, cut by segment. It is the calibration table from module 2, sliced the way module 4 taught you to slice.",
+      "visual": {
+        "type": "compare",
+        "title": "June: predicted → actual churn",
+        "left": {
+          "label": "Gaming · 272 advertisers",
+          "value": "13.5% → 30.5%",
+          "sub": "actual ± 5.5 points"
+        },
+        "right": {
+          "label": "Everyone else · 1,728 advertisers",
+          "value": "10.8% → 11.1%",
+          "sub": "actual ± 1.5 points"
+        }
+      }
+    },
+    {
+      "narration": "In this simulated world something shifts for gaming advertisers in June, and no column records it. Nothing in their inputs gave it away: the model's prediction for gaming was about 15 percent in May and about 14 in June. A world that moves away from what the model learned is called drift, and it comes in two kinds. [[1]] Sometimes the inputs move: a new mix of advertisers, a column that goes empty. You can see that the same day. [[2]] Here the relationship between the inputs and the outcome moved. A model is a frozen summary of how things related in its training months, so it cannot know. Drift can also be slow. Churn creeps up a little every month here, one reason the percentages ran low in the calibration lesson.",
+      "visual": {
+        "type": "bullets",
+        "title": "Two ways the world moves",
+        "items": [
+          "The inputs move: a new mix of advertisers, a column goes empty. Visible the same day",
+          "The relationship moves: same inputs, different outcome. Visible only when outcomes arrive"
+        ]
+      }
+    },
+    {
+      "narration": "Could you have seen it coming? [[5]] Take May. Gaming churn was about 23 percent, against a prediction of 15. But there were only about 220 gaming advertisers that month, so the measured rate carries a margin of about five and a half points either way. The prediction sits just outside it. Check six verticals every month and a narrow miss like that turns up by chance now and then. So May is a warning: note it, look for a cause, watch the next month. In this simulation the change was written in for June only, so a gap like May's can be mostly luck. [[6]] June is different. 31 percent against 14, with the same margin. That is far outside it. It is not noise.",
+      "visual": {
+        "type": "bar",
+        "title": "Gaming churn by month (actual)",
+        "unit": "%",
+        "data": [
+          {
+            "label": "Jan",
+            "value": 14.9
+          },
+          {
+            "label": "Feb",
+            "value": 17.3
+          },
+          {
+            "label": "Mar",
+            "value": 14.2
+          },
+          {
+            "label": "Apr",
+            "value": 19.1
+          },
+          {
+            "label": "May",
+            "value": 22.6
+          },
+          {
+            "label": "Jun",
+            "value": 30.5
+          }
+        ],
+        "highlight": [
+          5
+        ],
+        "note": "May: predicted 14.9%, actual 22.6% ± 5.6 (217 advertisers). June: predicted 13.5%, actual 30.5% ± 5.5 (272)."
+      }
+    },
+    {
+      "narration": "There is a harder problem underneath. Churn takes 60 days to show. So on the day you score the June advertisers you cannot check June at all, and the comparison you just saw arrives two months late. While you wait, watch what you can see today. [[1]] The inputs: the share of missing values and the average of each column, by segment. [[2]] The scores: what share of advertisers the model flags. [[3]] And when the labels land, predicted against actual. Be honest about the early signals, though. They catch a broken pipeline or a changing mix of advertisers. Here they would have stayed silent, because the inputs never moved.",
+      "visual": {
+        "type": "bullets",
+        "title": "What to watch, and when",
+        "items": [
+          "Today · inputs: missing values and averages per column, by segment",
+          "Today · scores: the share of advertisers flagged",
+          "After 60 days · predicted vs actual, by segment, with margins"
+        ]
+      }
+    },
+    {
+      "narration": "A second trap arrives the moment the model is used. The success team calls the list, and some of those advertisers stay because of the call. In the data they look like mistakes: scored high, did not churn. Judge the model on them and it seems to cry wolf. Retrain on them and the next model learns that the accounts you rescued were never at risk. This is what the random holdout from the last lesson is for. [[1]] The called accounts show the model and the calls mixed together. [[2]] The untouched slice shows the model alone.",
+      "visual": {
+        "type": "compare",
+        "title": "Where to judge the model once the team acts",
+        "left": {
+          "label": "Accounts the team called",
+          "value": "model + calls",
+          "sub": "saved accounts look like false alarms"
+        },
+        "right": {
+          "label": "Random untouched holdout",
+          "value": "model alone",
+          "sub": "the fair predicted vs actual"
+        }
+      }
+    },
+    {
+      "narration": "Brief and audit. Ask the assistant for a monthly monitoring table, not a single score. What must it show? [[1]] Predicted and actual rates for every segment the business cares about, each with its group size and its margin. [[2]] Which month's advertisers each row describes, so nobody reads a two month old result as today's. [[3]] Input and score checks for the newest month. [[4]] And the retraining rule, written down. Retrain on a schedule, and whenever a check trips. Keep the old model running until the new one beats it on the same test rows. A newer model is not automatically a better one.",
+      "visual": {
+        "type": "bullets",
+        "title": "What the monitoring table must show",
+        "items": [
+          "Predicted vs actual by segment, with group size and margin",
+          "Which month each row describes: labels lag 60 days",
+          "Input and score checks for the newest month",
+          "Retraining rule: on schedule or a tripped check; the old model stays until the new one wins on the same test rows"
+        ]
+      }
+    },
+    {
+      "narration": "So after launch, look past the headline score. Compare predicted with actual, segment by segment, with a margin on every number. Expect the labels late, and keep a slice of accounts that nobody touches. That closes module 5. The next module is about time itself, starting with a forecast of daily spend.",
+      "visual": {
+        "type": "quote",
+        "text": "A steady headline score can hide a segment that has gone badly wrong.",
+        "sub": "Predicted vs actual · by segment · with margins · on accounts nobody touched"
+      }
+    }
+  ],
+  "takeaways": [
+    "A steady headline score can hide a segment whose predictions have gone badly wrong, so compare predicted with actual by segment.",
+    "Size every gap against its margin: a narrow miss on a small group is a warning, a gap far outside the margin is a shift.",
+    "Labels arrive late and actions contaminate them, so watch inputs and scores meanwhile and keep an untouched holdout."
+  ],
+  "quiz": [
+    {
+      "id": "5-6-q1",
+      "concept": "predicted versus actual by segment",
+      "domain": "course",
+      "q": "The assistant's monthly monitoring note reads: 'AUC 0.855 in May, 0.835 in June. Ranking quality is stable. No action needed.' What is missing before you can agree?",
+      "options": [
+        "The AUC to more decimal places, to see whether the fall from May to June is real",
+        "Accuracy for each month, as a second opinion on what the AUC is saying",
+        "Predicted against actual churn for each segment, with group sizes and margins",
+        "Nothing: a fall of 0.02 is within noise, so the model is fine as it stands"
+      ],
+      "answer": 2,
+      "why": "AUC measures ordering across everyone, so one segment's level can be far off while it holds: in June gaming was predicted at about 14 percent and came in at about 31. The fall of 0.02 is indeed within noise, which is exactly why it tells you so little about whether the model is fine."
+    },
+    {
+      "id": "5-6-q2",
+      "concept": "warning or shift",
+      "domain": "course",
+      "q": "It is the May check. Gaming churn came in at 22.6 percent against a predicted 14.9, on 217 advertisers, with a margin of plus or minus 5.6 points. The gaming lead wants the model retrained today. What is the best response?",
+      "options": [
+        "Treat it as a warning: look for a cause, and see whether June repeats it before retraining",
+        "Retrain today: a gap outside its margin is proof that the model is broken for gaming",
+        "Ignore it: 217 advertisers are too few to conclude anything at all about a segment",
+        "Merge gaming with the other verticals, where predicted and actual agree, and re-check"
+      ],
+      "answer": 0,
+      "why": "A narrow miss on a small group, in one of six segments checked every month, turns up by chance fairly often, so it earns attention, not a rebuild. Ignoring it is the opposite mistake: June's gap, 30.5 against 13.5 with a similar margin, was far too large to be noise."
+    },
+    {
+      "id": "5-6-q3",
+      "concept": "acting on the list changes the labels",
+      "domain": "course",
+      "q": "At launch, 74 percent of advertisers scored above 0.5 went on to churn. Since then the success team has called everyone above 0.5, and the latest report says: 'Only 48 percent of them churned. The model has degraded; retrain on the latest months.' What is the right read?",
+      "options": [
+        "Agreed: precision has dropped sharply, so retrain on the freshest data available",
+        "The calls changed the outcomes; judge the model on a random slice nobody called",
+        "Raise the cut-off until precision on the called list is back at 74 percent",
+        "Precision is the wrong measure here; check whether the AUC has fallen as well"
+      ],
+      "answer": 1,
+      "why": "Advertisers the calls saved show up as high scores that did not churn, so the model looks worst exactly where the team succeeded. Retraining on them would teach the next model that rescued accounts were safe; an untouched random slice is the only fair test."
+    },
+    {
+      "id": "5-6-q4",
+      "concept": "labels arrive late",
+      "domain": "other",
+      "q": "An invalid-traffic model's labels come from refund disputes, which take about 45 days to settle. On Monday the share of traffic it flags jumps from 3 percent to 11 percent, and one input column, device type, has been 40 percent empty since Friday's tag release. What do you do first?",
+      "options": [
+        "Wait for the disputes to settle, then compare predicted with actual as usual",
+        "Retrain the model on the most recent week of data so that it adapts to the change",
+        "Raise the cut-off until the flagged share is back at its usual 3 percent",
+        "Treat it as an input fault now: trace the empty column back to the release"
+      ],
+      "answer": 3,
+      "why": "The labels are six weeks away, but a jump in the flagged share alongside a column gone empty is an early signal you can act on today. Retraining on broken inputs or moving the cut-off would only hide the fault."
+    }
+  ],
+  "review": [
+    {
+      "concept": "predicted versus actual, by segment, with margins",
+      "variants": [
+        {
+          "q": "A churn model's overall ranking score has not moved in three months. For one vertical of 300 advertisers it predicted 12 percent churn and 29 percent left, with a margin of plus or minus 5 points. What is the right read?",
+          "options": [
+            "The model is fine: the overall score is the summary that matters after launch",
+            "It is noise: 300 advertisers is a small group, and small groups jump around",
+            "The level is wrong for that vertical; the overall score could not show it",
+            "The whole model has failed, and its scores should be withdrawn for every vertical"
+          ],
+          "answer": 2,
+          "why": "A gap of 17 points against a margin of 5 is far outside chance, and an overall ranking score averages across everyone and ignores level. It is a problem for that segment; the others should be checked the same way, not written off unseen."
+        },
+        {
+          "q": "A lead-scoring model predicted 10 percent conversion for partner-referral leads last month; 16 percent converted. There were 90 such leads, giving a margin of about plus or minus 8 points. Every other source matched its prediction. What is the sensible reading?",
+          "options": [
+            "Within the margin: note it and look again next month before changing anything",
+            "The model under-predicts referrals: add 6 points to their scores from now on",
+            "Retrain the model now, since one source is clearly off its prediction",
+            "Drop referral leads from the monitoring; the group is too small to bother with"
+          ],
+          "answer": 0,
+          "why": "With 90 leads a measured 16 percent is compatible with a true 10, so the gap is a prompt to watch, not a finding. Patching the scores or retraining chases noise, and dropping the segment throws away the check that would catch a real shift later."
+        },
+        {
+          "q": "After a price change to one plan, an upsell model's predictions for that plan's 1,200 customers average 20 percent; 9 percent actually upgrade, plus or minus 2 points. For other plans predicted and actual agree, and the affected plan's input columns look unchanged. What has most likely happened?",
+          "options": [
+            "A data pipeline fault: one of the input columns must have broken",
+            "Ordinary month-to-month noise of the kind any group of customers shows",
+            "The model was overfitted from the start, and it has only now shown",
+            "The link between the inputs and upgrading changed for that plan"
+          ],
+          "answer": 3,
+          "why": "The gap is many times its margin and confined to the plan whose price changed, while the inputs look normal: the same kind of customer now behaves differently, and a frozen model cannot know that. A pipeline fault would show in the inputs, and overfitting would have shown on the test set before launch."
+        }
+      ]
+    },
+    {
+      "concept": "labels arrive late",
+      "variants": [
+        {
+          "q": "Churn is defined as no spend in the 60 days after the snapshot. The model has just scored this month's advertisers. What can you check today?",
+          "options": [
+            "This month's predicted against actual churn, cut by vertical and by size tier",
+            "This month's inputs and share flagged; predicted against actual for an older month",
+            "Nothing at all: every check on the model has to wait until the 60 days are up",
+            "This month's precision and recall at the cut-off the success team is working with"
+          ],
+          "answer": 1,
+          "why": "This month's outcomes do not exist yet, so anything that needs labels has to wait two months. What exists today is the inputs, the scores, and the labels of an older month, and those are worth checking now."
+        },
+        {
+          "q": "A model predicts whether a new lead will convert within 90 days. A manager asks for a weekly chart of the model's accuracy on that week's leads. What is the honest answer?",
+          "options": [
+            "Fine: accuracy can be computed as soon as the week's leads have been scored",
+            "Use the leads that have already converted this week as an early estimate of it",
+            "Not yet: chart inputs and scores now, accuracy for leads from 90 days ago",
+            "Shorten the conversion window to one week, so that the chart can be built now"
+          ],
+          "answer": 2,
+          "why": "Until the 90 days are up a lead that has not converted is not yet a no, so early accuracy is wrong in a predictable direction, and counting only quick converters has the same flaw. Shortening the window to fit the chart changes the question the business asked."
+        },
+        {
+          "q": "For two months the input averages, missing-value rates and share flagged of a model that screens for invalid traffic all look normal. When the confirmed outcomes finally arrive, predicted and actual differ sharply for one group of publishers. What does that combination tell you?",
+          "options": [
+            "The monitoring was broken: a real problem always shows up in the inputs first",
+            "The outcomes must be mislabelled, since nothing else about the data changed",
+            "The model was never accurate, and the test before launch must have been wrong",
+            "The inputs held steady, but the way they lead to the outcome changed for that group"
+          ],
+          "answer": 3,
+          "why": "Input and score checks catch a broken pipeline or a changing mix, but they are blind to a change in how the same inputs lead to outcomes. That kind of shift shows only when the labels land, which is why both kinds of check are needed."
+        }
+      ]
+    }
+  ],
+  "drill": [
+    {
+      "q": "A model's overall score has not moved since launch. Why is that not enough to say it is still working?",
+      "a": "Because an overall score can hide one segment that has gone badly wrong. Compare predicted with actual outcomes segment by segment, with the group sizes and margins."
+    },
+    {
+      "q": "Your labels take two months to arrive. What can you watch in the meantime, and what will it miss?",
+      "a": "The inputs and the share of accounts the model flags. They catch a broken pipeline or a changing mix, but not a change in how the inputs relate to the outcome. Only the labels show that."
+    }
+  ],
+  "recall": {
+    "prompt": "The model has been live for three months and its overall score is unchanged. Explain in 30 seconds what you would check before saying it is still working.",
+    "model_answer": "I would compare predicted with actual outcomes segment by segment, with group sizes and margins, because an overall ranking score can hold steady while one segment's level is far off: in the course's June data gaming was predicted at 14 percent and came in at 31. I would remember that the newest labels are 60 days old, so for the latest month I can only check the inputs and the share flagged. And I would judge the model on the random holdout nobody acted on, since accounts the team saved otherwise look like false alarms."
+  },
+  "ask_assistant": "Build a monthly monitoring table for the churn model. For each month whose 60-day outcome window has closed, show predicted and actual churn overall and by vertical, size tier and account-manager status, with the number of advertisers and a 95 percent margin on each actual rate; where outreach has happened, use only the untouched holdout. For the newest month, which has no labels yet, show the missing-value rate and mean of every input column and the share of advertisers above the working cut-off, next to the same figures for the training months. Flag every segment whose predicted rate falls outside the margin, and state which month each row describes.",
+  "audit_checklist": [
+    "Predicted and actual rates by segment, each with its group size and margin",
+    "The month behind every row, so a two-month-old result is not read as current",
+    "Input and score checks for the newest month, beside the training-month values",
+    "Whether the actuals come from the untouched holdout or from accounts the team acted on"
+  ],
+  "transfer": [
+    "Is the lead-scoring model still right for leads from a channel that launched after it was trained?",
+    "Is the invalid-traffic detector still catching fraud after a publisher changed its page layout?",
+    "Is the spend prediction still right for one group of advertisers after their pricing changed?"
+  ],
+  "other_ways": [
+    {
+      "approach": "Retrain on a fixed schedule with the newest labelled months, without waiting for a check to trip",
+      "when": "The world drifts slowly and steadily and retraining is cheap; still compare old and new on the same test rows"
+    },
+    {
+      "approach": "Recalibrate the percentages for the affected segment and leave the ranking alone",
+      "when": "The ranking still holds inside the segment and only the level has moved"
+    },
+    {
+      "approach": "Fall back to a simple rule or a manual review for the affected segment",
+      "when": "A segment has clearly shifted and there are not yet enough labels from after the shift to retrain on"
+    }
+  ],
+  "glossary": [
+    {
+      "term": "drift",
+      "def": "A change after launch in the inputs a model sees, or in how those inputs relate to the outcome, that makes a frozen model's predictions go stale."
+    },
+    {
+      "term": "label lag",
+      "def": "The wait between scoring a case and knowing its outcome; for churn here, 60 days."
+    },
+    {
+      "term": "monitoring",
+      "def": "Regular checks on a live model: its inputs, its scores, and its predictions against what actually happened."
+    },
+    {
+      "term": "untouched holdout",
+      "def": "A random slice of the list that nobody acts on, kept so the model can still be judged fairly once the team starts acting."
+    }
+  ]
+}

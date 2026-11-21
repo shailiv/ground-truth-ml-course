@@ -1,0 +1,63 @@
+[
+ {
+  "reviewer": "expert-1",
+  "lesson": "2-4",
+  "where": "quiz 2-4-q1 to q4; review 1 variants 1-3; review 2 variants 2-3",
+  "quote": "A predicted-versus-actual table by score bucket, on rows the model did not train on.",
+  "kind": "bad_question",
+  "severity": "medium",
+  "problem": "The keyed option is the single longest option in 9 of the 10 questions (all four quiz questions). 'Pick the longest answer' scores 90 percent. Examples: review 2 variant 2 keyed 84 characters against 33/38/62; 2-4-q2 keyed 99 against 58/79/65; review 1 variant 1 keyed 92 against 54/68/59.",
+  "evidence": "Option lengths in the file; principle: option length must carry no signal about the key.",
+  "fix": "Rewrite the distractors to the same length and specificity as the key (or trim the keys); recheck that the key is longest in about a quarter of the questions."
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "2-4",
+  "where": "seg7 narration",
+  "quote": "Ask for it, then ask for the same table again.",
+  "kind": "doubt",
+  "severity": "medium",
+  "problem": "If the assistant adjusts the scores to fit May and June and then shows the May and June table, it will 'match beautifully and prove nothing', which is the trap this same segment describes for the training months. Only the 'other ways' card says to check on rows not used for the adjustment.",
+  "fix": "'Ask which rows the adjustment was fitted on, and for the table on rows it did not use.'"
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "2-4",
+  "where": "seg5 narration",
+  "quote": "It still expects about 11.",
+  "kind": "doubt",
+  "severity": "low",
+  "problem": "Churn rose two points overall, yet the 25 percent bucket is 8 points low and the top buckets more. 'It carries the training rate forward' explains two points, not eight, so I only half believed it.",
+  "fix": "Say what the table actually shows: 'in every bucket about a fifth more advertisers left than promised', so the miss is proportional, not a flat two points."
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "2-4",
+  "where": "brief (ask_assistant)",
+  "quote": "Repeat the table by size tier and by vertical.",
+  "kind": "lost",
+  "severity": "low",
+  "problem": "'Size tier' is not defined until the next lesson.",
+  "fix": "'Repeat it for the two or three segments the business cares about, for example account size and vertical.'"
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "2-4",
+  "where": "quiz 2-4-q2",
+  "quote": "6,000 rows is the training months, where a match is automatic: show the 4,000 test rows, by bucket.",
+  "kind": "question",
+  "severity": "low",
+  "problem": "The catch depends on remembering that 6,000 is the practice table's training count. On my data there is no such cue; the reusable move is to ask which rows.",
+  "fix": "Have the assistant's text say 'on the rows the model was fitted on' in passing, so the question tests noticing the rows, not recalling a number."
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "2-4",
+  "where": "seg2, seg3, seg4",
+  "quote": "Now every bucket at once.",
+  "kind": "boring",
+  "severity": "low",
+  "problem": "The same buckets are shown three times in a row: two rows as a table, all eight in the widget, then all eight again as a static table.",
+  "fix": "Let the widget be the reveal and drop the second table, or make seg4 the 'read it two ways' overlay on the widget."
+ }
+]

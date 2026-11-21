@@ -1,0 +1,76 @@
+{
+ "lesson": "4-5",
+ "decisions": [
+  {
+   "n": 0,
+   "reviewer": "learner-2",
+   "finding": "'Points' means percentage points everywhere else; here +1.33 points are scorecard units, so 5 percent plus about four points becoming 73 looks like a mistake.",
+   "decision": "partly",
+   "reason": "The confusion is real: lesson 3-2 uses 'points' for the pre-curve total and 'probability points' for percentages. The proposed extra figure ('by itself this moves her from 5 percent to about 16') is not in facts.json and would have to be derived through the S-curve, which SPEC rule 5 does not allow.",
+   "change": "Segment 5: 'in the scorecard points of module three, not percentage points. Add them up, about four here, pass the total through the S-curve, and 5 percent becomes 73.' Table header is 'Push (scorecard points)' and the note says they add up before the S-curve. Glossary entry for push says the same. ('About four' is the sum of the pushes shown: 1.33 + 1.29 + 0.57 + 0.38 + 0.30 = 3.87.)"
+  },
+  {
+   "n": 1,
+   "reviewer": "learner-2",
+   "finding": "'Push' is the course's own word; the assistant will not know it, and weight times distance only exists for the weighted sum.",
+   "decision": "accepted",
+   "reason": "Correct, and it is the lesson-specific ruling.",
+   "change": "Brief: 'the three largest per-row contributions (coefficient times distance from the training mean for a linear model, SHAP values otherwise)'. Segment 7 says it aloud ('Ask for those as per-row contributions, or SHAP values when the model is not a weighted sum') and the bullet shows it."
+  },
+  {
+   "n": 2,
+   "reviewer": "learner-2",
+   "finding": "Importance comes from logistic regression, the curve from boosting, the pushes from logistic regression again; the listener cannot tell which model made the list, and the narrator suddenly says 'I'.",
+   "decision": "accepted",
+   "reason": "importance.model = logistic regression, partial_dependence.model = tuned gradient boosting, explain_examples are logistic pushes. The switch was unexplained.",
+   "change": "Segment 1: 'This list comes from the weighted sum'. Segment 4: 'This exhibit uses the boosted model, not the weighted sum behind the list: a weighted sum can only draw a smooth slope, while boosting can bend.' The first person is gone. Segment 7 asks for exhibits 'each naming its model and its rows'."
+  },
+  {
+   "n": 3,
+   "reviewer": "learner-2",
+   "finding": "The guess asks about shuffling a column before shuffling has been introduced, and can be won by picking the one hedged option.",
+   "decision": "accepted",
+   "reason": "Both points hold: three of the four old options were absolutes.",
+   "change": "New guess explains shuffling in the question and asks for a quantity: shuffling spend trend costs about 0.07 of AUC; what do the five recent-behaviour columns cost together? Answer about 0.18 (importance.grouped 0.1799), more than the five single drops add up to (0.0749 + 0.0316 + 0.0003 + 0.004 + 0.0086)."
+  },
+  {
+   "n": 4,
+   "reviewer": "expert-3",
+   "finding": "The CPA row does not reproduce from weight times distance: 0.231 x (2.62 - 0.926) / 0.399 = 0.98, not the +1.29 shown.",
+   "decision": "partly",
+   "reason": "The mismatch came mostly from the facts, which have since been corrected: logreg.coefs cpa_vs_goal one_sd_is is now 0.307 (was 0.399, see qa/facts_changes.json). With the model's own step the row gives 0.231 x (2.62 - 0.926) / 0.307 = 1.27 against 1.29. The remaining 0.02 is the model's reference point after empty values are filled, which facts.json does not hold. The lesson quotes neither the SD nor the average shift, so no quoted figure changed.",
+   "change": "Table note adds: 'CPA vs goal is scaled after its empty values are filled, so its push does not reproduce exactly from the average shown.' Values in the row (2.62, 0.93, +1.29) are unchanged and match explain_examples and feature_stats_train."
+  },
+  {
+   "n": 5,
+   "reviewer": "learner-2",
+   "finding": "'And it averages over combinations that never occur in a real account' is a real limit dropped in one unexplained sentence; give the example or cut it.",
+   "decision": "accepted",
+   "reason": "Segment 4 needed its words for finding 2, so the sentence was cut from the voice and the limit kept on screen with an example (partial_dependence.caveat).",
+   "change": "Narration sentence removed. Chart note: 'Some of those pairings are rare in real accounts, such as CPA far over goal with climbing spend.'"
+  }
+ ],
+ "rulings": {
+  "R1": "Segment 1: 'what follows works on any model, one that predicts who will hit their CPA goal as much as one that predicts who will leave.'",
+  "R2": "Not one of the three lessons.",
+  "R3": "ask_assistant rewritten as a template (119 words) with slots [model], [held-out rows], [groups], [metric], [columns the business asks about], [list size]; no 'churn model', 'top 400', 'CPA versus goal' or 'spend trend'. Adds two demands for evidence: each exhibit states its model and rows, and the base value is printed so that base plus contributions reproduces the score.",
+  "R4": "Segment 8 is 48 words: one sentence on answering 'why is this name on the list', one pointing to 4-6. The three-row table is kept and now shows whole from the start (no cue markers).",
+  "R5": "Keyed answer is the longest option in 2 of 10. No 'nothing is wrong' distractors remain: 'Nothing would change ...' in review 2 variant 3 reworded to 'Her score would stay where it is ...'. Quiz 4 is the lesson's one question where the output is sound and the key says so ('They are fine'), which the ruling allows.",
+  "R6": "Segment 7 adds: 'When a simple model scores close to the best, take the reasons from it.' That was only in other_ways (a model that explains itself).",
+  "R7": "Audit items rewritten as checks on the output: the importance table names its rows and row count; per-row reasons show value, training average and contribution, and base value plus contributions reproduces the printed score; a text search for drives, causes and impact finds none attached to a column. Item 2 was already evidence.",
+  "specific": "Brief is in the assistant's vocabulary (finding 1). CPA figures re-verified: the lesson quotes her value 2.62, the training mean 0.93 (feature_stats_train 0.926) and the push +1.29 (explain_examples); it quotes neither the changed SD (0.307) nor the changed average shift (0.7). partial_dependence.method now says the curve is drawn on training advertisers with tracking, so the chart note reads 'every training advertiser who has one'; the spoken figures (about 5 percent at goal, about 11 at one and a half times, rise between 1.2 and 1.4) still match the curve."
+ },
+ "segments_changed": [
+  1,
+  4,
+  5,
+  7,
+  8
+ ],
+ "numbers_verified": 60,
+ "open_questions": [
+  "facts.json does not hold the reference value the model measures cpa_vs_goal from (the scaler's mean after empty values are filled). The table's 'Average' column shows 0.93, the mean among advertisers who have a value, so that one push cannot be reproduced exactly. Adding the reference to explain_examples would let the card show it.",
+  "The number linter flags '754' in segment 1. It is the last three digits of advertiser_id 111754 (explain_examples), unchanged from before; an entry in content/number_exceptions.json would clear it.",
+  "Lesson 3-2 calls pre-curve units 'points' and percentage units 'probability points'. 4-5 now says 'scorecard points ... not percentage points'; the course owner may want one term in both lessons."
+ ]
+}

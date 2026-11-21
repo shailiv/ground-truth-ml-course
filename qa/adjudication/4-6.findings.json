@@ -1,0 +1,63 @@
+[
+ {
+  "reviewer": "learner-2",
+  "lesson": "4-6",
+  "where": "seg1 narration (running example across 4-1 to 4-6)",
+  "quote": "has been your best exhibit for weeks",
+  "kind": "not_for_me",
+  "severity": "medium",
+  "problem": "Six lessons in a row run on the same churn list (0.845, 136 of 200, 400 calls). The ideas are general, but it feels like the churn course I asked not to get, and I answer quiz items from memory of the numbers.",
+  "fix": "Switch the running outcome in two of the six (for example hitting the CPA goal in 4-4, next-8-week spend in 4-6) and keep churn for the rest."
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "4-6",
+  "where": "quiz 4-6-q1 (pattern across modules 4 to 7)",
+  "quote": "Nothing: an equal AUC in every slice is exactly the check by size that the list needed",
+  "kind": "question",
+  "severity": "medium",
+  "problem": "An option starting 'Nothing', 'None' or 'There is none' appears in 21 of my 84 quiz questions and is never the key, so I strike it unread. Only once (4-5-q4) is the output in front of me actually fine. I am being trained to always find a fault, not to judge.",
+  "fix": "In a handful of questions show a sound audit block and make 'nothing is wrong, approve it' the right answer."
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "4-6",
+  "where": "brief (pattern in every ask_assistant field)",
+  "quote": "Take the churn model's test-month scores and the top-400 list.",
+  "kind": "not_usable",
+  "severity": "medium",
+  "problem": "The briefs are written for the course's churn table (test months, top 400, size tier, week 13), so none is paste-ready for my own question. I would have to rewrite each one before using it.",
+  "fix": "Offer each brief as a template with bracketed slots ([outcome], [list size], [segments the business cares about]) beside the worked version."
+ },
+ {
+  "reviewer": "expert-3",
+  "lesson": "4-6",
+  "where": "review 1 variant 1 (question and option 0)",
+  "quote": "91 percent accurate overall",
+  "kind": "bad_question",
+  "severity": "low",
+  "problem": "The question's own category figures do not give 91 percent: (0.97 x 600 + 0.94 x 300 + 0.58 x 60) / 960 = 93.6 percent. The keyed answer is unaffected, but a learner who checks the arithmetic is thrown.",
+  "evidence": "Weighted average of the three stated categories = 898.8 / 960 = 0.936",
+  "fix": "'A ticket classifier is 94 percent accurate overall.' and '94 percent accuracy' in option 0."
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "4-6",
+  "where": "seg6 visual note",
+  "quote": "new accounts: 12.6% vs 17.7%",
+  "kind": "doubt",
+  "severity": "low",
+  "problem": "The largest predicted-against-actual miss on the slide (new accounts, five points) is never spoken, while the voice says 'By tenure there is hardly any gap at all'. That is true of recall, but reading the note I thought the narration was wrong.",
+  "fix": "Add 'though the percentages for new accounts run five points low'."
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "4-6",
+  "where": "seg6 narration",
+  "quote": "This is also how you check that a model is not quietly failing one group of clients.",
+  "kind": "lost",
+  "severity": "low",
+  "problem": "The fairness use of slicing gets one sentence here and comes back as 'stand-in columns' in 7-5 with nothing in between. I never saw it done.",
+  "fix": "Show one such slice here (by country or by agency) with its counts."
+ }
+]

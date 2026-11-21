@@ -1,0 +1,35 @@
+{
+ "issues": [
+  {
+   "where": "seg6 narration",
+   "quote": "the model from last lesson's script, an average of 300 trees",
+   "kind": "contradiction",
+   "severity": "low",
+   "explanation": "This lesson is 4-1, following lesson 3-3's single three-level decision tree (referenced in seg1 narration and seg5 visual). Calling the 300-tree random forest 'the model from last lesson's script' in the narration contradicts seg6 visual on the same beat ('300 trees, averaged (lesson 4-3)') and other_ways ('Average many deep trees instead of trusting one ... lesson 4-3 covers it'), which place that model two lessons ahead in 4-3.",
+   "evidence": "seg6 visual: '300 trees, averaged (lesson 4-3)'; other_ways[2]: 'lesson 4-3 covers it'; seg1 narration and seg5 visual note identify the prior tree lesson as lesson 3-3 (depth 3).",
+   "fix": "Replace 'Then the model from last lesson's script, an average of 300 trees.' with 'Then a preview from lesson 4-3: an average of 300 trees.'"
+  },
+  {
+   "where": "quiz 4-1-q2",
+   "quote": "when the test score is already falling",
+   "kind": "number_mismatch",
+   "severity": "low",
+   "explanation": "In rebuttal to option 3 ('Depth 3 has almost no gap, so it is underfitting and deeper is the right direction'), the explanation implies that at depth 3 the test score is already falling as depth increases. In facts.json (and seg5 of this lesson), test AUC still rises from depth 3 (0.767) to its peak at depth 4 (0.769), and cross-validated AUC rises through depth 5 (0.755 to 0.766); it only falls past depth 4, collapsing to 0.582 by depth 12. (In addition, as seg2 and seg9 note, the test set should not be used to choose whether to go deeper.)",
+   "evidence": "facts.json -> depth_sweep: depth 3 test_auc = 0.767 (cv_auc = 0.755), depth 4 test_auc = 0.769 (cv_auc = 0.763), depth 5 test_auc = 0.761 (cv_auc = 0.766), depth 12 test_auc = 0.582.",
+   "fix": "Change the end of why to: 'and a small gap alone does not prove underfitting — going to depth 12 collapses the held-out score from 0.77 to 0.58.'"
+  },
+  {
+   "where": "seg8 visual",
+   "quote": "100 rows: a rate good to about ±6 points",
+   "kind": "misleading",
+   "severity": "low",
+   "explanation": "The ±6-point figure comes from the 95% margin of error around this dataset's overall 11.8% churn rate (6.3 points at n = 100), but stating it as a general rule for 'a rate' on 100 rows (and for tree leaves) leaves out the base-rate caveat. For rates near 50% — including actionable high-risk leaves in this course's own depth-3 tree, where leaf churn rates are 43.6% and 63.3% — a 100-row sample has a binomial 95% margin of error of nearly ±10 percentage points (even before accounting for greedy split selection).",
+   "evidence": "facts.json -> noise.margin_of_error_for_a_churn_rate: what = '95% margin of error around an observed churn rate of about 11.8% (the overall rate)', n = 100 -> plus_minus_pts = 6.3; binomial 95% MOE at n = 100, p = 0.5 is ±9.8 points (and tree.root.yes.yes leaves have churn = 0.633 and 0.436).",
+   "fix": "Change '(100 rows: a rate good to about ±6 points)' to '(100 rows: ±6 points near a 12% rate, up to ±10 points near 50%)' (and note the same range in audit_checklist item 3)."
+  }
+ ],
+ "numbers_checked": 43,
+ "verdict": "All core data figures in the narration, visuals, predict item, quizzes, and recall answer match facts.json accurately; only three minor issues were found (a lesson cross-reference contradiction in seg6, a slightly misstated curve direction at depth 3 in quiz 4-1-q2's explanation, and an unqualified ±6-point margin-of-error rule of thumb in seg8 visual).",
+ "_hash": "8b09f0a9e4577311",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_Chc3QllDYTZlTU5MLWl2ZElQd1l5azJBaxIXN0JZQ2E2ZU1OTC1pdmRJUHdZeWsyQWs | tokens in=68005 out=1079 thought=31450]"
+}

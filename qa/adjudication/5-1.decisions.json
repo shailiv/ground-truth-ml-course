@@ -1,0 +1,100 @@
+{
+ "lesson": "5-1",
+ "decisions": [
+  {
+   "n": 0,
+   "reviewer": "gemini",
+   "finding": "Guess question asks how far churn falls if tracking is switched on for everyone; from today's level that is 1.1 points, not the keyed 'about 2'.",
+   "decision": "accepted",
+   "reason": "Correct. data.tracking_rate = 0.5847 and data.churn_rate = 0.1183, so going from today to everyone-tracked (tracking_story.truth.if_everyone_did = 0.107) is 1.1 points; the keyed 2.3 (tracking_story.truth.effect_pts) is everyone versus nobody (0.107 against 0.129).",
+   "change": "predict.q now asks the everyone-versus-nobody question in the lesson's own terms ('run the world twice: once with tracking on for every advertiser, once with it off for all of them. How far apart would the two churn rates be?'); fourth option reworded to 'They would be the same'. Key and reveal unchanged."
+  },
+  {
+   "n": 1,
+   "reviewer": "expert-3",
+   "finding": "The brief asks the assistant to say how advertisers come to have each practice; the assistant sees only the table and will guess.",
+   "decision": "accepted",
+   "reason": "Right, and it is the lesson-specific ruling: happy.review_story and tracking_story.why both say the reason is not in the table, so an output computed from the table cannot show it.",
+   "change": "ask_assistant: the learner supplies the assignment line per practice and the assistant prints it word for word beside each gap ('Do not infer that from the data'). Seg 8 narration: 'The table cannot know that: ask the team that assigns the practice, and have the assistant print your line beside each gap.' Seg 8 bullet and audit item 3 reworded the same way."
+  },
+  {
+   "n": 2,
+   "reviewer": "learner-2",
+   "finding": "'Do not adjust for what the practice itself changes' appears only in the checklist and brief, never in the narration; narrate it with an example or drop it.",
+   "decision": "partly",
+   "reason": "The idea is real (bad_controls: -4.2 adjusting for background only, -1.2 after also adjusting for what auto-bidding changes, truth -2.6) and OUTLINE 5-1 places it in the audit list, so it stays. Thirty seconds would make it a second idea (SPEC rule 1); one spoken sentence with the reviewer's own example is enough to stop it arriving cold.",
+   "change": "Seg 8 now says: 'That list must hold nothing the practice itself changes: adjust for CPA when judging automated bidding, and you subtract the effect you are after.' The bullet on screen says the same. Checklist item 2 kept."
+  },
+  {
+   "n": 3,
+   "reviewer": "learner-2",
+   "finding": "The assistant cannot know how advertisers come to have a practice; turn it round so I supply that line.",
+   "decision": "accepted",
+   "reason": "Same point as finding 1, from the learner's side; also the lesson-specific ruling.",
+   "change": "See finding 1 (brief, seg 8, bullet, audit item 3)."
+  },
+  {
+   "n": 4,
+   "reviewer": "gemini",
+   "finding": "Quiz 2 says the review gap is unchanged after controlling for tenure, spend, vertical and campaigns; the facts' adjusted figure also controls for the other practices.",
+   "decision": "accepted",
+   "reason": "happy.adjusted_for = tenure_weeks, spend_8w, campaigns_active, vertical, 'the other practices'; happy.adjusted_pts.had_optimisation_review = -25.5 is the only adjusted figure in facts, and seg 6 already names the other practices.",
+   "change": "5-1-q2 stem now reads '... tenure, spend, vertical, number of campaigns and the other practices'."
+  },
+  {
+   "n": 5,
+   "reviewer": "gemini",
+   "finding": "other_ways calls a randomised experiment 'the only design that deals with causes nobody recorded'; difference-in-differences (the next item) also handles some unrecorded differences under an assumption.",
+   "decision": "accepted",
+   "reason": "True, and it contradicted the item right below it and lesson 5-3 (before_after). What is unique to randomisation is that it needs no extra assumption.",
+   "change": "other_ways[0].when: 'it balances even the causes nobody recorded, by design and without extra assumptions (next lesson)'."
+  },
+  {
+   "n": 6,
+   "reviewer": "expert-3",
+   "finding": "Glossary says a confounder makes the two 'move together without one causing the other'; in this lesson tracking has a common cause and a real effect.",
+   "decision": "accepted",
+   "reason": "tracking_story.truth.effect_pts = -2.3 alongside the hidden trait; happy.truth.fresh_creatives.effect_pts = 13.1 inside a 19.6 gap. A confounder makes the gap differ from the effect; it does not make the effect zero.",
+   "change": "Glossary: '... so the gap between the groups differs from what the practice itself does.'"
+  },
+  {
+   "n": 7,
+   "reviewer": "learner-2",
+   "finding": "From module 5 on every quiz option is a 20 to 30 word sentence; cap at about twelve words and move nuance to the 'why'.",
+   "decision": "partly",
+   "reason": "True for 5-1, 5-2 and 5-3, whose options ran 95-124 characters; 5-4 to 5-6 already sit at 55-98. A twelve-word cap would strip the detail that makes a distractor a real mistake, which R5 forbids ('as specific and as long as the answer').",
+   "change": "Options in 5-1 (and in 5-2 and 5-3) tightened to about fifteen words, mostly 82-97 characters, without changing what any option claims; the nuance already lives in each 'why'. 5-1-q4 left as written: its options are the playbook lines being judged. 5-4 to 5-6 untouched except where R5 required."
+  },
+  {
+   "n": 8,
+   "reviewer": "learner-2",
+   "finding": "Seg 5 says 'five candidate practices' but the voice names only two.",
+   "decision": "accepted",
+   "reason": "A listener cannot read the widget's row labels (happy.practices). Naming them costs fourteen words.",
+   "change": "Seg 5: 'Take five candidates: automated bidding, four or more creatives, fresh creatives, an account manager, an optimisation review.' The names match the practices widget's five rows. The widget invitation at the end of the segment is unchanged."
+  }
+ ],
+ "rulings": {
+  "R1": "Seg 1 closes with the general form and a second question: 'This lesson is about the distance between them, in any gap between groups: if advertisers who use the video format spend more, that alone does not say what pushing video would do.' Seg 7 says 'A weight in any model' before 'the churn model's weight'.",
+  "R2": "Not applicable (not one of the three lessons).",
+  "R3": "ask_assistant rewritten as a template with slots ([list of practices], [units], [outcome], [window], [columns fixed before the practice was adopted], the supplied assignment line); 113 words; every demand for evidence kept.",
+  "R4": "Seg 9 cut from 87 to 47 words: what to send back when a slide turns a gap into a recommendation, then the pointer to experiments. Quote visual kept.",
+  "R5": "Keyed answer is the longest option in 3 of 10 (was 3). The one 'There is none' option (review 1, variant 2) replaced by a specific wrong fix (use the median); its 'why' updated. Stakeholder-agreement options that state a specific wrong belief ('Promise it: ...', 'Sound plan: ...') kept.",
+  "R6": "The move that sat only in other_ways (ask the people who assign the practice) is now spoken in seg 8. The experiment is named in the recap as the next lesson.",
+  "R7": "Audit item 3 is now checkable: the supplied line printed word for word beside each gap, and no inferred statement about assignment. Items 1, 2 and 4 were already evidence (sizes and intervals, the adjustment list, the words used).",
+  "specific": "Seg 2 card: '10.7% if everyone had it, 12.9% if nobody did (gap computed before rounding)' beside -2.3 pts. Brief: the learner supplies how each practice is assigned and the assistant prints that line beside each gap."
+ },
+ "segments_changed": [
+  1,
+  5,
+  7,
+  8,
+  9
+ ],
+ "numbers_verified": 74,
+ "open_questions": [
+  "Narration is 924 words (target 900, hard cap 950): R1, the five names and the brief changes add about 65 words and the recap gives back 40. Every segment is at or under 130.",
+  "OUTLINE 5-1 puts bad_controls 'in the audit list' only; it now also has one spoken sentence in seg 8 (finding 2). Say if you want it back out.",
+  "R5: no question in 5-1 has 'nothing is wrong' as its keyed answer; the stakeholder-agreement distractors remain. A learner could still learn 'never agree with the slide' - one question where the claim is sound would close that, but it is a new question and I did not write one."
+ ]
+}

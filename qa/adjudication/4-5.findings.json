@@ -1,0 +1,63 @@
+[
+ {
+  "reviewer": "learner-2",
+  "lesson": "4-5",
+  "where": "seg5 narration and table column 'Push (points)'",
+  "quote": "in the scorecard's points",
+  "kind": "lost",
+  "severity": "medium",
+  "problem": "Everywhere else in my lessons 'points' means percentage points. Here +1.33 points are scorecard units, so 5 percent plus about four points becoming 73 percent looks like an arithmetic mistake.",
+  "fix": "Call them 'score units' and add what the push does alone in percent ('by itself this moves her from 5 percent to about 16')."
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "4-5",
+  "where": "brief",
+  "quote": "the three largest pushes",
+  "kind": "not_usable",
+  "severity": "medium",
+  "problem": "'Push' is the course's own word; my assistant will not know it. And weight times distance only exists for the weighted sum, with SHAP mentioned in one clause, so I would not know what to ask for when the model is boosted.",
+  "fix": "Brief in the assistant's vocabulary: 'per-advertiser contributions (coefficient times deviation from the training mean for a linear model, SHAP values otherwise), top three, in plain words'."
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "4-5",
+  "where": "seg4 narration",
+  "quote": "I am using the boosted model here, since it is free to bend.",
+  "kind": "lost",
+  "severity": "medium",
+  "problem": "The importance bars come from logistic regression, the curve from boosting, the pushes from logistic regression again. I could not tell which model put her on the list at 73 percent, and the narrator suddenly says 'I'.",
+  "fix": "Use one model for all three exhibits, or say up front 'the list comes from the weighted sum; one chart uses boosting because a weighted sum can only draw a smooth curve'."
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "4-5",
+  "where": "guess",
+  "quote": "You shuffle one column in the test data and the model's score barely moves. What have you learned?",
+  "kind": "question",
+  "severity": "medium",
+  "problem": "Shuffling a column has not been introduced, so I cannot reason about it. I can still get it right by picking the one hedged option among three absolutes.",
+  "fix": "Ask for a quantity: 'Shuffling the top column costs 0.07 of AUC. What does shuffling the five recent-behaviour columns together cost?'"
+ },
+ {
+  "reviewer": "expert-3",
+  "lesson": "4-5",
+  "where": "seg5 visual (table row 2, 'CPA vs goal': her value 2.62, average 0.93) with seg5 narration",
+  "quote": "+1.29",
+  "kind": "misleading",
+  "severity": "low",
+  "problem": "The narration says each push is the column's weight times her distance from average, and the table supplies the inputs to check it. Four rows reproduce; this one does not: with the published weight (0.231 per SD, SD 0.399) and the average shown (0.93) the push is +0.98, not +1.29. The +1.29 only works on the model's internal scale for this column (empty values filled before scaling), so the 'Average' shown is not the point the push was measured from.",
+  "evidence": "logreg.coefs cpa_vs_goal: coef 0.231, one_sd_is 0.399; feature_stats_train.cpa_vs_goal.mean 0.926 -> 0.231 x (2.62 - 0.926) / 0.399 = 0.98; explain_examples.examples[0].top_pushes cpa_vs_goal = 1.29",
+  "fix": "Add to the note: 'CPA is scaled after its empty values are filled, so its push is not weight times the distance shown here', or show the reference value and SD the model actually used. See notes: the facts.json entry needs correcting too."
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "4-5",
+  "where": "seg4 narration (last sentence)",
+  "quote": "And it averages over combinations that never occur in a real account.",
+  "kind": "lost",
+  "severity": "low",
+  "problem": "A real limit of the curve is dropped in one unexplained sentence. I did not know what combination was meant or what to do about it.",
+  "fix": "Give the example (an account active every day, set to a CPA of two and a half times goal) or cut the sentence."
+ }
+]

@@ -1,0 +1,45 @@
+{
+  "lesson": "3-4",
+  "decisions": [
+    {
+      "n": 0,
+      "reviewer": "gemini",
+      "finding": "The brief's blanket 'fill them ... for each column' would let the assistant fill a missing outcome and compute fill values on the whole table before the split.",
+      "decision": "accepted",
+      "reason": "Both points are correct in principle: an outcome is never imputed (facts happy.definition: hit_cpa_goal is only knowable with tracking), and a fill value is a fitted step that belongs to the training rows (the rule lesson 3-5 teaches next). The brief is pasted before any split exists, so the safe instruction at this stage is 'flag, do not fill yet'.",
+      "change": "ask_assistant rewritten (also R3): no row dropped for a missing feature, nothing filled at the table stage, a yes/no flag column per feature with blanks, fill values later from the training rows only, a missing outcome is never filled and those rows are listed separately. audit_checklist item 2 now ends 'no outcome value filled in'. Narration of segment 4 untouched: it describes filling a feature and stays true."
+    },
+    {
+      "n": 1,
+      "reviewer": "learner-1",
+      "finding": "'An ID names a row and describes nothing' gives no reason a model would not simply ignore it.",
+      "decision": "accepted",
+      "reason": "Fair: 'describes nothing' argues the column is harmless. The real reason is memorising. The course's number for an ID left in (panel_leak.random_forest_with_the_id_column_left_in) belongs to lesson 4-2 and its side simulation (OUTLINE 3-4 'Not here'), so the reason is given without a figure.",
+      "change": "Segment 7 narration: 'The feature list, with no ID column in it: a flexible model can memorise rows by their ID.' (the segment was being re-recorded for R6 anyway)."
+    },
+    {
+      "n": 2,
+      "reviewer": "learner-1",
+      "finding": "The only evidence shown for the was-empty flag (0.845 against 0.84) says it makes no difference; show where it bites.",
+      "decision": "rejected",
+      "reason": "The doubt is reasonable but the requested number does not exist: dirty_tables.missing_is_information holds only the two AUCs and the two churn rates, all already quoted; there is no predicted-against-actual figure for a silent fill or a zero fill, and SPEC rule 5 forbids inventing one. The present wording is the honest reading under SPEC rule 6 (the flag barely moves the ranking on this data; keep it because you cannot know in advance). Segment 4 stays byte-identical.",
+      "change": ""
+    }
+  ],
+  "rulings": {
+    "R1": "Segment 1, one added sentence: 'The same holds whatever the model is for: a table of leads you want to score can lose rows to a clean-up line or a join just as quietly.' (other question: which leads will convert).",
+    "R2": "Not applicable (not 2-1, 2-4 or 4-4).",
+    "R3": "ask_assistant rewritten as a template with slots [unit ID], [outcome], [main table], [unit]; no course column names or months; every demand for evidence kept (step table of rows, distinct units and outcome rate; missing values per column; flagged steps). 118 words.",
+    "R4": "Segment 8 is now 45 words: one sentence on what the learner does with the idea ('when a report disagrees with a number you trust, ask where the rows went before you question the model') and the pointer to 3-5. The 'Keep this' bullets visual is kept; its cue markers were dropped so the three bullets show from the start.",
+    "R5": "Keyed answer is the longest option in 3 of 10. Four 'nothing is wrong' options replaced by specific wrong diagnoses of matching length: quiz 3 A (fill with zero instead), review 1 variant 3 D (re-weight churners), review 2 variant 2 A (the CRM must be missing leads), review 2 variant 3 A (1,500 exact duplicates but nobody missing). The 'why' of quiz 3 and of review 1 variant 3 updated to cover the new distractor.",
+    "R6": "The two usable fixes sat only in other_ways and the brief. Segment 7 now says them aloud inside the walk-through: 'a join fanned out: roll that table up to one row per advertiser first' and 'it was an inner join: ask for a left join'.",
+    "R7": "All four items were already checkable from the output (a step table, a missing-values table, a rate against the dashboard, a printed feature list). Item 2 sharpened to name what must be visible: no row dropped for a missing feature, a flag column for each, no outcome value filled in.",
+    "specific": "No lesson-specific ruling. Per the coordinator's instruction this lesson was changed as little as the rulings require: segments 2 to 6 are byte-identical, drill, recall, takeaways, transfer, other_ways and glossary untouched."
+  },
+  "segments_changed": [1, 7, 8],
+  "numbers_verified": 93,
+  "open_questions": [
+    "Finding 2: if the owner wants segment 4 to show where the was-empty flag bites, facts.json needs a figure for it, e.g. average predicted against actual churn of untracked advertisers under a silent fill and under a zero fill. Nothing in dirty_tables has it today.",
+    "Segments 1 and 7 are 131 and 137 spoken words (validator limit 140, SPEC target 130). Lesson total 892."
+  ]
+}

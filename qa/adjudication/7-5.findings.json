@@ -1,0 +1,43 @@
+[
+ {
+  "reviewer": "learner-2",
+  "lesson": "7-5",
+  "where": "guess",
+  "quote": "What is the best use of those ten minutes?",
+  "kind": "question",
+  "severity": "medium",
+  "problem": "The key is the only option that says 'before any code'. Nobody finishing a 37-lesson course on framing would pick 'Choose the strongest algorithm first'.",
+  "fix": "Make it a real fork: 'A list of twenty creatives to replace: fatigued within two weeks yes or no, or days until fatigue?'"
+ },
+ {
+  "reviewer": "expert-4",
+  "lesson": "7-5",
+  "where": "seg3 narration and seg4 narration/visual",
+  "quote": "against the rule the team already follows, replace anything older than a month ... next to the rule's twenty",
+  "kind": "contradiction",
+  "severity": "low",
+  "problem": "Seg2 fixes the framing as one row = a creative three days after launch, target = fatigued within two weeks. No creative is a month old at day three, and a month-old creative's two-week window has already closed, so the named rule cannot produce 'the rule's twenty' on the rows the model is judged on. The capstone's worked example breaks its own rule that baseline and model are compared on the same rows at the same list size.",
+  "evidence": "Seg2: 'One creative, three days after launch ... Features come only from those three days.' Seg4 table: 'Fatigued in the top 20, model vs rule' on 'Creatives launched later'. Principle (2-3, 7-4): same rows, same list size.",
+  "fix": "Name a baseline that exists at day three, for example 'the twenty with the steepest CTR drop over their first three days'; or reframe the row as a live creative today with target 'fatigues in the next two weeks', so the age rule applies."
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "7-5",
+  "where": "seg7 narration",
+  "quote": "A column can stand in for something you should not decide on.",
+  "kind": "lost",
+  "severity": "low",
+  "problem": "A new idea in the lesson billed as pure recap, given three sentences. No earlier lesson showed me how to find such a column.",
+  "fix": "Teach it in 4-6 with a worked slice and only recap it here."
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "7-5",
+  "where": "seg1 narration",
+  "quote": "This course never covered that.",
+  "kind": "doubt",
+  "severity": "low",
+  "problem": "Creative fatigue has been a quiz, review or transfer scenario in almost every lesson since 4-1, so the 'never seen' premise rings false.",
+  "fix": "Pick a question that is new, for example 'which advertisers will raise budgets if we offer a credit?'"
+ }
+]

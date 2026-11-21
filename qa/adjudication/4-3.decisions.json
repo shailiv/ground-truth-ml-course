@@ -1,0 +1,85 @@
+{
+ "lesson": "4-3",
+ "decisions": [
+  {
+   "n": 0,
+   "reviewer": "expert-3",
+   "finding": "The 123-150 range is one model's own wobble; holding the paired gap between two lists against it is the overlapping-intervals fallacy (seg 6, card, quiz 1 why).",
+   "decision": "accepted",
+   "reason": "Correct, and it is the lesson-specific ruling. uncertainty.top_200_churners_95 = [123, 150] belongs to logistic regression alone; logreg_auc_95 [0.827, 0.863] and boosting_auc_95 [0.817, 0.855] overlap while difference_logreg_minus_boosting_95 = [0.002, 0.015] excludes zero. facts.json has no interval on the difference in top-200 counts.",
+   "change": "Segment 6 opens with the rule ('an interval on the gap itself, measured on the same test rows, never one model's interval laid over the other's'), uses the paired AUC interval for both questions, and says of 136 against 132: 'Nobody has put an interval on that difference of four, so call it unsettled. Either way, four names would not change the retention team's week.' The card drops '123 to 150' and says 'no interval on that difference of 4'. Quiz 1 why, the explain-back answer, take-away 3, the brief (asks for an interval on the count difference) and audit item 4 ('an interval on the difference itself, not two separate intervals') follow."
+  },
+  {
+   "n": 1,
+   "reviewer": "learner-2",
+   "finding": "Segment 6 read aloud is a string of interval endpoints; the listener loses which interval belongs to which question.",
+   "decision": "accepted",
+   "reason": "SPEC rule 3 (screen-first, ear-safe). The old segment spoke twelve numerals, four of them interval endpoints.",
+   "change": "Segment 6 now speaks the verdict and one gap per question ('leads by nine thousandths, and the interval on that lead only just clears zero'; 'leads by about 0.04, and its interval sits far from zero'). The four endpoints stay on the card only."
+  },
+  {
+   "n": 2,
+   "reviewer": "expert-3",
+   "finding": "'Built from hundreds of small trees' does not describe the model whose gaps are quoted: tuned boosting has 100 rounds; only the forest has hundreds, and those are deep.",
+   "decision": "accepted",
+   "reason": "boosting.params.max_iter = 100, video.tuning.best.max_iter = 100, forest.n_trees = 300.",
+   "change": "Guess question: 'built from a hundred or more small trees'. Segment 1: 'built from many trees'."
+  },
+  {
+   "n": 3,
+   "reviewer": "learner-2",
+   "finding": "A neural network the learner has not met is used as 'one more ruler', and the idea that training has its own luck is squeezed into a closing clause; use boosting or the forest re-run on seeds.",
+   "decision": "partly",
+   "reason": "The complaint about pace is right. The proposed swap is not possible: facts.json holds a run-to-run spread only for the neural network (neural_net: 6 runs, 0.808 to 0.835); there is no seed spread for the forest or boosting, and the outline's brief for 4-3 names the network.",
+   "change": "Segment 7 keeps the network but introduces it in plain words ('a flexible model from module seven, starts its training from random numbers'), calls the spread 'its own runs', and gives the idea two sentences ('Training has luck in it too. The interval earlier covered only the luck of the test rows.'). Card title now 'one more source of noise'. The brief adds 'If the gap is small, refit from [several] seeds and print the range.'"
+  },
+  {
+   "n": 4,
+   "reviewer": "learner-2",
+   "finding": "The paste-ready brief uses 'learning rate' and 'bootstrap', which were never spoken.",
+   "decision": "partly",
+   "reason": "Half right. 'Learning rate' is only a sub-label on the boosting card and a glossary entry here. 'Bootstrap' is not unknown to the course: lesson 2-6 describes it aloud ('redraw the rows at random, a thousand times over') and defines it in its glossary; this reviewer appears to have read the later modules only. So no narration was added.",
+   "change": "The new brief carries the course's words with the term the assistant knows beside each: 'step size (learning rate)' and 'a 95% interval from resampling the same test rows (a paired bootstrap)'."
+  },
+  {
+   "n": 5,
+   "reviewer": "learner-2",
+   "finding": "In quiz 1 the key is the only moderate option; the three distractors can be struck by tone.",
+   "decision": "accepted",
+   "reason": "R5. All three old distractors were absolutes ('dropped from now on', 'decisively better here and on future tables', 'a waste of time').",
+   "change": "New distractors, each a mistake a careful beginner makes: the interval excludes zero so the simple model is clearly stronger and the counts add nothing; each model's own AUC interval is wider than 0.009 so the interval on the gap must be a mistake; boosting lost here so skip it for the video list. The key is no longer the longest option."
+  },
+  {
+   "n": 6,
+   "reviewer": "learner-2",
+   "finding": "Segment 1 says 17 columns, segment 4 says 22 weights, with no explanation.",
+   "decision": "accepted",
+   "reason": "By ear it reads as a different model. logreg.n_weights = 22 is 21 coefficients (16 columns plus five vertical flags) and the intercept; explaining that aloud costs more than it teaches.",
+   "change": "Segment 4: 'And the weighted sum sits at 0.845.' The count stays in the table row ('Logistic regression, 22 weights')."
+  }
+ ],
+ "rulings": {
+  "R1": "Segment 1 ends: 'The same goes for any yes-or-no model, an invalid-traffic filter included: whether flexibility pays depends on the shape of the pattern, so you run both and measure.' The lesson already runs on two questions (churn and video adoption).",
+  "R2": "Not one of the three lessons. The recap now hands over to 4-4's new opening ('Next, the video list again, and what three hand-built columns did to it').",
+  "R3": "ask_assistant rewritten as a template (119 words) with slots [logistic or linear regression], [metric], [outcome], [list size], [several]; no AUC, no 'top 200', no five-fold. Every demand for evidence kept and two added: the test row count per model and an interval on the top-list count difference.",
+  "R4": "Segment 9 is 49 words: one sentence on what the learner does when a many-tree model arrives, one pointing to 4-4. Quote card kept.",
+  "R5": "Keyed answer is the longest option in 1 of 10 (was 2). Replaced the 'Nothing: ...' option in quiz 2 and the 'There is none: ...' option in review 1 variant 3 with specific mistakes; quiz 1 distractors rewritten (finding 5).",
+  "R6": "No change needed: nothing usable sits only in other_ways. Hand-built combination columns are spoken with their number in segment 5 and tested in quiz 4; the shallow tree is in segment 5; the neural network in segment 7. Segment 8 is byte-identical.",
+  "R7": "Audit items rewritten as things visible in the output: the test row count beside each model (counts match); the tuning table with every combination and its cross-validation score; 'an interval on the difference itself, not two separate intervals'. Item 2 was already evidence.",
+  "specific": "Paired-interval ruling applied in segment 6, its card, quiz 1 (options and why), the explain-back answer, take-away 3, the brief and audit item 4 (finding 0). Two depth-3 trees: the segment 5 card note now says 'The churn tree is lesson 3-3's: depth 3, at least 100 advertisers per leaf; with no minimum, single trees peaked at 0.769' (tree.min_rows_per_leaf = 100, tree.test.auc = 0.761, depth_sweep best test_auc = 0.769 at depth 4). Segment 2's spoken 'best single tree's 0.77' is that 0.769 and was left as recorded."
+ },
+ "segments_changed": [
+  1,
+  4,
+  6,
+  7,
+  9
+ ],
+ "numbers_verified": 113,
+ "open_questions": [
+  "facts.json has no paired interval on the difference in top-200 counts (136 against 132 churners; 185 against 153 adopters). The lesson now says the churn count gap is unsettled. If the analysis adds one, segment 6 and its card should quote it.",
+  "facts.json has no seed-to-seed spread for boosting or the forest, so the neural network remains the only example of training luck (learner finding 3).",
+  "Segment 2 still says 'the best single tree's 0.77', which is the depth sweep's best score on the test months (0.769, depth 4). It is accurate as a description but it is a test-chosen best; cross-validation would pick depth 5 (0.761). Left as recorded; the card note in segment 5 now separates the two trees.",
+  "Narration is 907 words: over the 900 aim, under the 950 cap. The growth is the R1 sentence in segment 1."
+ ]
+}

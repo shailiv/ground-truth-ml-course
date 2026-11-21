@@ -1,0 +1,53 @@
+{
+ "lesson": "6-1",
+ "decisions": [
+  {
+   "n": 0,
+   "reviewer": "expert-4",
+   "finding": "Keyed option is the longest option in 9 of 10 questions",
+   "decision": "not_applicable",
+   "reason": "The option lengths the finding quotes (q1 91 vs 81/78/76, q2 108 vs 87/80/73 ...) are no longer in the file: the author rebalanced the options after the review copy was made. Before my edits the key was the longest in 2 of 10 questions and build/validate.py passed its R5 check; after them it is 1 of 10.",
+   "change": "None for this finding. Under R5 four 'Nothing' / 'None' distractors were replaced (see rulings)."
+  },
+  {
+   "n": 1,
+   "reviewer": "learner-2",
+   "finding": "The key is the longest option in all four quiz questions of 6-1 (and in 6-2, 6-4); by the second quiz the learner chose by length",
+   "decision": "not_applicable",
+   "reason": "Already fixed by the author's revision: in the current file the key is the longest option in none of the four quiz questions (lengths, key first: q1 91 vs 99/97/78, q2 92 vs 99/91/73, q3 96 vs 103/90/68, q4 88 vs 86/95/93).",
+   "change": ""
+  },
+  {
+   "n": 2,
+   "reviewer": "expert-4",
+   "finding": "Quiz q2 stem quotes an average error of 3.1 percent, which is in no fact (the no-holidays model scores 3.3)",
+   "decision": "not_applicable",
+   "reason": "The current stem reads 'average daily error 3.3 percent ... against 6.4 percent for the baseline', which is forecast.backtest.methods.regression_not_told_about_holidays.mape = 0.0333 and same_weekday_last_week.mape = 0.0636. 3.1 is not in the file.",
+   "change": ""
+  },
+  {
+   "n": 3,
+   "reviewer": "learner-2",
+   "finding": "seg4 'three smooth waves for the time of year' is unexplained; the learner would not recognise it in an assistant's output or know why three",
+   "decision": "accepted",
+   "reason": "SPEC voice rule: explain a term the first time or do not use it. 'Three waves' is how the model is built (forecast.regression_model.what: 'three yearly waves'), but the count is nothing the learner sees in an output or needs to direct the work. 'A smooth curve for the time of year' is still true, matches the brief's 'time-of-year terms', and sets up seg6 (a smooth curve cannot single out one week in late November).",
+   "change": "seg4 narration: 'three smooth waves for the time of year' -> 'a smooth curve for the time of year'. Nothing else in the segment changed."
+  }
+ ],
+ "rulings": {
+  "R1": "seg2, one sentence added at the end: 'The idea is general: any daily count, say next month's support tickets for staffing, is forecast from its trend, its rhythm and its known dates.'",
+  "R2": "Not applicable (not 2-1, 2-4 or 4-4).",
+  "R3": "ask_assistant rewritten as a paste-ready template (116 words) with slots [series], [day or week], [horizon], [weekday], [week], [four], [event dates], [twelve], [month starts], [month]. Every demand for evidence kept: all methods scored on the same forecasts, each trained only on data before its forecast date, average and worst period per method, the event dates listed back, each forecast's last training date, fitted effects in percent.",
+  "R4": "seg9 cut from 85 to 42 words, two sentences (what the learner now does when finance asks for a number; pointer to 6-2). It no longer re-reads the take-aways. Quote visual kept.",
+  "R5": "Key is the longest option in 1 of 10 questions (was 2). Four 'nothing is wrong' distractors replaced by specific mistakes of similar length: quiz q2 B ('Nothing more ...' -> asking for a steadier average over more monthly forecasts), quiz q3 A ('Nothing ...' -> a longer 90-day window), review 1 v2 C ('None ...' -> a second, more complex model's error), review 1 v3 D ('None ...' -> the team's own target). The 'why' of quiz q2 and q3 gained a clause each so it still covers the tempting wrong option. All keyed answers unchanged.",
+  "R6": "seg8, one sentence replacing 'No code reading required.': 'And for a small decision a few weeks out, a four week average in a spreadsheet, adjusted by hand for known events, will do.' (the run-rate alternative that sat only in other_ways).",
+  "R7": "No change needed: all four items are visible in the output (methods side by side on the same forecast dates; each forecast's last training day; worst month beside the average; the event dates and fitted effects to compare with a dashboard).",
+  "specific": "None for 6-1. Segments 1, 3, 5, 6 and 7 (the forecast widget) are byte-identical; the widget narration ('one forecast, made on the first of March ... switch between the methods') still matches site/public/js/widgets.js and widgets.json (example made on 1 March 2026, two read-outs: this forecast and the 12 backtests)."
+ },
+ "segments_changed": [2, 4, 8, 9],
+ "numbers_verified": 65,
+ "open_questions": [
+  "Narration is exactly 900 words, the SPEC ceiling: R1 and R6 each add a sentence and the shorter recap pays for them. Any further spoken addition to this lesson needs a cut elsewhere.",
+  "The table in seg5 shows the trend as '+14.7% a year' while the narration says 'about 15 percent, the rate that was built into the series'. Both are from facts (regression_model.trend_per_year 0.147; what_is_in_it 'about 15% a year'), so I left them; say if you want the on-screen figure rounded to match the voice."
+ ]
+}

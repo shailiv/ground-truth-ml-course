@@ -1,0 +1,319 @@
+{
+  "id": "2-5",
+  "module": 2,
+  "title": "Judging number predictions",
+  "subtitle": "Two spend models, two error measures, two different winners. Which one do you believe?",
+  "goal": "After this lesson you can choose the error measure for a predicted number (MAE, RMSE or total error) from what a miss costs, and explain why two measures can rank the same models differently.",
+  "predict": {
+    "q": "Two models predict each advertiser's spend for the next 8 weeks. On the same 4,000 test advertisers their average miss is almost identical, about $1,700. Can one of them still be the worse choice for finance?",
+    "options": [
+      "No. The same average miss means the same quality",
+      "Yes. One may make a few very large misses that the average hides",
+      "Only if it was trained on fewer advertisers",
+      "Only if its predictions take longer to produce"
+    ],
+    "answer": 1,
+    "reveal": "Yes. On this table one model's large misses are bigger, and the lesson shows the measure that exposes them and when it should decide the matter."
+  },
+  "segments": [
+    {
+      "narration": "Finance wants a number for every advertiser: how much will they spend over the next eight weeks. You ask your assistant for two candidate models. Call them model A and model B. How they work inside comes later. The assistant's note says B has the lower error, so ship B. You ask for a second error measure, on the same test advertisers, and now A is ahead. Neither number is wrong. Until now the prediction was a yes or a no. For a number, there are several honest ways to score a miss, and they do not always agree.",
+      "visual": {
+        "type": "title",
+        "kicker": "Module 2 · Lesson 5",
+        "title": "Judging number predictions",
+        "sub": "When each model wins on a different measure"
+      }
+    },
+    {
+      "narration": "Start with one advertiser. Say the model predicted 3,000 dollars and they spent 2,000. The miss is 1,000 dollars. [[1]] Do that for every test advertiser, ignore whether each miss was high or low, and average. That is the mean absolute error, MAE: the average miss, in dollars. [[2]] As always, it needs a bar to beat. The laziest forecast says each advertiser will spend what they spent in the last eight weeks. It misses by about 2,400 dollars. [[3]] A sharper one doubles the most recent four weeks. Call it the run-rate. It misses by about 2,000 dollars, and that is the bar.",
+      "visual": {
+        "type": "formula",
+        "title": "MAE: the average miss, in dollars",
+        "lines": [
+          "MAE = average of |predicted − actual|",
+          "Same as last 8 weeks: MAE $2,404",
+          "Run-rate (2 × last 4 weeks): MAE $2,022"
+        ],
+        "note": "Scored on the 4,000 test advertisers (May–June)"
+      }
+    },
+    {
+      "narration": "Both candidates clear the bar. [[3]] Model A misses by about 1,730 dollars on average. [[4]] Model B misses by about 1,680. So B wins, by 58 dollars. Before you believe that, ask how much of the 58 is luck. Score the same two models on a different draw of advertisers and the gap moves. Here it could plausibly sit anywhere from 177 dollars in B's favour to 73 in A's. That range crosses zero. On average miss, then, this is a tie. More on that check in the next lesson.",
+      "visual": {
+        "type": "bar",
+        "title": "Average miss (MAE), 4,000 test advertisers",
+        "unit": "$",
+        "data": [
+          {"label": "Same as last 8 weeks", "value": 2404},
+          {"label": "Run-rate", "value": 2022},
+          {"label": "Model A", "value": 1733},
+          {"label": "Model B", "value": 1675}
+        ],
+        "highlight": [2, 3],
+        "note": "B minus A: −$58, plausible range −$177 to +$73. A tie."
+      }
+    },
+    {
+      "narration": "Now a second way to keep score. Picture two made-up models and 100 advertisers. [[1]] The first is off by 1,000 dollars on every single one. [[2]] The second is exactly right on 99 of them and off by 100,000 dollars on the last. Same MAE: 1,000 dollars each. Would finance call them equally good? The second measure says no. Square every miss, average the squares, then take the square root to get back to dollars. That is root mean squared error, RMSE. Squaring means a miss ten times bigger counts a hundred times more. The steady model scores 1,000. The model with one disaster scores 10,000.",
+      "visual": {
+        "type": "table",
+        "title": "Toy example: 100 advertisers, same MAE",
+        "columns": ["Model", "Its misses", "MAE", "RMSE"],
+        "rows": [
+          ["Steady", "$1,000 off on all 100", "$1,000", "$1,000"],
+          ["One disaster", "exact on 99, $100,000 off on one", "$1,000", "$10,000"]
+        ],
+        "highlight": [1],
+        "note": "RMSE: square each miss, average, take the square root."
+      }
+    },
+    {
+      "narration": "Back to the real candidates. [[1]] Model A has an RMSE of about 4,900 dollars. [[2]] Model B, about 5,800. Same average miss, but when B is badly wrong, it is wrong by more. So which model wins depends on what a miss costs. If one huge surprise on a big account hurts more than a hundred small errors, judge by RMSE and take A. If every dollar of error costs the same, judge by MAE, call it a tie, and take whichever is simpler to run. Make that choice before you see the scoreboard, not after. That ordering comes from one simulated test set, and RMSE leans on a few accounts. On your data it may flip.",
+      "visual": {
+        "type": "compare",
+        "title": "Same average miss, different big misses",
+        "left": {"label": "Model A", "value": "RMSE $4,878", "sub": "MAE $1,733"},
+        "right": {"label": "Model B", "value": "RMSE $5,824", "sub": "MAE $1,675"}
+      }
+    },
+    {
+      "narration": "Finance will also add your predictions up into a revenue number. MAE and RMSE both ignore direction, so neither says whether that sum comes out right. For that, compare the predicted total with the actual total. [[1]] The same-as-last forecast comes out about 23 percent low. [[2]] The run-rate, about 20 percent low. In this simulated world total spend grows from one period to the next, and a forecast that repeats the past cannot see growth. [[3]] [[4]] Models A and B both come out about 6 percent high. Misses that lean one way are called bias, and bias does not average out. It adds up.",
+      "visual": {
+        "type": "table",
+        "title": "The full scoreboard",
+        "columns": ["Method", "MAE", "RMSE", "Predicted total vs actual"],
+        "rows": [
+          ["Same as last 8 weeks", "$2,404", "$7,325", "−23.5%"],
+          ["Run-rate", "$2,022", "$6,349", "−20.2%"],
+          ["Model A", "$1,733", "$4,878", "+5.7%"],
+          ["Model B", "$1,675", "$5,824", "+6.2%"]
+        ],
+        "note": "Actual total: $21.0M across 4,000 test advertisers"
+      }
+    },
+    {
+      "narration": "One more habit. An average miss describes nobody in particular. Take a stronger spend model from later in this course, with an MAE of about 1,400 dollars, and cut it by account size. [[1]] For small accounts the average miss is about 170 dollars. [[2]] For medium accounts, about 600. [[3]] For large accounts, over 3,300. And nearly half of all its error comes from just five percent of advertisers. The worst single miss was a large account forecast at about 133,000 dollars that left and spent nothing. So ask for error by size tier, and for the biggest misses by name.",
+      "visual": {
+        "type": "table",
+        "title": "One overall MAE of $1,416, three different stories",
+        "columns": ["Size tier", "Advertisers", "Average actual spend", "MAE"],
+        "rows": [
+          ["Small (up to $1,119)", "1,336", "$512", "$170"],
+          ["Medium", "1,269", "$2,017", "$615"],
+          ["Large (above $3,147)", "1,395", "$12,748", "$3,338"]
+        ],
+        "note": "A stronger model from later in the course. 46% of its total error comes from 5% of advertisers."
+      }
+    },
+    {
+      "narration": "So, the brief. Ask your assistant to predict spend for the next eight weeks and to score it on the test advertisers only. The output must show four things. [[1]] Both baselines beside every model, on the same rows. [[2]] Three measures side by side: MAE, RMSE, and predicted total against actual total. [[3]] Error by size tier, with the ten largest misses listed. [[4]] And one trap. If it quotes an average percentage error, ask what happened to the zeros. About one test advertiser in eight spent nothing, and you cannot divide by zero. Those rows were dropped or patched, and the output has to say which.",
+      "visual": {
+        "type": "bullets",
+        "title": "Brief and audit: what the output must show",
+        "items": [
+          "Both baselines beside every model, same test rows",
+          "MAE, RMSE and predicted total vs actual total",
+          "Error by size tier, plus the ten largest misses",
+          "Zero-spend rows (13.2% here): how did a percentage error treat them?"
+        ]
+      }
+    },
+    {
+      "narration": "To recap. MAE is the average miss, in dollars. RMSE makes the big misses count most. Total error tells you whether the misses cancel or pile up. They can crown different models, so pick the measure from what a miss costs, then compare. Still hanging: that 58 dollar gap that might be luck. Telling real from noise is the next lesson.",
+      "visual": {
+        "type": "quote",
+        "text": "Pick the error measure from what a miss costs. Then look at the scoreboard.",
+        "sub": "MAE: every dollar counts the same · RMSE: big misses count most · Total: do the misses cancel?"
+      }
+    }
+  ],
+  "takeaways": [
+    "MAE is the average miss in dollars; RMSE makes large misses count far more.",
+    "The two can rank models differently, so choose the measure from what a miss costs before you compare.",
+    "Then look past the average: the total, the size tiers, the largest misses and the zeros."
+  ],
+  "quiz": [
+    {
+      "id": "2-5-q1",
+      "concept": "choosing the error measure",
+      "domain": "course",
+      "q": "Two spend models are scored on the same 4,000 test advertisers. Model A: MAE $1,733, RMSE $4,878. Model B: MAE $1,675, RMSE $5,824. Finance says one large surprise on a big account costs them far more than many small misses. Which model do you put forward?",
+      "options": [
+        "B: its MAE is lower, and MAE is the measure in dollars",
+        "A: RMSE weights large misses most, and those are what finance fears",
+        "Either: both beat the run-rate, so the choice is cosmetic",
+        "B: a lower MAE means its RMSE will also be lower on new data"
+      ],
+      "answer": 1,
+      "why": "Finance has said a large miss costs disproportionately more, which is what RMSE measures, and A's RMSE is lower ($4,878 against $5,824). B's $58 edge on MAE is tiny, and both measures are in dollars, so 'MAE is the dollar one' is not a reason to prefer it."
+    },
+    {
+      "id": "2-5-q2",
+      "concept": "bias and totals",
+      "domain": "course",
+      "q": "The assistant writes: 'Baseline: same as last 8 weeks, MAE $2,404 per advertiser. Good enough for a first revenue plan, so I summed the predictions for finance.' What does this output hide?",
+      "options": [
+        "Nothing: that MAE is acceptable for a first plan",
+        "That its RMSE is probably lower than its MAE",
+        "That 4,000 advertisers are too few for a revenue plan",
+        "Whether the misses lean one way: this sum runs about 23% low"
+      ],
+      "answer": 3,
+      "why": "MAE averages the size of the misses and throws away their direction, so it cannot say whether a sum is right. This baseline's misses lean low, and the summed plan undershoots actual spend by about 23%. RMSE is never lower than MAE, so that option cannot be true."
+    },
+    {
+      "id": "2-5-q3",
+      "concept": "percentage error and zeros",
+      "domain": "other",
+      "q": "Lead scoring. A model predicts each new lead's first-month revenue. About 30% of leads never buy, so their actual revenue is zero. The assistant reports: 'Average percentage error: 22%.' What is the right read?",
+      "options": [
+        "It can only describe leads that bought; ask for the dollar error on all leads",
+        "It is fine as long as it beats the baseline's percentage error",
+        "The model gets about 22% of the leads wrong",
+        "It should be converted to RMSE before anyone judges it"
+      ],
+      "answer": 0,
+      "why": "A percentage error divides by the actual value, and you cannot divide by zero, so the leads that never bought were dropped or patched before that 22% was computed. Beating a baseline on the same crippled measure does not repair it, and 22% is the size of a miss, not the share of leads the model got wrong."
+    },
+    {
+      "id": "2-5-q4",
+      "concept": "averages hide where the error falls",
+      "domain": "course",
+      "q": "A spend model's overall MAE is $1,416. An account manager whose book is all small accounts, averaging about $500 of spend, says: 'Off by $1,400 on a $500 account? Useless to me.' What do you tell her?",
+      "options": [
+        "She is right: an error three times the account size is unusable",
+        "She should judge it by RMSE, which is fairer to small accounts",
+        "The overall figure is driven by large accounts; look at the miss in her size tier",
+        "The model misses every account by about $1,416, so it only suits large ones"
+      ],
+      "answer": 2,
+      "why": "An overall MAE mixes tiers: for this model the miss is about $170 on small accounts and over $3,300 on large ones, and nearly half of all error comes from 5% of advertisers. Applying the overall average to one small account is the mistake, and RMSE would be dominated by large accounts even more."
+    }
+  ],
+  "review": [
+    {
+      "concept": "MAE or RMSE: choose by what a miss costs",
+      "variants": [
+        {
+          "q": "Two daily revenue forecasts for the treasury team. Forecast X: MAE $9,000, RMSE $11,000. Forecast Y: MAE $8,000, RMSE $25,000. A day that is badly off forces an expensive overnight loan; small daily errors cost almost nothing. Which forecast suits them?",
+          "options": [
+            "Y, because its average miss is $1,000 smaller",
+            "X, because its RMSE shows it avoids very large misses",
+            "Y, because RMSE is larger than MAE for every forecast anyway",
+            "Neither, until you know what share of days each got right"
+          ],
+          "answer": 1,
+          "why": "The cost here comes from rare large misses, and RMSE is the measure that weights them: Y's RMSE is more than twice X's, so Y has days that are far off. Y's slightly lower MAE only says its ordinary days are a little closer, which is not what treasury pays for."
+        },
+        {
+          "q": "A model predicts how many minutes each support ticket will take, to estimate each agent's daily workload. Every minute of error matters equally. Model P: MAE 6 minutes, RMSE 9. Model Q: MAE 4.5 minutes, RMSE 14. Which do you choose?",
+          "options": [
+            "P, because a lower RMSE is always the safer choice",
+            "Q, because its average miss is lower, while noting its few large misses",
+            "P, because Q's RMSE is about three times its MAE",
+            "Q, because a higher RMSE means it captures more variation"
+          ],
+          "answer": 1,
+          "why": "When each minute of error costs the same, the average miss is the cost, so the lower MAE wins. Q's high RMSE tells you a few tickets are badly misjudged, which is worth knowing, but 'lower RMSE is always safer' ignores what a miss costs in this use."
+        },
+        {
+          "q": "The assistant compares two models that predict next-8-week spend and reports one line: 'Both have an MAE of about $1,700, so they are equivalent.' Which follow-up tests that claim best?",
+          "options": [
+            "Ask for the accuracy of each model",
+            "Ask for the MAE again, on the training rows",
+            "Ask which model took longer to train",
+            "Ask for RMSE and the ten largest misses of each"
+          ],
+          "answer": 3,
+          "why": "Equal average misses can hide very different large misses; RMSE and a list of the biggest misses expose them. Accuracy does not apply to a predicted number, and error on the training rows says nothing about new advertisers."
+        }
+      ]
+    },
+    {
+      "concept": "Bias: small misses that lean one way add up in a total",
+      "variants": [
+        {
+          "q": "An upsell model predicts the extra monthly spend of each account after an upgrade. The per-account MAE is small, $40. Finance sums the predictions and the total is 18% above what actually came in. What explains both facts?",
+          "options": [
+            "The misses lean one way: most predictions are a little high, and that adds up",
+            "The MAE must have been computed on the training rows",
+            "Misses of $40 are too small to matter, so the sum was done wrongly",
+            "An 18% gap in the total is normal for any model with a $40 MAE"
+          ],
+          "answer": 0,
+          "why": "MAE ignores direction, so small misses that all lean high look harmless per account and still pile up in a sum. Small per-account errors only protect a total when they point both ways and cancel."
+        },
+        {
+          "q": "A model predicts how many days each creative will last before its CTR fades. Its average miss is 2 days. The refresh calendar built from it keeps replacing creatives after they have already faded. What should you ask the assistant for?",
+          "options": [
+            "The RMSE, to see whether a few creatives have large misses",
+            "A larger training set of creatives",
+            "The average signed miss: are predictions mostly too long?",
+            "The same MAE broken down by vertical"
+          ],
+          "answer": 2,
+          "why": "Refreshes that are consistently late point to predictions that lean one way, and MAE cannot show direction; the average of predicted minus actual can. RMSE would reveal a few large misses, not a consistent tilt."
+        },
+        {
+          "q": "Per-advertiser spend predictions have an MAE of $300 across 5,000 advertisers. The CFO asks: 'So the total will be off by about $1.5 million?' What is the accurate answer?",
+          "options": [
+            "Yes: the error of the total is MAE times the number of advertisers",
+            "No: with that many advertisers the misses always cancel",
+            "No: the error of the total is RMSE times the number of advertisers",
+            "It depends on direction: compare predicted total with actual total"
+          ],
+          "answer": 3,
+          "why": "MAE counts every miss as positive, so $1.5 million is the sum of the miss sizes, not the error of the sum. If the misses lean one way the total can be off by nearly that much; if they balance it can be almost exact. Only predicted total against actual total tells you."
+        }
+      ]
+    }
+  ],
+  "drill": [
+    {
+      "q": "Two models have the same average miss, but one has a much higher root mean squared error. What does that tell you about it?",
+      "a": "It makes a few very large misses. Squaring makes big misses count far more, so its root mean squared error climbs while its average miss stays the same."
+    },
+    {
+      "q": "Per-customer predictions are going to be added up into a revenue forecast. Besides the average miss, which number do you ask for, and why?",
+      "a": "Predicted total against actual total. The average miss ignores direction, so misses that all lean low can look small for each customer and still leave the total far short."
+    }
+  ],
+  "recall": {
+    "prompt": "A colleague says: 'Model B has the lower MAE, so B is the better spend model.' In 30 seconds, what else would you want to know before agreeing?",
+    "model_answer": "MAE is the average miss and treats every dollar of error alike, so first ask what a miss costs: if rare huge misses hurt most, compare RMSE, where the order can reverse. Then check whether the gap is bigger than chance, whether the predicted total matches the actual total, and where the error sits: by size tier and in the largest misses. Any percentage error needs a second look wherever the actual is zero."
+  },
+  "ask_assistant": "Predict spend_next_8w for each advertiser, training on January–March and scoring on May–June only. In one table show the same-as-last-8-weeks baseline, the run-rate baseline (2 × the last 4 weeks) and each model, with MAE, RMSE and predicted total versus actual total. Add MAE by spend tier and the ten largest misses. State how many test advertisers had zero actual spend and how any percentage error handled them.",
+  "audit_checklist": [
+    "Both baselines and every model scored on the same test rows, with the row count stated",
+    "MAE, RMSE and predicted total versus actual total side by side",
+    "Error by size tier and a list of the largest individual misses",
+    "The number of rows with zero actual spend, and what any percentage error did with them"
+  ],
+  "transfer": [
+    "Forecasting daily platform spend for finance: is one badly wrong day worse than many slightly wrong days?",
+    "Predicting how long support tickets take, to plan staffing: does each ticket matter, or the day's total?",
+    "Estimating the CPA a new campaign will reach before an account manager promises it to a client: what does a large miss cost?"
+  ],
+  "other_ways": [
+    {
+      "approach": "Median absolute error",
+      "when": "When you want the miss for the advertiser in the middle and a few giant accounts should not move the number."
+    },
+    {
+      "approach": "Total absolute error divided by total actual spend",
+      "when": "When stakeholders want a percentage: it weights by dollars and does not break on advertisers who spent zero."
+    },
+    {
+      "approach": "Share of predictions within a stated tolerance",
+      "when": "When the business has a clear 'close enough', such as within $200, and wants a hit rate it can track."
+    }
+  ],
+  "glossary": [
+    {"term": "MAE", "def": "Mean absolute error: the average size of a miss, ignoring direction, in the units of the prediction."},
+    {"term": "RMSE", "def": "Root mean squared error: square the misses, average them, take the square root; large misses count far more."},
+    {"term": "bias", "def": "Misses that lean one way on average, so the predicted total lands above or below the actual total."},
+    {"term": "total error", "def": "Predicted total divided by actual total, minus one: the measure that matters when predictions are summed."},
+    {"term": "run-rate", "def": "A baseline that doubles the most recent four weeks of spend to predict the next eight."}
+  ]
+}

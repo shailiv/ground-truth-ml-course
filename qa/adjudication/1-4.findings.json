@@ -1,0 +1,32 @@
+[
+ {
+  "reviewer": "learner-1",
+  "lesson": "1-4",
+  "where": "seg7 narration + brief",
+  "quote": "if a field exists only in a current-state table with no dated history, it stays out",
+  "kind": "not_usable",
+  "severity": "medium",
+  "problem": "Taken literally this bans vertical, managed and account manager, which at my company live only in the accounts table, and which the course's own model uses (managed gets a weight in 3-1 and 3-2). I would paste the brief and lose half my columns, with no rule for which ones are actually dangerous.",
+  "fix": "Give the working rule: fields that do not change because of the outcome (vertical, sign-up date) are allowed with a note; fields that do (status, tier, has a manager) need a dated copy. Promote 'start snapshotting the accounts table' from 'other ways' into the narration."
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "1-4",
+  "where": "guess",
+  "quote": "A column recorded after the outcome had already happened",
+  "kind": "question",
+  "severity": "low",
+  "problem": "The lesson title printed above the question is 'features that know the future', which answers it.",
+  "fix": "Name four real columns (days since last spend, support tickets, tenure, vertical) and ask which one did it, or ask how many of the 200 churn once it is added."
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "1-4",
+  "where": "seg5 narration",
+  "quote": "Lifetime spend sounds harmless, but for a churner it stopped growing, and a model will notice.",
+  "kind": "lost",
+  "severity": "low",
+  "problem": "I had to think twice about why 'stopped growing' is a leak. The missing step is that a lifetime total read today includes the weeks after the snapshot.",
+  "fix": "'Lifetime spend read today includes the weeks after the snapshot, when churners added nothing.'"
+ }
+]

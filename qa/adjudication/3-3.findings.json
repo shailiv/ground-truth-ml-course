@@ -1,0 +1,64 @@
+[
+ {
+  "reviewer": "expert-2",
+  "lesson": "3-3",
+  "where": "seg5 narration",
+  "quote": "So low activity matters far more when spend is also falling. ... Last lesson's weighted sum gave each column one weight for everyone.",
+  "kind": "misleading",
+  "severity": "low",
+  "problem": "The numbers offered as an 'it depends' the tree found and a weighted sum cannot express are not an interaction on the scale the weighted sum works on. Low activity multiplies the odds of churn by about 4 in both columns (4.0 when spend holds, 4.5 when it shrinks), which a single weight per column reproduces through the S-curve - exactly what 3-2 seg3 taught ('the same push moves an advertiser near 50 percent a long way'). The general claim about trees is right; this evidence does not show it.",
+  "evidence": "tree.root: 0.053 -> 0.182 (odds 0.056 -> 0.222, x4.0) and 0.211 -> 0.544 (odds 0.267 -> 1.193, x4.5). Consistent with logreg beating the tree (0.845 vs 0.761).",
+  "fix": "Say the gap is in percentage points (\"13 points when spend holds, 33 when it shrinks\") and rest the 'it depends' point on what the tree really does differently: each branch picks its own next question and cut-off (size on one branch, click rate on the other)."
+ },
+ {
+  "reviewer": "expert-2",
+  "lesson": "3-3",
+  "where": "quiz 3-3-q2",
+  "quote": "test AUC above 0.95 ... the two sides churn at 94 percent and 1 percent",
+  "kind": "unsupported_number",
+  "severity": "low",
+  "problem": "A course-domain question states specific results for a leaky tree on this data (its AUC, the split at 30 days, the two branch rates) that are not in facts.json and cannot be derived; facts only hold the leak's effect on the logistic regression.",
+  "evidence": "leakage.auc_with_leak = 0.97 is for logistic regression; leakage has medians 86 vs 3 and leak_metrics_at_half (precision 0.975) but no tree split or branch rates.",
+  "fix": "Drop the invented figures: \"a test AUC far above anything honest, and a first question on 'days since last spend' that separates churners almost perfectly\" - or compute the leaky tree and add it to facts.json."
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "3-3",
+  "where": "seg5 narration",
+  "quote": "It depends comes free, because every branch chooses its own next question.",
+  "kind": "ear",
+  "severity": "low",
+  "problem": "Read aloud without quotation marks this is not a sentence; I heard 'It depends' as the start of a clause and lost the rest.",
+  "fix": "'The tree handles it-depends patterns with no extra work, because every branch chooses its own next question.'"
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "3-3",
+  "where": "seg3 narration (widget)",
+  "quote": "Spend trend above 0.69, and then above 0.9 as well.",
+  "kind": "ear",
+  "severity": "low",
+  "problem": "Two full paths, six cut-offs and two counts by voice, with no reveal markers in the segment. Fine if the widget lights up each box as it is named; otherwise I am lost by the second path.",
+  "fix": "Highlight each box in sync with the voice and round the counts ('about 200', 'about 3,400')."
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "3-3",
+  "where": "seg5 narration",
+  "quote": "So low activity matters far more when spend is also falling.",
+  "kind": "doubt",
+  "severity": "low",
+  "problem": "With the table's numbers, quiet against active is 18 against 5 when spend holds (over three times) and 54 against 21 when it shrinks (under three times). It is 'far more' in points and less in ratio; a stakeholder would challenge me on it.",
+  "fix": "Say which reading: 'in points, 13 more when spend holds, 33 more when it is falling'."
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "3-3",
+  "where": "quiz 3-3-q3 + brief + checklist",
+  "quote": "Adding the creative ID as a column would fix it",
+  "kind": "lost",
+  "severity": "low",
+  "problem": "ID columns as a trap have not been taught yet; here they appear as a distractor, a line in the brief and a checklist item with nothing in the narration.",
+  "fix": "One sentence in seg7: 'if the first question is about an ID, the tree is memorising rows'."
+ }
+]

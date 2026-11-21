@@ -1,0 +1,2153 @@
+{
+ "clips": 319,
+ "flagged": [
+  {
+   "lesson": "2-4",
+   "seg": 2,
+   "wer": 0.019,
+   "wpm": 162,
+   "flags": [
+    "numbers differ: script has [], heard ['30s']"
+   ],
+   "script": "The check is a GROUP BY. Put the test advertisers into buckets by score, and in each bucket compare two numbers: the average score, and the share who really churned. Take the bucket scored between 20 and 30 percent. The model said about 25 percent on average, and about 33 percent left. One in four promised, one in three delivered. The next bucket up, the thirties, was promised about 35 percent and delivered about 40. When predicted and actual agree in every bucket, a model is called calibrated: its 30 percent means 30 in a hundred. This one runs low on both sides of 30.",
+   "heard": "The check is a group buy. Put the test advertisers into buckets by score, and in each bucket compare two numbers: the average score and the share who really churned. Take the bucket scored between 20 and 30%. The model said about 25% on average and about 33% left. One in four promised, one in three delivered. The next bucket up, the 30s, was promised about 35% and delivered about 40. When predicted and actual agree in every bucket, a model is called calibrated. Its 30% means 30 in 100. This one runs low on both sides of 30.",
+   "file": "02-e238107a2d1bec.mp3"
+  },
+  {
+   "lesson": "2-4",
+   "seg": 3,
+   "wer": 0.028,
+   "wpm": 170,
+   "flags": [
+    "numbers differ: script has [], heard ['2', '20s', '1']"
+   ],
+   "script": "Now every bucket at once. For a calibrated model, each bucket's prediction and its actual rate would match. Here the actual rate is above the prediction in all eight buckets, from the safest advertisers to the riskiest. The gap is small at the bottom, where the model says 2 percent and about two and a half percent churn. It is widest from the twenties upward. Watch the bucket sizes as well: the top bucket holds only 43 advertisers, so its gap is the least certain. Explore it now, one bucket at a time: what the model said, what happened, and how many advertisers stand behind it.",
+   "heard": "Now every bucket at once. For a calibrated model, each bucket's prediction and its actual rate would match. Here, the actual rate is above the prediction in all eight buckets, from the safest advertisers to the riskiest. The gap is small at the bottom, where the model says 2% and about 2 and 1/2% churn. It is widest from the 20s upward. Watch the bucket sizes as well. The top bucket holds only 43 advertisers, so its gap is the least certain. Explore it now, one bucket at a time. What the model said, what happened, and how many advertisers stand behind it.",
+   "file": "03-768d29970c21b6.mp3"
+  },
+  {
+   "lesson": "2-5",
+   "seg": 2,
+   "wer": 0.088,
+   "wpm": 169,
+   "flags": [
+    "9% of words differ"
+   ],
+   "script": "Start with one advertiser. Say the model predicted 3,000 dollars and they spent 2,000. The miss is 1,000 dollars. Do that for every test advertiser, ignore whether each miss was high or low, and average. That is the mean absolute error, MAE: the average miss, in dollars. As always, it needs a bar to beat. The laziest forecast says each advertiser will spend what they spent in the last eight weeks. It misses by about 2,400 dollars. A sharper one doubles the most recent four weeks. Call it the run-rate. It misses by about 2,000 dollars, and that is the bar.",
+   "heard": "Start with one advertiser. Say the model predicted $3,000 and they spent $2,000. The miss is $1,000. Do that for every test advertiser, ignore whether each miss was high or low, and average. That is the mean absolute error, MAE, the average miss in dollars. As always, it needs a bar to beat. The laziest forecast says each advertiser will spend what they spent in the last eight weeks. It misses by about $2,400. A sharper one doubles the most recent four weeks, call it the run rate. It misses by about $2,000, and that is the bar.",
+   "file": "02-0f74ec1491e78d.mp3"
+  },
+  {
+   "lesson": "2-5",
+   "seg": 3,
+   "wer": 0.101,
+   "wpm": 152,
+   "flags": [
+    "10% of words differ"
+   ],
+   "script": "Both candidates clear the bar. Model A misses by about 1,730 dollars on average. Model B misses by about 1,680. So B wins, by 58 dollars. Before you believe that, ask how much of the 58 is luck. Score the same two models on a different draw of advertisers and the gap moves. Here it could plausibly sit anywhere from 177 dollars in B's favour to 73 in A's. That range crosses zero. On average miss, then, this is a tie. More on that check in the next lesson.",
+   "heard": "Both candidates clear the bar. Model A misses by about $1,730 on average. Model B misses by about 1,680. So B wins by $58. Before you believe that, ask how much of the 58 is luck. Score the same two models on a different draw of advertisers and the gap moves. Here could plausibly sit anywhere from $177 in B's favor to 73 in A's. That range crosses zero. On average then, this is a tie. More on that check in the next lesson.",
+   "file": "03-c8a5103967171b.mp3"
+  },
+  {
+   "lesson": "2-5",
+   "seg": 4,
+   "wer": 0.019,
+   "wpm": 165,
+   "flags": [
+    "numbers differ: script has ['100000'], heard ['100']"
+   ],
+   "script": "Now a second way to keep score. Picture two made-up models and 100 advertisers. The first is off by 1,000 dollars on every single one. The second is exactly right on 99 of them and off by 100,000 dollars on the last. Same MAE: 1,000 dollars each. Would finance call them equally good? The second measure says no. Square every miss, average the squares, then take the square root to get back to dollars. That is root mean squared error, RMSE. Squaring means a miss ten times bigger counts a hundred times more. The steady model scores 1,000. The model with one disaster scores 10,000.",
+   "heard": "Now a second way to keep score. Picture two made-up models and a hundred advertisers. The first is off by a thousand dollars on every single one. The second is exactly right on ninety-nine of them and off by a hundred thousand dollars on the last. Same MAE, a thousand dollars each. Would finance call them equally good? The second measure says no. Square every miss. Average the squares, then take the square root to get back to dollars. That is root mean squared error, RMSE. Squaring means a miss ten times bigger counts a hundred times more. The steady model scores a thousand. The model with one disaster scores ten thousand.",
+   "file": "04-36e20639304f81.mp3"
+  },
+  {
+   "lesson": "2-6",
+   "seg": 6,
+   "wer": 0.057,
+   "wpm": 161,
+   "flags": [
+    "numbers differ: script has ['0'], heard []"
+   ],
+   "script": "Models are no different. A model's score is measured on a sample too. The churn model's AUC of about 0.85 comes from 4,000 test advertisers. Draw a different set and it could land anywhere from about 0.83 to 0.86. So when the assistant says a new model is better by a hair, ask for an interval on the gap between the two, measured on the same test rows. Last lesson's 58 dollar gap between model A and model B is the example. Its interval runs from 177 dollars one way to 73 the other. Zero is inside. Call it a tie, and keep the simpler model.",
+   "heard": "Models are no different. A model's score is measured on a sample, too. The churn model's AUC of about 0.85 comes from 4,000 test advertisers. Draw a different set and it could land anywhere from about 0.83 to 0.86. So when the assistant says a new model is better by a hair, ask for an interval on the gap between the two, measured on the same test rows. Last lesson's $58 gap between model A and model B is the example. Its interval runs from $177 one way to 73 the other. Zeros inside. Call it a tie and keep the simpler model.",
+   "file": "06-484faf74a4f841.mp3"
+  },
+  {
+   "lesson": "3-1",
+   "seg": 5,
+   "wer": 0.075,
+   "wpm": 168,
+   "flags": [
+    "numbers differ: script has ['100'], heard ['100000']",
+    "7% of words differ"
+   ],
+   "script": "The fix is a change of scale, not a cleverer model. Put spend on a log scale, the kind you pick for a chart axis when one bar dwarfs the rest. There, one thousand dollars to ten thousand is the same step as ten thousand to a hundred thousand. Equal steps are equal percentage changes, so the giants no longer dominate. Fit the same weighted sum to the log of spend, and the average miss falls to about 1,430 dollars, the best so far. It even edges out a more flexible kind of model fitted in dollars, which gets to about 1,500. The interval on that gap only just clears zero.",
+   "heard": "The fix is a change of scale, not a cleverer model. Put spend on a log scale, the kind you pick for a chart axis when one bar dwarfs the rest. There, $1,000 to $10,000 is the same step as $10,000 to $100,000. Equal steps are equal percentage changes. So the giants no longer dominate. Fit the same weighted sum to the log of spend, and the average miss falls to about $1,430, the best so far. It even edges out a more flexible kind of model fitted in dollars, which gets to about 1,500. The interval on that gap only just clears zero.",
+   "file": "05-0c128849dac3cf.mp3"
+  },
+  {
+   "lesson": "3-5",
+   "seg": 1,
+   "wer": 0.044,
+   "wpm": 190,
+   "flags": [
+    "numbers differ: script has ['0.98'], heard ['.98']"
+   ],
+   "script": "The assistant hands back eighty lines of Python and one proud sentence: AUC 0.98. You could not have written those eighty lines. You do not need to. Every modelling script, whoever wrote it, has the same six parts in the same order. If you can find them, you can audit the script, because each of the classic bugs lives in one particular part and shows up as one recognisable line. By the end of this lesson you will know which line produced that 0.98, and what the honest number was.",
+   "heard": "The assistant hands back 80 lines of Python and one proud sentence. AUC .98. You could not have written those 80 lines. You do not need to. Every modeling script, whoever wrote it, has the same six parts in the same order. If you can find them, you can audit the script because each of the classic bugs lives in one particular part and shows up as one recognizable line. By the end of this lesson, you will know which line produced that .98 and what the honest number was.",
+   "file": "01-f993c6caedc425.mp3"
+  },
+  {
+   "lesson": "4-3",
+   "seg": 4,
+   "wer": 0.086,
+   "wpm": 127,
+   "flags": [
+    "numbers differ: script has ['9'], heard ['9000th']",
+    "9% of words differ"
+   ],
+   "script": "So, churn. Take boosting on default-looking settings, with trees four levels deep. It scores about 0.94 on its training rows and 0.83 on new advertisers. You know that signature: memorising. Tuned by cross-validation on the training months, it prefers trees just two levels deep, and most of the gap closes. It lands at 0.836. The forest is in the same neighbourhood. And the weighted sum, with its 22 weights, sits at 0.845. All that machinery finishes nine thousandths behind.",
+   "heard": "So, CatBoost on default looking settings, with trees four levels deep. It scores about 0.94 on its training rows and 0.83 on new advertisers. You know that signature, memorizing. Tuned by cross-validation on the training months, it prefers trees just two levels deep, and most of the gap closes. It lands at 0.836. The forest is in the same neighborhood, and the weighted sum with its 22 weights sits at 0.845. All that machinery finishes 9,000th behind.",
+   "file": "04-c5f4a4001950d6.mp3"
+  },
+  {
+   "lesson": "4-5",
+   "seg": 1,
+   "wer": 0.01,
+   "wpm": 189,
+   "flags": [
+    "numbers differ: script has [], heard ['00']"
+   ],
+   "script": "Monday morning the risk list goes out. By ten, an account manager is at your desk about one name on it. The advertiser's ID ends in 754, and the list says 73 percent. Her question is fair: why? Because the model said so is not something she can take into a call. There are three questions you can put to any model. What does it lean on overall? How does its answer move when one column changes? And why this advertiser? Each has a standard tool, and each tool has a limit that belongs in the same breath as the answer.",
+   "heard": "Monday morning, the risk list goes out. By 10:00, an account manager is at your desk about one name on it. The advertiser's ID ends in 754 and the list says 73%. Her question is fair, why? Because the model said so is not something she can take into a call. There are three questions you can put to any model. What does it lean on overall? How does its answer move when one column changes? And why this advertiser? Each has a standard tool and each tool has a limit that belongs in the same breath as the answer.",
+   "file": "01-3fcfe72972f02f.mp3"
+  },
+  {
+   "lesson": "5-1",
+   "seg": 4,
+   "wer": 0.078,
+   "wpm": 161,
+   "flags": [
+    "numbers differ: script has ['6'], heard ['6.5', '10']",
+    "8% of words differ"
+   ],
+   "script": "The usual reply is: then control for it. Ask the assistant to compare like with like, holding tenure, spend, vertical and the rest fixed. That is what a regression weight does. The naive gap was about 11 points. Adjusted, it shrinks to about six and a half. The truth is still about 2. Adjusting removed the part of the mirage the table can see. It cannot remove the part that comes from a trait nobody recorded. And nothing in the output warns you how far off it still is. Adjusted is a better description. It is still not the effect of acting.",
+   "heard": "The usual reply is, then control for it. Ask the assistant to compare like with like, holding ten-year, spend, vertical, and the rest fixed. That is what a regression weight does. The naive gap was about 11 points. Adjusted, it shrinks to about 6.5. The truth is still about 2%. Adjusting removes the part of the mirage the table can see. It cannot remove the part that comes from a trait nobody recorded. And nothing in the output warns you how far off it still is. Adjusted is a better description. It is still not the effect of acting.",
+   "file": "04-fa97f35f5c0d74.mp3"
+  },
+  {
+   "lesson": "5-3",
+   "seg": 3,
+   "wer": 0.081,
+   "wpm": 153,
+   "flags": [
+    "8% of words differ"
+   ],
+   "script": "So bring in the other verticals. Answer two: compare the two groups after the launch. Ecommerce, with the flow, sits just under 70 percent. The others, without it, sit at about 71. Ecommerce is lower by 1.6 points. Now the flow looks harmful. And the trouble is the one from two lessons ago: the groups were never alike. Before the launch, ecommerce was at about 60 percent and the others at about 67. Ecommerce started well behind, for reasons that have nothing to do with the flow. Comparing the groups after launch blames the flow for that old gap.",
+   "heard": "So, bring in the other verticals. Answer two, compare the two groups after the launch. E-commerce, with the flow, sits just under 70%. The others, without it, sit at about 71. E-commerce is lower by 1.6 points. Now the flow looks harmful. And the trouble is the one from two lessons ago. The groups were never alike. Before the launch, e-commerce was at about 60% and the others at about 67. E-commerce started well behind, for reasons that have nothing to do with the flow. Comparing the groups after launch blames the flow for that old gap.",
+   "file": "03-5dc5ba5f09d257.mp3"
+  },
+  {
+   "lesson": "5-5",
+   "seg": 8,
+   "wer": 0.076,
+   "wpm": 180,
+   "flags": [
+    "8% of words differ"
+   ],
+   "script": "Brief and audit. Give the assistant your three numbers, cost, value and success rate, and ask for the net value at every list size, not one recommended cut-off. What must the output show? The assumptions in dollars, and the break-even probability they imply. A predicted against actual table around the cut-off, so you know 10 percent means 10 percent. The net value curve, with the default cut-off and your team's capacity marked. And the holdout: how many names were held back, and that they were picked at random.",
+   "heard": "Brief an audit. Give the assistant your three numbers, cost, value, and success rate, and ask for the net value at every list size, not one recommended cutoff. What must the output show? The assumptions in dollars and the break-even probability they imply, a predicted against actual table around the cutoff so you know 10% means 10%, the net value curve with the default cutoff and your team's capacity marked, and the holdout, how many names were held back and that they were picked at random.",
+   "file": "08-fd17702399229e.mp3"
+  },
+  {
+   "lesson": "6-1",
+   "seg": 7,
+   "wer": 0.008,
+   "wpm": 176,
+   "flags": [
+    "numbers differ: script has [], heard ['1st']"
+   ],
+   "script": "Before you quote 2.8 percent, look at where it came from. This series has a version with seven planted incidents, kept for a later lesson. These scores use the version without them, so forecast error is not mixed up with outage days. And this world is stable by construction, with a model of the same form as the equation that generated it. It was even handed the holiday dates. That is a best case, and a real series, with breaks nobody planned, will score worse. What carries over is the order of work, not the number. Now try it: one forecast, made on the first of March. Switch between the methods and see where each parts from what happened.",
+   "heard": "Before you quote 2.8%, look at where it came from. This series has a version with seven planted incidents, kept for a later lesson. These scores use the version without them, so forecast error is not mixed up with outage days. And this world is stable by construction, with a model of the same form as the equation that generated it. It was even handed the holiday dates. That is a best case, and a real series with breaks nobody planned will score worse. What carries over is the order of work, not the number. Now try it. One forecast made on the 1st of March, switch between the methods and see where each parts from what happened.",
+   "file": "07-4066153900d093.mp3"
+  },
+  {
+   "lesson": "6-2",
+   "seg": 3,
+   "wer": 0.052,
+   "wpm": 156,
+   "flags": [
+    "numbers differ: script has ['3.5'], heard ['2', '3', '1']"
+   ],
+   "script": "The honest test is called backtesting, and it is a rehearsal. Pick a past date and pretend it is today. Train on nothing after it. Forecast the next 28 days. Score that against what happened. Then move on a month and repeat. Last lesson's scores came from twelve of these, because one rehearsal can be lucky. The trend model's monthly miss ranged from about 2 percent to about 3 and a half. One month alone shows nothing of that spread.",
+   "heard": "The honest test is called backtesting, and it is a rehearsal. Pick a past date and pretend it is today. Train on nothing after it. Forecast the next 28 days. Score that against what happened. Then move on a month and repeat. Last lesson's scores came from 12 of these, because one rehearsal can be lucky. The trend model's monthly miss ranged from about 2% to about 3 and 1/2. One month alone shows nothing of that spread.",
+   "file": "03-e2869dba3ec9e7.mp3"
+  },
+  {
+   "lesson": "6-2",
+   "seg": 6,
+   "wer": 0.008,
+   "wpm": 186,
+   "flags": [
+    "numbers differ: script has [], heard ['1st']"
+   ],
+   "script": "A harder test for the trend model and the four week average. From the first of November everything steps up by 12 percent and stays there, and neither is told. In November both are badly wrong. The four week average has a short memory: by December its error is exactly what it would have been. The trend model fits its whole history, so it keeps blending the new level with the old: still about 8 percent off in December and January. March looks normal, then April is off again. Quick to recover is not the same as accurate, though. The four week average's ordinary error from December to April runs from 3 to 10 percent. Even damaged, the trend model was closer in three of those five months.",
+   "heard": "A harder test for the trend model and the four-week average. From the 1st of November, everything steps up by 12% and stays there, and neither is told. In November, both are badly wrong. The four-week average has a short memory. By December, its error is exactly what it would have been. The trend model fits its whole history, so it keeps blending the new level with the old. Still about 8% off in December and January. March looks normal, then April is off again. Quick to recover is not the same as accurate, though. The four-week average's ordinary error from December to April runs from 3 to 10%. Even damaged, the trend model was closer in three of those five months.",
+   "file": "06-e568002004e4d8.mp3"
+  },
+  {
+   "lesson": "6-3",
+   "seg": 5,
+   "wer": 0.035,
+   "wpm": 167,
+   "flags": [
+    "numbers differ: script has ['2.5'], heard ['2', '1']"
+   ],
+   "script": "Why can the forecast see a leak that the weekday comparison could not? On an ordinary day, spend sits about 5 percent away from its same weekday level. It sits under 2 and a half percent away from the forecast. A 12 percent drop hides inside the first and only just clears the second. Two of its five days were flagged, and a slightly wider band would have missed it. The sharper the expectation, the smaller the problem you can see. Now the caveat. This forecast has the same form as the equation that generated the series, in a world that never changes. No false alarms is a best case. On a real series, expect more.",
+   "heard": "Why can the forecast see a leak that the weekday comparison could not? On an ordinary day, spend sits about 5% away from its same weekday level. It sits under 2 and 1/2% away from the forecast. A 12% drop hides inside the first and only just clears the second. Two of its five days were flagged and a slightly wider band would have missed it. The sharper the expectation, the smaller the problem you can see. Now the caveat, this forecast has the same form as the equation that generated the series in a world that never changes. No false alarms is a best case. On a real series, expect more.",
+   "file": "05-27b47a29b934b3.mp3"
+  },
+  {
+   "lesson": "7-1",
+   "seg": 4,
+   "wer": 0.028,
+   "wpm": 159,
+   "flags": [
+    "numbers differ: script has ['2'], heard []"
+   ],
+   "script": "The assistant did use a common scale, on eight behaviour columns. The best segment holds over a third of advertisers and loses under 5 percent of them. The worst holds about one in ten and loses 35 percent. It looks like a discovery. Now read across the columns instead of down the churn. In the first segment, everyone uses auto-bidding. In the second, nobody does, and everybody has conversion tracking. In the third, nobody has tracking. Only the fourth is something new: creatives last refreshed about 80 days ago. Three of your four segments are, near enough, two yes-or-no columns you already had.",
+   "heard": "The assistant did use a common scale on eight behavior columns. The best segment holds over a third of advertisers and loses under 5% of them. The worst holds about one in 10 and loses 35%. It looks like a discovery. Now, read across the columns instead of down the churn. In the first segment, everyone uses auto bidding. In the second, nobody does and everybody has conversion tracking. In the third, nobody has tracking. Only the fourth is something new. Creative's last refreshed about 80 days ago. Three of your four segments are near enough to yes or no columns you already had.",
+   "file": "04-bf8e61869db12e.mp3"
+  },
+  {
+   "lesson": "7-4",
+   "seg": 4,
+   "wer": 0.023,
+   "wpm": 147,
+   "flags": [
+    "numbers differ: script has [], heard ['2', '1']"
+   ],
+   "script": "Next, the verbs. The handsome report says conversion tracking reduces churn by 11 points. Reduces is a claim about changing something, and evidence comes in three tiers. Observed: two groups were compared. With tracking, about 7 percent churned. Without it, about 18. That earns the words churned less, or is associated with. Adjusted: the same comparison with the visible columns held fixed. The gap shrinks to about six and a half points, and the sentence says it remains after adjusting for what the table can see. Tested: a coin decided who got the change. Only that tier earns the word reduces. This world is simulated, so the true effect can be looked up: about 2 points. On real data it cannot, so the verb has to carry the tier.",
+   "heard": "Next, the verbs. The Hansel report says conversion tracking reduces churn by 11 points. Reduces is a claim about changing something, and evidence comes in three tiers. Observed. Two groups were compared, with tracking about 7% churned, without it about 18. That earns the words churned less or is associated with. Adjusted. The same comparison with the visible columns held fixed. The gap shrinks to about 6 and 1/2 points, and the sentence says it remains after adjusting for what the table can see. Tested. A coin decided who got the change. Only that tier earns the word reduces. This world is simulated, so the true effect can be looked up, about two points. On real data it cannot, so the verb has to carry the tier.",
+   "file": "04-ea020febc3b1fe.mp3"
+  }
+ ],
+ "mean_wer": 0.0154,
+ "all": [
+  {
+   "lesson": "1-1",
+   "seg": 1,
+   "wer": 0.0,
+   "wpm": 179
+  },
+  {
+   "lesson": "1-1",
+   "seg": 2,
+   "wer": 0.038,
+   "wpm": 170
+  },
+  {
+   "lesson": "1-1",
+   "seg": 3,
+   "wer": 0.009,
+   "wpm": 166
+  },
+  {
+   "lesson": "1-1",
+   "seg": 4,
+   "wer": 0.023,
+   "wpm": 180
+  },
+  {
+   "lesson": "1-1",
+   "seg": 5,
+   "wer": 0.052,
+   "wpm": 182
+  },
+  {
+   "lesson": "1-1",
+   "seg": 6,
+   "wer": 0.0,
+   "wpm": 169
+  },
+  {
+   "lesson": "1-1",
+   "seg": 7,
+   "wer": 0.009,
+   "wpm": 196
+  },
+  {
+   "lesson": "1-1",
+   "seg": 8,
+   "wer": 0.018,
+   "wpm": 191
+  },
+  {
+   "lesson": "1-1",
+   "seg": 9,
+   "wer": 0.051,
+   "wpm": 160
+  },
+  {
+   "lesson": "1-2",
+   "seg": 1,
+   "wer": 0.0,
+   "wpm": 143
+  },
+  {
+   "lesson": "1-2",
+   "seg": 2,
+   "wer": 0.008,
+   "wpm": 141
+  },
+  {
+   "lesson": "1-2",
+   "seg": 3,
+   "wer": 0.009,
+   "wpm": 162
+  },
+  {
+   "lesson": "1-2",
+   "seg": 4,
+   "wer": 0.011,
+   "wpm": 172
+  },
+  {
+   "lesson": "1-2",
+   "seg": 5,
+   "wer": 0.017,
+   "wpm": 181
+  },
+  {
+   "lesson": "1-2",
+   "seg": 6,
+   "wer": 0.008,
+   "wpm": 166
+  },
+  {
+   "lesson": "1-2",
+   "seg": 7,
+   "wer": 0.0,
+   "wpm": 184
+  },
+  {
+   "lesson": "1-2",
+   "seg": 8,
+   "wer": 0.011,
+   "wpm": 177
+  },
+  {
+   "lesson": "1-3",
+   "seg": 1,
+   "wer": 0.0,
+   "wpm": 163
+  },
+  {
+   "lesson": "1-3",
+   "seg": 2,
+   "wer": 0.0,
+   "wpm": 164
+  },
+  {
+   "lesson": "1-3",
+   "seg": 3,
+   "wer": 0.018,
+   "wpm": 187
+  },
+  {
+   "lesson": "1-3",
+   "seg": 4,
+   "wer": 0.0,
+   "wpm": 166
+  },
+  {
+   "lesson": "1-3",
+   "seg": 5,
+   "wer": 0.0,
+   "wpm": 157
+  },
+  {
+   "lesson": "1-3",
+   "seg": 6,
+   "wer": 0.024,
+   "wpm": 153
+  },
+  {
+   "lesson": "1-3",
+   "seg": 7,
+   "wer": 0.009,
+   "wpm": 175
+  },
+  {
+   "lesson": "1-3",
+   "seg": 8,
+   "wer": 0.037,
+   "wpm": 181
+  },
+  {
+   "lesson": "1-4",
+   "seg": 1,
+   "wer": 0.0,
+   "wpm": 175
+  },
+  {
+   "lesson": "1-4",
+   "seg": 2,
+   "wer": 0.0,
+   "wpm": 163
+  },
+  {
+   "lesson": "1-4",
+   "seg": 3,
+   "wer": 0.01,
+   "wpm": 175
+  },
+  {
+   "lesson": "1-4",
+   "seg": 4,
+   "wer": 0.0,
+   "wpm": 159
+  },
+  {
+   "lesson": "1-4",
+   "seg": 5,
+   "wer": 0.021,
+   "wpm": 156
+  },
+  {
+   "lesson": "1-4",
+   "seg": 6,
+   "wer": 0.0,
+   "wpm": 178
+  },
+  {
+   "lesson": "1-4",
+   "seg": 7,
+   "wer": 0.01,
+   "wpm": 174
+  },
+  {
+   "lesson": "1-4",
+   "seg": 8,
+   "wer": 0.05,
+   "wpm": 188
+  },
+  {
+   "lesson": "1-4",
+   "seg": 9,
+   "wer": 0.0,
+   "wpm": 167
+  },
+  {
+   "lesson": "1-5",
+   "seg": 1,
+   "wer": 0.01,
+   "wpm": 153
+  },
+  {
+   "lesson": "1-5",
+   "seg": 2,
+   "wer": 0.0,
+   "wpm": 194
+  },
+  {
+   "lesson": "1-5",
+   "seg": 3,
+   "wer": 0.0,
+   "wpm": 171
+  },
+  {
+   "lesson": "1-5",
+   "seg": 4,
+   "wer": 0.01,
+   "wpm": 179
+  },
+  {
+   "lesson": "1-5",
+   "seg": 5,
+   "wer": 0.009,
+   "wpm": 154
+  },
+  {
+   "lesson": "1-5",
+   "seg": 6,
+   "wer": 0.0,
+   "wpm": 184
+  },
+  {
+   "lesson": "1-5",
+   "seg": 7,
+   "wer": 0.04,
+   "wpm": 209
+  },
+  {
+   "lesson": "1-5",
+   "seg": 8,
+   "wer": 0.0,
+   "wpm": 172
+  },
+  {
+   "lesson": "2-1",
+   "seg": 1,
+   "wer": 0.0,
+   "wpm": 163
+  },
+  {
+   "lesson": "2-1",
+   "seg": 2,
+   "wer": 0.0,
+   "wpm": 203
+  },
+  {
+   "lesson": "2-1",
+   "seg": 3,
+   "wer": 0.0,
+   "wpm": 152
+  },
+  {
+   "lesson": "2-1",
+   "seg": 4,
+   "wer": 0.0,
+   "wpm": 187
+  },
+  {
+   "lesson": "2-1",
+   "seg": 5,
+   "wer": 0.0,
+   "wpm": 189
+  },
+  {
+   "lesson": "2-1",
+   "seg": 6,
+   "wer": 0.021,
+   "wpm": 163
+  },
+  {
+   "lesson": "2-1",
+   "seg": 7,
+   "wer": 0.0,
+   "wpm": 159
+  },
+  {
+   "lesson": "2-1",
+   "seg": 8,
+   "wer": 0.01,
+   "wpm": 182
+  },
+  {
+   "lesson": "2-1",
+   "seg": 9,
+   "wer": 0.037,
+   "wpm": 172
+  },
+  {
+   "lesson": "2-2",
+   "seg": 1,
+   "wer": 0.025,
+   "wpm": 154
+  },
+  {
+   "lesson": "2-2",
+   "seg": 2,
+   "wer": 0.0,
+   "wpm": 146
+  },
+  {
+   "lesson": "2-2",
+   "seg": 3,
+   "wer": 0.0,
+   "wpm": 133
+  },
+  {
+   "lesson": "2-2",
+   "seg": 4,
+   "wer": 0.0,
+   "wpm": 157
+  },
+  {
+   "lesson": "2-2",
+   "seg": 5,
+   "wer": 0.0,
+   "wpm": 146
+  },
+  {
+   "lesson": "2-2",
+   "seg": 6,
+   "wer": 0.034,
+   "wpm": 139
+  },
+  {
+   "lesson": "2-2",
+   "seg": 7,
+   "wer": 0.0,
+   "wpm": 165
+  },
+  {
+   "lesson": "2-2",
+   "seg": 8,
+   "wer": 0.031,
+   "wpm": 160
+  },
+  {
+   "lesson": "2-2",
+   "seg": 9,
+   "wer": 0.02,
+   "wpm": 159
+  },
+  {
+   "lesson": "2-3",
+   "seg": 1,
+   "wer": 0.0,
+   "wpm": 183
+  },
+  {
+   "lesson": "2-3",
+   "seg": 2,
+   "wer": 0.036,
+   "wpm": 148
+  },
+  {
+   "lesson": "2-3",
+   "seg": 3,
+   "wer": 0.039,
+   "wpm": 160
+  },
+  {
+   "lesson": "2-3",
+   "seg": 4,
+   "wer": 0.019,
+   "wpm": 157
+  },
+  {
+   "lesson": "2-3",
+   "seg": 5,
+   "wer": 0.057,
+   "wpm": 149
+  },
+  {
+   "lesson": "2-3",
+   "seg": 6,
+   "wer": 0.012,
+   "wpm": 163
+  },
+  {
+   "lesson": "2-3",
+   "seg": 7,
+   "wer": 0.017,
+   "wpm": 169
+  },
+  {
+   "lesson": "2-3",
+   "seg": 8,
+   "wer": 0.056,
+   "wpm": 186
+  },
+  {
+   "lesson": "2-3",
+   "seg": 9,
+   "wer": 0.045,
+   "wpm": 178
+  },
+  {
+   "lesson": "2-4",
+   "seg": 1,
+   "wer": 0.0,
+   "wpm": 171
+  },
+  {
+   "lesson": "2-4",
+   "seg": 2,
+   "wer": 0.019,
+   "wpm": 162
+  },
+  {
+   "lesson": "2-4",
+   "seg": 3,
+   "wer": 0.028,
+   "wpm": 170
+  },
+  {
+   "lesson": "2-4",
+   "seg": 4,
+   "wer": 0.0,
+   "wpm": 173
+  },
+  {
+   "lesson": "2-4",
+   "seg": 5,
+   "wer": 0.0,
+   "wpm": 163
+  },
+  {
+   "lesson": "2-4",
+   "seg": 6,
+   "wer": 0.027,
+   "wpm": 177
+  },
+  {
+   "lesson": "2-4",
+   "seg": 7,
+   "wer": 0.023,
+   "wpm": 184
+  },
+  {
+   "lesson": "2-4",
+   "seg": 8,
+   "wer": 0.0,
+   "wpm": 162
+  },
+  {
+   "lesson": "2-5",
+   "seg": 1,
+   "wer": 0.0,
+   "wpm": 172
+  },
+  {
+   "lesson": "2-5",
+   "seg": 2,
+   "wer": 0.088,
+   "wpm": 169
+  },
+  {
+   "lesson": "2-5",
+   "seg": 3,
+   "wer": 0.101,
+   "wpm": 152
+  },
+  {
+   "lesson": "2-5",
+   "seg": 4,
+   "wer": 0.019,
+   "wpm": 165
+  },
+  {
+   "lesson": "2-5",
+   "seg": 5,
+   "wer": 0.026,
+   "wpm": 168
+  },
+  {
+   "lesson": "2-5",
+   "seg": 6,
+   "wer": 0.0,
+   "wpm": 152
+  },
+  {
+   "lesson": "2-5",
+   "seg": 7,
+   "wer": 0.051,
+   "wpm": 164
+  },
+  {
+   "lesson": "2-5",
+   "seg": 8,
+   "wer": 0.0,
+   "wpm": 163
+  },
+  {
+   "lesson": "2-5",
+   "seg": 9,
+   "wer": 0.049,
+   "wpm": 156
+  },
+  {
+   "lesson": "2-6",
+   "seg": 1,
+   "wer": 0.0,
+   "wpm": 158
+  },
+  {
+   "lesson": "2-6",
+   "seg": 2,
+   "wer": 0.008,
+   "wpm": 153
+  },
+  {
+   "lesson": "2-6",
+   "seg": 3,
+   "wer": 0.019,
+   "wpm": 159
+  },
+  {
+   "lesson": "2-6",
+   "seg": 4,
+   "wer": 0.031,
+   "wpm": 155
+  },
+  {
+   "lesson": "2-6",
+   "seg": 5,
+   "wer": 0.0,
+   "wpm": 166
+  },
+  {
+   "lesson": "2-6",
+   "seg": 6,
+   "wer": 0.057,
+   "wpm": 161
+  },
+  {
+   "lesson": "2-6",
+   "seg": 7,
+   "wer": 0.0,
+   "wpm": 168
+  },
+  {
+   "lesson": "2-6",
+   "seg": 8,
+   "wer": 0.013,
+   "wpm": 171
+  },
+  {
+   "lesson": "3-1",
+   "seg": 1,
+   "wer": 0.049,
+   "wpm": 156
+  },
+  {
+   "lesson": "3-1",
+   "seg": 2,
+   "wer": 0.0,
+   "wpm": 183
+  },
+  {
+   "lesson": "3-1",
+   "seg": 3,
+   "wer": 0.042,
+   "wpm": 157
+  },
+  {
+   "lesson": "3-1",
+   "seg": 4,
+   "wer": 0.051,
+   "wpm": 146
+  },
+  {
+   "lesson": "3-1",
+   "seg": 5,
+   "wer": 0.075,
+   "wpm": 168
+  },
+  {
+   "lesson": "3-1",
+   "seg": 6,
+   "wer": 0.043,
+   "wpm": 163
+  },
+  {
+   "lesson": "3-1",
+   "seg": 7,
+   "wer": 0.0,
+   "wpm": 174
+  },
+  {
+   "lesson": "3-1",
+   "seg": 8,
+   "wer": 0.024,
+   "wpm": 166
+  },
+  {
+   "lesson": "3-1",
+   "seg": 9,
+   "wer": 0.0,
+   "wpm": 167
+  },
+  {
+   "lesson": "3-2",
+   "seg": 1,
+   "wer": 0.012,
+   "wpm": 160
+  },
+  {
+   "lesson": "3-2",
+   "seg": 2,
+   "wer": 0.0,
+   "wpm": 146
+  },
+  {
+   "lesson": "3-2",
+   "seg": 3,
+   "wer": 0.009,
+   "wpm": 162
+  },
+  {
+   "lesson": "3-2",
+   "seg": 4,
+   "wer": 0.03,
+   "wpm": 178
+  },
+  {
+   "lesson": "3-2",
+   "seg": 5,
+   "wer": 0.012,
+   "wpm": 162
+  },
+  {
+   "lesson": "3-2",
+   "seg": 6,
+   "wer": 0.0,
+   "wpm": 178
+  },
+  {
+   "lesson": "3-2",
+   "seg": 7,
+   "wer": 0.0,
+   "wpm": 145
+  },
+  {
+   "lesson": "3-2",
+   "seg": 8,
+   "wer": 0.009,
+   "wpm": 168
+  },
+  {
+   "lesson": "3-2",
+   "seg": 9,
+   "wer": 0.0,
+   "wpm": 169
+  },
+  {
+   "lesson": "3-3",
+   "seg": 1,
+   "wer": 0.021,
+   "wpm": 172
+  },
+  {
+   "lesson": "3-3",
+   "seg": 2,
+   "wer": 0.034,
+   "wpm": 140
+  },
+  {
+   "lesson": "3-3",
+   "seg": 3,
+   "wer": 0.017,
+   "wpm": 141
+  },
+  {
+   "lesson": "3-3",
+   "seg": 4,
+   "wer": 0.048,
+   "wpm": 179
+  },
+  {
+   "lesson": "3-3",
+   "seg": 5,
+   "wer": 0.009,
+   "wpm": 150
+  },
+  {
+   "lesson": "3-3",
+   "seg": 6,
+   "wer": 0.0,
+   "wpm": 171
+  },
+  {
+   "lesson": "3-3",
+   "seg": 7,
+   "wer": 0.025,
+   "wpm": 184
+  },
+  {
+   "lesson": "3-3",
+   "seg": 8,
+   "wer": 0.0,
+   "wpm": 162
+  },
+  {
+   "lesson": "3-4",
+   "seg": 1,
+   "wer": 0.05,
+   "wpm": 188
+  },
+  {
+   "lesson": "3-4",
+   "seg": 2,
+   "wer": 0.0,
+   "wpm": 157
+  },
+  {
+   "lesson": "3-4",
+   "seg": 3,
+   "wer": 0.008,
+   "wpm": 183
+  },
+  {
+   "lesson": "3-4",
+   "seg": 4,
+   "wer": 0.031,
+   "wpm": 166
+  },
+  {
+   "lesson": "3-4",
+   "seg": 5,
+   "wer": 0.0,
+   "wpm": 159
+  },
+  {
+   "lesson": "3-4",
+   "seg": 6,
+   "wer": 0.0,
+   "wpm": 163
+  },
+  {
+   "lesson": "3-4",
+   "seg": 7,
+   "wer": 0.008,
+   "wpm": 171
+  },
+  {
+   "lesson": "3-4",
+   "seg": 8,
+   "wer": 0.013,
+   "wpm": 157
+  },
+  {
+   "lesson": "3-5",
+   "seg": 1,
+   "wer": 0.044,
+   "wpm": 190
+  },
+  {
+   "lesson": "3-5",
+   "seg": 2,
+   "wer": 0.018,
+   "wpm": 156
+  },
+  {
+   "lesson": "3-5",
+   "seg": 3,
+   "wer": 0.0,
+   "wpm": 172
+  },
+  {
+   "lesson": "3-5",
+   "seg": 4,
+   "wer": 0.065,
+   "wpm": 178
+  },
+  {
+   "lesson": "3-5",
+   "seg": 5,
+   "wer": 0.0,
+   "wpm": 167
+  },
+  {
+   "lesson": "3-5",
+   "seg": 6,
+   "wer": 0.008,
+   "wpm": 179
+  },
+  {
+   "lesson": "3-5",
+   "seg": 7,
+   "wer": 0.017,
+   "wpm": 167
+  },
+  {
+   "lesson": "3-5",
+   "seg": 8,
+   "wer": 0.021,
+   "wpm": 147
+  },
+  {
+   "lesson": "4-1",
+   "seg": 1,
+   "wer": 0.0,
+   "wpm": 144
+  },
+  {
+   "lesson": "4-1",
+   "seg": 2,
+   "wer": 0.0,
+   "wpm": 155
+  },
+  {
+   "lesson": "4-1",
+   "seg": 3,
+   "wer": 0.016,
+   "wpm": 176
+  },
+  {
+   "lesson": "4-1",
+   "seg": 4,
+   "wer": 0.026,
+   "wpm": 180
+  },
+  {
+   "lesson": "4-1",
+   "seg": 5,
+   "wer": 0.0,
+   "wpm": 161
+  },
+  {
+   "lesson": "4-1",
+   "seg": 6,
+   "wer": 0.056,
+   "wpm": 153
+  },
+  {
+   "lesson": "4-1",
+   "seg": 7,
+   "wer": 0.01,
+   "wpm": 166
+  },
+  {
+   "lesson": "4-1",
+   "seg": 8,
+   "wer": 0.02,
+   "wpm": 185
+  },
+  {
+   "lesson": "4-1",
+   "seg": 9,
+   "wer": 0.013,
+   "wpm": 156
+  },
+  {
+   "lesson": "4-2",
+   "seg": 1,
+   "wer": 0.0,
+   "wpm": 165
+  },
+  {
+   "lesson": "4-2",
+   "seg": 2,
+   "wer": 0.0,
+   "wpm": 148
+  },
+  {
+   "lesson": "4-2",
+   "seg": 3,
+   "wer": 0.019,
+   "wpm": 150
+  },
+  {
+   "lesson": "4-2",
+   "seg": 4,
+   "wer": 0.0,
+   "wpm": 166
+  },
+  {
+   "lesson": "4-2",
+   "seg": 5,
+   "wer": 0.023,
+   "wpm": 136
+  },
+  {
+   "lesson": "4-2",
+   "seg": 6,
+   "wer": 0.0,
+   "wpm": 158
+  },
+  {
+   "lesson": "4-2",
+   "seg": 7,
+   "wer": 0.011,
+   "wpm": 160
+  },
+  {
+   "lesson": "4-2",
+   "seg": 8,
+   "wer": 0.009,
+   "wpm": 174
+  },
+  {
+   "lesson": "4-2",
+   "seg": 9,
+   "wer": 0.0,
+   "wpm": 156
+  },
+  {
+   "lesson": "4-3",
+   "seg": 1,
+   "wer": 0.0,
+   "wpm": 165
+  },
+  {
+   "lesson": "4-3",
+   "seg": 2,
+   "wer": 0.011,
+   "wpm": 146
+  },
+  {
+   "lesson": "4-3",
+   "seg": 3,
+   "wer": 0.0,
+   "wpm": 171
+  },
+  {
+   "lesson": "4-3",
+   "seg": 4,
+   "wer": 0.086,
+   "wpm": 127
+  },
+  {
+   "lesson": "4-3",
+   "seg": 5,
+   "wer": 0.008,
+   "wpm": 145
+  },
+  {
+   "lesson": "4-3",
+   "seg": 6,
+   "wer": 0.0,
+   "wpm": 133
+  },
+  {
+   "lesson": "4-3",
+   "seg": 7,
+   "wer": 0.008,
+   "wpm": 169
+  },
+  {
+   "lesson": "4-3",
+   "seg": 8,
+   "wer": 0.019,
+   "wpm": 181
+  },
+  {
+   "lesson": "4-3",
+   "seg": 9,
+   "wer": 0.0,
+   "wpm": 172
+  },
+  {
+   "lesson": "4-4",
+   "seg": 1,
+   "wer": 0.021,
+   "wpm": 153
+  },
+  {
+   "lesson": "4-4",
+   "seg": 2,
+   "wer": 0.03,
+   "wpm": 127
+  },
+  {
+   "lesson": "4-4",
+   "seg": 3,
+   "wer": 0.0,
+   "wpm": 172
+  },
+  {
+   "lesson": "4-4",
+   "seg": 4,
+   "wer": 0.022,
+   "wpm": 142
+  },
+  {
+   "lesson": "4-4",
+   "seg": 5,
+   "wer": 0.038,
+   "wpm": 161
+  },
+  {
+   "lesson": "4-4",
+   "seg": 6,
+   "wer": 0.016,
+   "wpm": 171
+  },
+  {
+   "lesson": "4-4",
+   "seg": 7,
+   "wer": 0.017,
+   "wpm": 179
+  },
+  {
+   "lesson": "4-4",
+   "seg": 8,
+   "wer": 0.01,
+   "wpm": 176
+  },
+  {
+   "lesson": "4-5",
+   "seg": 1,
+   "wer": 0.01,
+   "wpm": 189
+  },
+  {
+   "lesson": "4-5",
+   "seg": 2,
+   "wer": 0.0,
+   "wpm": 157
+  },
+  {
+   "lesson": "4-5",
+   "seg": 3,
+   "wer": 0.019,
+   "wpm": 167
+  },
+  {
+   "lesson": "4-5",
+   "seg": 4,
+   "wer": 0.016,
+   "wpm": 164
+  },
+  {
+   "lesson": "4-5",
+   "seg": 5,
+   "wer": 0.0,
+   "wpm": 163
+  },
+  {
+   "lesson": "4-5",
+   "seg": 6,
+   "wer": 0.017,
+   "wpm": 180
+  },
+  {
+   "lesson": "4-5",
+   "seg": 7,
+   "wer": 0.009,
+   "wpm": 177
+  },
+  {
+   "lesson": "4-5",
+   "seg": 8,
+   "wer": 0.011,
+   "wpm": 164
+  },
+  {
+   "lesson": "4-6",
+   "seg": 1,
+   "wer": 0.02,
+   "wpm": 174
+  },
+  {
+   "lesson": "4-6",
+   "seg": 2,
+   "wer": 0.0,
+   "wpm": 171
+  },
+  {
+   "lesson": "4-6",
+   "seg": 3,
+   "wer": 0.008,
+   "wpm": 157
+  },
+  {
+   "lesson": "4-6",
+   "seg": 4,
+   "wer": 0.019,
+   "wpm": 157
+  },
+  {
+   "lesson": "4-6",
+   "seg": 5,
+   "wer": 0.0,
+   "wpm": 168
+  },
+  {
+   "lesson": "4-6",
+   "seg": 6,
+   "wer": 0.008,
+   "wpm": 164
+  },
+  {
+   "lesson": "4-6",
+   "seg": 7,
+   "wer": 0.0,
+   "wpm": 160
+  },
+  {
+   "lesson": "4-6",
+   "seg": 8,
+   "wer": 0.0,
+   "wpm": 167
+  },
+  {
+   "lesson": "5-1",
+   "seg": 1,
+   "wer": 0.011,
+   "wpm": 155
+  },
+  {
+   "lesson": "5-1",
+   "seg": 2,
+   "wer": 0.0,
+   "wpm": 162
+  },
+  {
+   "lesson": "5-1",
+   "seg": 3,
+   "wer": 0.011,
+   "wpm": 159
+  },
+  {
+   "lesson": "5-1",
+   "seg": 4,
+   "wer": 0.078,
+   "wpm": 161
+  },
+  {
+   "lesson": "5-1",
+   "seg": 5,
+   "wer": 0.016,
+   "wpm": 172
+  },
+  {
+   "lesson": "5-1",
+   "seg": 6,
+   "wer": 0.009,
+   "wpm": 159
+  },
+  {
+   "lesson": "5-1",
+   "seg": 7,
+   "wer": 0.0,
+   "wpm": 169
+  },
+  {
+   "lesson": "5-1",
+   "seg": 8,
+   "wer": 0.011,
+   "wpm": 160
+  },
+  {
+   "lesson": "5-1",
+   "seg": 9,
+   "wer": 0.0,
+   "wpm": 164
+  },
+  {
+   "lesson": "5-2",
+   "seg": 1,
+   "wer": 0.0,
+   "wpm": 169
+  },
+  {
+   "lesson": "5-2",
+   "seg": 2,
+   "wer": 0.01,
+   "wpm": 170
+  },
+  {
+   "lesson": "5-2",
+   "seg": 3,
+   "wer": 0.01,
+   "wpm": 175
+  },
+  {
+   "lesson": "5-2",
+   "seg": 4,
+   "wer": 0.0,
+   "wpm": 146
+  },
+  {
+   "lesson": "5-2",
+   "seg": 5,
+   "wer": 0.0,
+   "wpm": 162
+  },
+  {
+   "lesson": "5-2",
+   "seg": 6,
+   "wer": 0.0,
+   "wpm": 172
+  },
+  {
+   "lesson": "5-2",
+   "seg": 7,
+   "wer": 0.01,
+   "wpm": 164
+  },
+  {
+   "lesson": "5-2",
+   "seg": 8,
+   "wer": 0.011,
+   "wpm": 159
+  },
+  {
+   "lesson": "5-2",
+   "seg": 9,
+   "wer": 0.012,
+   "wpm": 171
+  },
+  {
+   "lesson": "5-3",
+   "seg": 1,
+   "wer": 0.065,
+   "wpm": 158
+  },
+  {
+   "lesson": "5-3",
+   "seg": 2,
+   "wer": 0.049,
+   "wpm": 167
+  },
+  {
+   "lesson": "5-3",
+   "seg": 3,
+   "wer": 0.081,
+   "wpm": 153
+  },
+  {
+   "lesson": "5-3",
+   "seg": 4,
+   "wer": 0.048,
+   "wpm": 163
+  },
+  {
+   "lesson": "5-3",
+   "seg": 5,
+   "wer": 0.0,
+   "wpm": 183
+  },
+  {
+   "lesson": "5-3",
+   "seg": 6,
+   "wer": 0.036,
+   "wpm": 158
+  },
+  {
+   "lesson": "5-3",
+   "seg": 7,
+   "wer": 0.009,
+   "wpm": 172
+  },
+  {
+   "lesson": "5-3",
+   "seg": 8,
+   "wer": 0.022,
+   "wpm": 160
+  },
+  {
+   "lesson": "5-4",
+   "seg": 1,
+   "wer": 0.011,
+   "wpm": 165
+  },
+  {
+   "lesson": "5-4",
+   "seg": 2,
+   "wer": 0.008,
+   "wpm": 159
+  },
+  {
+   "lesson": "5-4",
+   "seg": 3,
+   "wer": 0.0,
+   "wpm": 163
+  },
+  {
+   "lesson": "5-4",
+   "seg": 4,
+   "wer": 0.01,
+   "wpm": 165
+  },
+  {
+   "lesson": "5-4",
+   "seg": 5,
+   "wer": 0.0,
+   "wpm": 151
+  },
+  {
+   "lesson": "5-4",
+   "seg": 6,
+   "wer": 0.0,
+   "wpm": 165
+  },
+  {
+   "lesson": "5-4",
+   "seg": 7,
+   "wer": 0.027,
+   "wpm": 163
+  },
+  {
+   "lesson": "5-4",
+   "seg": 8,
+   "wer": 0.017,
+   "wpm": 175
+  },
+  {
+   "lesson": "5-4",
+   "seg": 9,
+   "wer": 0.017,
+   "wpm": 177
+  },
+  {
+   "lesson": "5-5",
+   "seg": 1,
+   "wer": 0.024,
+   "wpm": 164
+  },
+  {
+   "lesson": "5-5",
+   "seg": 2,
+   "wer": 0.043,
+   "wpm": 164
+  },
+  {
+   "lesson": "5-5",
+   "seg": 3,
+   "wer": 0.0,
+   "wpm": 185
+  },
+  {
+   "lesson": "5-5",
+   "seg": 4,
+   "wer": 0.022,
+   "wpm": 162
+  },
+  {
+   "lesson": "5-5",
+   "seg": 5,
+   "wer": 0.029,
+   "wpm": 159
+  },
+  {
+   "lesson": "5-5",
+   "seg": 6,
+   "wer": 0.0,
+   "wpm": 162
+  },
+  {
+   "lesson": "5-5",
+   "seg": 7,
+   "wer": 0.038,
+   "wpm": 169
+  },
+  {
+   "lesson": "5-5",
+   "seg": 8,
+   "wer": 0.076,
+   "wpm": 180
+  },
+  {
+   "lesson": "5-5",
+   "seg": 9,
+   "wer": 0.033,
+   "wpm": 164
+  },
+  {
+   "lesson": "5-6",
+   "seg": 1,
+   "wer": 0.01,
+   "wpm": 162
+  },
+  {
+   "lesson": "5-6",
+   "seg": 2,
+   "wer": 0.01,
+   "wpm": 159
+  },
+  {
+   "lesson": "5-6",
+   "seg": 3,
+   "wer": 0.0,
+   "wpm": 166
+  },
+  {
+   "lesson": "5-6",
+   "seg": 4,
+   "wer": 0.0,
+   "wpm": 172
+  },
+  {
+   "lesson": "5-6",
+   "seg": 5,
+   "wer": 0.0,
+   "wpm": 165
+  },
+  {
+   "lesson": "5-6",
+   "seg": 6,
+   "wer": 0.0,
+   "wpm": 185
+  },
+  {
+   "lesson": "5-6",
+   "seg": 7,
+   "wer": 0.01,
+   "wpm": 154
+  },
+  {
+   "lesson": "5-6",
+   "seg": 8,
+   "wer": 0.0,
+   "wpm": 157
+  },
+  {
+   "lesson": "6-1",
+   "seg": 1,
+   "wer": 0.0,
+   "wpm": 175
+  },
+  {
+   "lesson": "6-1",
+   "seg": 2,
+   "wer": 0.0,
+   "wpm": 152
+  },
+  {
+   "lesson": "6-1",
+   "seg": 3,
+   "wer": 0.0,
+   "wpm": 175
+  },
+  {
+   "lesson": "6-1",
+   "seg": 4,
+   "wer": 0.0,
+   "wpm": 179
+  },
+  {
+   "lesson": "6-1",
+   "seg": 5,
+   "wer": 0.032,
+   "wpm": 182
+  },
+  {
+   "lesson": "6-1",
+   "seg": 6,
+   "wer": 0.0,
+   "wpm": 148
+  },
+  {
+   "lesson": "6-1",
+   "seg": 7,
+   "wer": 0.008,
+   "wpm": 176
+  },
+  {
+   "lesson": "6-1",
+   "seg": 8,
+   "wer": 0.0,
+   "wpm": 158
+  },
+  {
+   "lesson": "6-1",
+   "seg": 9,
+   "wer": 0.035,
+   "wpm": 170
+  },
+  {
+   "lesson": "6-2",
+   "seg": 1,
+   "wer": 0.011,
+   "wpm": 171
+  },
+  {
+   "lesson": "6-2",
+   "seg": 2,
+   "wer": 0.019,
+   "wpm": 175
+  },
+  {
+   "lesson": "6-2",
+   "seg": 3,
+   "wer": 0.052,
+   "wpm": 156
+  },
+  {
+   "lesson": "6-2",
+   "seg": 4,
+   "wer": 0.0,
+   "wpm": 172
+  },
+  {
+   "lesson": "6-2",
+   "seg": 5,
+   "wer": 0.008,
+   "wpm": 164
+  },
+  {
+   "lesson": "6-2",
+   "seg": 6,
+   "wer": 0.008,
+   "wpm": 186
+  },
+  {
+   "lesson": "6-2",
+   "seg": 7,
+   "wer": 0.0,
+   "wpm": 178
+  },
+  {
+   "lesson": "6-2",
+   "seg": 8,
+   "wer": 0.009,
+   "wpm": 177
+  },
+  {
+   "lesson": "6-2",
+   "seg": 9,
+   "wer": 0.037,
+   "wpm": 162
+  },
+  {
+   "lesson": "6-3",
+   "seg": 1,
+   "wer": 0.031,
+   "wpm": 170
+  },
+  {
+   "lesson": "6-3",
+   "seg": 2,
+   "wer": 0.0,
+   "wpm": 160
+  },
+  {
+   "lesson": "6-3",
+   "seg": 3,
+   "wer": 0.027,
+   "wpm": 165
+  },
+  {
+   "lesson": "6-3",
+   "seg": 4,
+   "wer": 0.017,
+   "wpm": 171
+  },
+  {
+   "lesson": "6-3",
+   "seg": 5,
+   "wer": 0.035,
+   "wpm": 167
+  },
+  {
+   "lesson": "6-3",
+   "seg": 6,
+   "wer": 0.038,
+   "wpm": 158
+  },
+  {
+   "lesson": "6-3",
+   "seg": 7,
+   "wer": 0.012,
+   "wpm": 179
+  },
+  {
+   "lesson": "6-3",
+   "seg": 8,
+   "wer": 0.0,
+   "wpm": 161
+  },
+  {
+   "lesson": "6-3",
+   "seg": 9,
+   "wer": 0.031,
+   "wpm": 153
+  },
+  {
+   "lesson": "6-4",
+   "seg": 1,
+   "wer": 0.02,
+   "wpm": 145
+  },
+  {
+   "lesson": "6-4",
+   "seg": 2,
+   "wer": 0.0,
+   "wpm": 179
+  },
+  {
+   "lesson": "6-4",
+   "seg": 3,
+   "wer": 0.009,
+   "wpm": 166
+  },
+  {
+   "lesson": "6-4",
+   "seg": 4,
+   "wer": 0.0,
+   "wpm": 167
+  },
+  {
+   "lesson": "6-4",
+   "seg": 5,
+   "wer": 0.0,
+   "wpm": 162
+  },
+  {
+   "lesson": "6-4",
+   "seg": 6,
+   "wer": 0.0,
+   "wpm": 164
+  },
+  {
+   "lesson": "6-4",
+   "seg": 7,
+   "wer": 0.013,
+   "wpm": 190
+  },
+  {
+   "lesson": "6-4",
+   "seg": 8,
+   "wer": 0.0,
+   "wpm": 178
+  },
+  {
+   "lesson": "6-4",
+   "seg": 9,
+   "wer": 0.0,
+   "wpm": 178
+  },
+  {
+   "lesson": "7-1",
+   "seg": 1,
+   "wer": 0.0,
+   "wpm": 152
+  },
+  {
+   "lesson": "7-1",
+   "seg": 2,
+   "wer": 0.049,
+   "wpm": 166
+  },
+  {
+   "lesson": "7-1",
+   "seg": 3,
+   "wer": 0.01,
+   "wpm": 147
+  },
+  {
+   "lesson": "7-1",
+   "seg": 4,
+   "wer": 0.028,
+   "wpm": 159
+  },
+  {
+   "lesson": "7-1",
+   "seg": 5,
+   "wer": 0.009,
+   "wpm": 151
+  },
+  {
+   "lesson": "7-1",
+   "seg": 6,
+   "wer": 0.017,
+   "wpm": 150
+  },
+  {
+   "lesson": "7-1",
+   "seg": 7,
+   "wer": 0.036,
+   "wpm": 169
+  },
+  {
+   "lesson": "7-1",
+   "seg": 8,
+   "wer": 0.019,
+   "wpm": 174
+  },
+  {
+   "lesson": "7-1",
+   "seg": 9,
+   "wer": 0.024,
+   "wpm": 171
+  },
+  {
+   "lesson": "7-2",
+   "seg": 1,
+   "wer": 0.011,
+   "wpm": 170
+  },
+  {
+   "lesson": "7-2",
+   "seg": 2,
+   "wer": 0.0,
+   "wpm": 166
+  },
+  {
+   "lesson": "7-2",
+   "seg": 3,
+   "wer": 0.02,
+   "wpm": 156
+  },
+  {
+   "lesson": "7-2",
+   "seg": 4,
+   "wer": 0.012,
+   "wpm": 173
+  },
+  {
+   "lesson": "7-2",
+   "seg": 5,
+   "wer": 0.0,
+   "wpm": 177
+  },
+  {
+   "lesson": "7-2",
+   "seg": 6,
+   "wer": 0.019,
+   "wpm": 162
+  },
+  {
+   "lesson": "7-2",
+   "seg": 7,
+   "wer": 0.024,
+   "wpm": 155
+  },
+  {
+   "lesson": "7-2",
+   "seg": 8,
+   "wer": 0.032,
+   "wpm": 150
+  },
+  {
+   "lesson": "7-2",
+   "seg": 9,
+   "wer": 0.012,
+   "wpm": 155
+  },
+  {
+   "lesson": "7-3",
+   "seg": 1,
+   "wer": 0.011,
+   "wpm": 163
+  },
+  {
+   "lesson": "7-3",
+   "seg": 2,
+   "wer": 0.009,
+   "wpm": 145
+  },
+  {
+   "lesson": "7-3",
+   "seg": 3,
+   "wer": 0.02,
+   "wpm": 134
+  },
+  {
+   "lesson": "7-3",
+   "seg": 4,
+   "wer": 0.02,
+   "wpm": 153
+  },
+  {
+   "lesson": "7-3",
+   "seg": 5,
+   "wer": 0.0,
+   "wpm": 147
+  },
+  {
+   "lesson": "7-3",
+   "seg": 6,
+   "wer": 0.008,
+   "wpm": 173
+  },
+  {
+   "lesson": "7-3",
+   "seg": 7,
+   "wer": 0.019,
+   "wpm": 173
+  },
+  {
+   "lesson": "7-3",
+   "seg": 8,
+   "wer": 0.02,
+   "wpm": 176
+  },
+  {
+   "lesson": "7-3",
+   "seg": 9,
+   "wer": 0.013,
+   "wpm": 163
+  },
+  {
+   "lesson": "7-4",
+   "seg": 1,
+   "wer": 0.0,
+   "wpm": 147
+  },
+  {
+   "lesson": "7-4",
+   "seg": 2,
+   "wer": 0.008,
+   "wpm": 151
+  },
+  {
+   "lesson": "7-4",
+   "seg": 3,
+   "wer": 0.009,
+   "wpm": 176
+  },
+  {
+   "lesson": "7-4",
+   "seg": 4,
+   "wer": 0.023,
+   "wpm": 147
+  },
+  {
+   "lesson": "7-4",
+   "seg": 5,
+   "wer": 0.018,
+   "wpm": 144
+  },
+  {
+   "lesson": "7-4",
+   "seg": 6,
+   "wer": 0.0,
+   "wpm": 159
+  },
+  {
+   "lesson": "7-4",
+   "seg": 7,
+   "wer": 0.017,
+   "wpm": 160
+  },
+  {
+   "lesson": "7-4",
+   "seg": 8,
+   "wer": 0.0,
+   "wpm": 178
+  },
+  {
+   "lesson": "7-5",
+   "seg": 1,
+   "wer": 0.0,
+   "wpm": 167
+  },
+  {
+   "lesson": "7-5",
+   "seg": 2,
+   "wer": 0.009,
+   "wpm": 163
+  },
+  {
+   "lesson": "7-5",
+   "seg": 3,
+   "wer": 0.029,
+   "wpm": 168
+  },
+  {
+   "lesson": "7-5",
+   "seg": 4,
+   "wer": 0.009,
+   "wpm": 156
+  },
+  {
+   "lesson": "7-5",
+   "seg": 5,
+   "wer": 0.0,
+   "wpm": 146
+  },
+  {
+   "lesson": "7-5",
+   "seg": 6,
+   "wer": 0.033,
+   "wpm": 149
+  },
+  {
+   "lesson": "7-5",
+   "seg": 7,
+   "wer": 0.01,
+   "wpm": 176
+  },
+  {
+   "lesson": "7-5",
+   "seg": 8,
+   "wer": 0.011,
+   "wpm": 155
+  },
+  {
+   "lesson": "7-5",
+   "seg": 9,
+   "wer": 0.0,
+   "wpm": 164
+  }
+ ]
+}

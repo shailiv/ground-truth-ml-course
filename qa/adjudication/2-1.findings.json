@@ -1,0 +1,53 @@
+[
+ {
+  "reviewer": "learner-1",
+  "lesson": "2-1",
+  "where": "seg5 narration",
+  "quote": "Open it for the final answer, not for every experiment.",
+  "kind": "doubt",
+  "severity": "medium",
+  "problem": "The course then opens the envelope in every lesson: 2-3 has me drag the cut-off over the real test scores and pick one, 2-4 says recalibrate and 'ask for the same table again', 3-1 crowns 'the best so far' from five models on the same 4,000 rows. I cannot tell whether I am allowed to look, and the reason given is one sentence.",
+  "fix": "Say here that choices need a third slice (validation, lesson 4-2) and that the course peeks only to teach. Add 'make every choice on the training months' to the brief."
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "2-1",
+  "where": "brief (ask_assistant), same from 2-1 through 3-3",
+  "quote": "train on January to March, leave April out because its 60-day labels would not exist when May is scored",
+  "kind": "not_usable",
+  "severity": "medium",
+  "problem": "From here on the briefs are written for the practice table: its months, 'spend trend below 0.7', churned_next_60d, the bucket edges in 2-4. I cannot paste them at work; I would have to rewrite each one and would drop the part that matters.",
+  "fix": "Ship a template with slots: 'Split by <date column>. Train only on periods whose <N>-day outcome window closed before the first test date, say which period you left out, test on the latest <k> periods. Baselines: do-nothing and my rule <rule>.'"
+ },
+ {
+  "reviewer": "expert-1",
+  "lesson": "2-1",
+  "where": "ask_assistant; audit_checklist item 4; seg8 narration",
+  "quote": "how many each one flagged, and of those flagged, how many really churned",
+  "kind": "brief",
+  "severity": "low",
+  "problem": "The lesson's stated bar is beating the rule 'with the same number of flags', but neither the brief nor the checklist asks for the model at the rule's list size. Followed literally, the assistant returns the model at its default cut-off (141 flagged, 104 churners) beside the rule (711 flagged, 246 churners): two different list sizes, the comparison the course later calls unfair, and nothing in the checklist rejects it.",
+  "evidence": "facts.baseline.rule_flagged = 711, rule_tp = 246; logreg.test.flagged = 141, tp = 104; baseline.model_same_count = {flagged 711, churners 321} is the figure the lesson itself uses in seg7.",
+  "fix": "Brief: add 'and show the model for the same number of flags as the rule: its top 711 by score'. Checklist item 4: '... both baselines beside the model on the same test rows, the model shown at the same number flagged as the rule'."
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "2-1",
+  "where": "guess",
+  "quote": "January to March: April's outcomes are not known yet",
+  "kind": "question",
+  "severity": "low",
+  "problem": "1-3 already told me April's 60 days are still running when May is scored, and 1-5 showed April 'left out'. It is a recall check with the reason printed in the option, not a guess.",
+  "fix": "Guess the baseline instead: 'A model that says nobody churns: how accurate is it on the test months? 13 / 50 / 87 / 99 percent.'"
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "2-1",
+  "where": "seg5 narration",
+  "quote": "Here a shuffled split and a time split give almost the same result",
+  "kind": "boring",
+  "severity": "low",
+  "problem": "Two segments argue for the time split, then I am told it makes no difference here. Deflating, and the sealed envelope, which matters more, is buried behind it in the same segment.",
+  "fix": "Move the caveat to the on-screen note and give the envelope its own beat."
+ }
+]

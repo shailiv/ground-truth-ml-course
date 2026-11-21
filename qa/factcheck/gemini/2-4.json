@@ -1,0 +1,35 @@
+{
+ "issues": [
+  {
+   "where": "seg2 visual",
+   "quote": "23.6%",
+   "kind": "number_mismatch",
+   "severity": "high",
+   "explanation": "In the 20–30% score bucket on the test months, actual churn was 32.6%, not 23.6% (transposed digits). Showing 23.6% also makes actual churn appear below the 24.6% average prediction, contradicting seg2 narration ('about 33 percent left... runs low on both sides of 30') and seg4 visual ('32.6%').",
+   "evidence": "facts.json -> calibration.logreg[3]: bin='20-30%', n=291, predicted=0.246, actual=0.326",
+   "fix": "Change '23.6%' to '32.6%' in the 20–30% row of seg2 visual."
+  },
+  {
+   "where": "seg4 visual",
+   "quote": "50.6%",
+   "kind": "number_mismatch",
+   "severity": "high",
+   "explanation": "In the 50–70% score bucket for logistic regression on the test months, the average predicted churn ('Model said') was 57.6%, not 50.6%.",
+   "evidence": "facts.json -> calibration.logreg[6]: bin='50-70%', n=98, predicted=0.576, actual=0.663",
+   "fix": "Change '50.6%' to '57.6%' in the 50–70% row of seg4 visual."
+  },
+  {
+   "where": "seg5 narration",
+   "quote": "Then it was tested on May and June, when about 93 percent churned.",
+   "kind": "number_mismatch",
+   "severity": "high",
+   "explanation": "Actual churn in the May–June test months was about 13 percent (13.2%), not 93 percent. Saying 93 percent also directly contradicts seg5 visual ('10.9% → 13.2%') and the rest of the lesson.",
+   "evidence": "facts.json -> data.churn_rate_test = 0.1318; facts.json -> calibration.overall.actual = 0.132",
+   "fix": "Change 'when about 93 percent churned' to 'when about 13 percent churned'."
+  }
+ ],
+ "numbers_checked": 88,
+ "verdict": "Conceptually sound and well-aligned with the brief, with strong quiz and review items, but contains three high-severity numeric typos that must be fixed before publication: '23.6%' instead of '32.6%' in seg2 visual, '50.6%' instead of '57.6%' in seg4 visual, and 'about 93 percent churned' instead of 'about 13 percent churned' in seg5 narration.",
+ "_hash": "5a61e4f12ae0d542",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_Chc4OUVCYTR2OUI3M1l4czBQc3MydzhRSRIXODlFQmE0djlCNzNZeHMwUHNzMnc4UUk | tokens in=67243 out=663 thought=22130]"
+}

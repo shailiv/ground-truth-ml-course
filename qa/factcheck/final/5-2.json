@@ -1,0 +1,7 @@
+{
+ "issues": [],
+ "numbers_checked": 39,
+ "verdict": "Pass. Every numeric claim in the narration, visuals, predict item, quiz, and review questions matches facts.json (experiment sample-size examples and uplift simulation readouts), and all statistical and causal-inference concepts—randomisation, intention-to-treat in encouragement designs, sample-size planning, confidence-interval interpretation, and fixed-horizon stopping—are accurately stated with unambiguously keyed questions.",
+ "_hash": "b26aa09e0bb540cc",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_Chc3UmNDYV9IaE5aeW8yOG9QcllDUW9BYxIXN1JjQ2FfSGhOWnlvMjhvUHJZQ1FvQWM | tokens in=67924 out=123 thought=17944]"
+}

@@ -1,0 +1,88 @@
+{
+  "lesson": "4-2",
+  "decisions": [
+    {
+      "n": 0,
+      "reviewer": "learner-2",
+      "finding": "With three training months there cannot be five folds that each check on later months; segment 3 rotates five parts of Jan-Mar while the 'when' rule says dated rows are checked on later months. Which one does the course mean?",
+      "decision": "accepted",
+      "reason": "A real inconsistency, and the lesson-specific ruling. cv.note: 'shuffled folds are fine here only because every row is a different advertiser from the same three months; with repeated advertisers or a time trend, folds must respect groups and time'.",
+      "change": "Brief split into two cases (case one: one row per unit from periods that are alike, rotating folds are fine; case two: several rows per unit or periods that differ, grouped and forward in time, 'say how many such checks the data allows'). Segment 5 says why the main table was case one. Segment 7's rule is now conditional ('Where months differ, or an advertiser's rows span them'). Segment 8 states both cases aloud."
+    },
+    {
+      "n": 1,
+      "reviewer": "learner-2",
+      "finding": "'A statement that the test set was scored once' is a claim by the assistant, not evidence.",
+      "decision": "accepted",
+      "reason": "R7. Nothing in the old output let the learner verify how often the test rows were scored.",
+      "change": "Brief: 'Then stop: score [test period] only when I approve the frozen setting, and list every scoring run with the rows it used.' Audit item 3 and segment 8 say the same: test scoring is its own last stage that the learner triggers, with every scoring run listed beside its rows."
+    },
+    {
+      "n": 2,
+      "reviewer": "expert-2",
+      "finding": "The brief makes time-ordered folds conditional on repeated advertisers; they are two separate conditions, and the lesson's own shuffled folds over dated Jan-Mar rows break 'never train on the future' without saying why that is acceptable.",
+      "decision": "accepted",
+      "reason": "Correct; cv.note states both conditions separately. data.churn_by_month for Jan, Feb, Mar (0.1125, 0.109, 0.1125) supports 'the three training months are much alike'.",
+      "change": "Brief case two triggers on 'several rows per [unit] or [periods] that differ'. Segment 5 narration: 'each of its 12,000 advertisers appears once, and the three training months are much alike, so shuffled folds were safe there.' Takeaway 2, the segment 7 'When' bullet and the recap card's small line reworded to 'where months differ'."
+    },
+    {
+      "n": 3,
+      "reviewer": "expert-2",
+      "finding": "In the lesson whose rule is 'open the test set once', the learning curve is drawn as 56 scorings of the test set and the learner is told to ask for one.",
+      "decision": "accepted",
+      "reason": "learning_curve.what confirms it: every point is scored on the 4,000 May-June rows, 8 repeats per size.",
+      "change": "The learning-curve segment is no longer in the narration (see finding 5). The glossary now defines a learning curve by 'the held-out score'. The curve's facts are kept in other_ways with the sentence 'The course scored that curve on its test months for illustration only.'"
+    },
+    {
+      "n": 4,
+      "reviewer": "learner-2",
+      "finding": "25 depths in the 4-1 widget, seven in the 4-1 brief, twelve here; the quiz says 'from 1 to 25' and 'twelve looks' in the same item.",
+      "decision": "accepted",
+      "reason": "depth_sweep has 12 rows. One number everywhere.",
+      "change": "Twelve in segment 1, segment 4 and its card, and quiz 1 ('twelve tree depths between 1 and 25'). Lesson 4-1 now says twelve in its narration and widget note, and its brief no longer lists depths."
+    },
+    {
+      "n": 5,
+      "reviewer": "learner-2",
+      "finding": "The learning curve is a second lesson bolted on; neither the brief nor the checklist asks for it.",
+      "decision": "partly",
+      "reason": "Agreed that it is a second idea (SPEC rule 1: a secondary point gets one sentence or the reference fields). The segment's slot was needed for what the lesson's own hook promises and never delivered: choosing the depth honestly, which depth_sweep.cv_auc_on_training_months now makes possible. A line for the curve does not fit the 120-word brief once the two cases are in it. 'Give the curve its own short lesson' is a new lesson: out of scope, collected under open questions.",
+      "change": "Old segment 7 (learning curve, line chart) removed. Its content is kept in other_ways ('A learning curve, before asking for more data', with 0.83 on 1,000 rows, 0.845 on 6,000, 11 churners in 100 rows, 'count the churners, not the rows') and in the glossary."
+    },
+    {
+      "n": 6,
+      "reviewer": "learner-2",
+      "finding": "Quiz 4 is answerable by shape: one option starts 'Nothing', two start 'Only', and the right one is the only complete list.",
+      "decision": "accepted",
+      "reason": "R5.",
+      "change": "All three distractors now read like complete fixes (group and drop the ID but ignore month order; drop the ID and use ten folds; drop the ID and keep shuffled folds). The keyed answer is not the longest. The 'why' explains each."
+    },
+    {
+      "n": 7,
+      "reviewer": "learner-2",
+      "finding": "'The rows usually carry the same label': an analyst cannot picture six monthly rows sharing a 60-day churn label.",
+      "decision": "accepted",
+      "reason": "panel_leak.setup gives the reason: consecutive snapshots share most of their 60-day outcome window.",
+      "change": "Segment 5 narration: 'And because the label looks sixty days ahead, neighbouring months usually carry the same label.'"
+    }
+  ],
+  "rulings": {
+    "R1": "Segment 1, one added sentence: 'The same goes for any setting of any model, such as which columns feed a video-adoption model.' (other question: video-format adoption).",
+    "R2": "Not applicable.",
+    "R3": "ask_assistant rewritten as a template with slots [unit], [periods], [units], [test period]; no months, no fold count, no column names. Keeps every demand for evidence: which case applied and why, the count of units on both sides of a fold, every fold score with mean and range, every scoring run with its rows. 119 words.",
+    "R4": "Segment 9 is 42 words: what the learner asks when the assistant offers to tune anything, and the pointer to 4-3. The quote visual is kept; only its small line was made accurate ('where months differ, check on later months').",
+    "R5": "Keyed answer is the longest option in 1 of 10. Replaced every 'nothing is wrong' style option: quiz 1 A, quiz 3 A ('Agree'), quiz 4 A, C and D, review 1 variant 1 B and D (the two 'Reliable' options), review 1 variant 2 A ('Still a test set'), review 1 variant 3 A and B (the two 'Go ahead' options), review 2 variant 2 B. 'Why' texts extended where a new distractor needed an answer.",
+    "R6": "The usable alternative sat only in other_ways. Segment 8 now says: 'With plenty of history, one later month set aside for choosing does the same job.'",
+    "R7": "Item 3 is now structural (test scoring is its own final stage that you trigger; every scoring run listed with its rows; the test rows appear once). Item 1 adds the reason the fold case applies and keeps the count of advertisers on both sides: 0.",
+    "specific": "Done. New segment 4 shows the honest choice from depth_sweep: five folds at each of twelve depths inside the training months put depth 5 first (0.766) with depth 4 a hair behind (0.763); opened once, depth 5 scores 0.761 on the test months; the test months would have picked depth 4 (0.769), and the learner does not go back. The 4-2 hook ('Depth 4 scored best on the test months, so use depth 4. Stop.') now refers to last lesson's chart, since the 4-1 brief no longer produces a test-score table. The brief separates the two cases as ruled."
+  },
+  "segments_changed": [1, 4, 5, 7, 8, 9],
+  "numbers_verified": 150,
+  "open_questions": [
+    "Structure changed: the learning-curve segment (old 7) is gone and a new segment 4 (choosing the depth) was inserted, so old segments 4, 5, 6 are now 5, 6, 7. Clips are keyed by their words, so segments 2, 3 and 6 need no re-recording, but 4-2's audio manifest order must be rebuilt. If the owner wants the learning curve back as audio and a chart, it needs its own short lesson (learner-2's suggestion); facts.learning_curve still holds the data. OUTLINE.md's 4-2 brief still lists the curve and its line visual.",
+    "Depth 5 against depth 4 by cross-validation is 0.766 against 0.763: a tie by the lesson's own rule. facts.json has no fold-by-fold scores per depth, so the narration says 'a tie, so either is defensible, as long as you decide now' and then follows the top scorer, as depth_sweep_note does. Per-depth fold scores in facts would let the lesson show the spread instead of asserting it.",
+    "The gap between depth 4 and depth 5 on the test months (0.769 against 0.761) has no paired interval in facts; the narration therefore says only 'by less than a hundredth' and does not call it noise or real.",
+    "The lesson is 932 spoken words: under the 950 cap, above the 650-900 target. The additions are required by rulings (R1 sentence, the honest choice, the two cases, R6, the structural test stage). Segment 6 (130 words, unchanged) was left alone to avoid a re-record.",
+    "Drill items were left byte-identical so the module-4 drill track is not re-recorded."
+  ]
+}

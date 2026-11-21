@@ -1,0 +1,5714 @@
+{
+ "data": {
+  "n": 12000,
+  "n_train": 6000,
+  "n_gap": 2000,
+  "n_test": 4000,
+  "months": [
+   "Jan",
+   "Feb",
+   "Mar",
+   "Apr",
+   "May",
+   "Jun"
+  ],
+  "train_months": "Jan-Mar",
+  "gap_month": "Apr",
+  "test_months": "May-Jun",
+  "per_month": 2000,
+  "why_a_gap": "churn is judged over the 60 days after a snapshot, so on the day you score the May advertisers you do not yet know who churned from the April cohort; training on April would use answers that did not exist yet",
+  "one_row_is": "one advertiser, observed once (12,000 different advertisers; nobody appears twice)",
+  "churn_rate": 0.1183,
+  "churn_rate_train": 0.1113,
+  "churn_rate_test": 0.1318,
+  "churners_train": 668,
+  "churners_test": 527,
+  "churners_total": 1420,
+  "churn_by_month": {
+   "Jan": 0.1125,
+   "Feb": 0.109,
+   "Mar": 0.1125,
+   "Apr": 0.1125,
+   "May": 0.1265,
+   "Jun": 0.137
+  },
+  "tracking_rate": 0.5847,
+  "n_tracked": 7016,
+  "n_untracked": 4984,
+  "missing_cpa_rate": 0.4153,
+  "hit_goal_rate_tracked": 0.6568,
+  "video_adoption_rate": 0.1906,
+  "columns": [
+   "advertiser_id",
+   "snapshot_month",
+   "vertical",
+   "managed",
+   "tenure_weeks",
+   "spend_8w",
+   "spend_trend",
+   "active_days_28",
+   "days_since_login",
+   "campaigns_active",
+   "creatives_per_campaign",
+   "creative_refresh_days",
+   "has_conversion_tracking",
+   "uses_auto_bidding",
+   "had_optimisation_review",
+   "cpa_vs_goal",
+   "ctr_pct",
+   "support_tickets_8w",
+   "payment_failures_8w",
+   "hit_cpa_goal",
+   "spend_next_8w",
+   "adopted_video_next_60d",
+   "churned_next_60d"
+  ],
+  "feature_columns": [
+   "tenure_weeks",
+   "spend_8w",
+   "spend_trend",
+   "active_days_28",
+   "days_since_login",
+   "campaigns_active",
+   "creatives_per_campaign",
+   "creative_refresh_days",
+   "cpa_vs_goal",
+   "ctr_pct",
+   "support_tickets_8w",
+   "payment_failures_8w",
+   "managed",
+   "has_conversion_tracking",
+   "uses_auto_bidding",
+   "had_optimisation_review",
+   "vertical"
+  ],
+  "n_feature_columns": 17,
+  "outcome_columns": {
+   "churned_next_60d": "no spend at all in the 60 days after the snapshot",
+   "spend_next_8w": "dollars spent in the 8 weeks after the snapshot (0 for churners)",
+   "adopted_video_next_60d": "started using the video ad format in the 60 days after the snapshot",
+   "hit_cpa_goal": "CPA at or below the advertiser's own target during the 8 weeks BEFORE the snapshot; empty without conversion tracking"
+  },
+  "sample_rows": [
+   {
+    "advertiser_id": 100002,
+    "snapshot_month": "Jan",
+    "vertical": "ecommerce",
+    "managed": 0,
+    "tenure_weeks": 16,
+    "spend_8w": 3871,
+    "spend_trend": 1.449,
+    "active_days_28": 24,
+    "days_since_login": 2,
+    "campaigns_active": 3,
+    "creatives_per_campaign": 3,
+    "creative_refresh_days": 4,
+    "has_conversion_tracking": 1,
+    "uses_auto_bidding": 1,
+    "had_optimisation_review": 0,
+    "cpa_vs_goal": 0.568,
+    "ctr_pct": 0.218,
+    "support_tickets_8w": 0,
+    "payment_failures_8w": 0,
+    "spend_next_8w": 3586,
+    "adopted_video_next_60d": 0,
+    "churned_next_60d": 0
+   },
+   {
+    "advertiser_id": 100004,
+    "snapshot_month": "Jan",
+    "vertical": "other",
+    "managed": 1,
+    "tenure_weeks": 43,
+    "spend_8w": 7758,
+    "spend_trend": 0.812,
+    "active_days_28": 13,
+    "days_since_login": 1,
+    "campaigns_active": 2,
+    "creatives_per_campaign": 5,
+    "creative_refresh_days": 1,
+    "has_conversion_tracking": 1,
+    "uses_auto_bidding": 1,
+    "had_optimisation_review": 0,
+    "cpa_vs_goal": 1.305,
+    "ctr_pct": 0.25,
+    "support_tickets_8w": 1,
+    "payment_failures_8w": 0,
+    "spend_next_8w": 8107,
+    "adopted_video_next_60d": 0,
+    "churned_next_60d": 0
+   },
+   {
+    "advertiser_id": 100000,
+    "snapshot_month": "Jan",
+    "vertical": "ecommerce",
+    "managed": 0,
+    "tenure_weeks": 12,
+    "spend_8w": 295,
+    "spend_trend": 1.121,
+    "active_days_28": 22,
+    "days_since_login": 1,
+    "campaigns_active": 1,
+    "creatives_per_campaign": 6,
+    "creative_refresh_days": 4,
+    "has_conversion_tracking": 0,
+    "uses_auto_bidding": 0,
+    "had_optimisation_review": 0,
+    "cpa_vs_goal": null,
+    "ctr_pct": 0.333,
+    "support_tickets_8w": 0,
+    "payment_failures_8w": 0,
+    "spend_next_8w": 269,
+    "adopted_video_next_60d": 0,
+    "churned_next_60d": 0
+   },
+   {
+    "advertiser_id": 100005,
+    "snapshot_month": "Jan",
+    "vertical": "ecommerce",
+    "managed": 0,
+    "tenure_weeks": 54,
+    "spend_8w": 500,
+    "spend_trend": 0.799,
+    "active_days_28": 22,
+    "days_since_login": 11,
+    "campaigns_active": 1,
+    "creatives_per_campaign": 4,
+    "creative_refresh_days": 67,
+    "has_conversion_tracking": 0,
+    "uses_auto_bidding": 1,
+    "had_optimisation_review": 1,
+    "cpa_vs_goal": null,
+    "ctr_pct": 0.173,
+    "support_tickets_8w": 0,
+    "payment_failures_8w": 0,
+    "spend_next_8w": 374,
+    "adopted_video_next_60d": 0,
+    "churned_next_60d": 0
+   },
+   {
+    "advertiser_id": 100003,
+    "snapshot_month": "Jan",
+    "vertical": "finance",
+    "managed": 0,
+    "tenure_weeks": 41,
+    "spend_8w": 3263,
+    "spend_trend": 1.544,
+    "active_days_28": 23,
+    "days_since_login": 1,
+    "campaigns_active": 2,
+    "creatives_per_campaign": 4,
+    "creative_refresh_days": 5,
+    "has_conversion_tracking": 1,
+    "uses_auto_bidding": 1,
+    "had_optimisation_review": 1,
+    "cpa_vs_goal": 0.572,
+    "ctr_pct": 0.445,
+    "support_tickets_8w": 0,
+    "payment_failures_8w": 0,
+    "spend_next_8w": 5896,
+    "adopted_video_next_60d": 1,
+    "churned_next_60d": 0
+   }
+  ],
+  "median_spend_8w": 1867,
+  "feature_stats_train": {
+   "tenure_weeks": {
+    "mean": 39.152,
+    "sd": 34.316,
+    "median": 30,
+    "p10": 6,
+    "p90": 84
+   },
+   "spend_8w": {
+    "mean": 4043.806,
+    "sd": 7592.088,
+    "median": 1855.5,
+    "p10": 383.9,
+    "p90": 9104.4
+   },
+   "spend_trend": {
+    "mean": 1.069,
+    "sd": 0.411,
+    "median": 1.001,
+    "p10": 0.62,
+    "p90": 1.604
+   },
+   "active_days_28": {
+    "mean": 20.511,
+    "sd": 5.304,
+    "median": 22,
+    "p10": 13,
+    "p90": 26
+   },
+   "days_since_login": {
+    "mean": 3.944,
+    "sd": 4.28,
+    "median": 3,
+    "p10": 1,
+    "p90": 8
+   },
+   "campaigns_active": {
+    "mean": 2.59,
+    "sd": 1.255,
+    "median": 2,
+    "p10": 1,
+    "p90": 4
+   },
+   "creatives_per_campaign": {
+    "mean": 3.252,
+    "sd": 1.715,
+    "median": 3,
+    "p10": 1,
+    "p90": 6
+   },
+   "creative_refresh_days": {
+    "mean": 23.801,
+    "sd": 25.64,
+    "median": 15,
+    "p10": 2,
+    "p90": 59
+   },
+   "cpa_vs_goal": {
+    "mean": 0.926,
+    "sd": 0.399,
+    "median": 0.857,
+    "p10": 0.501,
+    "p90": 1.424
+   },
+   "ctr_pct": {
+    "mean": 0.27,
+    "sd": 0.109,
+    "median": 0.25,
+    "p10": 0.154,
+    "p90": 0.408
+   },
+   "support_tickets_8w": {
+    "mean": 0.254,
+    "sd": 0.599,
+    "median": 0,
+    "p10": 0,
+    "p90": 1
+   },
+   "payment_failures_8w": {
+    "mean": 0.073,
+    "sd": 0.269,
+    "median": 0,
+    "p10": 0,
+    "p90": 0
+   },
+   "managed": {
+    "mean": 0.307,
+    "sd": 0.461,
+    "median": 0,
+    "p10": 0,
+    "p90": 1
+   },
+   "has_conversion_tracking": {
+    "mean": 0.585,
+    "sd": 0.493,
+    "median": 1,
+    "p10": 0,
+    "p90": 1
+   },
+   "uses_auto_bidding": {
+    "mean": 0.487,
+    "sd": 0.5,
+    "median": 0,
+    "p10": 0,
+    "p90": 1
+   },
+   "had_optimisation_review": {
+    "mean": 0.253,
+    "sd": 0.435,
+    "median": 0,
+    "p10": 0,
+    "p90": 1
+   }
+  }
+ },
+ "churn_by": {
+  "has_conversion_tracking": {
+   "0": {
+    "n": 4984,
+    "churn": 0.1836
+   },
+   "1": {
+    "n": 7016,
+    "churn": 0.072
+   }
+  },
+  "managed": {
+   "0": {
+    "n": 8232,
+    "churn": 0.144
+   },
+   "1": {
+    "n": 3768,
+    "churn": 0.0624
+   }
+  },
+  "vertical": {
+   "ecommerce": {
+    "n": 3649,
+    "churn": 0.1008
+   },
+   "education": {
+    "n": 1159,
+    "churn": 0.1122
+   },
+   "finance": {
+    "n": 1697,
+    "churn": 0.0931
+   },
+   "gaming": {
+    "n": 1481,
+    "churn": 0.1985
+   },
+   "health": {
+    "n": 1868,
+    "churn": 0.1183
+   },
+   "other": {
+    "n": 2146,
+    "churn": 0.116
+   }
+  },
+  "uses_auto_bidding": {
+   "0": {
+    "n": 6123,
+    "churn": 0.1618
+   },
+   "1": {
+    "n": 5877,
+    "churn": 0.073
+   }
+  },
+  "had_optimisation_review": {
+   "0": {
+    "n": 8942,
+    "churn": 0.1036
+   },
+   "1": {
+    "n": 3058,
+    "churn": 0.1615
+   }
+  }
+ },
+ "logreg": {
+  "test": {
+   "auc": 0.845,
+   "pr_auc": 0.519,
+   "brier": 0.0864,
+   "threshold": 0.5,
+   "flagged": 141,
+   "tp": 104,
+   "fp": 37,
+   "fn": 423,
+   "tn": 3436,
+   "accuracy": 0.885,
+   "precision": 0.738,
+   "recall": 0.197
+  },
+  "train_auc": 0.849,
+  "intercept": -2.758,
+  "n_weights": 22,
+  "how_to_read": "coef is the change in log-odds of churn; odds_ratio = exp(coef). Continuous features are standardised, so 'per 1 SD'. spend_8w is on a log10 scale. Flags are yes vs no. Verticals are relative to ecommerce. avg_probability_shift_pts is the plain-language version: how many points the average predicted churn probability moves. None of these is a causal effect.",
+  "coefs": [
+   {
+    "feature": "spend_trend",
+    "coef": -0.848,
+    "odds_ratio": 0.428,
+    "unit": "per 1 SD",
+    "one_sd_is": 0.41,
+    "avg_probability_shift_pts": -5.1
+   },
+   {
+    "feature": "vertical_gaming",
+    "coef": 0.649,
+    "odds_ratio": 1.913,
+    "unit": "vs ecommerce"
+   },
+   {
+    "feature": "has_conversion_tracking",
+    "coef": -0.587,
+    "odds_ratio": 0.556,
+    "unit": "yes vs no",
+    "avg_probability_shift_pts": -4.4
+   },
+   {
+    "feature": "active_days_28",
+    "coef": -0.455,
+    "odds_ratio": 0.634,
+    "unit": "per 1 SD",
+    "one_sd_is": 5.303,
+    "avg_probability_shift_pts": -3
+   },
+   {
+    "feature": "managed",
+    "coef": -0.422,
+    "odds_ratio": 0.656,
+    "unit": "yes vs no",
+    "avg_probability_shift_pts": -3
+   },
+   {
+    "feature": "vertical_health",
+    "coef": 0.419,
+    "odds_ratio": 1.521,
+    "unit": "vs ecommerce"
+   },
+   {
+    "feature": "vertical_other",
+    "coef": 0.399,
+    "odds_ratio": 1.49,
+    "unit": "vs ecommerce"
+   },
+   {
+    "feature": "vertical_education",
+    "coef": 0.353,
+    "odds_ratio": 1.424,
+    "unit": "vs ecommerce"
+   },
+   {
+    "feature": "tenure_weeks",
+    "coef": -0.302,
+    "odds_ratio": 0.739,
+    "unit": "per 1 SD",
+    "one_sd_is": 34.314,
+    "avg_probability_shift_pts": -2.1
+   },
+   {
+    "feature": "payment_failures_8w",
+    "coef": 0.282,
+    "odds_ratio": 1.326,
+    "unit": "per 1 SD",
+    "one_sd_is": 0.269,
+    "avg_probability_shift_pts": 2.3
+   },
+   {
+    "feature": "vertical_finance",
+    "coef": 0.238,
+    "odds_ratio": 1.269,
+    "unit": "vs ecommerce"
+   },
+   {
+    "feature": "cpa_vs_goal",
+    "coef": 0.231,
+    "odds_ratio": 1.26,
+    "unit": "per 1 SD",
+    "one_sd_is": 0.307,
+    "avg_probability_shift_pts": 0.7
+   },
+   {
+    "feature": "support_tickets_8w",
+    "coef": 0.224,
+    "odds_ratio": 1.251,
+    "unit": "per 1 SD",
+    "one_sd_is": 0.599,
+    "avg_probability_shift_pts": 1.8
+   },
+   {
+    "feature": "ctr_pct",
+    "coef": -0.209,
+    "odds_ratio": 0.812,
+    "unit": "per 1 SD",
+    "one_sd_is": 0.109,
+    "avg_probability_shift_pts": -1.5
+   },
+   {
+    "feature": "uses_auto_bidding",
+    "coef": -0.18,
+    "odds_ratio": 0.835,
+    "unit": "yes vs no",
+    "avg_probability_shift_pts": -1.3
+   },
+   {
+    "feature": "creative_refresh_days",
+    "coef": 0.152,
+    "odds_ratio": 1.164,
+    "unit": "per 1 SD",
+    "one_sd_is": 25.638,
+    "avg_probability_shift_pts": 1.2
+   },
+   {
+    "feature": "spend_8w",
+    "coef": -0.124,
+    "odds_ratio": 0.883,
+    "unit": "per 1 SD",
+    "one_sd_is": 0.535,
+    "avg_probability_shift_pts": -0.9
+   },
+   {
+    "feature": "had_optimisation_review",
+    "coef": 0.095,
+    "odds_ratio": 1.1,
+    "unit": "yes vs no",
+    "avg_probability_shift_pts": 0.7
+   },
+   {
+    "feature": "campaigns_active",
+    "coef": -0.083,
+    "odds_ratio": 0.921,
+    "unit": "per 1 SD",
+    "one_sd_is": 1.255,
+    "avg_probability_shift_pts": -0.6
+   },
+   {
+    "feature": "creatives_per_campaign",
+    "coef": -0.06,
+    "odds_ratio": 0.942,
+    "unit": "per 1 SD",
+    "one_sd_is": 1.715,
+    "avg_probability_shift_pts": -0.4
+   },
+   {
+    "feature": "days_since_login",
+    "coef": 0.049,
+    "odds_ratio": 1.05,
+    "unit": "per 1 SD",
+    "one_sd_is": 4.279,
+    "avg_probability_shift_pts": 0.4
+   }
+  ],
+  "best_possible_auc": 0.868,
+  "best_possible_note": "the AUC of the simulation's own true churn probability, which uses hidden inputs no model is given; nothing trained on this table can beat it"
+ },
+ "baseline": {
+  "always_no_accuracy": 0.868,
+  "always_no_recall": 0,
+  "always_no_churners_found": 0,
+  "rule": "spend_trend < 0.7",
+  "rule_flagged": 711,
+  "rule_precision": 0.346,
+  "rule_recall": 0.467,
+  "rule_accuracy": 0.814,
+  "rule_tp": 246,
+  "rule_fp": 465,
+  "rule_fn": 281,
+  "rule_tn": 3008,
+  "model_same_count": {
+   "flagged": 711,
+   "churners": 321,
+   "precision": 0.451,
+   "recall": 0.609
+  }
+ },
+ "tree": {
+  "depth": 3,
+  "min_rows_per_leaf": 100,
+  "leaves": 8,
+  "test": {
+   "auc": 0.761,
+   "pr_auc": 0.342,
+   "brier": 0.0976,
+   "threshold": 0.5,
+   "flagged": 122,
+   "tp": 67,
+   "fp": 55,
+   "fn": 460,
+   "tn": 3418,
+   "accuracy": 0.871,
+   "precision": 0.549,
+   "recall": 0.127
+  },
+  "note": "this is the tree shown in the lessons: depth 3 and at least 100 training rows in every end point. depth_sweep grows trees with no minimum leaf size, so its depth-3 row scores slightly differently.",
+  "train_auc": 0.786,
+  "root": {
+   "n": 6000,
+   "churn": 0.111,
+   "feature": "active_days_28",
+   "threshold": 14.5,
+   "yes": {
+    "n": 874,
+    "churn": 0.333,
+    "feature": "spend_trend",
+    "threshold": 0.74,
+    "yes": {
+     "n": 364,
+     "churn": 0.544,
+     "feature": "spend_8w",
+     "threshold": 1020.5,
+     "yes": {
+      "n": 199,
+      "churn": 0.633
+     },
+     "no": {
+      "n": 165,
+      "churn": 0.436
+     }
+    },
+    "no": {
+     "n": 510,
+     "churn": 0.182,
+     "feature": "ctr_pct",
+     "threshold": 0.21,
+     "yes": {
+      "n": 270,
+      "churn": 0.256
+     },
+     "no": {
+      "n": 240,
+      "churn": 0.1
+     }
+    }
+   },
+   "no": {
+    "n": 5126,
+    "churn": 0.074,
+    "feature": "spend_trend",
+    "threshold": 0.69,
+    "yes": {
+     "n": 672,
+     "churn": 0.211,
+     "feature": "active_days_28",
+     "threshold": 22.5,
+     "yes": {
+      "n": 466,
+      "churn": 0.266
+     },
+     "no": {
+      "n": 206,
+      "churn": 0.087
+     }
+    },
+    "no": {
+     "n": 4454,
+     "churn": 0.053,
+     "feature": "spend_trend",
+     "threshold": 0.9,
+     "yes": {
+      "n": 1091,
+      "churn": 0.104
+     },
+     "no": {
+      "n": 3363,
+      "churn": 0.036
+     }
+    }
+   }
+  },
+  "text": "|--- active_days_28 <= 14.50\n|   |--- spend_trend <= 0.74\n|   |   |--- spend_8w <= 3.01\n|   |   |   |--- class: 1\n|   |   |--- spend_8w >  3.01\n|   |   |   |--- class: 0\n|   |--- spend_trend >  0.74\n|   |   |--- ctr_pct <= 0.21\n|   |   |   |--- class: 0\n|   |   |--- ctr_pct >  0.21\n|   |   |   |--- class: 0\n|--- active_days_28 >  14.50\n|   |--- spend_trend <= 0.69\n|   |   |--- active_days_28 <= 22.50\n|   |   |   |--- class: 0\n|   |   |--- active_days_28 >  22.50\n|   |   |   |--- class: 0\n|   |--- spend_trend >  0.69\n|   |   |--- spend_trend <= 0.90\n|   |   |   |--- class: 0\n|   |   |--- spend_trend >  0.90\n|   |   |   |--- class: 0\n"
+ },
+ "depth_sweep": [
+  {
+   "depth": 1,
+   "leaves": 2,
+   "train_auc": 0.663,
+   "cv_auc_on_training_months": 0.645,
+   "test_auc": 0.656,
+   "distinct_scores_on_test": 2,
+   "train_acc": 0.889,
+   "test_acc": 0.868
+  },
+  {
+   "depth": 2,
+   "leaves": 4,
+   "train_auc": 0.742,
+   "cv_auc_on_training_months": 0.737,
+   "test_auc": 0.732,
+   "distinct_scores_on_test": 4,
+   "train_acc": 0.894,
+   "test_acc": 0.875
+  },
+  {
+   "depth": 3,
+   "leaves": 8,
+   "train_auc": 0.787,
+   "cv_auc_on_training_months": 0.755,
+   "test_auc": 0.767,
+   "distinct_scores_on_test": 8,
+   "train_acc": 0.895,
+   "test_acc": 0.875
+  },
+  {
+   "depth": 4,
+   "leaves": 16,
+   "train_auc": 0.81,
+   "cv_auc_on_training_months": 0.763,
+   "test_auc": 0.769,
+   "distinct_scores_on_test": 16,
+   "train_acc": 0.902,
+   "test_acc": 0.874
+  },
+  {
+   "depth": 5,
+   "leaves": 32,
+   "train_auc": 0.824,
+   "cv_auc_on_training_months": 0.766,
+   "test_auc": 0.761,
+   "distinct_scores_on_test": 23,
+   "train_acc": 0.907,
+   "test_acc": 0.874
+  },
+  {
+   "depth": 6,
+   "leaves": 56,
+   "train_auc": 0.84,
+   "cv_auc_on_training_months": 0.747,
+   "test_auc": 0.75,
+   "distinct_scores_on_test": 31,
+   "train_acc": 0.913,
+   "test_acc": 0.871
+  },
+  {
+   "depth": 8,
+   "leaves": 127,
+   "train_auc": 0.882,
+   "cv_auc_on_training_months": 0.711,
+   "test_auc": 0.724,
+   "distinct_scores_on_test": 46,
+   "train_acc": 0.93,
+   "test_acc": 0.864
+  },
+  {
+   "depth": 10,
+   "leaves": 229,
+   "train_auc": 0.916,
+   "cv_auc_on_training_months": 0.646,
+   "test_auc": 0.653,
+   "distinct_scores_on_test": 46,
+   "train_acc": 0.951,
+   "test_acc": 0.856
+  },
+  {
+   "depth": 12,
+   "leaves": 336,
+   "train_auc": 0.955,
+   "cv_auc_on_training_months": 0.606,
+   "test_auc": 0.582,
+   "distinct_scores_on_test": 38,
+   "train_acc": 0.967,
+   "test_acc": 0.852
+  },
+  {
+   "depth": 15,
+   "leaves": 466,
+   "train_auc": 0.987,
+   "cv_auc_on_training_months": 0.611,
+   "test_auc": 0.527,
+   "distinct_scores_on_test": 28,
+   "train_acc": 0.984,
+   "test_acc": 0.841
+  },
+  {
+   "depth": 20,
+   "leaves": 589,
+   "train_auc": 1,
+   "cv_auc_on_training_months": 0.609,
+   "test_auc": 0.595,
+   "distinct_scores_on_test": 10,
+   "train_acc": 0.997,
+   "test_acc": 0.829
+  },
+  {
+   "depth": 25,
+   "leaves": 611,
+   "train_auc": 1,
+   "cv_auc_on_training_months": 0.609,
+   "test_auc": 0.607,
+   "distinct_scores_on_test": 2,
+   "train_acc": 1,
+   "test_acc": 0.824
+  }
+ ],
+ "depth_sweep_note": "test_auc is shown to demonstrate over-fitting; it must not be used to CHOOSE the depth. cv_auc_on_training_months (5-fold cross-validation inside January-March) is the honest way to choose: best depth by cross-validation is 5, best by the test months is 4.",
+ "forest": {
+  "test": {
+   "auc": 0.831,
+   "pr_auc": 0.485,
+   "brier": 0.0899,
+   "threshold": 0.5,
+   "flagged": 99,
+   "tp": 77,
+   "fp": 22,
+   "fn": 450,
+   "tn": 3451,
+   "accuracy": 0.882,
+   "precision": 0.778,
+   "recall": 0.146
+  },
+  "train_auc": 0.982,
+  "n_trees": 300
+ },
+ "boosting": {
+  "test": {
+   "auc": 0.836,
+   "pr_auc": 0.496,
+   "brier": 0.0886,
+   "threshold": 0.5,
+   "flagged": 123,
+   "tp": 88,
+   "fp": 35,
+   "fn": 439,
+   "tn": 3438,
+   "accuracy": 0.881,
+   "precision": 0.715,
+   "recall": 0.167
+  },
+  "train_auc": 0.874,
+  "params": {
+   "max_iter": 100,
+   "learning_rate": 0.1,
+   "max_depth": 2
+  },
+  "tuning": {
+   "grid_size": 16,
+   "chosen_by": "5-fold cross-validation on the training months only",
+   "best": {
+    "max_depth": 2,
+    "max_iter": 100,
+    "learning_rate": 0.1,
+    "cv_auc": 0.837,
+    "cv_std": 0.0185
+   },
+   "top5": [
+    {
+     "max_depth": 2,
+     "max_iter": 100,
+     "learning_rate": 0.1,
+     "cv_auc": 0.837,
+     "cv_std": 0.0185
+    },
+    {
+     "max_depth": 1,
+     "max_iter": 300,
+     "learning_rate": 0.1,
+     "cv_auc": 0.8368,
+     "cv_std": 0.019
+    },
+    {
+     "max_depth": 2,
+     "max_iter": 300,
+     "learning_rate": 0.03,
+     "cv_auc": 0.835,
+     "cv_std": 0.0187
+    },
+    {
+     "max_depth": 3,
+     "max_iter": 300,
+     "learning_rate": 0.03,
+     "cv_auc": 0.8349,
+     "cv_std": 0.0189
+    },
+    {
+     "max_depth": 3,
+     "max_iter": 100,
+     "learning_rate": 0.1,
+     "cv_auc": 0.8338,
+     "cv_std": 0.0178
+    }
+   ],
+   "worst": {
+    "max_depth": 4,
+    "max_iter": 300,
+    "learning_rate": 0.1,
+    "cv_auc": 0.8179,
+    "cv_std": 0.0192
+   }
+  },
+  "untuned": {
+   "params": {
+    "max_iter": 200,
+    "learning_rate": 0.05,
+    "max_depth": 4
+   },
+   "test_auc": 0.827,
+   "train_auc": 0.938
+  }
+ },
+ "cv": {
+  "folds": 5,
+  "note": "shuffled folds are fine here only because every row is a different advertiser from the same three months; with repeated advertisers or a time trend, folds must respect groups and time",
+  "logreg": {
+   "scores": [
+    0.856,
+    0.828,
+    0.838,
+    0.819,
+    0.868
+   ],
+   "mean": 0.842,
+   "std": 0.018,
+   "min": 0.819,
+   "max": 0.868
+  },
+  "boosting": {
+   "scores": [
+    0.845,
+    0.826,
+    0.833,
+    0.813,
+    0.868
+   ],
+   "mean": 0.837,
+   "std": 0.018,
+   "min": 0.813,
+   "max": 0.868
+  }
+ },
+ "uncertainty": {
+  "method": "bootstrap: 500 resamples of the 4,000 test advertisers (covers the luck of which advertisers landed in the test months, not the luck of training)",
+  "logreg_auc_95": [
+   0.827,
+   0.863
+  ],
+  "boosting_auc_95": [
+   0.817,
+   0.855
+  ],
+  "difference_logreg_minus_boosting_95": [
+   0.002,
+   0.015
+  ],
+  "difference_logreg_minus_tree_95": [
+   0.065,
+   0.1
+  ],
+  "difference_point": 0.009,
+  "top_200_churners_95": [
+   123,
+   150
+  ],
+  "recall_at_half_95": [
+   0.165,
+   0.235
+  ],
+  "precision_at_half_95": [
+   0.665,
+   0.809
+  ]
+ },
+ "split": {
+  "random_split_auc": 0.851,
+  "time_split_auc": 0.845,
+  "trained_through_april_auc": 0.849,
+  "note": "all logistic regression. On this table the three numbers barely differ, because every row is a separate advertiser and little changes between months. The time split and the gap are still the only honest design: they are what expose the June surprise, and on real tables with repeated advertisers the difference is large (see panel_leak)."
+ },
+ "drift": {
+  "auc_by_month": {
+   "May": 0.855,
+   "Jun": 0.835
+  },
+  "gaming_churn_by_month": {
+   "Jan": 0.149,
+   "Feb": 0.173,
+   "Mar": 0.142,
+   "Apr": 0.191,
+   "May": 0.226,
+   "Jun": 0.305
+  },
+  "gaming_may": {
+   "n": 217,
+   "predicted": 0.149,
+   "actual": 0.226,
+   "actual_plus_minus": 0.056
+  },
+  "gaming_jun": {
+   "n": 272,
+   "predicted": 0.135,
+   "actual": 0.305,
+   "actual_plus_minus": 0.055
+  },
+  "non_gaming_jun": {
+   "n": 1728,
+   "predicted": 0.108,
+   "actual": 0.111,
+   "actual_plus_minus": 0.015
+  },
+  "all_may": {
+   "n": 2000,
+   "predicted": 0.107,
+   "actual": 0.127,
+   "actual_plus_minus": 0.015
+  },
+  "all_jun": {
+   "n": 2000,
+   "predicted": 0.112,
+   "actual": 0.137,
+   "actual_plus_minus": 0.015
+  },
+  "by_vertical_jun": {
+   "ecommerce": {
+    "n": 616,
+    "predicted": 0.085,
+    "actual": 0.114,
+    "actual_plus_minus": 0.025
+   },
+   "finance": {
+    "n": 273,
+    "predicted": 0.1,
+    "actual": 0.095,
+    "actual_plus_minus": 0.035
+   },
+   "health": {
+    "n": 317,
+    "predicted": 0.131,
+    "actual": 0.104,
+    "actual_plus_minus": 0.034
+   },
+   "gaming": {
+    "n": 272,
+    "predicted": 0.135,
+    "actual": 0.305,
+    "actual_plus_minus": 0.055
+   },
+   "education": {
+    "n": 174,
+    "predicted": 0.124,
+    "actual": 0.115,
+    "actual_plus_minus": 0.047
+   },
+   "other": {
+    "n": 348,
+    "predicted": 0.127,
+    "actual": 0.121,
+    "actual_plus_minus": 0.034
+   }
+  },
+  "base_rate_creep": "churn also drifts up slightly every month in the simulation, so by May-June the model's probabilities run a little low everywhere",
+  "what_happened": "in the simulation, something changes for gaming advertisers in June only; no column records it"
+ },
+ "leakage": {
+  "feature": "days_since_last_spend",
+  "why": "it was read from the live accounts table when each month's snapshot was exported, 60-120 days AFTER that snapshot's date - the day the prediction is supposed to be made",
+  "auc_with_leak": 0.97,
+  "auc_honest": 0.845,
+  "top_200_churners_with_leak": 200,
+  "top_200_churners_honest": 136,
+  "mean_value_churned": 75.8,
+  "mean_value_stayed": 4.9,
+  "median_value_churned": 86,
+  "median_value_stayed": 3,
+  "leak_metrics_at_half": {
+   "auc": 0.97,
+   "pr_auc": 0.923,
+   "brier": 0.0247,
+   "threshold": 0.5,
+   "flagged": 439,
+   "tp": 428,
+   "fp": 11,
+   "fn": 99,
+   "tn": 3462,
+   "accuracy": 0.973,
+   "precision": 0.975,
+   "recall": 0.812
+  }
+ },
+ "thresholds": [
+  {
+   "auc": 0.845,
+   "pr_auc": 0.519,
+   "brier": 0.0864,
+   "threshold": 0.05,
+   "flagged": 1961,
+   "tp": 476,
+   "fp": 1485,
+   "fn": 51,
+   "tn": 1988,
+   "accuracy": 0.616,
+   "precision": 0.243,
+   "recall": 0.903
+  },
+  {
+   "auc": 0.845,
+   "pr_auc": 0.519,
+   "brier": 0.0864,
+   "threshold": 0.1,
+   "flagged": 1311,
+   "tp": 413,
+   "fp": 898,
+   "fn": 114,
+   "tn": 2575,
+   "accuracy": 0.747,
+   "precision": 0.315,
+   "recall": 0.784
+  },
+  {
+   "auc": 0.845,
+   "pr_auc": 0.519,
+   "brier": 0.0864,
+   "threshold": 0.15,
+   "flagged": 931,
+   "tp": 362,
+   "fp": 569,
+   "fn": 165,
+   "tn": 2904,
+   "accuracy": 0.817,
+   "precision": 0.389,
+   "recall": 0.687
+  },
+  {
+   "auc": 0.845,
+   "pr_auc": 0.519,
+   "brier": 0.0864,
+   "threshold": 0.2,
+   "flagged": 690,
+   "tp": 315,
+   "fp": 375,
+   "fn": 212,
+   "tn": 3098,
+   "accuracy": 0.853,
+   "precision": 0.457,
+   "recall": 0.598
+  },
+  {
+   "auc": 0.845,
+   "pr_auc": 0.519,
+   "brier": 0.0864,
+   "threshold": 0.25,
+   "flagged": 524,
+   "tp": 265,
+   "fp": 259,
+   "fn": 262,
+   "tn": 3214,
+   "accuracy": 0.87,
+   "precision": 0.506,
+   "recall": 0.503
+  },
+  {
+   "auc": 0.845,
+   "pr_auc": 0.519,
+   "brier": 0.0864,
+   "threshold": 0.3,
+   "flagged": 399,
+   "tp": 220,
+   "fp": 179,
+   "fn": 307,
+   "tn": 3294,
+   "accuracy": 0.878,
+   "precision": 0.551,
+   "recall": 0.417
+  },
+  {
+   "auc": 0.845,
+   "pr_auc": 0.519,
+   "brier": 0.0864,
+   "threshold": 0.4,
+   "flagged": 246,
+   "tp": 158,
+   "fp": 88,
+   "fn": 369,
+   "tn": 3385,
+   "accuracy": 0.886,
+   "precision": 0.642,
+   "recall": 0.3
+  },
+  {
+   "auc": 0.845,
+   "pr_auc": 0.519,
+   "brier": 0.0864,
+   "threshold": 0.5,
+   "flagged": 141,
+   "tp": 104,
+   "fp": 37,
+   "fn": 423,
+   "tn": 3436,
+   "accuracy": 0.885,
+   "precision": 0.738,
+   "recall": 0.197
+  },
+  {
+   "auc": 0.845,
+   "pr_auc": 0.519,
+   "brier": 0.0864,
+   "threshold": 0.6,
+   "flagged": 72,
+   "tp": 59,
+   "fp": 13,
+   "fn": 468,
+   "tn": 3460,
+   "accuracy": 0.88,
+   "precision": 0.819,
+   "recall": 0.112
+  },
+  {
+   "auc": 0.845,
+   "pr_auc": 0.519,
+   "brier": 0.0864,
+   "threshold": 0.7,
+   "flagged": 43,
+   "tp": 39,
+   "fp": 4,
+   "fn": 488,
+   "tn": 3469,
+   "accuracy": 0.877,
+   "precision": 0.907,
+   "recall": 0.074
+  }
+ ],
+ "lift": [
+  {
+   "decile": 1,
+   "n": 400,
+   "churners": 220,
+   "churn_rate": 0.55,
+   "lift": 4.17,
+   "cum_capture": 0.417
+  },
+  {
+   "decile": 2,
+   "n": 400,
+   "churners": 118,
+   "churn_rate": 0.295,
+   "lift": 2.24,
+   "cum_capture": 0.641
+  },
+  {
+   "decile": 3,
+   "n": 400,
+   "churners": 57,
+   "churn_rate": 0.142,
+   "lift": 1.08,
+   "cum_capture": 0.75
+  },
+  {
+   "decile": 4,
+   "n": 400,
+   "churners": 48,
+   "churn_rate": 0.12,
+   "lift": 0.91,
+   "cum_capture": 0.841
+  },
+  {
+   "decile": 5,
+   "n": 400,
+   "churners": 36,
+   "churn_rate": 0.09,
+   "lift": 0.68,
+   "cum_capture": 0.909
+  },
+  {
+   "decile": 6,
+   "n": 400,
+   "churners": 15,
+   "churn_rate": 0.037,
+   "lift": 0.28,
+   "cum_capture": 0.937
+  },
+  {
+   "decile": 7,
+   "n": 400,
+   "churners": 13,
+   "churn_rate": 0.033,
+   "lift": 0.25,
+   "cum_capture": 0.962
+  },
+  {
+   "decile": 8,
+   "n": 400,
+   "churners": 9,
+   "churn_rate": 0.022,
+   "lift": 0.17,
+   "cum_capture": 0.979
+  },
+  {
+   "decile": 9,
+   "n": 400,
+   "churners": 9,
+   "churn_rate": 0.022,
+   "lift": 0.17,
+   "cum_capture": 0.996
+  },
+  {
+   "decile": 10,
+   "n": 400,
+   "churners": 2,
+   "churn_rate": 0.005,
+   "lift": 0.04,
+   "cum_capture": 1
+  }
+ ],
+ "top_k": [
+  {
+   "k": 100,
+   "churners": 76,
+   "precision": 0.76,
+   "recall": 0.144,
+   "random_expected": 13.2,
+   "times_better_than_random": 5.8,
+   "lowest_score_on_list": 0.553
+  },
+  {
+   "k": 200,
+   "churners": 136,
+   "precision": 0.68,
+   "recall": 0.258,
+   "random_expected": 26.4,
+   "times_better_than_random": 5.2,
+   "lowest_score_on_list": 0.44
+  },
+  {
+   "k": 400,
+   "churners": 220,
+   "precision": 0.55,
+   "recall": 0.417,
+   "random_expected": 52.7,
+   "times_better_than_random": 4.2,
+   "lowest_score_on_list": 0.299
+  },
+  {
+   "k": 800,
+   "churners": 338,
+   "precision": 0.422,
+   "recall": 0.641,
+   "random_expected": 105.4,
+   "times_better_than_random": 3.2,
+   "lowest_score_on_list": 0.174
+  }
+ ],
+ "calibration": {
+  "logreg": [
+   {
+    "bin": "0-5%",
+    "n": 2039,
+    "predicted": 0.02,
+    "actual": 0.025
+   },
+   {
+    "bin": "5-10%",
+    "n": 650,
+    "predicted": 0.072,
+    "actual": 0.097
+   },
+   {
+    "bin": "10-20%",
+    "n": 621,
+    "predicted": 0.143,
+    "actual": 0.158
+   },
+   {
+    "bin": "20-30%",
+    "n": 291,
+    "predicted": 0.246,
+    "actual": 0.326
+   },
+   {
+    "bin": "30-40%",
+    "n": 153,
+    "predicted": 0.346,
+    "actual": 0.405
+   },
+   {
+    "bin": "40-50%",
+    "n": 105,
+    "predicted": 0.444,
+    "actual": 0.514
+   },
+   {
+    "bin": "50-70%",
+    "n": 98,
+    "predicted": 0.576,
+    "actual": 0.663
+   },
+   {
+    "bin": "70-100%",
+    "n": 43,
+    "predicted": 0.798,
+    "actual": 0.907
+   }
+  ],
+  "boosting": [
+   {
+    "bin": "0-5%",
+    "n": 1902,
+    "predicted": 0.022,
+    "actual": 0.027
+   },
+   {
+    "bin": "5-10%",
+    "n": 793,
+    "predicted": 0.072,
+    "actual": 0.088
+   },
+   {
+    "bin": "10-20%",
+    "n": 639,
+    "predicted": 0.142,
+    "actual": 0.18
+   },
+   {
+    "bin": "20-30%",
+    "n": 299,
+    "predicted": 0.246,
+    "actual": 0.311
+   },
+   {
+    "bin": "30-40%",
+    "n": 136,
+    "predicted": 0.346,
+    "actual": 0.382
+   },
+   {
+    "bin": "40-50%",
+    "n": 108,
+    "predicted": 0.447,
+    "actual": 0.537
+   },
+   {
+    "bin": "50-70%",
+    "n": 78,
+    "predicted": 0.572,
+    "actual": 0.615
+   },
+   {
+    "bin": "70-100%",
+    "n": 45,
+    "predicted": 0.785,
+    "actual": 0.889
+   }
+  ],
+  "forest": [
+   {
+    "bin": "0-5%",
+    "n": 1742,
+    "predicted": 0.023,
+    "actual": 0.027
+   },
+   {
+    "bin": "5-10%",
+    "n": 825,
+    "predicted": 0.072,
+    "actual": 0.072
+   },
+   {
+    "bin": "10-20%",
+    "n": 724,
+    "predicted": 0.144,
+    "actual": 0.157
+   },
+   {
+    "bin": "20-30%",
+    "n": 324,
+    "predicted": 0.247,
+    "actual": 0.324
+   },
+   {
+    "bin": "30-40%",
+    "n": 186,
+    "predicted": 0.342,
+    "actual": 0.409
+   },
+   {
+    "bin": "40-50%",
+    "n": 100,
+    "predicted": 0.443,
+    "actual": 0.49
+   },
+   {
+    "bin": "50-70%",
+    "n": 88,
+    "predicted": 0.588,
+    "actual": 0.761
+   }
+  ],
+  "overall": {
+   "avg_predicted": 0.109,
+   "actual": 0.132
+  },
+  "on_training_months": {
+   "avg_predicted": 0.111,
+   "actual": 0.111
+  },
+  "why_it_runs_low": "the model learned from months with a lower churn rate than the months it is tested on; its ranking is intact, its percentages are a little low"
+ },
+ "model_table": [
+  {
+   "model": "Always predict 'stays'",
+   "test_auc": 0.5,
+   "train_auc": 0.5,
+   "pr_auc": 0.132,
+   "top_200_churners": 26,
+   "note": "the floor"
+  },
+  {
+   "model": "Decision tree, depth 3",
+   "test_auc": 0.761,
+   "train_auc": 0.786,
+   "pr_auc": 0.342,
+   "top_200_churners": 111,
+   "note": "at most 8 readable rules"
+  },
+  {
+   "model": "Logistic regression",
+   "test_auc": 0.845,
+   "train_auc": 0.849,
+   "pr_auc": 0.519,
+   "top_200_churners": 136,
+   "note": "one weight per feature"
+  },
+  {
+   "model": "Random forest, 300 trees",
+   "test_auc": 0.831,
+   "train_auc": 0.982,
+   "pr_auc": 0.485,
+   "top_200_churners": 126,
+   "note": "many trees, averaged"
+  },
+  {
+   "model": "Gradient boosting, default-ish settings",
+   "test_auc": 0.827,
+   "train_auc": 0.938,
+   "pr_auc": null,
+   "top_200_churners": 124,
+   "note": "depth 4, 200 rounds"
+  },
+  {
+   "model": "Gradient boosting, tuned by cross-validation",
+   "test_auc": 0.836,
+   "train_auc": 0.874,
+   "pr_auc": 0.496,
+   "top_200_churners": 132,
+   "note": "depth 2, 100 rounds"
+  }
+ ],
+ "feature_groups": {
+  "cumulative": [
+   {
+    "added": "profile",
+    "columns_added": [
+     "tenure_weeks",
+     "spend_8w",
+     "campaigns_active",
+     "managed",
+     "vertical"
+    ],
+    "n_columns": 5,
+    "test_auc": 0.661
+   },
+   {
+    "added": "setup and practices",
+    "columns_added": [
+     "creatives_per_campaign",
+     "creative_refresh_days",
+     "has_conversion_tracking",
+     "uses_auto_bidding",
+     "had_optimisation_review"
+    ],
+    "n_columns": 10,
+    "test_auc": 0.761
+   },
+   {
+    "added": "performance vs goal",
+    "columns_added": [
+     "cpa_vs_goal",
+     "ctr_pct"
+    ],
+    "n_columns": 12,
+    "test_auc": 0.79
+   },
+   {
+    "added": "recent behaviour",
+    "columns_added": [
+     "spend_trend",
+     "active_days_28",
+     "days_since_login",
+     "support_tickets_8w",
+     "payment_failures_8w"
+    ],
+    "n_columns": 17,
+    "test_auc": 0.845
+   }
+  ],
+  "each_group_alone": {
+   "profile": 0.661,
+   "setup and practices": 0.732,
+   "performance vs goal": 0.699,
+   "recent behaviour": 0.822
+  },
+  "spread_across_feature_sets": 0.184,
+  "spread_across_algorithms": {
+   "best_minus_worst": 0.084,
+   "best": "logistic",
+   "worst": "tree",
+   "gap_between_the_two_best": 0.009
+  }
+ },
+ "importance": {
+  "method": "permutation importance on the test months: shuffle one column, see how far AUC falls",
+  "model": "logistic regression",
+  "rows": [
+   {
+    "feature": "spend_trend",
+    "auc_drop": 0.0749,
+    "std": 0.0074
+   },
+   {
+    "feature": "active_days_28",
+    "auc_drop": 0.0316,
+    "std": 0.0034
+   },
+   {
+    "feature": "tenure_weeks",
+    "auc_drop": 0.0107,
+    "std": 0.0025
+   },
+   {
+    "feature": "cpa_vs_goal",
+    "auc_drop": 0.0102,
+    "std": 0.001
+   },
+   {
+    "feature": "has_conversion_tracking",
+    "auc_drop": 0.0091,
+    "std": 0.0021
+   },
+   {
+    "feature": "payment_failures_8w",
+    "auc_drop": 0.0086,
+    "std": 0.001
+   },
+   {
+    "feature": "vertical",
+    "auc_drop": 0.0083,
+    "std": 0.0011
+   },
+   {
+    "feature": "creative_refresh_days",
+    "auc_drop": 0.004,
+    "std": 0.0008
+   },
+   {
+    "feature": "support_tickets_8w",
+    "auc_drop": 0.004,
+    "std": 0.0015
+   },
+   {
+    "feature": "managed",
+    "auc_drop": 0.0037,
+    "std": 0.0018
+   },
+   {
+    "feature": "ctr_pct",
+    "auc_drop": 0.0017,
+    "std": 0.0014
+   },
+   {
+    "feature": "had_optimisation_review",
+    "auc_drop": 0.0005,
+    "std": 0.0003
+   },
+   {
+    "feature": "days_since_login",
+    "auc_drop": 0.0003,
+    "std": 0.0002
+   },
+   {
+    "feature": "uses_auto_bidding",
+    "auc_drop": 0.0002,
+    "std": 0.0007
+   },
+   {
+    "feature": "creatives_per_campaign",
+    "auc_drop": 0.0001,
+    "std": 0.0003
+   },
+   {
+    "feature": "campaigns_active",
+    "auc_drop": 0,
+    "std": 0.0005
+   },
+   {
+    "feature": "spend_8w",
+    "auc_drop": -0.0013,
+    "std": 0.001
+   }
+  ],
+  "grouped": {
+   "method": "shuffle a whole group of related columns together, so correlated columns cannot cover for each other",
+   "rows": [
+    {
+     "group": "recent behaviour",
+     "columns": [
+      "spend_trend",
+      "active_days_28",
+      "days_since_login",
+      "support_tickets_8w",
+      "payment_failures_8w"
+     ],
+     "auc_drop": 0.1799
+    },
+    {
+     "group": "profile",
+     "columns": [
+      "tenure_weeks",
+      "spend_8w",
+      "campaigns_active",
+      "managed",
+      "vertical"
+     ],
+     "auc_drop": 0.0246
+    },
+    {
+     "group": "setup and practices",
+     "columns": [
+      "creatives_per_campaign",
+      "creative_refresh_days",
+      "has_conversion_tracking",
+      "uses_auto_bidding",
+      "had_optimisation_review"
+     ],
+     "auc_drop": 0.0183
+    },
+    {
+     "group": "performance vs goal",
+     "columns": [
+      "cpa_vs_goal",
+      "ctr_pct"
+     ],
+     "auc_drop": 0.0108
+    }
+   ]
+  },
+  "caveat": "columns that carry overlapping information share (and so understate) importance; importance says what the model relies on, not what causes churn"
+ },
+ "partial_dependence": {
+  "model": "tuned gradient boosting",
+  "method": "set the column to x for every training advertiser and average the predictions (for cpa_vs_goal: every training advertiser with conversion tracking, since the others have no value to move)",
+  "curves": {
+   "cpa_vs_goal": [
+    {
+     "x": 0.43,
+     "avg_predicted_churn": 0.0236
+    },
+    {
+     "x": 0.54,
+     "avg_predicted_churn": 0.0236
+    },
+    {
+     "x": 0.65,
+     "avg_predicted_churn": 0.0315
+    },
+    {
+     "x": 0.76,
+     "avg_predicted_churn": 0.0368
+    },
+    {
+     "x": 0.87,
+     "avg_predicted_churn": 0.0475
+    },
+    {
+     "x": 0.98,
+     "avg_predicted_churn": 0.0491
+    },
+    {
+     "x": 1.09,
+     "avg_predicted_churn": 0.0561
+    },
+    {
+     "x": 1.2,
+     "avg_predicted_churn": 0.0588
+    },
+    {
+     "x": 1.31,
+     "avg_predicted_churn": 0.0873
+    },
+    {
+     "x": 1.42,
+     "avg_predicted_churn": 0.1049
+    },
+    {
+     "x": 1.53,
+     "avg_predicted_churn": 0.1069
+    },
+    {
+     "x": 1.64,
+     "avg_predicted_churn": 0.1069
+    }
+   ],
+   "spend_trend": [
+    {
+     "x": 0.54,
+     "avg_predicted_churn": 0.1726
+    },
+    {
+     "x": 0.66,
+     "avg_predicted_churn": 0.1667
+    },
+    {
+     "x": 0.77,
+     "avg_predicted_churn": 0.1245
+    },
+    {
+     "x": 0.89,
+     "avg_predicted_churn": 0.0981
+    },
+    {
+     "x": 1.01,
+     "avg_predicted_churn": 0.0894
+    },
+    {
+     "x": 1.12,
+     "avg_predicted_churn": 0.073
+    },
+    {
+     "x": 1.24,
+     "avg_predicted_churn": 0.0524
+    },
+    {
+     "x": 1.36,
+     "avg_predicted_churn": 0.0524
+    },
+    {
+     "x": 1.47,
+     "avg_predicted_churn": 0.0524
+    },
+    {
+     "x": 1.59,
+     "avg_predicted_churn": 0.0524
+    },
+    {
+     "x": 1.71,
+     "avg_predicted_churn": 0.0524
+    },
+    {
+     "x": 1.82,
+     "avg_predicted_churn": 0.054
+    }
+   ],
+   "active_days_28": [
+    {
+     "x": 10,
+     "avg_predicted_churn": 0.1701
+    },
+    {
+     "x": 11.55,
+     "avg_predicted_churn": 0.1701
+    },
+    {
+     "x": 13.09,
+     "avg_predicted_churn": 0.1701
+    },
+    {
+     "x": 14.64,
+     "avg_predicted_churn": 0.1131
+    },
+    {
+     "x": 16.18,
+     "avg_predicted_churn": 0.107
+    },
+    {
+     "x": 17.73,
+     "avg_predicted_churn": 0.107
+    },
+    {
+     "x": 19.27,
+     "avg_predicted_churn": 0.107
+    },
+    {
+     "x": 20.82,
+     "avg_predicted_churn": 0.0869
+    },
+    {
+     "x": 22.36,
+     "avg_predicted_churn": 0.0869
+    },
+    {
+     "x": 23.91,
+     "avg_predicted_churn": 0.0724
+    },
+    {
+     "x": 25.45,
+     "avg_predicted_churn": 0.0724
+    },
+    {
+     "x": 27,
+     "avg_predicted_churn": 0.0663
+    }
+   ],
+   "tenure_weeks": [
+    {
+     "x": 4,
+     "avg_predicted_churn": 0.162
+    },
+    {
+     "x": 13.27,
+     "avg_predicted_churn": 0.1141
+    },
+    {
+     "x": 22.55,
+     "avg_predicted_churn": 0.1141
+    },
+    {
+     "x": 31.82,
+     "avg_predicted_churn": 0.1141
+    },
+    {
+     "x": 41.09,
+     "avg_predicted_churn": 0.0993
+    },
+    {
+     "x": 50.36,
+     "avg_predicted_churn": 0.0979
+    },
+    {
+     "x": 59.64,
+     "avg_predicted_churn": 0.0979
+    },
+    {
+     "x": 68.91,
+     "avg_predicted_churn": 0.0979
+    },
+    {
+     "x": 78.18,
+     "avg_predicted_churn": 0.0907
+    },
+    {
+     "x": 87.45,
+     "avg_predicted_churn": 0.0907
+    },
+    {
+     "x": 96.73,
+     "avg_predicted_churn": 0.0907
+    },
+    {
+     "x": 106,
+     "avg_predicted_churn": 0.0872
+    }
+   ]
+  },
+  "caveat": "describes the MODEL's behaviour, not what would happen if you changed the advertiser; it also averages over combinations that never occur together"
+ },
+ "explain_examples": {
+  "average_advertiser_probability": 0.047,
+  "how_to_read": "positive push = raises churn risk relative to an average advertiser; pushes add up on the log-odds scale",
+  "examples": [
+   {
+    "label": "high risk",
+    "advertiser_id": 111754,
+    "predicted": 0.727,
+    "churned": 1,
+    "row": {
+     "tenure_weeks": 8,
+     "spend_8w": 395,
+     "spend_trend": 0.886,
+     "active_days_28": 5,
+     "days_since_login": 8,
+     "campaigns_active": 1,
+     "creatives_per_campaign": 2,
+     "creative_refresh_days": 120,
+     "cpa_vs_goal": 2.62,
+     "ctr_pct": 0.116,
+     "support_tickets_8w": 0,
+     "payment_failures_8w": 0,
+     "managed": 0,
+     "has_conversion_tracking": 1,
+     "uses_auto_bidding": 0,
+     "had_optimisation_review": 0,
+     "vertical": "ecommerce"
+    },
+    "top_pushes": [
+     {
+      "feature": "active_days_28",
+      "log_odds_push": 1.33
+     },
+     {
+      "feature": "cpa_vs_goal",
+      "log_odds_push": 1.29
+     },
+     {
+      "feature": "creative_refresh_days",
+      "log_odds_push": 0.57
+     },
+     {
+      "feature": "spend_trend",
+      "log_odds_push": 0.38
+     },
+     {
+      "feature": "ctr_pct",
+      "log_odds_push": 0.3
+     }
+    ]
+   },
+   {
+    "label": "borderline",
+    "advertiser_id": 111141,
+    "predicted": 0.276,
+    "churned": 0,
+    "row": {
+     "tenure_weeks": 19,
+     "spend_8w": 345,
+     "spend_trend": 0.726,
+     "active_days_28": 15,
+     "days_since_login": 4,
+     "campaigns_active": 2,
+     "creatives_per_campaign": 1,
+     "creative_refresh_days": 2,
+     "cpa_vs_goal": 1.888,
+     "ctr_pct": 0.284,
+     "support_tickets_8w": 0,
+     "payment_failures_8w": 0,
+     "managed": 0,
+     "has_conversion_tracking": 1,
+     "uses_auto_bidding": 1,
+     "had_optimisation_review": 1,
+     "vertical": "other"
+    },
+    "top_pushes": [
+     {
+      "feature": "cpa_vs_goal",
+      "log_odds_push": 0.74
+     },
+     {
+      "feature": "spend_trend",
+      "log_odds_push": 0.71
+     },
+     {
+      "feature": "active_days_28",
+      "log_odds_push": 0.47
+     },
+     {
+      "feature": "vertical_other",
+      "log_odds_push": 0.33
+     },
+     {
+      "feature": "has_conversion_tracking",
+      "log_odds_push": -0.24
+     }
+    ]
+   },
+   {
+    "label": "low risk",
+    "advertiser_id": 111200,
+    "predicted": 0.005,
+    "churned": 0,
+    "row": {
+     "tenure_weeks": 23,
+     "spend_8w": 15084,
+     "spend_trend": 1.295,
+     "active_days_28": 25,
+     "days_since_login": 0,
+     "campaigns_active": 2,
+     "creatives_per_campaign": 4,
+     "creative_refresh_days": 2,
+     "cpa_vs_goal": 0.543,
+     "ctr_pct": 0.368,
+     "support_tickets_8w": 0,
+     "payment_failures_8w": 0,
+     "managed": 1,
+     "has_conversion_tracking": 1,
+     "uses_auto_bidding": 1,
+     "had_optimisation_review": 0,
+     "vertical": "health"
+    },
+    "top_pushes": [
+     {
+      "feature": "spend_trend",
+      "log_odds_push": -0.47
+     },
+     {
+      "feature": "active_days_28",
+      "log_odds_push": -0.39
+     },
+     {
+      "feature": "vertical_health",
+      "log_odds_push": 0.35
+     },
+     {
+      "feature": "managed",
+      "log_odds_push": -0.29
+     },
+     {
+      "feature": "cpa_vs_goal",
+      "log_odds_push": -0.27
+     }
+    ]
+   }
+  ]
+ },
+ "early_warning": {
+  "winding_down_means": "7 or fewer active days in the last 28, or spend in the last 4 weeks under half of the 4 weeks before",
+  "still_fully_active_means": "14 or more active days and spend holding at 80% or more",
+  "top_200": {
+   "winding_down": 107,
+   "share_winding_down": 0.535,
+   "still_fully_active": 3,
+   "churn_rate_of_winding_down_on_list": 0.654
+  },
+  "everyone": {
+   "share_winding_down": 0.057,
+   "churn_rate_winding_down": 0.5,
+   "share_still_fully_active": 0.658,
+   "churn_rate_still_fully_active": 0.055,
+   "share_of_all_churners_who_were_still_fully_active": 0.277
+  },
+  "model_on_still_fully_active_only": {
+   "n": 2632,
+   "churners": 146,
+   "auc": 0.776,
+   "top_200_churners": 44,
+   "top_200_precision": 0.22,
+   "random_200_expected": 11.1
+  }
+ },
+ "economics": {
+  "assumptions": {
+   "cost_per_outreach": 30,
+   "value_of_a_saved_advertiser": 1500,
+   "share_of_contacted_churners_saved": 0.2
+  },
+  "assumptions_are": "hypothetical round numbers to show the method; replace with your own",
+  "break_even_probability": 0.1,
+  "the_rule": "contact an advertiser if THEIR OWN churn probability is above cost / (value x save rate). It is a rule about the next advertiser on the list (marginal), not about the average hit rate of the whole list.",
+  "table": [
+   {
+    "contacted": 100,
+    "churners_reached": 76,
+    "net_value": 19800,
+    "net_value_if_random": 952,
+    "score_of_last_advertiser_on_list": 0.553
+   },
+   {
+    "contacted": 200,
+    "churners_reached": 136,
+    "net_value": 34800,
+    "net_value_if_random": 1905,
+    "score_of_last_advertiser_on_list": 0.44
+   },
+   {
+    "contacted": 400,
+    "churners_reached": 220,
+    "net_value": 54000,
+    "net_value_if_random": 3810,
+    "score_of_last_advertiser_on_list": 0.299
+   },
+   {
+    "contacted": 800,
+    "churners_reached": 338,
+    "net_value": 77400,
+    "net_value_if_random": 7620,
+    "score_of_last_advertiser_on_list": 0.174
+   },
+   {
+    "contacted": 1600,
+    "churners_reached": 443,
+    "net_value": 84900,
+    "net_value_if_random": 15240,
+    "score_of_last_advertiser_on_list": 0.073
+   },
+   {
+    "contacted": 4000,
+    "churners_reached": 527,
+    "net_value": 38100,
+    "net_value_if_random": 38100,
+    "score_of_last_advertiser_on_list": 0
+   }
+  ],
+  "list_from_the_rule": {
+   "contacted": 1311,
+   "net_value": 84570,
+   "churners_reached": 413
+  },
+  "best_list_in_hindsight": {
+   "contacted": 1271,
+   "net_value": 85170
+  },
+  "default_cutoff_half": {
+   "contacted": 141,
+   "net_value": 26970
+  },
+  "whole_list_average_hit_rate": 0.132,
+  "caveat": "assumes outreach saves 1 in 5 churners whoever they are; the model predicts who will leave, not who can be persuaded (see uplift)"
+ },
+ "happy": {
+  "definition": "happy = actual CPA at or below the advertiser's own target CPA over the 8-week window; only knowable for advertisers with conversion tracking",
+  "n_tracked": 7016,
+  "share_of_all_advertisers": 0.585,
+  "hit_goal_rate": 0.657,
+  "n_happy": 4608,
+  "n_unhappy": 2408,
+  "profile": {
+   "uses_auto_bidding": {
+    "happy": 0.67,
+    "unhappy": 0.47,
+    "stat": "mean"
+   },
+   "creatives_per_campaign": {
+    "happy": 3.82,
+    "unhappy": 2.97,
+    "stat": "mean"
+   },
+   "creative_refresh_days": {
+    "happy": 15.38,
+    "unhappy": 28.71,
+    "stat": "mean"
+   },
+   "managed": {
+    "happy": 0.41,
+    "unhappy": 0.31,
+    "stat": "mean"
+   },
+   "had_optimisation_review": {
+    "happy": 0.18,
+    "unhappy": 0.4,
+    "stat": "mean"
+   },
+   "active_days_28": {
+    "happy": 23.19,
+    "unhappy": 19.4,
+    "stat": "mean"
+   },
+   "tenure_weeks": {
+    "happy": 38.91,
+    "unhappy": 39.04,
+    "stat": "mean"
+   },
+   "campaigns_active": {
+    "happy": 2.61,
+    "unhappy": 2.61,
+    "stat": "mean"
+   },
+   "ctr_pct": {
+    "happy": 0.32,
+    "unhappy": 0.25,
+    "stat": "mean"
+   },
+   "spend_trend": {
+    "happy": 1.26,
+    "unhappy": 0.9,
+    "stat": "mean"
+   },
+   "spend_8w": {
+    "happy": 2874,
+    "unhappy": 1820,
+    "stat": "median"
+   },
+   "churned_next_60d": {
+    "happy": 0.025,
+    "unhappy": 0.163,
+    "stat": "rate"
+   }
+  },
+  "practices": {
+   "uses_auto_bidding": "uses automated bidding",
+   "creatives_4plus": "runs 4 or more creatives per campaign",
+   "fresh_creatives": "newest creative is at most 14 days old",
+   "managed": "has an account manager",
+   "had_optimisation_review": "had an optimisation review with the support team"
+  },
+  "naive": {
+   "uses_auto_bidding": {
+    "hit_rate_with": 0.733,
+    "hit_rate_without": 0.54,
+    "diff_pts": 19.3,
+    "ci95_pts": [
+     17,
+     21.6
+    ],
+    "adoption": 0.604,
+    "n_with": 4240,
+    "n_without": 2776
+   },
+   "creatives_4plus": {
+    "hit_rate_with": 0.776,
+    "hit_rate_without": 0.559,
+    "diff_pts": 21.7,
+    "ci95_pts": [
+     19.5,
+     23.8
+    ],
+    "adoption": 0.452,
+    "n_with": 3172,
+    "n_without": 3844
+   },
+   "fresh_creatives": {
+    "hit_rate_with": 0.745,
+    "hit_rate_without": 0.549,
+    "diff_pts": 19.6,
+    "ci95_pts": [
+     17.4,
+     21.8
+    ],
+    "adoption": 0.549,
+    "n_with": 3852,
+    "n_without": 3164
+   },
+   "managed": {
+    "hit_rate_with": 0.721,
+    "hit_rate_without": 0.618,
+    "diff_pts": 10.4,
+    "ci95_pts": [
+     8.1,
+     12.6
+    ],
+    "adoption": 0.376,
+    "n_with": 2638,
+    "n_without": 4378
+   },
+   "had_optimisation_review": {
+    "hit_rate_with": 0.469,
+    "hit_rate_without": 0.722,
+    "diff_pts": -25.3,
+    "ci95_pts": [
+     -27.9,
+     -22.7
+    ],
+    "adoption": 0.256,
+    "n_with": 1798,
+    "n_without": 5218
+   }
+  },
+  "adjusted_pts": {
+   "uses_auto_bidding": 15.2,
+   "creatives_4plus": 17.4,
+   "fresh_creatives": 16.2,
+   "managed": 2.9,
+   "had_optimisation_review": -25.5
+  },
+  "adjusted_for": [
+   "tenure_weeks",
+   "spend_8w",
+   "campaigns_active",
+   "vertical",
+   "the other practices"
+  ],
+  "truth": {
+   "uses_auto_bidding": {
+    "if_everyone_did": 0.702,
+    "if_nobody_did": 0.589,
+    "effect_pts": 11.3
+   },
+   "creatives_4plus": {
+    "if_everyone_did": 0.709,
+    "if_nobody_did": 0.616,
+    "effect_pts": 9.2
+   },
+   "fresh_creatives": {
+    "if_everyone_did": 0.714,
+    "if_nobody_did": 0.583,
+    "effect_pts": 13.1,
+    "median_age_fresh_group": 6,
+    "median_age_stale_group": 29
+   },
+   "managed": {
+    "if_everyone_did": null,
+    "if_nobody_did": null,
+    "effect_pts": 0,
+    "note": "in the simulation an account manager has no effect on CPA performance at all (it does lower churn directly)"
+   },
+   "had_optimisation_review": {
+    "if_everyone_did": 0.714,
+    "if_nobody_did": 0.626,
+    "effect_pts": 8.8
+   }
+  },
+  "share_of_naive_gap_removed_by_adjusting": {
+   "uses_auto_bidding": 0.51,
+   "creatives_4plus": 0.34,
+   "fresh_creatives": 0.52,
+   "managed": 0.72,
+   "had_optimisation_review": -0.01
+  },
+  "review_story": "reviews go to accounts that are struggling for reasons the table cannot see, so reviewed accounts look worse even though the review helps: the naive comparison has the wrong sign, and adjusting for what we can see does not rescue it",
+  "tree_root": {
+   "n": 7016,
+   "hit_rate": 0.657,
+   "feature": "creative_refresh_days",
+   "threshold": 27.5,
+   "yes": {
+    "n": 5338,
+    "hit_rate": 0.721,
+    "feature": "creatives_per_campaign",
+    "threshold": 3.5,
+    "yes": {
+     "n": 2815,
+     "hit_rate": 0.632,
+     "feature": "uses_auto_bidding",
+     "threshold": 0.5,
+     "yes": {
+      "n": 1189,
+      "hit_rate": 0.54
+     },
+     "no": {
+      "n": 1626,
+      "hit_rate": 0.7
+     }
+    },
+    "no": {
+     "n": 2523,
+     "hit_rate": 0.82,
+     "feature": "uses_auto_bidding",
+     "threshold": 0.5,
+     "yes": {
+      "n": 823,
+      "hit_rate": 0.725
+     },
+     "no": {
+      "n": 1700,
+      "hit_rate": 0.866
+     }
+    }
+   },
+   "no": {
+    "n": 1678,
+    "hit_rate": 0.452,
+    "feature": "creatives_per_campaign",
+    "threshold": 3.5,
+    "yes": {
+     "n": 1029,
+     "hit_rate": 0.358,
+     "feature": "creative_refresh_days",
+     "threshold": 69.5,
+     "yes": {
+      "n": 830,
+      "hit_rate": 0.405
+     },
+     "no": {
+      "n": 199,
+      "hit_rate": 0.161
+     }
+    },
+    "no": {
+     "n": 649,
+     "hit_rate": 0.601,
+     "feature": "uses_auto_bidding",
+     "threshold": 0.5,
+     "yes": {
+      "n": 269,
+      "hit_rate": 0.457
+     },
+     "no": {
+      "n": 380,
+      "hit_rate": 0.703
+     }
+    }
+   }
+  },
+  "tree_text": "|--- creative_refresh_days <= 27.5\n|   |--- creatives_per_campaign <= 3.5\n|   |   |--- uses_auto_bidding <= 0.5\n|   |   |   |--- class: 1\n|   |   |--- uses_auto_bidding >  0.5\n|   |   |   |--- class: 1\n|   |--- creatives_per_campaign >  3.5\n|   |   |--- uses_auto_bidding <= 0.5\n|   |   |   |--- class: 1\n|   |   |--- uses_auto_bidding >  0.5\n|   |   |   |--- class: 1\n|--- creative_refresh_days >  27.5\n|   |--- creatives_per_campaign <= 3.5\n|   |   |--- creative_refresh_days <= 69.5\n|   |   |   |--- class: 0\n|   |   |--- creative_refresh_days >  69.5\n|   |   |   |--- class: 0\n|   |--- creatives_per_campaign >  3.5\n|   |   |--- uses_auto_bidding <= 0.5\n|   |   |   |--- class: 0\n|   |   |--- uses_auto_bidding >  0.5\n|   |   |   |--- class: 1\n"
+ },
+ "tracking_story": {
+  "churn_with_tracking": 0.072,
+  "churn_without_tracking": 0.184,
+  "naive_diff_pts": -11.2,
+  "adjusted_diff_pts": -6.5,
+  "adjusted_for": [
+   "tenure_weeks",
+   "spend_8w",
+   "campaigns_active",
+   "creatives_per_campaign",
+   "creative_refresh_days",
+   "managed",
+   "vertical"
+  ],
+  "truth": {
+   "if_everyone_did": 0.107,
+   "if_nobody_did": 0.129,
+   "effect_pts": -2.3
+  },
+  "model_weight_for_tracking": {
+   "odds_ratio": 0.556,
+   "avg_probability_shift_pts": -4.4
+  },
+  "why": "a hidden trait (advertiser sophistication) makes advertisers both more likely to install tracking and less likely to churn; it is not in the table, so no adjustment can fully remove it"
+ },
+ "bad_controls": {
+  "question": "does automated bidding reduce churn?",
+  "how_it_works_in_the_simulation": "only indirectly: auto-bidding improves CPA, and better CPA keeps advertisers spending",
+  "naive_diff_pts": -8.9,
+  "adjusted_for_background_only_pts": -4.2,
+  "adjusted_also_for_what_it_changes_pts": -1.2,
+  "what_it_changes": [
+   "CPA versus goal",
+   "spend trend",
+   "active days"
+  ],
+  "truth": {
+   "if_everyone_did": 0.104,
+   "if_nobody_did": 0.13,
+   "effect_pts": -2.6
+  },
+  "lesson": "controlling for the route a practice works through removes the very effect you are trying to measure"
+ },
+ "experiment": {
+  "formula": "two-sided test of two proportions, 5% significance, 80% power, equal arms",
+  "examples": [
+   {
+    "base_rate": 0.6,
+    "target_rate": 0.65,
+    "lift_pts": 5,
+    "n_per_arm": 1468
+   },
+   {
+    "base_rate": 0.6,
+    "target_rate": 0.7,
+    "lift_pts": 10,
+    "n_per_arm": 354
+   },
+   {
+    "base_rate": 0.6,
+    "target_rate": 0.62,
+    "lift_pts": 2,
+    "n_per_arm": 9333
+   },
+   {
+    "base_rate": 0.126,
+    "target_rate": 0.1,
+    "lift_pts": -2.6,
+    "n_per_arm": 2324
+   }
+  ]
+ },
+ "segments": {
+  "method": "k-means, k=4, on 8 standardised behaviour columns; the churn label was NOT used",
+  "features": [
+   "spend_8w",
+   "campaigns_active",
+   "creatives_per_campaign",
+   "creative_refresh_days",
+   "active_days_28",
+   "uses_auto_bidding",
+   "has_conversion_tracking",
+   "tenure_weeks"
+  ],
+  "inertia_by_k": [
+   {
+    "k": 2,
+    "inertia": 78563
+   },
+   {
+    "k": 3,
+    "inertia": 72405
+   },
+   {
+    "k": 4,
+    "inertia": 65746
+   },
+   {
+    "k": 5,
+    "inertia": 61272
+   },
+   {
+    "k": 6,
+    "inertia": 57096
+   },
+   {
+    "k": 7,
+    "inertia": 54086
+   },
+   {
+    "k": 8,
+    "inertia": 51180
+   }
+  ],
+  "segments": [
+   {
+    "n": 4428,
+    "share": 0.369,
+    "churn": 0.045,
+    "hit_goal_rate_among_tracked": 0.755,
+    "median_spend_8w": 3116,
+    "campaigns_active": 2.62,
+    "creatives_per_campaign": 3.83,
+    "creative_refresh_days": 15.92,
+    "active_days_28": 22.99,
+    "uses_auto_bidding": 1,
+    "has_conversion_tracking": 0.92,
+    "tenure_weeks": 38.77,
+    "segment": "A"
+   },
+   {
+    "n": 2565,
+    "share": 0.214,
+    "churn": 0.088,
+    "hit_goal_rate_among_tracked": 0.572,
+    "median_spend_8w": 2150,
+    "campaigns_active": 2.57,
+    "creatives_per_campaign": 3.32,
+    "creative_refresh_days": 17.34,
+    "active_days_28": 21.3,
+    "uses_auto_bidding": 0,
+    "has_conversion_tracking": 1,
+    "tenure_weeks": 38.91,
+    "segment": "B"
+   },
+   {
+    "n": 3720,
+    "share": 0.31,
+    "churn": 0.146,
+    "hit_goal_rate_among_tracked": null,
+    "median_spend_8w": 1300,
+    "campaigns_active": 2.6,
+    "creatives_per_campaign": 2.79,
+    "creative_refresh_days": 18.25,
+    "active_days_28": 19.2,
+    "uses_auto_bidding": 0.29,
+    "has_conversion_tracking": 0,
+    "tenure_weeks": 39.66,
+    "segment": "C"
+   },
+   {
+    "n": 1287,
+    "share": 0.107,
+    "churn": 0.351,
+    "hit_goal_rate_among_tracked": 0.175,
+    "median_spend_8w": 823,
+    "campaigns_active": 2.61,
+    "creatives_per_campaign": 2.42,
+    "creative_refresh_days": 80.29,
+    "active_days_28": 14.22,
+    "uses_auto_bidding": 0.29,
+    "has_conversion_tracking": 0.29,
+    "tenure_weeks": 39.87,
+    "segment": "D"
+   }
+  ],
+  "honesty_checks": {
+   "agreement_with_a_plain_group_by": {
+    "what": "how closely the four clusters match simply grouping by the two yes/no columns (tracking x auto-bidding); 1 = identical, 0 = unrelated",
+    "adjusted_rand_index": 0.7
+   },
+   "stability": {
+    "what": "re-run k-means from six different random starts and compare each result with the first",
+    "agreement_min": 0.17,
+    "agreement_max": 0.76
+   },
+   "without_the_two_flags": {
+    "what": "the same method on the 6 remaining columns",
+    "agreement_with_the_first_clustering": 0.17,
+    "segments": [
+     {
+      "n": 4027,
+      "share": 0.336,
+      "churn": 0.04,
+      "hit_goal_rate_among_tracked": 0.806,
+      "median_spend_8w": 4670,
+      "campaigns_active": 2.54,
+      "creatives_per_campaign": 4.61,
+      "creative_refresh_days": 14.79,
+      "active_days_28": 23.83,
+      "tenure_weeks": 29.11,
+      "segment": "A"
+     },
+     {
+      "n": 1618,
+      "share": 0.135,
+      "churn": 0.071,
+      "hit_goal_rate_among_tracked": 0.664,
+      "median_spend_8w": 1932,
+      "campaigns_active": 2.72,
+      "creatives_per_campaign": 3.16,
+      "creative_refresh_days": 18.76,
+      "active_days_28": 21.23,
+      "tenure_weeks": 103.56,
+      "segment": "B"
+     },
+     {
+      "n": 4847,
+      "share": 0.404,
+      "churn": 0.135,
+      "hit_goal_rate_among_tracked": 0.558,
+      "median_spend_8w": 1128,
+      "campaigns_active": 2.62,
+      "creatives_per_campaign": 2.37,
+      "creative_refresh_days": 16.61,
+      "active_days_28": 19.23,
+      "tenure_weeks": 27.18,
+      "segment": "C"
+     },
+     {
+      "n": 1508,
+      "share": 0.126,
+      "churn": 0.324,
+      "hit_goal_rate_among_tracked": 0.252,
+      "median_spend_8w": 924,
+      "campaigns_active": 2.58,
+      "creatives_per_campaign": 2.54,
+      "creative_refresh_days": 76.79,
+      "active_days_28": 15.01,
+      "tenure_weeks": 35.67,
+      "segment": "D"
+     }
+    ]
+   },
+   "simple_business_segments": {
+    "what": "churn rate in the six groups from spend tier x account manager - no ML at all",
+    "churn_min": 0.046,
+    "churn_max": 0.19
+   },
+   "no_elbow": "the error keeps falling smoothly as k grows; nothing in the data says the right number of segments is four"
+  }
+ },
+ "video": {
+  "question": "which advertisers will start using the new video ad format in the next 60 days? (an upsell / propensity list)",
+  "how_it_was_built": "unlike churn, adoption in the simulation is driven by thresholds and combinations - e.g. many creatives AND a good click rate, a big spender AND hitting goal - not by a tidy weighted sum",
+  "adoption_rate_test": 0.191,
+  "adopters_test": 764,
+  "scoreboard": [
+   {
+    "model": "Decision tree, depth 3",
+    "test_auc": 0.864,
+    "top_200_adopters": 152
+   },
+   {
+    "model": "Logistic regression",
+    "test_auc": 0.861,
+    "train_auc": 0.85,
+    "top_200_adopters": 153
+   },
+   {
+    "model": "Random forest, 300 trees",
+    "test_auc": 0.895,
+    "top_200_adopters": 184
+   },
+   {
+    "model": "Gradient boosting, default-ish settings",
+    "test_auc": 0.898,
+    "top_200_adopters": 187
+   },
+   {
+    "model": "Gradient boosting, tuned by cross-validation",
+    "test_auc": 0.901,
+    "train_auc": 0.928,
+    "top_200_adopters": 185,
+    "note": "depth 3, 100 rounds"
+   },
+   {
+    "model": "Logistic regression + 3 hand-built combination flags",
+    "test_auc": 0.882,
+    "top_200_adopters": 171
+   }
+  ],
+  "random_200_expected": 38.2,
+  "tuning": {
+   "best": {
+    "max_depth": 3,
+    "max_iter": 100,
+    "learning_rate": 0.1,
+    "cv_auc": 0.8945,
+    "cv_std": 0.0122
+   },
+   "worst": {
+    "max_depth": 1,
+    "max_iter": 100,
+    "learning_rate": 0.03,
+    "cv_auc": 0.8698,
+    "cv_std": 0.0119
+   }
+  },
+  "boosting_minus_logistic_auc": 0.04,
+  "boosting_minus_logistic_95": [
+   0.031,
+   0.049
+  ],
+  "boosting_minus_logistic_with_flags_95": [
+   0.01,
+   0.027
+  ],
+  "compare_with_churn": {
+   "churn_boosting_minus_logistic": -0.009,
+   "churn_boosting_depth_chosen": 2,
+   "video_boosting_depth_chosen": 3
+  },
+  "the_point": "whether a flexible model beats a simple one depends on the shape of the pattern, which you cannot know in advance - so run both and compare the gap with the noise"
+ },
+ "regression": {
+  "target": "spend_next_8w: dollars spent in the 8 weeks after the snapshot (0 for advertisers who churn)",
+  "test_rows": 4000,
+  "target_mean": 5257,
+  "target_median": 1694,
+  "target_p90": 12861,
+  "target_p99": 57238,
+  "target_max": 174408,
+  "share_zero": 0.132,
+  "total_actual": 21026436,
+  "definitions": {
+   "mae": "mean absolute error in dollars: the typical size of a miss",
+   "rmse": "root mean squared error: like MAE but big misses count much more",
+   "r2": "share of the variance explained (1 = perfect, 0 = no better than the average)",
+   "wape": "total absolute error divided by total actual spend",
+   "bias": "average of (prediction - actual), in dollars",
+   "total_error": "predicted total across all advertisers divided by actual total, minus 1: what matters if predictions are summed into a revenue forecast",
+   "run_rate": "2 x the most recent 4 weeks' spend"
+  },
+  "models": {
+   "mean_of_training": {
+    "mae": 5955,
+    "rmse": 11744,
+    "r2": -0.001,
+    "median_abs_error": 4598,
+    "wape": 1.133,
+    "bias": 280,
+    "total_error": 0.053
+   },
+   "same_as_last_8_weeks": {
+    "mae": 2404,
+    "rmse": 7325,
+    "r2": 0.611,
+    "median_abs_error": 602,
+    "wape": 0.457,
+    "bias": -1235,
+    "total_error": -0.235
+   },
+   "run_rate": {
+    "mae": 2022,
+    "rmse": 6349,
+    "r2": 0.708,
+    "median_abs_error": 490,
+    "wape": 0.385,
+    "bias": -1060,
+    "total_error": -0.202
+   },
+   "linear_regression_dollars": {
+    "mae": 2361,
+    "rmse": 6434,
+    "r2": 0.7,
+    "median_abs_error": 904,
+    "wape": 0.449,
+    "bias": 831,
+    "total_error": 0.158
+   },
+   "linear_regression_dollars_plus_run_rate": {
+    "mae": 1733,
+    "rmse": 4878,
+    "r2": 0.827,
+    "median_abs_error": 651,
+    "wape": 0.33,
+    "bias": 298,
+    "total_error": 0.057
+   },
+   "gradient_boosting_squared_loss": {
+    "mae": 1675,
+    "rmse": 5824,
+    "r2": 0.754,
+    "median_abs_error": 470,
+    "wape": 0.319,
+    "bias": 326,
+    "total_error": 0.062
+   },
+   "gradient_boosting_absolute_loss": {
+    "mae": 1500,
+    "rmse": 4929,
+    "r2": 0.824,
+    "median_abs_error": 386,
+    "wape": 0.285,
+    "bias": 83,
+    "total_error": 0.016
+   },
+   "log_model_typical_value": {
+    "mae": 1428,
+    "rmse": 4350,
+    "r2": 0.863,
+    "median_abs_error": 410,
+    "wape": 0.272,
+    "bias": 112,
+    "total_error": 0.021
+   },
+   "log_model_average_value": {
+    "mae": 1453,
+    "rmse": 4390,
+    "r2": 0.86,
+    "median_abs_error": 429,
+    "wape": 0.277,
+    "bias": 322,
+    "total_error": 0.061
+   },
+   "two_stage_chance_of_staying_x_average": {
+    "mae": 1416,
+    "rmse": 4332,
+    "r2": 0.864,
+    "median_abs_error": 405,
+    "wape": 0.269,
+    "bias": 135,
+    "total_error": 0.026
+   },
+   "two_stage_chance_of_staying_x_typical": {
+    "mae": 1407,
+    "rmse": 4307,
+    "r2": 0.865,
+    "median_abs_error": 404,
+    "wape": 0.268,
+    "bias": -68,
+    "total_error": -0.013
+   },
+   "two_stage_with_boosting_on_log_spend": {
+    "mae": 1474,
+    "rmse": 4886,
+    "r2": 0.827,
+    "median_abs_error": 378,
+    "wape": 0.28,
+    "bias": 215,
+    "total_error": 0.041
+   }
+  },
+  "winner_depends_on_the_metric": {
+   "lowest_mae": "two_stage_chance_of_staying_x_typical",
+   "lowest_rmse": "two_stage_chance_of_staying_x_typical",
+   "total_closest_to_actual": "two_stage_chance_of_staying_x_typical"
+  },
+  "paired_differences": [
+   {
+    "a": "run_rate",
+    "b": "same_as_last_8_weeks",
+    "mae_a_minus_mae_b": -383,
+    "ci95": [
+     -429,
+     -341
+    ],
+    "clear_winner": "run_rate"
+   },
+   {
+    "a": "linear_regression_dollars",
+    "b": "run_rate",
+    "mae_a_minus_mae_b": 339,
+    "ci95": [
+     205,
+     479
+    ],
+    "clear_winner": "run_rate"
+   },
+   {
+    "a": "linear_regression_dollars_plus_run_rate",
+    "b": "run_rate",
+    "mae_a_minus_mae_b": -288,
+    "ci95": [
+     -407,
+     -171
+    ],
+    "clear_winner": "linear_regression_dollars_plus_run_rate"
+   },
+   {
+    "a": "gradient_boosting_squared_loss",
+    "b": "linear_regression_dollars_plus_run_rate",
+    "mae_a_minus_mae_b": -58,
+    "ci95": [
+     -177,
+     73
+    ],
+    "clear_winner": null
+   },
+   {
+    "a": "gradient_boosting_absolute_loss",
+    "b": "gradient_boosting_squared_loss",
+    "mae_a_minus_mae_b": -175,
+    "ci95": [
+     -262,
+     -102
+    ],
+    "clear_winner": "gradient_boosting_absolute_loss"
+   },
+   {
+    "a": "log_model_typical_value",
+    "b": "gradient_boosting_absolute_loss",
+    "mae_a_minus_mae_b": -72,
+    "ci95": [
+     -155,
+     -5
+    ],
+    "clear_winner": "log_model_typical_value"
+   },
+   {
+    "a": "two_stage_chance_of_staying_x_average",
+    "b": "log_model_typical_value",
+    "mae_a_minus_mae_b": -13,
+    "ci95": [
+     -27,
+     2
+    ],
+    "clear_winner": null
+   },
+   {
+    "a": "two_stage_chance_of_staying_x_typical",
+    "b": "two_stage_chance_of_staying_x_average",
+    "mae_a_minus_mae_b": -9,
+    "ci95": [
+     -24,
+     6
+    ],
+    "clear_winner": null
+   },
+   {
+    "a": "two_stage_with_boosting_on_log_spend",
+    "b": "two_stage_chance_of_staying_x_average",
+    "mae_a_minus_mae_b": 59,
+    "ci95": [
+     -21,
+     140
+    ],
+    "clear_winner": null
+   }
+  ],
+  "paired_method": "bootstrap, 1,000 resamples of the 4,000 test advertisers; a difference whose interval includes 0 is a tie",
+  "typical_vs_average": {
+   "what": "a model fitted on log spend predicts the TYPICAL (median) advertiser. Turned straight back into dollars and added up, that runs low, because a few large spenders pull the average above the typical value.",
+   "advertisers_who_kept_spending": 3473,
+   "actual_total": 21026436,
+   "total_error_using_typical_values": -0.036,
+   "total_error_after_correcting_to_averages": 0.001,
+   "correction_factor": 1.039,
+   "but_on_mae": "the uncorrected 'typical' prediction scores a LOWER mean absolute error, because MAE rewards typical values. Which is right depends on the use: typical account vs revenue total."
+  },
+  "log_model": {
+   "what": "linear regression on log(spend_next_8w), fitted on training advertisers who kept spending",
+   "how_to_read": "on a log target the effects multiply: each row is the percent change in predicted spend, other columns held fixed. Associations, not causes.",
+   "effects": [
+    {
+     "feature": "managed",
+     "pct_change_in_spend": 12.8,
+     "per": "yes vs no"
+    },
+    {
+     "feature": "cpa_vs_goal",
+     "pct_change_in_spend": -8.4,
+     "per": "1 SD",
+     "one_sd_is": 0.365,
+     "pct_change_per_one_unit": -21.4
+    },
+    {
+     "feature": "has_conversion_tracking",
+     "pct_change_in_spend": 7.1,
+     "per": "yes vs no"
+    },
+    {
+     "feature": "payment_failures_8w",
+     "pct_change_in_spend": -6.6,
+     "per": "1 SD",
+     "one_sd_is": 0.25,
+     "pct_change_per_one_unit": -23.9
+    },
+    {
+     "feature": "spend_trend",
+     "pct_change_in_spend": 6.5,
+     "per": "1 SD",
+     "one_sd_is": 0.409,
+     "pct_change_per_one_unit": 16.5
+    },
+    {
+     "feature": "had_optimisation_review",
+     "pct_change_in_spend": -4.6,
+     "per": "yes vs no"
+    },
+    {
+     "feature": "active_days_28",
+     "pct_change_in_spend": 4.5,
+     "per": "1 SD",
+     "one_sd_is": 4.855,
+     "pct_change_per_one_unit": 0.9
+    },
+    {
+     "feature": "uses_auto_bidding",
+     "pct_change_in_spend": 4.1,
+     "per": "yes vs no"
+    },
+    {
+     "feature": "days_since_login",
+     "pct_change_in_spend": -2.7,
+     "per": "1 SD",
+     "one_sd_is": 3.665,
+     "pct_change_per_one_unit": -0.8
+    }
+   ],
+   "residual_sd_log": 0.276
+  },
+  "linear_dollars_coefs": {
+   "model": "linear regression in dollars with the run-rate feature",
+   "intercept": 1945,
+   "rows": [
+    {
+     "feature": "cpa_vs_goal",
+     "dollars_per_unit": -2198.25
+    },
+    {
+     "feature": "spend_trend",
+     "dollars_per_unit": -1789.65
+    },
+    {
+     "feature": "ctr_pct",
+     "dollars_per_unit": 1762.03
+    },
+    {
+     "feature": "payment_failures_8w",
+     "dollars_per_unit": -1609.53
+    },
+    {
+     "feature": "managed",
+     "dollars_per_unit": 598.2
+    },
+    {
+     "feature": "has_conversion_tracking",
+     "dollars_per_unit": 450.11
+    },
+    {
+     "feature": "had_optimisation_review",
+     "dollars_per_unit": -267.95
+    },
+    {
+     "feature": "uses_auto_bidding",
+     "dollars_per_unit": 241.58
+    }
+   ]
+  },
+  "by_size_tier": {
+   "model": "two-stage (chance of staying x average spend if staying)",
+   "rows": [
+    {
+     "tier": "small",
+     "spend_8w_range": "up to 1,119",
+     "n": 1336,
+     "mean_actual": 512,
+     "mae_model": 170,
+     "mae_same_as_last": 274,
+     "wape_model": 0.332
+    },
+    {
+     "tier": "medium",
+     "spend_8w_range": "1,119 to 3,147",
+     "n": 1269,
+     "mean_actual": 2017,
+     "mae_model": 615,
+     "mae_same_as_last": 927,
+     "wape_model": 0.305
+    },
+    {
+     "tier": "large",
+     "spend_8w_range": "above 3,147",
+     "n": 1395,
+     "mean_actual": 12748,
+     "mae_model": 3338,
+     "mae_same_as_last": 5789,
+     "wape_model": 0.262
+    }
+   ]
+  },
+  "error_concentration": {
+   "model": "two-stage",
+   "share_of_total_error_from_worst_5pct_of_rows": 0.464,
+   "share_of_total_error_from_churners": 0.191,
+   "share_of_rows_that_are_churners": 0.132,
+   "mae_on_churners": 2047,
+   "mae_on_stayers": 1320
+  },
+  "worst_misses": [
+   {
+    "advertiser_id": 108879,
+    "spend_8w": 89076,
+    "predicted": 132699,
+    "actual": 0,
+    "churned": 1
+   },
+   {
+    "advertiser_id": 110315,
+    "spend_8w": 47050,
+    "predicted": 70962,
+    "actual": 0,
+    "churned": 1
+   },
+   {
+    "advertiser_id": 110873,
+    "spend_8w": 39385,
+    "predicted": 75825,
+    "actual": 145343,
+    "churned": 0
+   },
+   {
+    "advertiser_id": 111299,
+    "spend_8w": 23027,
+    "predicted": 58304,
+    "actual": 113386,
+    "churned": 0
+   },
+   {
+    "advertiser_id": 111776,
+    "spend_8w": 41940,
+    "predicted": 111755,
+    "actual": 157565,
+    "churned": 0
+   }
+  ],
+  "stayers_only": {
+   "n": 3473,
+   "what": "median percentage error among advertisers who kept spending",
+   "same_as_last": 0.289,
+   "run_rate": 0.234,
+   "gradient_boosting_absolute_loss": 0.194,
+   "log_model_typical_value": 0.185,
+   "noise_floor": 0.169,
+   "noise_floor_is": "the error of the simulation's own formula with its random part removed - it even uses inputs the table does not contain. No model can beat it; the rest is noise."
+  }
+ },
+ "distance": {
+  "what": "predict churn from the 25 most similar past advertisers (nearest neighbours); only the measuring stick changes",
+  "raw_columns": 0.628,
+  "standardised_columns": 0.797,
+  "standardised_and_log_spend": 0.794,
+  "why_raw_fails": "spend is in the thousands while every other column is in single or double digits, so raw distance is almost entirely a spend difference",
+  "note": "25 neighbours was not tuned; the point is the comparison between rulers, not the level"
+ },
+ "pca": {
+  "n_columns": 16,
+  "first_component_share_of_variance": 0.212,
+  "components_for_80pct": 11,
+  "pc1_correlation_with_hidden_sophistication": 0.812,
+  "caveat": "a tidy single hidden trait is how this simulation was built; on real account tables the first component is usually just account size"
+ },
+ "neural_net": {
+  "architecture": "2 hidden layers (32 and 16 units)",
+  "n_weights": 1249,
+  "runs": 6,
+  "test_auc_lowest": 0.808,
+  "test_auc_highest": 0.835,
+  "test_auc_mean": 0.825,
+  "note": "the same network trained six times from different random starting points; the spread between runs is itself a noise ruler"
+ },
+ "forecast": {
+  "series": "simulated daily platform ad spend, 2024-01-01 to 2026-04-30",
+  "n_days": 851,
+  "what_is_in_it": "an upward trend (about 15% a year), a weekly rhythm (weekends about 20% lower), a yearly rhythm peaking in late November, Black Friday week, Christmas and New Year's Day effects, and day-to-day noise",
+  "two_versions": "forecasting results below use the series WITHOUT the 7 planted incidents, so that forecast error is not confused with incident days; the downloadable file and the anomaly lesson use the series WITH them",
+  "honest_caveat": "this world is stable by construction and the regression has the same form as the equation that generated the data (it is even told the holiday dates), so its accuracy is a best case; real series have breaks, pacing cycles and large-client moves",
+  "mean_daily_spend_2024": 103882,
+  "mean_daily_spend_2025": 119589,
+  "growth_2025_vs_2024": 0.151,
+  "weekday_index": {
+   "Mon": 1.036,
+   "Tue": 1.076,
+   "Wed": 1.096,
+   "Thu": 1.086,
+   "Fri": 1.039,
+   "Sat": 0.853,
+   "Sun": 0.811
+  },
+  "month_index": {
+   "Jan": 0.974,
+   "Feb": 0.918,
+   "Mar": 0.889,
+   "Apr": 0.917,
+   "May": 0.937,
+   "Jun": 0.923,
+   "Jul": 0.935,
+   "Aug": 0.924,
+   "Sep": 1.031,
+   "Oct": 1.126,
+   "Nov": 1.241,
+   "Dec": 1.181
+  },
+  "backtest": {
+   "how": "12 forecasts, one made on the first day of each month from May 2025 to April 2026, each for the next 28 days, each using only earlier data",
+   "metrics": {
+    "mape": "average absolute percentage error per day",
+    "wape": "total absolute error divided by total actual spend",
+    "error_of_28_day_total": "how far the sum of the 28 daily forecasts is from the actual 28-day total"
+   },
+   "methods": {
+    "last_value": {
+     "mape": 0.1361,
+     "mape_worst_month": 0.2727,
+     "wape": 0.1309,
+     "error_of_28_day_total_typical": 0.0883,
+     "error_of_28_day_total_average_signed": -0.0162,
+     "mape_by_week_ahead": [
+      0.1317,
+      0.1363,
+      0.1285,
+      0.148
+     ]
+    },
+    "same_weekday_last_week": {
+     "mape": 0.0636,
+     "mape_worst_month": 0.2361,
+     "wape": 0.0661,
+     "error_of_28_day_total_typical": 0.0484,
+     "error_of_28_day_total_average_signed": 0.0073,
+     "mape_by_week_ahead": [
+      0.0507,
+      0.0613,
+      0.0577,
+      0.0846
+     ]
+    },
+    "average_of_last_4_same_weekdays": {
+     "mape": 0.0569,
+     "mape_worst_month": 0.0975,
+     "wape": 0.0589,
+     "error_of_28_day_total_typical": 0.048,
+     "error_of_28_day_total_average_signed": -0.0054,
+     "mape_by_week_ahead": [
+      0.0477,
+      0.0544,
+      0.0495,
+      0.0761
+     ]
+    },
+    "trend_plus_seasonality_regression": {
+     "mape": 0.0278,
+     "mape_worst_month": 0.0353,
+     "wape": 0.028,
+     "error_of_28_day_total_typical": 0.0097,
+     "error_of_28_day_total_average_signed": 0.0018,
+     "mape_by_week_ahead": [
+      0.0248,
+      0.032,
+      0.0269,
+      0.0274
+     ]
+    },
+    "regression_not_told_about_holidays": {
+     "mape": 0.0333,
+     "mape_worst_month": 0.0631,
+     "wape": 0.0342,
+     "error_of_28_day_total_typical": 0.0156,
+     "error_of_28_day_total_average_signed": 0.0024,
+     "mape_by_week_ahead": [
+      0.0321,
+      0.0311,
+      0.0293,
+      0.0406
+     ]
+    },
+    "gradient_boosting_on_calendar": {
+     "mape": 0.0541,
+     "mape_worst_month": 0.0943,
+     "wape": 0.0547,
+     "error_of_28_day_total_typical": 0.0384,
+     "error_of_28_day_total_average_signed": 0.0006,
+     "mape_by_week_ahead": [
+      0.0448,
+      0.0544,
+      0.0492,
+      0.068
+     ]
+    }
+   },
+   "origins": [
+    "2025-05",
+    "2025-06",
+    "2025-07",
+    "2025-08",
+    "2025-09",
+    "2025-10",
+    "2025-11",
+    "2025-12",
+    "2026-01",
+    "2026-02",
+    "2026-03",
+    "2026-04"
+   ],
+   "mape_by_origin_regression": [
+    0.0263,
+    0.0244,
+    0.03,
+    0.0326,
+    0.0245,
+    0.024,
+    0.0294,
+    0.0351,
+    0.0309,
+    0.0219,
+    0.0353,
+    0.019
+   ],
+   "with_incidents_left_in": {
+    "last_value": {
+     "mape": 0.1493,
+     "mape_by_week_ahead": [
+      0.1356,
+      0.1486,
+      0.1487,
+      0.1645
+     ]
+    },
+    "same_weekday_last_week": {
+     "mape": 0.0731,
+     "mape_by_week_ahead": [
+      0.0547,
+      0.0664,
+      0.0767,
+      0.0947
+     ]
+    },
+    "average_of_last_4_same_weekdays": {
+     "mape": 0.0679,
+     "mape_by_week_ahead": [
+      0.051,
+      0.0634,
+      0.0677,
+      0.0895
+     ]
+    },
+    "trend_plus_seasonality_regression": {
+     "mape": 0.0367,
+     "mape_by_week_ahead": [
+      0.0241,
+      0.04,
+      0.0419,
+      0.0407
+     ]
+    },
+    "regression_not_told_about_holidays": {
+     "mape": 0.0415,
+     "mape_by_week_ahead": [
+      0.031,
+      0.0389,
+      0.0431,
+      0.0531
+     ]
+    },
+    "gradient_boosting_on_calendar": {
+     "mape": 0.0662,
+     "mape_by_week_ahead": [
+      0.0467,
+      0.0678,
+      0.0684,
+      0.0817
+     ]
+    }
+   }
+  },
+  "regression_model": {
+   "what": "log(spend) = trend + weekday effect + three yearly waves + Black Friday week + Christmas + New Year's Day",
+   "trend_per_year": 0.147,
+   "black_friday_week_effect": 0.219,
+   "christmas_effect": -0.194,
+   "new_year_effect": -0.262,
+   "saturday_vs_monday": -0.179,
+   "sunday_vs_monday": -0.219
+  },
+  "interval": {
+   "how": "take the regression's percentage errors from the first six backtests; the 10th and 90th percentiles give an 80% band; check it on the last six",
+   "one_band_for_all_horizons": {
+    "low_pct": -0.0449,
+    "high_pct": 0.0381,
+    "coverage_on_later_backtests": 0.78
+   },
+   "by_week_ahead": [
+    {
+     "week": 1,
+     "low_pct": -0.0359,
+     "high_pct": 0.0325,
+     "coverage_on_later_backtests": 0.69
+    },
+    {
+     "week": 2,
+     "low_pct": -0.0532,
+     "high_pct": 0.0437,
+     "coverage_on_later_backtests": 0.738
+    },
+    {
+     "week": 3,
+     "low_pct": -0.0356,
+     "high_pct": 0.0333,
+     "coverage_on_later_backtests": 0.667
+    },
+    {
+     "week": 4,
+     "low_pct": -0.0538,
+     "high_pct": 0.038,
+     "coverage_on_later_backtests": 0.905
+    }
+   ],
+   "target_coverage": 0.8,
+   "same_band_when_incidents_happen": {
+    "coverage_on_later_backtests": 0.714,
+    "why": "an interval built from past errors only covers the kinds of days it has already seen"
+   }
+  },
+  "level_shift": {
+   "what": "the same series, but from 1 November 2025 everything is 12% higher and stays there - a change no method was told about",
+   "months": [
+    "2025-05",
+    "2025-06",
+    "2025-07",
+    "2025-08",
+    "2025-09",
+    "2025-10",
+    "2025-11",
+    "2025-12",
+    "2026-01",
+    "2026-02",
+    "2026-03",
+    "2026-04"
+   ],
+   "mape_by_month_normal_world": {
+    "average_of_last_4_same_weekdays": [
+     0.0292,
+     0.026,
+     0.0312,
+     0.0248,
+     0.0901,
+     0.0733,
+     0.0885,
+     0.0975,
+     0.0535,
+     0.078,
+     0.0585,
+     0.0323
+    ],
+    "trend_plus_seasonality_regression": [
+     0.0263,
+     0.0244,
+     0.03,
+     0.0326,
+     0.0245,
+     0.024,
+     0.0294,
+     0.0351,
+     0.0309,
+     0.0219,
+     0.0353,
+     0.019
+    ]
+   },
+   "mape_by_month_after_the_shift": {
+    "average_of_last_4_same_weekdays": [
+     0.0292,
+     0.026,
+     0.0312,
+     0.0248,
+     0.0901,
+     0.0733,
+     0.1862,
+     0.0975,
+     0.0535,
+     0.078,
+     0.0585,
+     0.0323
+    ],
+    "trend_plus_seasonality_regression": [
+     0.0263,
+     0.0244,
+     0.03,
+     0.0326,
+     0.0245,
+     0.024,
+     0.1164,
+     0.0796,
+     0.0759,
+     0.0526,
+     0.0352,
+     0.044
+    ]
+   },
+   "months_until_back_within_1_point_of_normal": {
+    "average_of_last_4_same_weekdays": 1,
+    "trend_plus_seasonality_regression": 4
+   },
+   "note": "index 6 is the November forecast, made the day the shift happens; both methods are wrong that month because neither had seen it"
+  },
+  "one_year_ahead": {
+   "trained_through": "2025-04-30",
+   "forecast_days": 365,
+   "trend_plus_seasonality_regression": {
+    "mape": 0.0274,
+    "error_of_total": 0.0012,
+    "error_of_total_last_90_days": 0.0109
+   },
+   "gradient_boosting_on_raw_level": {
+    "mape": 0.1018,
+    "error_of_total": -0.0889,
+    "error_of_total_last_90_days": -0.1155
+   },
+   "gradient_boosting_with_trend_removed_first": {
+    "mape": 0.057,
+    "error_of_total": 0.0419,
+    "error_of_total_last_90_days": 0.0667
+   },
+   "why": "a tree can only output values it has seen, so asked about a date beyond its training data it reuses the most recent level; taking the trend out first (or predicting growth instead of level) fixes it"
+  },
+  "shuffled_folds_vs_backtest": {
+   "what": "the same model judged two ways: on randomly held-out days (it has seen the days around them) versus on the 28 days after its training data ends",
+   "gradient_boosting_on_calendar": {
+    "mape_shuffled_folds": 0.0318,
+    "mape_backtest": 0.0541
+   },
+   "trend_plus_seasonality_regression": {
+    "mape_shuffled_folds": 0.0278,
+    "mape_backtest": 0.0278
+   }
+  },
+  "monthly_totals": {
+   "labels": [
+    "2024-01",
+    "2024-02",
+    "2024-03",
+    "2024-04",
+    "2024-05",
+    "2024-06",
+    "2024-07",
+    "2024-08",
+    "2024-09",
+    "2024-10",
+    "2024-11",
+    "2024-12",
+    "2025-01",
+    "2025-02",
+    "2025-03",
+    "2025-04",
+    "2025-05",
+    "2025-06",
+    "2025-07",
+    "2025-08",
+    "2025-09",
+    "2025-10",
+    "2025-11",
+    "2025-12",
+    "2026-01",
+    "2026-02",
+    "2026-03",
+    "2026-04"
+   ],
+   "millions": [
+    3.18,
+    2.81,
+    2.84,
+    2.78,
+    3.03,
+    2.87,
+    2.99,
+    3.1,
+    3.17,
+    3.64,
+    3.96,
+    3.66,
+    3.61,
+    3.07,
+    3.3,
+    3.29,
+    3.47,
+    3.31,
+    3.47,
+    3.42,
+    3.7,
+    4.17,
+    4.45,
+    4.38,
+    4.17,
+    3.53,
+    3.71,
+    3.72
+   ]
+  }
+ },
+ "series_anomalies": {
+  "window": "2025-08-04 to 2026-04-30",
+  "days": 270,
+  "incidents": [
+   {
+    "start": "2025-09-16",
+    "days": 1,
+    "change": -0.4,
+    "what": "one-day outage"
+   },
+   {
+    "start": "2025-10-22",
+    "days": 2,
+    "change": -0.22,
+    "what": "two-day tracking bug"
+   },
+   {
+    "start": "2025-12-09",
+    "days": 1,
+    "change": 0.35,
+    "what": "one-day traffic spike"
+   },
+   {
+    "start": "2026-01-20",
+    "days": 5,
+    "change": -0.12,
+    "what": "five-day slow leak"
+   },
+   {
+    "start": "2026-02-28",
+    "days": 1,
+    "change": 0.3,
+    "what": "weekend spike"
+   },
+   {
+    "start": "2026-03-17",
+    "days": 1,
+    "change": -0.3,
+    "what": "one-day drop"
+   },
+   {
+    "start": "2026-04-08",
+    "days": 2,
+    "change": 0.25,
+    "what": "two-day surge"
+   }
+  ],
+  "incident_days": 13,
+  "n_incidents": 7,
+  "known_holiday_days_in_window": 11,
+  "naive_rule": {
+   "rule": "alert when spend moves more than 15% versus yesterday",
+   "alert_days": 89,
+   "alert_episodes": 77,
+   "incidents_caught": 6,
+   "incident_days_caught": 6,
+   "false_alert_days": 83,
+   "false_alert_days_on_known_holidays": 4,
+   "false_alert_days_unexplained": 79,
+   "precision_by_day": 0.067,
+   "missed": [
+    "weekend spike"
+   ],
+   "share_of_alerts_on_sat_or_mon": 0.831
+  },
+  "seasonal_baseline": {
+   "rule": "expected = median of the same weekday over the previous 6 weeks; alert when today's deviation is more than k robust standard deviations from its recent norm",
+   "by_threshold": [
+    {
+     "k": 2,
+     "alert_days": 32,
+     "alert_episodes": 18,
+     "incidents_caught": 7,
+     "incident_days_caught": 9,
+     "false_alert_days": 23,
+     "false_alert_days_on_known_holidays": 10,
+     "false_alert_days_unexplained": 13,
+     "precision_by_day": 0.281,
+     "missed": []
+    },
+    {
+     "k": 2.5,
+     "alert_days": 22,
+     "alert_episodes": 13,
+     "incidents_caught": 6,
+     "incident_days_caught": 8,
+     "false_alert_days": 14,
+     "false_alert_days_on_known_holidays": 9,
+     "false_alert_days_unexplained": 5,
+     "precision_by_day": 0.364,
+     "missed": [
+      "five-day slow leak"
+     ]
+    },
+    {
+     "k": 3,
+     "alert_days": 17,
+     "alert_episodes": 12,
+     "incidents_caught": 6,
+     "incident_days_caught": 8,
+     "false_alert_days": 9,
+     "false_alert_days_on_known_holidays": 7,
+     "false_alert_days_unexplained": 2,
+     "precision_by_day": 0.471,
+     "missed": [
+      "five-day slow leak"
+     ]
+    },
+    {
+     "k": 3.5,
+     "alert_days": 10,
+     "alert_episodes": 8,
+     "incidents_caught": 5,
+     "incident_days_caught": 7,
+     "false_alert_days": 3,
+     "false_alert_days_on_known_holidays": 3,
+     "false_alert_days_unexplained": 0,
+     "precision_by_day": 0.7,
+     "missed": [
+      "one-day traffic spike",
+      "five-day slow leak"
+     ]
+    },
+    {
+     "k": 4,
+     "alert_days": 8,
+     "alert_episodes": 6,
+     "incidents_caught": 5,
+     "incident_days_caught": 7,
+     "false_alert_days": 1,
+     "false_alert_days_on_known_holidays": 1,
+     "false_alert_days_unexplained": 0,
+     "precision_by_day": 0.875,
+     "missed": [
+      "one-day traffic spike",
+      "five-day slow leak"
+     ]
+    },
+    {
+     "k": 5,
+     "alert_days": 5,
+     "alert_episodes": 4,
+     "incidents_caught": 4,
+     "incident_days_caught": 5,
+     "false_alert_days": 0,
+     "false_alert_days_on_known_holidays": 0,
+     "false_alert_days_unexplained": 0,
+     "precision_by_day": 1,
+     "missed": [
+      "two-day tracking bug",
+      "one-day traffic spike",
+      "five-day slow leak"
+     ]
+    }
+   ],
+   "by_threshold_ignoring_known_holidays": [
+    {
+     "k": 2.5,
+     "alert_days": 13,
+     "alert_episodes": 9,
+     "incidents_caught": 6,
+     "incident_days_caught": 8,
+     "false_alert_days": 5,
+     "false_alert_days_on_known_holidays": 0,
+     "false_alert_days_unexplained": 5,
+     "precision_by_day": 0.615,
+     "missed": [
+      "five-day slow leak"
+     ]
+    },
+    {
+     "k": 3,
+     "alert_days": 10,
+     "alert_episodes": 8,
+     "incidents_caught": 6,
+     "incident_days_caught": 8,
+     "false_alert_days": 2,
+     "false_alert_days_on_known_holidays": 0,
+     "false_alert_days_unexplained": 2,
+     "precision_by_day": 0.8,
+     "missed": [
+      "five-day slow leak"
+     ]
+    },
+    {
+     "k": 3.5,
+     "alert_days": 7,
+     "alert_episodes": 5,
+     "incidents_caught": 5,
+     "incident_days_caught": 7,
+     "false_alert_days": 0,
+     "false_alert_days_on_known_holidays": 0,
+     "false_alert_days_unexplained": 0,
+     "precision_by_day": 1,
+     "missed": [
+      "one-day traffic spike",
+      "five-day slow leak"
+     ]
+    },
+    {
+     "k": 4,
+     "alert_days": 7,
+     "alert_episodes": 5,
+     "incidents_caught": 5,
+     "incident_days_caught": 7,
+     "false_alert_days": 0,
+     "false_alert_days_on_known_holidays": 0,
+     "false_alert_days_unexplained": 0,
+     "precision_by_day": 1,
+     "missed": [
+      "one-day traffic spike",
+      "five-day slow leak"
+     ]
+    }
+   ]
+  },
+  "seven_day_average": {
+   "rule": "the same deviation averaged over the last 7 days, to catch small shifts that persist",
+   "by_threshold": [
+    {
+     "k": 2.5,
+     "alert_days": 39,
+     "alert_episodes": 12,
+     "incidents_caught": 2,
+     "incident_days_caught": 3,
+     "false_alert_days": 36,
+     "false_alert_days_on_known_holidays": 0,
+     "false_alert_days_unexplained": 36,
+     "precision_by_day": 0.077,
+     "missed": [
+      "one-day outage",
+      "two-day tracking bug",
+      "one-day traffic spike",
+      "five-day slow leak",
+      "weekend spike"
+     ]
+    },
+    {
+     "k": 3,
+     "alert_days": 21,
+     "alert_episodes": 5,
+     "incidents_caught": 2,
+     "incident_days_caught": 3,
+     "false_alert_days": 18,
+     "false_alert_days_on_known_holidays": 0,
+     "false_alert_days_unexplained": 18,
+     "precision_by_day": 0.143,
+     "missed": [
+      "one-day outage",
+      "two-day tracking bug",
+      "one-day traffic spike",
+      "five-day slow leak",
+      "weekend spike"
+     ]
+    },
+    {
+     "k": 3.5,
+     "alert_days": 15,
+     "alert_episodes": 3,
+     "incidents_caught": 2,
+     "incident_days_caught": 3,
+     "false_alert_days": 12,
+     "false_alert_days_on_known_holidays": 0,
+     "false_alert_days_unexplained": 12,
+     "precision_by_day": 0.2,
+     "missed": [
+      "one-day outage",
+      "two-day tracking bug",
+      "one-day traffic spike",
+      "five-day slow leak",
+      "weekend spike"
+     ]
+    },
+    {
+     "k": 4,
+     "alert_days": 12,
+     "alert_episodes": 3,
+     "incidents_caught": 1,
+     "incident_days_caught": 1,
+     "false_alert_days": 11,
+     "false_alert_days_on_known_holidays": 0,
+     "false_alert_days_unexplained": 11,
+     "precision_by_day": 0.083,
+     "missed": [
+      "one-day outage",
+      "two-day tracking bug",
+      "one-day traffic spike",
+      "five-day slow leak",
+      "weekend spike",
+      "one-day drop"
+     ]
+    }
+   ],
+   "days_until_the_slow_leak_is_flagged_at_k3": null
+  },
+  "forecast_as_baseline": {
+   "rule": "expected = the trend-plus-seasonality forecast (refitted each month on past data); alert on the day's surprise, or on the average surprise over the last 7 days",
+   "daily_by_threshold": [
+    {
+     "k": 2.5,
+     "alert_days": 12,
+     "alert_episodes": 9,
+     "incidents_caught": 7,
+     "incident_days_caught": 11,
+     "false_alert_days": 1,
+     "false_alert_days_on_known_holidays": 0,
+     "false_alert_days_unexplained": 1,
+     "precision_by_day": 0.917,
+     "missed": []
+    },
+    {
+     "k": 3,
+     "alert_days": 10,
+     "alert_episodes": 8,
+     "incidents_caught": 7,
+     "incident_days_caught": 10,
+     "false_alert_days": 0,
+     "false_alert_days_on_known_holidays": 0,
+     "false_alert_days_unexplained": 0,
+     "precision_by_day": 1,
+     "missed": []
+    },
+    {
+     "k": 3.5,
+     "alert_days": 8,
+     "alert_episodes": 6,
+     "incidents_caught": 6,
+     "incident_days_caught": 8,
+     "false_alert_days": 0,
+     "false_alert_days_on_known_holidays": 0,
+     "false_alert_days_unexplained": 0,
+     "precision_by_day": 1,
+     "missed": [
+      "five-day slow leak"
+     ]
+    },
+    {
+     "k": 4,
+     "alert_days": 8,
+     "alert_episodes": 6,
+     "incidents_caught": 6,
+     "incident_days_caught": 8,
+     "false_alert_days": 0,
+     "false_alert_days_on_known_holidays": 0,
+     "false_alert_days_unexplained": 0,
+     "precision_by_day": 1,
+     "missed": [
+      "five-day slow leak"
+     ]
+    }
+   ],
+   "seven_day_average_by_threshold": [
+    {
+     "k": 2.5,
+     "alert_days": 28,
+     "alert_episodes": 5,
+     "incidents_caught": 2,
+     "incident_days_caught": 3,
+     "false_alert_days": 25,
+     "false_alert_days_on_known_holidays": 0,
+     "false_alert_days_unexplained": 25,
+     "precision_by_day": 0.107,
+     "missed": [
+      "one-day outage",
+      "two-day tracking bug",
+      "one-day traffic spike",
+      "five-day slow leak",
+      "weekend spike"
+     ]
+    },
+    {
+     "k": 3,
+     "alert_days": 19,
+     "alert_episodes": 4,
+     "incidents_caught": 1,
+     "incident_days_caught": 1,
+     "false_alert_days": 18,
+     "false_alert_days_on_known_holidays": 0,
+     "false_alert_days_unexplained": 18,
+     "precision_by_day": 0.053,
+     "missed": [
+      "one-day outage",
+      "two-day tracking bug",
+      "one-day traffic spike",
+      "five-day slow leak",
+      "weekend spike",
+      "one-day drop"
+     ]
+    },
+    {
+     "k": 3.5,
+     "alert_days": 12,
+     "alert_episodes": 3,
+     "incidents_caught": 1,
+     "incident_days_caught": 1,
+     "false_alert_days": 11,
+     "false_alert_days_on_known_holidays": 0,
+     "false_alert_days_unexplained": 11,
+     "precision_by_day": 0.083,
+     "missed": [
+      "one-day outage",
+      "two-day tracking bug",
+      "one-day traffic spike",
+      "five-day slow leak",
+      "weekend spike",
+      "one-day drop"
+     ]
+    },
+    {
+     "k": 4,
+     "alert_days": 7,
+     "alert_episodes": 2,
+     "incidents_caught": 1,
+     "incident_days_caught": 1,
+     "false_alert_days": 6,
+     "false_alert_days_on_known_holidays": 0,
+     "false_alert_days_unexplained": 6,
+     "precision_by_day": 0.143,
+     "missed": [
+      "one-day outage",
+      "two-day tracking bug",
+      "one-day traffic spike",
+      "five-day slow leak",
+      "weekend spike",
+      "one-day drop"
+     ]
+    }
+   ],
+   "either_at_k3": {
+    "alert_days": 28,
+    "alert_episodes": 10,
+    "incidents_caught": 7,
+    "incident_days_caught": 10,
+    "false_alert_days": 18,
+    "false_alert_days_on_known_holidays": 0,
+    "false_alert_days_unexplained": 18,
+    "precision_by_day": 0.357,
+    "missed": []
+   },
+   "slow_leak_first_flagged_on_day_at_k3": 3,
+   "slow_leak_days_flagged_at_k3": 2,
+   "best_case_note": "this baseline is the same regression that generated-style data favours; on real series expect more false alerts",
+   "typical_daily_surprise_pct": 0.0239
+  },
+  "typical_daily_deviation_pct": 0.0495
+ },
+ "slices": {
+  "model": "logistic regression, test months; 'flagged' = the 400 highest churn scores",
+  "overall": {
+   "slice": "everyone",
+   "n": 4000,
+   "churn_rate": 0.132,
+   "churners": 527,
+   "auc": 0.845,
+   "flagged_in_top_400": 400,
+   "precision_when_flagged": 0.55,
+   "recall": 0.417,
+   "avg_predicted": 0.109,
+   "avg_actual": 0.132,
+   "spend_lost_to_churn": 1373066,
+   "spend_lost_that_was_flagged": 347052
+  },
+  "by_size": [
+   {
+    "slice": "small (bottom third by spend)",
+    "n": 1336,
+    "churn_rate": 0.183,
+    "churners": 245,
+    "auc": 0.84,
+    "flagged_in_top_400": 259,
+    "precision_when_flagged": 0.517,
+    "recall": 0.547,
+    "avg_predicted": 0.176,
+    "avg_actual": 0.183,
+    "spend_lost_to_churn": 137088,
+    "spend_lost_that_was_flagged": 72917
+   },
+   {
+    "slice": "medium",
+    "n": 1269,
+    "churn_rate": 0.13,
+    "churners": 165,
+    "auc": 0.825,
+    "flagged_in_top_400": 94,
+    "precision_when_flagged": 0.606,
+    "recall": 0.345,
+    "avg_predicted": 0.099,
+    "avg_actual": 0.13,
+    "spend_lost_to_churn": 311575,
+    "spend_lost_that_was_flagged": 106832
+   },
+   {
+    "slice": "large (top third by spend)",
+    "n": 1395,
+    "churn_rate": 0.084,
+    "churners": 117,
+    "auc": 0.851,
+    "flagged_in_top_400": 47,
+    "precision_when_flagged": 0.617,
+    "recall": 0.248,
+    "avg_predicted": 0.055,
+    "avg_actual": 0.084,
+    "spend_lost_to_churn": 924403,
+    "spend_lost_that_was_flagged": 167303
+   }
+  ],
+  "by_account_manager": [
+   {
+    "slice": "no account manager",
+    "n": 2743,
+    "churn_rate": 0.159,
+    "churners": 435,
+    "auc": 0.83,
+    "flagged_in_top_400": 355,
+    "precision_when_flagged": 0.546,
+    "recall": 0.446,
+    "avg_predicted": 0.133,
+    "avg_actual": 0.159,
+    "spend_lost_to_churn": 880619,
+    "spend_lost_that_was_flagged": 283128
+   },
+   {
+    "slice": "has account manager",
+    "n": 1257,
+    "churn_rate": 0.073,
+    "churners": 92,
+    "auc": 0.848,
+    "flagged_in_top_400": 45,
+    "precision_when_flagged": 0.578,
+    "recall": 0.283,
+    "avg_predicted": 0.057,
+    "avg_actual": 0.073,
+    "spend_lost_to_churn": 492447,
+    "spend_lost_that_was_flagged": 63924
+   }
+  ],
+  "by_tenure": [
+   {
+    "slice": "new (under 12 weeks)",
+    "n": 781,
+    "churn_rate": 0.177,
+    "churners": 138,
+    "auc": 0.874,
+    "flagged_in_top_400": 86,
+    "precision_when_flagged": 0.686,
+    "recall": 0.428,
+    "avg_predicted": 0.126,
+    "avg_actual": 0.177,
+    "spend_lost_to_churn": 390844,
+    "spend_lost_that_was_flagged": 94797
+   },
+   {
+    "slice": "established (12 weeks or more)",
+    "n": 3219,
+    "churn_rate": 0.121,
+    "churners": 389,
+    "auc": 0.834,
+    "flagged_in_top_400": 314,
+    "precision_when_flagged": 0.513,
+    "recall": 0.414,
+    "avg_predicted": 0.105,
+    "avg_actual": 0.121,
+    "spend_lost_to_churn": 982222,
+    "spend_lost_that_was_flagged": 252255
+   }
+  ],
+  "by_vertical": [
+   {
+    "slice": "ecommerce",
+    "n": 1256,
+    "churn_rate": 0.112,
+    "churners": 141,
+    "auc": 0.839,
+    "flagged_in_top_400": 73,
+    "precision_when_flagged": 0.548,
+    "recall": 0.284,
+    "avg_predicted": 0.082,
+    "avg_actual": 0.112,
+    "spend_lost_to_churn": 344467,
+    "spend_lost_that_was_flagged": 75408
+   },
+   {
+    "slice": "finance",
+    "n": 556,
+    "churn_rate": 0.099,
+    "churners": 55,
+    "auc": 0.867,
+    "flagged_in_top_400": 48,
+    "precision_when_flagged": 0.521,
+    "recall": 0.455,
+    "avg_predicted": 0.101,
+    "avg_actual": 0.099,
+    "spend_lost_to_churn": 131494,
+    "spend_lost_that_was_flagged": 37828
+   },
+   {
+    "slice": "health",
+    "n": 638,
+    "churn_rate": 0.119,
+    "churners": 76,
+    "auc": 0.841,
+    "flagged_in_top_400": 87,
+    "precision_when_flagged": 0.448,
+    "recall": 0.513,
+    "avg_predicted": 0.127,
+    "avg_actual": 0.119,
+    "spend_lost_to_churn": 252322,
+    "spend_lost_that_was_flagged": 50016
+   },
+   {
+    "slice": "gaming",
+    "n": 489,
+    "churn_rate": 0.27,
+    "churners": 132,
+    "auc": 0.838,
+    "flagged_in_top_400": 69,
+    "precision_when_flagged": 0.812,
+    "recall": 0.424,
+    "avg_predicted": 0.142,
+    "avg_actual": 0.27,
+    "spend_lost_to_churn": 364368,
+    "spend_lost_that_was_flagged": 109616
+   },
+   {
+    "slice": "education",
+    "n": 353,
+    "churn_rate": 0.116,
+    "churners": 41,
+    "auc": 0.837,
+    "flagged_in_top_400": 46,
+    "precision_when_flagged": 0.391,
+    "recall": 0.439,
+    "avg_predicted": 0.122,
+    "avg_actual": 0.116,
+    "spend_lost_to_churn": 91373,
+    "spend_lost_that_was_flagged": 19812
+   },
+   {
+    "slice": "other",
+    "n": 708,
+    "churn_rate": 0.116,
+    "churners": 82,
+    "auc": 0.864,
+    "flagged_in_top_400": 77,
+    "precision_when_flagged": 0.545,
+    "recall": 0.512,
+    "avg_predicted": 0.119,
+    "avg_actual": 0.116,
+    "spend_lost_to_churn": 189042,
+    "spend_lost_that_was_flagged": 54372
+   }
+  ],
+  "by_tracking": [
+   {
+    "slice": "no conversion tracking",
+    "n": 1682,
+    "churn_rate": 0.199,
+    "churners": 335,
+    "auc": 0.824,
+    "flagged_in_top_400": 308,
+    "precision_when_flagged": 0.545,
+    "recall": 0.501,
+    "avg_predicted": 0.168,
+    "avg_actual": 0.199,
+    "spend_lost_to_churn": 654590,
+    "spend_lost_that_was_flagged": 230254
+   },
+   {
+    "slice": "has conversion tracking",
+    "n": 2318,
+    "churn_rate": 0.083,
+    "churners": 192,
+    "auc": 0.833,
+    "flagged_in_top_400": 92,
+    "precision_when_flagged": 0.565,
+    "recall": 0.271,
+    "avg_predicted": 0.067,
+    "avg_actual": 0.083,
+    "spend_lost_to_churn": 718476,
+    "spend_lost_that_was_flagged": 116798
+   }
+  ],
+  "rank_by_what": {
+   "list_size": 400,
+   "total_spend_lost_to_churn": 1373066,
+   "rank_by_churn_probability": {
+    "churners_on_list": 220,
+    "share_of_churners": 0.417,
+    "spend_of_churners_on_list": 347052,
+    "share_of_lost_spend": 0.253,
+    "median_spend_of_listed": 744
+   },
+   "rank_by_probability_times_spend": {
+    "churners_on_list": 151,
+    "share_of_churners": 0.287,
+    "spend_of_churners_on_list": 782445,
+    "share_of_lost_spend": 0.57,
+    "median_spend_of_listed": 4891
+   },
+   "overlap_between_the_two_lists": 137
+  }
+ },
+ "noise": {
+  "overall_churn_rate": 0.1183,
+  "margin_of_error_for_a_churn_rate": {
+   "what": "95% margin of error around an observed churn rate of about 11.8% (the overall rate), by number of advertisers in the group",
+   "rows": [
+    {
+     "n": 50,
+     "plus_minus_pts": 9
+    },
+    {
+     "n": 100,
+     "plus_minus_pts": 6.3
+    },
+    {
+     "n": 250,
+     "plus_minus_pts": 4
+    },
+    {
+     "n": 500,
+     "plus_minus_pts": 2.8
+    },
+    {
+     "n": 1000,
+     "plus_minus_pts": 2
+    },
+    {
+     "n": 2000,
+     "plus_minus_pts": 1.4
+    },
+    {
+     "n": 4000,
+     "plus_minus_pts": 1
+    },
+    {
+     "n": 12000,
+     "plus_minus_pts": 0.6
+    }
+   ]
+  },
+  "aa_test": {
+   "what": "draw two groups of advertisers at random 2,000 times and record the gap in churn rate; there is no real difference between the groups, so every gap is pure noise",
+   "by_group_size": {
+    "250": {
+     "group_size": 250,
+     "typical_gap_pts": 2,
+     "gap_exceeded_1_time_in_20_pts": 5.6,
+     "share_of_gaps_over_2_pts": 0.501
+    },
+    "1000": {
+     "group_size": 1000,
+     "typical_gap_pts": 1,
+     "gap_exceeded_1_time_in_20_pts": 2.8,
+     "share_of_gaps_over_2_pts": 0.165
+    },
+    "4000": {
+     "group_size": 4000,
+     "typical_gap_pts": 0.5,
+     "gap_exceeded_1_time_in_20_pts": 1.4,
+     "share_of_gaps_over_2_pts": 0.005
+    }
+   }
+  },
+  "comparisons": [
+   {
+    "comparison": "no tracking vs tracking",
+    "rate_a": 0.184,
+    "n_a": 4984,
+    "rate_b": 0.072,
+    "n_b": 7016,
+    "difference_pts": 11.2,
+    "ci95_pts": [
+     9.9,
+     12.4
+    ],
+    "ci_excludes_zero": true
+   },
+   {
+    "comparison": "health vs education",
+    "rate_a": 0.118,
+    "n_a": 1868,
+    "rate_b": 0.112,
+    "n_b": 1159,
+    "difference_pts": 0.6,
+    "ci95_pts": [
+     -1.7,
+     2.9
+    ],
+    "ci_excludes_zero": false
+   },
+   {
+    "comparison": "gaming vs ecommerce",
+    "rate_a": 0.199,
+    "n_a": 1481,
+    "rate_b": 0.101,
+    "n_b": 3649,
+    "difference_pts": 9.8,
+    "ci95_pts": [
+     7.5,
+     12
+    ],
+    "ci_excludes_zero": true
+   },
+   {
+    "comparison": "gaming in April vs gaming in March",
+    "rate_a": 0.191,
+    "n_a": 246,
+    "rate_b": 0.142,
+    "n_b": 253,
+    "difference_pts": 4.9,
+    "ci95_pts": [
+     -1.7,
+     11.4
+    ],
+    "ci_excludes_zero": false
+   },
+   {
+    "comparison": "gaming in June vs gaming in January-April",
+    "rate_a": 0.305,
+    "n_a": 272,
+    "rate_b": 0.163,
+    "n_b": 992,
+    "difference_pts": 14.2,
+    "ci95_pts": [
+     8.2,
+     20.1
+    ],
+    "ci_excludes_zero": true
+   }
+  ],
+  "gaming_monthly": [
+   {
+    "month": "Jan",
+    "n": 262,
+    "churn_rate": 0.149,
+    "plus_minus_pts": 4.3
+   },
+   {
+    "month": "Feb",
+    "n": 231,
+    "churn_rate": 0.173,
+    "plus_minus_pts": 4.9
+   },
+   {
+    "month": "Mar",
+    "n": 253,
+    "churn_rate": 0.142,
+    "plus_minus_pts": 4.3
+   },
+   {
+    "month": "Apr",
+    "n": 246,
+    "churn_rate": 0.191,
+    "plus_minus_pts": 4.9
+   },
+   {
+    "month": "May",
+    "n": 217,
+    "churn_rate": 0.226,
+    "plus_minus_pts": 5.6
+   },
+   {
+    "month": "Jun",
+    "n": 272,
+    "churn_rate": 0.305,
+    "plus_minus_pts": 5.5
+   }
+  ]
+ },
+ "learning_curve": {
+  "what": "train on a random sample of the training rows, score on all 4,000 May-June rows; 8 repeats per size",
+  "boosting_settings": "default-ish (depth 4, 200 rounds)",
+  "rows": [
+   {
+    "training_rows": 100,
+    "churners_in_training": 11,
+    "logistic_auc": 0.731,
+    "logistic_min": 0.654,
+    "logistic_max": 0.778,
+    "boosting_default_auc": 0.727,
+    "boosting_min": 0.699,
+    "boosting_max": 0.767
+   },
+   {
+    "training_rows": 250,
+    "churners_in_training": 28,
+    "logistic_auc": 0.807,
+    "logistic_min": 0.788,
+    "logistic_max": 0.828,
+    "boosting_default_auc": 0.776,
+    "boosting_min": 0.763,
+    "boosting_max": 0.793
+   },
+   {
+    "training_rows": 500,
+    "churners_in_training": 56,
+    "logistic_auc": 0.824,
+    "logistic_min": 0.797,
+    "logistic_max": 0.849,
+    "boosting_default_auc": 0.793,
+    "boosting_min": 0.773,
+    "boosting_max": 0.817
+   },
+   {
+    "training_rows": 1000,
+    "churners_in_training": 111,
+    "logistic_auc": 0.833,
+    "logistic_min": 0.824,
+    "logistic_max": 0.841,
+    "boosting_default_auc": 0.799,
+    "boosting_min": 0.791,
+    "boosting_max": 0.819
+   },
+   {
+    "training_rows": 2000,
+    "churners_in_training": 223,
+    "logistic_auc": 0.84,
+    "logistic_min": 0.834,
+    "logistic_max": 0.846,
+    "boosting_default_auc": 0.81,
+    "boosting_min": 0.8,
+    "boosting_max": 0.819
+   },
+   {
+    "training_rows": 4000,
+    "churners_in_training": 445,
+    "logistic_auc": 0.845,
+    "logistic_min": 0.843,
+    "logistic_max": 0.847,
+    "boosting_default_auc": 0.822,
+    "boosting_min": 0.816,
+    "boosting_max": 0.83
+   },
+   {
+    "training_rows": 6000,
+    "churners_in_training": 668,
+    "logistic_auc": 0.845,
+    "logistic_min": 0.845,
+    "logistic_max": 0.845,
+    "boosting_default_auc": 0.827,
+    "boosting_min": 0.827,
+    "boosting_max": 0.827
+   }
+  ]
+ },
+ "uplift": {
+  "setup": "a simulated randomised outreach programme: half of all advertisers, chosen by coin flip, get a call from the success team. In the simulation the call helps accounts that are still active and have a fixable problem (CPA moderately over goal, or stale creatives), does nothing for accounts already gone quiet or already healthy, and slightly annoys small healthy self-serve accounts.",
+  "why_simulated_matters": "for each advertiser we know the outcome both with and without the call, so we can count exactly how many churns each calling policy would prevent",
+  "many_experiments": {
+   "what": "the same experiment repeated 200 times, each with a fresh coin flip for who gets called (all 12,000 advertisers)",
+   "true_effect_pts": 2.9,
+   "measured_effect_lowest_pts": 1.2,
+   "measured_effect_highest_pts": 4.4,
+   "middle_90pct_of_runs_pts": [
+    2.1,
+    3.8
+   ],
+   "share_of_runs_whose_95pct_interval_contains_the_truth": 0.95,
+   "share_of_runs_that_could_tell_the_effect_from_zero": 1,
+   "illustration": "the single experiment shown elsewhere in this section is the run with the median measured effect, so it is typical by construction"
+  },
+  "experiment_readout": {
+   "all_advertisers": {
+    "who": "all 12,000 advertisers",
+    "n_called": 6052,
+    "n_not_called": 5948,
+    "churn_without_call": 0.117,
+    "churn_with_call": 0.089,
+    "measured_effect_pts": 2.9,
+    "ci95_pts": [
+     1.8,
+     3.9
+    ],
+    "true_effect_pts": 2.9,
+    "ci_excludes_zero": true
+   },
+   "one_month_only": {
+    "who": "January only (2,000 advertisers)",
+    "n_called": 1010,
+    "n_not_called": 990,
+    "churn_without_call": 0.114,
+    "churn_with_call": 0.086,
+    "measured_effect_pts": 2.8,
+    "ci95_pts": [
+     0.2,
+     5.4
+    ],
+    "true_effect_pts": 2.5,
+    "ci_excludes_zero": true
+   },
+   "note": "true_effect is knowable only because the data is simulated; a real experiment gives you the measured effect and its interval"
+  },
+  "four_kinds_of_advertiser_share": {
+   "persuadable (leaves unless called)": 0.034,
+   "lost cause (leaves either way)": 0.098,
+   "sure thing (stays either way)": 0.866,
+   "sleeping dog (leaves only if called)": 0.003
+  },
+  "policies_call_400_note": "churns_prevented is NET: advertisers a call saves minus advertisers a call pushes out (a few would have stayed if left alone)",
+  "policies_call_400": {
+   "at_random": {
+    "called": 400,
+    "churns_prevented_expected": 12.6
+   },
+   "highest_churn_risk": {
+    "called": 400,
+    "churns_prevented": 32,
+    "would_have_churned_anyway_or_stayed_anyway": 366,
+    "pushed_out_by_the_call": 1
+   },
+   "business_rule_active_with_a_fixable_problem_ranked_by_risk": {
+    "called": 400,
+    "churns_prevented": 73,
+    "would_have_churned_anyway_or_stayed_anyway": 327,
+    "pushed_out_by_the_call": 0
+   },
+   "highest_predicted_uplift_two_logistic_models": {
+    "called": 400,
+    "churns_prevented": 44,
+    "would_have_churned_anyway_or_stayed_anyway": 356,
+    "pushed_out_by_the_call": 0
+   },
+   "highest_predicted_uplift_two_boosted_models": {
+    "called": 400,
+    "churns_prevented": 44,
+    "would_have_churned_anyway_or_stayed_anyway": 356,
+    "pushed_out_by_the_call": 0
+   },
+   "perfect_knowledge": {
+    "called": 400,
+    "churns_prevented": 136,
+    "would_have_churned_anyway_or_stayed_anyway": 264,
+    "pushed_out_by_the_call": 0
+   }
+  },
+  "policies_call_800": {
+   "highest_churn_risk": {
+    "called": 800,
+    "churns_prevented": 60,
+    "would_have_churned_anyway_or_stayed_anyway": 736,
+    "pushed_out_by_the_call": 2
+   },
+   "business_rule_active_with_a_fixable_problem_ranked_by_risk": {
+    "called": 800,
+    "churns_prevented": 109,
+    "would_have_churned_anyway_or_stayed_anyway": 691,
+    "pushed_out_by_the_call": 0
+   },
+   "highest_predicted_uplift_two_logistic_models": {
+    "called": 800,
+    "churns_prevented": 69,
+    "would_have_churned_anyway_or_stayed_anyway": 725,
+    "pushed_out_by_the_call": 3
+   },
+   "highest_predicted_uplift_two_boosted_models": {
+    "called": 800,
+    "churns_prevented": 64,
+    "would_have_churned_anyway_or_stayed_anyway": 736,
+    "pushed_out_by_the_call": 0
+   }
+  },
+  "share_of_the_risk_list_that_stayed_without_any_call": 0.47,
+  "about_the_business_rule": "the rule 'still active and has a fixable problem' matches how this simulation was written, so its score here is a best case for a hand rule. In real life you would not know the rule is right - the randomised data is what lets you test it, exactly as it tests a model.",
+  "who_the_risk_list_calls": {
+   "share_lost_causes": 0.448,
+   "share_persuadable": 0.083,
+   "avg_active_days": 12.9
+  },
+  "who_the_uplift_list_calls": {
+   "share_lost_causes": 0.19,
+   "share_persuadable": 0.11,
+   "avg_active_days": 17.9
+  },
+  "method": "two-model approach: fit one churn model on the called group and one on the not-called group; predicted uplift = predicted churn without the call minus predicted churn with it",
+  "caveat": "uplift can only be learned from data where the action was assigned at random (or as good as); it is noisier than risk because it is a difference between two predictions"
+ },
+ "time_to_event": {
+  "setup": "a separate simulation of 6,000 advertisers who joined at different times over the last two years. For each we know how long they have been a customer and whether they have churned yet. Those who have not are 'censored': we only know they lasted at least this long.",
+  "n": 6000,
+  "churned_so_far": 3099,
+  "still_active_censored": 2901,
+  "share_censored": 0.484,
+  "naive_average_lifetime_of_those_who_churned_weeks": 20.7,
+  "naive_share_churned": 0.516,
+  "kaplan_meier": {
+   "what": "share of advertisers still active after t weeks, estimated in a way that uses censored advertisers for as long as we watched them",
+   "weeks": [
+    4,
+    8,
+    13,
+    26,
+    39,
+    52,
+    78,
+    104
+   ],
+   "share_still_active": [
+    0.884,
+    0.815,
+    0.748,
+    0.615,
+    0.526,
+    0.451,
+    0.352,
+    0.259
+   ],
+   "true_share_still_active": [
+    0.884,
+    0.816,
+    0.749,
+    0.617,
+    0.526,
+    0.453,
+    0.354,
+    0.28
+   ],
+   "median_lifetime_weeks": 43,
+   "true_median_lifetime_weeks": 43
+  },
+  "by_account_manager": {
+   "weeks": [
+    4,
+    8,
+    13,
+    26,
+    39,
+    52,
+    78,
+    104
+   ],
+   "with_manager": [
+    0.915,
+    0.86,
+    0.805,
+    0.685,
+    0.617,
+    0.542,
+    0.45,
+    0.322
+   ],
+   "without_manager": [
+    0.87,
+    0.795,
+    0.723,
+    0.583,
+    0.485,
+    0.41,
+    0.308,
+    0.235
+   ]
+  },
+  "risk_by_quarter_of_tenure": {
+   "what": "of the advertisers still active at the start of each 13-week block, the share who churn during it",
+   "rows": [
+    {
+     "weeks": "1-13",
+     "share_who_churn": 0.252
+    },
+    {
+     "weeks": "14-26",
+     "share_who_churn": 0.179
+    },
+    {
+     "weeks": "27-39",
+     "share_who_churn": 0.144
+    },
+    {
+     "weeks": "40-52",
+     "share_who_churn": 0.143
+    },
+    {
+     "weeks": "53-65",
+     "share_who_churn": 0.12
+    },
+    {
+     "weeks": "66-78",
+     "share_who_churn": 0.113
+    }
+   ]
+  },
+  "the_classification_shortcut": {
+   "what": "a fixed-window label ('churned within 26 weeks of joining') only works for advertisers we have watched for at least 26 weeks",
+   "advertisers_usable": 4734,
+   "advertisers_thrown_away": 1266,
+   "share_churned_within_26_weeks_among_usable": 0.387,
+   "wrong_way_counting_everyone": 0.36
+  }
+ },
+ "panel_leak": {
+  "setup": "a separate small simulation: 1,500 advertisers, each observed in 6 monthly rows (9,000 rows). Five of their columns hardly change from month to month, and - because consecutive snapshots share most of their 60-day outcome window - an advertiser's rows usually carry the same label.",
+  "rows": 9000,
+  "advertisers": 1500,
+  "rows_per_advertiser": 6,
+  "positive_rate": 0.327,
+  "three_ways_to_score": {
+   "shuffled_rows": "ordinary 5-fold cross-validation: rows are dealt out at random, so the same advertiser sits on both sides",
+   "whole_advertisers_held_out": "5 folds where all of an advertiser's rows go to the same side",
+   "truth_on_new_advertisers": "train on everything, then score 1,500 advertisers the model has never seen"
+  },
+  "random_forest": {
+   "shuffled_rows": 0.805,
+   "whole_advertisers_held_out": 0.632,
+   "truth_on_new_advertisers": 0.625,
+   "overstatement_from_shuffling": 0.18
+  },
+  "logistic_regression": {
+   "shuffled_rows": 0.683,
+   "whole_advertisers_held_out": 0.679,
+   "truth_on_new_advertisers": 0.665,
+   "overstatement_from_shuffling": 0.017
+  },
+  "random_forest_with_the_id_column_left_in": {
+   "shuffled_rows": 0.83,
+   "whole_advertisers_held_out": 0.629,
+   "truth_on_new_advertisers": 0.609,
+   "overstatement_from_shuffling": 0.221
+  },
+  "why": "a flexible model can recognise an advertiser from its near-constant columns (or its ID) and simply recall how that advertiser turned out in its other months. That is memory, not prediction, and it disappears on advertisers it has not met.",
+  "the_fix": "split by advertiser (and by time) so nobody appears on both sides; never feed an ID column to a model"
+ },
+ "dirty_tables": {
+  "dropna": {
+   "what": "dropping every row with a missing value (CPA vs goal is empty for advertisers without conversion tracking)",
+   "rows_before": 12000,
+   "rows_after": 7016,
+   "share_of_rows_lost": 0.415,
+   "churn_rate_before": 0.118,
+   "churn_rate_after": 0.072,
+   "churners_before": 1420,
+   "churners_after": 505,
+   "model_trained_on_survivors_scoring_the_untracked": {
+    "auc_on_untracked_advertisers": 0.809,
+    "same_for_a_model_trained_on_everyone": 0.824,
+    "avg_predicted_churn": 0.091,
+    "actual_churn": 0.199
+   }
+  },
+  "missing_is_information": {
+   "churn_when_cpa_is_missing": 0.184,
+   "churn_when_cpa_is_present": 0.072,
+   "test_auc_keeping_a_missing_flag": 0.845,
+   "test_auc_filling_silently_with_no_flag": 0.84
+  },
+  "join_fan_out": {
+   "what": "joining the advertiser table to a campaigns table that has one row per campaign, then counting as if each row were an advertiser",
+   "advertisers": 12000,
+   "rows_after_join": 31197,
+   "rows_per_advertiser": 2.6,
+   "total_spend_before": 48017910,
+   "total_spend_after_join": 124080783,
+   "spend_overstated_by": 1.584,
+   "churn_rate_before": 0.1183,
+   "churn_rate_after_join": 0.1155,
+   "the_check": "count distinct advertisers and total rows before and after every join; if rows grew, something fanned out"
+  },
+  "inner_join_drop": {
+   "what": "an inner join to the account-managers table keeps only advertisers who have one",
+   "advertisers_before": 12000,
+   "advertisers_after": 3768,
+   "share_lost": 0.686,
+   "churn_rate_before": 0.118,
+   "churn_rate_after": 0.062
+  }
+ },
+ "before_after": {
+  "setup": "a separate small simulation. Ecommerce advertisers get a guided creative-setup flow from week 13; other verticals do not. Outcome: share of advertisers hitting their CPA goal each week. Everyone is slowly improving anyway (the season), and ecommerce starts from a lower level.",
+  "true_effect_pts": 4,
+  "weeks": 24,
+  "launch_after_week": 12,
+  "advertisers_per_week": {
+   "got_the_flow": 900,
+   "comparison": 2100
+  },
+  "weekly_hit_rate": {
+   "week": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24
+   ],
+   "got_the_flow": [
+    0.586,
+    0.583,
+    0.586,
+    0.594,
+    0.603,
+    0.612,
+    0.61,
+    0.633,
+    0.594,
+    0.612,
+    0.606,
+    0.64,
+    0.677,
+    0.687,
+    0.673,
+    0.677,
+    0.681,
+    0.698,
+    0.702,
+    0.712,
+    0.708,
+    0.716,
+    0.713,
+    0.698
+   ],
+   "comparison": [
+    0.653,
+    0.654,
+    0.642,
+    0.666,
+    0.67,
+    0.667,
+    0.677,
+    0.69,
+    0.671,
+    0.676,
+    0.67,
+    0.675,
+    0.684,
+    0.694,
+    0.701,
+    0.698,
+    0.72,
+    0.704,
+    0.718,
+    0.718,
+    0.727,
+    0.713,
+    0.727,
+    0.725
+   ]
+  },
+  "averages": {
+   "got_the_flow_before": 0.605,
+   "got_the_flow_after": 0.695,
+   "comparison_before": 0.668,
+   "comparison_after": 0.711
+  },
+  "three_answers": {
+   "before_vs_after_in_the_treated_group_pts": 9,
+   "treated_vs_comparison_after_launch_pts": -1.6,
+   "difference_in_differences_pts": 4.7,
+   "difference_in_differences_ci95_pts": [
+    3.2,
+    6.2
+   ]
+  },
+  "the_assumption": {
+   "what": "the two groups would have moved in parallel without the change; check it on the weeks BEFORE launch",
+   "pre_launch_drift_of_the_gap_pts_per_week": 0.12,
+   "plus_minus": 0.17,
+   "drift_distinguishable_from_zero": false
+  },
+  "when_the_assumption_fails": {
+   "what": "the same exercise in a world where the comparison group was barely improving on its own",
+   "difference_in_differences_pts": 7.9,
+   "pre_launch_drift_of_the_gap_pts_per_week": 0.33,
+   "plus_minus": 0.31,
+   "drift_distinguishable_from_zero": true,
+   "reading": "the method now credits the launch with improvement the treated group was already making; the pre-launch trend gap is the warning sign"
+  }
+ },
+ "tickets": {
+  "what": "synthetic advertiser support tickets, written to order by Gemini models (the true category is known because it was requested). Some are deliberately hard (two tangled issues, vague wording): about a quarter of the training tickets and two thirds of the test tickets.",
+  "honest_limits": [
+   "a real inbox is messier than this, and real labels are disputed: two people often disagree about the main issue, which caps what any method can score",
+   "the test tickets were written by a different model from the training tickets, but both writers and both LLM classifiers are from the same model family, so the LLM scores are optimistic",
+   "the keyword rules were written once and never tuned; a person iterating on real tickets would do better",
+   "the two trained methods learned from tickets by one writer, a quarter of them hard, and are tested on tickets by another writer, two thirds of them hard - a handicap the instruction-only LLMs do not carry, and a realistic one: training data rarely matches what arrives later"
+  ],
+  "n_tickets": 1050,
+  "n_train": 600,
+  "n_test": 450,
+  "n_test_hard": 300,
+  "categories": [
+   "billing",
+   "tracking_setup",
+   "ad_review",
+   "performance",
+   "account_access",
+   "feature_request"
+  ],
+  "per_category_test": {
+   "billing": 75,
+   "tracking_setup": 75,
+   "ad_review": 75,
+   "performance": 75,
+   "account_access": 75,
+   "feature_request": 75
+  },
+  "writers": {
+   "training_tickets": [
+    "gemini-3.8-flash"
+   ],
+   "test_tickets": [
+    "gemini-4-neon"
+   ]
+  },
+  "embedding_model": "gemini-embedding-2",
+  "embedding_dim": 256,
+  "examples": [
+   {
+    "label": "billing",
+    "text": "Where do I see past receipts? Only current balance is visible under billing tab."
+   },
+   {
+    "label": "tracking_setup",
+    "text": "Conversion tag status is still 'unverified' after 20 manual test purchases."
+   },
+   {
+    "label": "ad_review",
+    "text": "campaign 88412 stuck in review for 3 days now. whats going on???"
+   },
+   {
+    "label": "performance",
+    "text": "CTR fell from 0.45% to 0.08% overnight on our main advertorial."
+   },
+   {
+    "label": "account_access",
+    "text": "lost my phone cant do two step verification. need reset ASAP thx"
+   },
+   {
+    "label": "feature_request",
+    "text": "please add a dark mode option for the dashboard my eyes hurt checking stats at night"
+   }
+  ],
+  "hard_examples": [
+   {
+    "label": "billing",
+    "text": "lost access to the client sub-account after their admin changed permissions,, also July's monthly statement doesnt match what came out of the bank."
+   },
+   {
+    "label": "tracking_setup",
+    "text": "why arent my sales showing up here when my store backend shows 5 purchases from your links, ive spent $190 and bounce rate on mobile placements looks terrible too so i cant tell which sites to block"
+   },
+   {
+    "label": "ad_review",
+    "text": "why did my video thumbnails get disapproved again?? also the tag helper says no pixel found on my thank you page even tho I pasted the snippet right in the header"
+   }
+  ],
+  "majority_baseline_accuracy": 0.167,
+  "methods": {
+   "keyword_rules": {
+    "method": "hand-written keyword rules (never tuned)",
+    "accuracy": 0.291,
+    "correct": 131,
+    "n": 450,
+    "accuracy_95": [
+     0.251,
+     0.335
+    ],
+    "macro_f1": 0.307,
+    "accuracy_on_ordinary_tickets": 0.433,
+    "accuracy_on_hard_tickets": 0.22,
+    "no_answer": 103,
+    "per_category": {
+     "billing": {
+      "precision": 0.425,
+      "recall": 0.493,
+      "n": 75
+     },
+     "tracking_setup": {
+      "precision": 0.356,
+      "recall": 0.347,
+      "n": 75
+     },
+     "ad_review": {
+      "precision": 0.436,
+      "recall": 0.32,
+      "n": 75
+     },
+     "performance": {
+      "precision": 0.344,
+      "recall": 0.28,
+      "n": 75
+     },
+     "account_access": {
+      "precision": 0.379,
+      "recall": 0.293,
+      "n": 75
+     },
+     "feature_request": {
+      "precision": 0.077,
+      "recall": 0.013,
+      "n": 75
+     }
+    },
+    "most_common_confusions": [
+     {
+      "count": 21,
+      "actual": "performance",
+      "predicted_as": "no match"
+     },
+     {
+      "count": 18,
+      "actual": "feature_request",
+      "predicted_as": "no match"
+     },
+     {
+      "count": 18,
+      "actual": "billing",
+      "predicted_as": "no match"
+     },
+     {
+      "count": 16,
+      "actual": "tracking_setup",
+      "predicted_as": "no match"
+     }
+    ]
+   },
+   "bag_of_words_model": {
+    "method": "word-and-phrase counts + logistic regression, trained on 600 labelled tickets",
+    "accuracy": 0.542,
+    "correct": 244,
+    "n": 450,
+    "accuracy_95": [
+     0.496,
+     0.588
+    ],
+    "macro_f1": 0.539,
+    "accuracy_on_ordinary_tickets": 0.827,
+    "accuracy_on_hard_tickets": 0.4,
+    "no_answer": 0,
+    "per_category": {
+     "billing": {
+      "precision": 0.512,
+      "recall": 0.573,
+      "n": 75
+     },
+     "tracking_setup": {
+      "precision": 0.603,
+      "recall": 0.507,
+      "n": 75
+     },
+     "ad_review": {
+      "precision": 0.529,
+      "recall": 0.493,
+      "n": 75
+     },
+     "performance": {
+      "precision": 0.553,
+      "recall": 0.56,
+      "n": 75
+     },
+     "account_access": {
+      "precision": 0.535,
+      "recall": 0.707,
+      "n": 75
+     },
+     "feature_request": {
+      "precision": 0.534,
+      "recall": 0.413,
+      "n": 75
+     }
+    },
+    "most_common_confusions": [
+     {
+      "count": 11,
+      "actual": "performance",
+      "predicted_as": "account_access"
+     },
+     {
+      "count": 11,
+      "actual": "feature_request",
+      "predicted_as": "billing"
+     },
+     {
+      "count": 11,
+      "actual": "feature_request",
+      "predicted_as": "account_access"
+     },
+     {
+      "count": 10,
+      "actual": "ad_review",
+      "predicted_as": "account_access"
+     }
+    ]
+   },
+   "embeddings_plus_logistic_regression": {
+    "method": "embeddings + logistic regression, trained on 600 labelled tickets",
+    "accuracy": 0.749,
+    "correct": 337,
+    "n": 450,
+    "accuracy_95": [
+     0.707,
+     0.787
+    ],
+    "macro_f1": 0.746,
+    "accuracy_on_ordinary_tickets": 0.94,
+    "accuracy_on_hard_tickets": 0.653,
+    "no_answer": 0,
+    "per_category": {
+     "billing": {
+      "precision": 0.811,
+      "recall": 0.8,
+      "n": 75
+     },
+     "tracking_setup": {
+      "precision": 0.779,
+      "recall": 0.707,
+      "n": 75
+     },
+     "ad_review": {
+      "precision": 0.75,
+      "recall": 0.56,
+      "n": 75
+     },
+     "performance": {
+      "precision": 0.696,
+      "recall": 0.853,
+      "n": 75
+     },
+     "account_access": {
+      "precision": 0.722,
+      "recall": 0.76,
+      "n": 75
+     },
+     "feature_request": {
+      "precision": 0.753,
+      "recall": 0.813,
+      "n": 75
+     }
+    },
+    "most_common_confusions": [
+     {
+      "count": 11,
+      "actual": "tracking_setup",
+      "predicted_as": "performance"
+     },
+     {
+      "count": 9,
+      "actual": "ad_review",
+      "predicted_as": "performance"
+     },
+     {
+      "count": 9,
+      "actual": "ad_review",
+      "predicted_as": "account_access"
+     },
+     {
+      "count": 7,
+      "actual": "ad_review",
+      "predicted_as": "feature_request"
+     }
+    ]
+   },
+   "llm_zero_shot_cheap": {
+    "method": "zero-shot LLM, gemini-3.5-flash-lite, no training tickets",
+    "accuracy": 0.809,
+    "correct": 364,
+    "n": 450,
+    "accuracy_95": [
+     0.77,
+     0.843
+    ],
+    "macro_f1": 0.806,
+    "accuracy_on_ordinary_tickets": 0.92,
+    "accuracy_on_hard_tickets": 0.753,
+    "no_answer": 0,
+    "per_category": {
+     "billing": {
+      "precision": 0.783,
+      "recall": 0.867,
+      "n": 75
+     },
+     "tracking_setup": {
+      "precision": 0.789,
+      "recall": 0.947,
+      "n": 75
+     },
+     "ad_review": {
+      "precision": 0.805,
+      "recall": 0.827,
+      "n": 75
+     },
+     "performance": {
+      "precision": 0.947,
+      "recall": 0.72,
+      "n": 75
+     },
+     "account_access": {
+      "precision": 0.728,
+      "recall": 0.893,
+      "n": 75
+     },
+     "feature_request": {
+      "precision": 0.882,
+      "recall": 0.6,
+      "n": 75
+     }
+    },
+    "most_common_confusions": [
+     {
+      "count": 9,
+      "actual": "feature_request",
+      "predicted_as": "billing"
+     },
+     {
+      "count": 8,
+      "actual": "feature_request",
+      "predicted_as": "account_access"
+     },
+     {
+      "count": 7,
+      "actual": "performance",
+      "predicted_as": "tracking_setup"
+     },
+     {
+      "count": 7,
+      "actual": "feature_request",
+      "predicted_as": "ad_review"
+     }
+    ]
+   },
+   "llm_zero_shot_stronger": {
+    "method": "zero-shot LLM, gemini-4-hydrogen, no training tickets",
+    "accuracy": 0.96,
+    "correct": 432,
+    "n": 450,
+    "accuracy_95": [
+     0.938,
+     0.975
+    ],
+    "macro_f1": 0.96,
+    "accuracy_on_ordinary_tickets": 0.973,
+    "accuracy_on_hard_tickets": 0.953,
+    "no_answer": 0,
+    "per_category": {
+     "billing": {
+      "precision": 0.986,
+      "recall": 0.92,
+      "n": 75
+     },
+     "tracking_setup": {
+      "precision": 0.937,
+      "recall": 0.987,
+      "n": 75
+     },
+     "ad_review": {
+      "precision": 0.973,
+      "recall": 0.973,
+      "n": 75
+     },
+     "performance": {
+      "precision": 0.986,
+      "recall": 0.947,
+      "n": 75
+     },
+     "account_access": {
+      "precision": 0.921,
+      "recall": 0.933,
+      "n": 75
+     },
+     "feature_request": {
+      "precision": 0.962,
+      "recall": 1,
+      "n": 75
+     }
+    },
+    "most_common_confusions": [
+     {
+      "count": 3,
+      "actual": "billing",
+      "predicted_as": "account_access"
+     },
+     {
+      "count": 2,
+      "actual": "performance",
+      "predicted_as": "tracking_setup"
+     },
+     {
+      "count": 2,
+      "actual": "account_access",
+      "predicted_as": "tracking_setup"
+     },
+     {
+      "count": 1,
+      "actual": "tracking_setup",
+      "predicted_as": "account_access"
+     }
+    ]
+   }
+  },
+  "models": {
+   "cheap": "gemini-3.5-flash-lite",
+   "stronger": "gemini-4-hydrogen"
+  },
+  "paired": {
+   "method": "same 450 test tickets, bootstrap interval on the difference in accuracy; an interval that includes 0 is a tie",
+   "rows": [
+    {
+     "a": "bag_of_words_model",
+     "b": "keyword_rules",
+     "accuracy_a_minus_b_pts": 25.1,
+     "ci95_pts": [
+      20,
+      30.7
+     ],
+     "tickets_only_a_got_right": 148,
+     "tickets_only_b_got_right": 35,
+     "clear_winner": "bag_of_words_model"
+    },
+    {
+     "a": "embeddings_plus_logistic_regression",
+     "b": "bag_of_words_model",
+     "accuracy_a_minus_b_pts": 20.7,
+     "ci95_pts": [
+      15.6,
+      26
+     ],
+     "tickets_only_a_got_right": 126,
+     "tickets_only_b_got_right": 33,
+     "clear_winner": "embeddings_plus_logistic_regression"
+    },
+    {
+     "a": "llm_zero_shot_cheap",
+     "b": "embeddings_plus_logistic_regression",
+     "accuracy_a_minus_b_pts": 6,
+     "ci95_pts": [
+      1.1,
+      10.9
+     ],
+     "tickets_only_a_got_right": 79,
+     "tickets_only_b_got_right": 52,
+     "clear_winner": "llm_zero_shot_cheap"
+    },
+    {
+     "a": "llm_zero_shot_stronger",
+     "b": "llm_zero_shot_cheap",
+     "accuracy_a_minus_b_pts": 15.1,
+     "ci95_pts": [
+      11.6,
+      18.9
+     ],
+     "tickets_only_a_got_right": 75,
+     "tickets_only_b_got_right": 7,
+     "clear_winner": "llm_zero_shot_stronger"
+    },
+    {
+     "a": "llm_zero_shot_stronger",
+     "b": "embeddings_plus_logistic_regression",
+     "accuracy_a_minus_b_pts": 21.1,
+     "ci95_pts": [
+      17.1,
+      25.1
+     ],
+     "tickets_only_a_got_right": 103,
+     "tickets_only_b_got_right": 8,
+     "clear_winner": "llm_zero_shot_stronger"
+    }
+   ]
+  },
+  "two_llms": {
+   "what": "where the two LLMs give the same label vs where they differ - disagreement as a cheap flag for human review",
+   "share_agreeing": 0.818,
+   "accuracy_when_they_agree": 0.97,
+   "tickets_where_they_disagree": 82,
+   "stronger_model_accuracy_when_they_disagree": 0.915,
+   "share_of_disagreements_that_are_hard_tickets": 0.878
+  },
+  "learning_curve": {
+   "how": "train on a random handful of labelled tickets per category, score on the 450 test tickets, 20 repeats each",
+   "rows": [
+    {
+     "labelled_per_category": 2,
+     "labelled_total": 12,
+     "embeddings_accuracy": 0.543,
+     "embeddings_min": 0.447,
+     "embeddings_max": 0.62,
+     "bag_of_words_accuracy": 0.285,
+     "bag_of_words_min": 0.227,
+     "bag_of_words_max": 0.349
+    },
+    {
+     "labelled_per_category": 5,
+     "labelled_total": 30,
+     "embeddings_accuracy": 0.635,
+     "embeddings_min": 0.58,
+     "embeddings_max": 0.684,
+     "bag_of_words_accuracy": 0.348,
+     "bag_of_words_min": 0.3,
+     "bag_of_words_max": 0.382
+    },
+    {
+     "labelled_per_category": 10,
+     "labelled_total": 60,
+     "embeddings_accuracy": 0.67,
+     "embeddings_min": 0.633,
+     "embeddings_max": 0.733,
+     "bag_of_words_accuracy": 0.408,
+     "bag_of_words_min": 0.347,
+     "bag_of_words_max": 0.449
+    },
+    {
+     "labelled_per_category": 20,
+     "labelled_total": 120,
+     "embeddings_accuracy": 0.698,
+     "embeddings_min": 0.662,
+     "embeddings_max": 0.731,
+     "bag_of_words_accuracy": 0.454,
+     "bag_of_words_min": 0.424,
+     "bag_of_words_max": 0.498
+    },
+    {
+     "labelled_per_category": 50,
+     "labelled_total": 300,
+     "embeddings_accuracy": 0.723,
+     "embeddings_min": 0.704,
+     "embeddings_max": 0.751,
+     "bag_of_words_accuracy": 0.509,
+     "bag_of_words_min": 0.484,
+     "bag_of_words_max": 0.54
+    },
+    {
+     "labelled_per_category": 100,
+     "labelled_total": 600,
+     "embeddings_accuracy": 0.749,
+     "embeddings_min": 0.749,
+     "embeddings_max": 0.749,
+     "bag_of_words_accuracy": 0.542,
+     "bag_of_words_min": 0.542,
+     "bag_of_words_max": 0.542
+    }
+   ]
+  },
+  "clustering": {
+   "how": "k-means with k=6 on the embeddings; the category labels were not used",
+   "clusters": [
+    {
+     "size": 198,
+     "dominant_category": "billing",
+     "purity": 0.753
+    },
+    {
+     "size": 198,
+     "dominant_category": "tracking_setup",
+     "purity": 0.727
+    },
+    {
+     "size": 190,
+     "dominant_category": "ad_review",
+     "purity": 0.742
+    },
+    {
+     "size": 168,
+     "dominant_category": "performance",
+     "purity": 0.768
+    },
+    {
+     "size": 161,
+     "dominant_category": "feature_request",
+     "purity": 0.783
+    },
+    {
+     "size": 135,
+     "dominant_category": "account_access",
+     "purity": 0.83
+    }
+   ],
+   "overall_purity": 0.763,
+   "distinct_dominant_categories": 6,
+   "caveat": "we asked for six clusters because we knew there were six categories; on a real inbox you would not know the number"
+  },
+  "nearest_example": {
+   "query": "My browser extension says the base tag is installed correctly, so why does the conversions column still just show a dash after 300 clicks?",
+   "query_label": "tracking_setup",
+   "nearest": [
+    {
+     "similarity": 0.88,
+     "label": "performance",
+     "text": "Pixel helper extension shows green checkmark on our thank-you page but your dashboard still shows 0 results after $800 spent. Is the traffic even real?"
+    },
+    {
+     "similarity": 0.872,
+     "label": "tracking_setup",
+     "text": "Pasted the tracking code in theme liquid file on our store. Did a test order with real credit card, no conversion in campaign dashboard. Does it take 24 hours to sync?"
+    },
+    {
+     "similarity": 0.871,
+     "label": "tracking_setup",
+     "text": "Conversions showing in GA4 but zero in your platform. Pixel helper extension says tag is loaded and event fired on the order confirmation page."
+    }
+   ],
+   "average_similarity_same_category": 0.809,
+   "average_similarity_other_categories": 0.716
+  },
+  "llm_misses": [
+   {
+    "text": "why did our skincare ad get rejected for before and after photos when we didnt even use one?? trying to click the appeal link from the notification email and it just says something went wrong with my profile, did someone kick me out or what",
+    "requested_category": "account_access",
+    "llm_said": "ad_review",
+    "hard": true
+   },
+   {
+    "text": "Something weird is happening with what we owe and the old debit card on file is expired. I tried to go in and sort it out myself, but my business partner originally created our profile and now I can't get into the settings area to change anything at all.",
+    "requested_category": "billing",
+    "llm_said": "account_access",
+    "hard": true
+   },
+   {
+    "text": "I tried putting the little conversion snippet on our thank you page like the guide showed, and the dashboard still says unverified so I have no idea if anyone bought anything from our articles. Meanwhile my boss asked me where the paper trail is for the three ",
+    "requested_category": "billing",
+    "llm_said": "tracking_setup",
+    "hard": true
+   },
+   {
+    "text": "Compliance keeps bouncing our finance landing pages over disclosure wording and meanwhile we're still waiting on that adjustment from when the spend ceilling was ignored last month.",
+    "requested_category": "billing",
+    "llm_said": "ad_review",
+    "hard": true
+   }
+  ]
+ }
+}

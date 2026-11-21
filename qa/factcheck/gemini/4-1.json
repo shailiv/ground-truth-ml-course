@@ -1,0 +1,17 @@
+{
+ "issues": [
+  {
+   "where": "seg5 narration",
+   "quote": "The safe rule is that a deeper tree never does worse on new advertisers, it just takes longer to train.",
+   "kind": "wrong_concept",
+   "severity": "high",
+   "explanation": "This states the exact opposite of how decision trees behave and directly contradicts the segment's own narration and visual table. Growing a single decision tree deeper increases variance and overfitting, frequently hurting generalisation on unseen data; on this dataset, test AUC peaks at 0.769 at depth 4 and falls to 0.527 at depth 15 and 0.607 at depth 25 (worse than depth 1 at 0.656).",
+   "evidence": "facts.json -> depth_sweep: depth 1 test_auc = 0.656, depth 4 test_auc = 0.769, depth 15 test_auc = 0.527, depth 25 test_auc = 0.607; standard bias-variance behaviour of unpruned decision trees.",
+   "fix": "Remove the sentence, or replace it with: 'Once a tree is deep enough to capture the signal, adding more levels makes it worse on new advertisers as it starts memorising training quirks.'"
+  }
+ ],
+ "numbers_checked": 72,
+ "verdict": "All 72 numeric claims match facts.json and the quiz/review items are well constructed, but seg5 narration ends with a high-severity false statement claiming a deeper tree never does worse on new advertisers.",
+ "_hash": "fa6bdd7da1905021",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_ChdyZE1CYV83Y0JwblhrZFVQbzRYcXVBZxIXcmRNQmFfN2NCcG5Ya2RVUG80WHF1QWc | tokens in=67431 out=354 thought=23450]"
+}

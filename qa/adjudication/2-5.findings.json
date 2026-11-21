@@ -1,0 +1,42 @@
+[
+ {
+  "reviewer": "learner-1",
+  "lesson": "2-5",
+  "where": "guess",
+  "quote": "Can one of them still be the worse choice for finance?",
+  "kind": "question",
+  "severity": "medium",
+  "problem": "'Can ... still' invites yes, and the two 'Only if' options (trained on fewer advertisers, takes longer to produce) are things nobody believes.",
+  "fix": "Use the toy from seg4 as the guess: 'Model 1 is off by $1,000 on all 100 advertisers. Model 2 is exact on 99 and off by $100,000 on one. Which has the larger average miss?' The surprise (equal) sets up RMSE."
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "2-5",
+  "where": "seg7 narration",
+  "quote": "Take a stronger spend model from later in this course, with an MAE of about 1,400 dollars, and cut it by account size.",
+  "kind": "lost",
+  "severity": "medium",
+  "problem": "A third, unnamed model appears for one segment just after I had A and B straight, and the tier table is about neither. It never resolves: the best model in 3-1 has an MAE of 1,428, not 1,416.",
+  "fix": "Show the tier table for model A, or name the model and the lesson where it is built."
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "2-5",
+  "where": "seg7 narration",
+  "quote": "For large accounts, over 3,300.",
+  "kind": "ear",
+  "severity": "medium",
+  "problem": "Seven figures in thirty seconds (1,400, 170, 600, 3,300, half, five percent, 133,000) in a lesson that speaks about thirty dollar amounts. I kept the 133,000 account; the tiers blurred.",
+  "fix": "Speak the two ends (170 on small accounts, over 3,300 on large) and the 133,000 story. Leave the middle tier and the percentages to the table."
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "2-5",
+  "where": "seg1 narration (pattern across modules 1 to 3)",
+  "quote": "How they work inside comes later.",
+  "kind": "boring",
+  "severity": "low",
+  "problem": "Seven 'a later lesson' promises in 16 lessons (1-3, 2-1, 2-5 twice, 3-1, 3-2, 3-5) and none says which lesson. I forget fast, so by the time the payoff comes I have lost the question.",
+  "fix": "Put the lesson number on screen each time, for example '→ 3-1'."
+ }
+]

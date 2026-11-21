@@ -1,0 +1,35 @@
+{
+ "issues": [
+  {
+   "where": "seg5 visual (segments[4])",
+   "quote": "\"Forest, 300 trees\", \"0.831\", \"156\"",
+   "kind": "number_mismatch",
+   "severity": "high",
+   "explanation": "In the scoreboard table 'Two questions, same table, same models', the Churn top-200 count for the 300-tree random forest is listed as 156, which would falsely place the forest far ahead of both logistic regression (136) and tuned boosting (132) and outside logistic regression's 95% interval (123 to 150). In facts.json, the random forest finds 126 churners in the top 200.",
+   "evidence": "facts.json -> model_table[3] ('Random forest, 300 trees'): top_200_churners = 126",
+   "fix": "Change \"156\" to \"126\" in the 'Churn top 200' column for 'Forest, 300 trees'."
+  },
+  {
+   "where": "seg6 narration (segments[5])",
+   "quote": "In the top 200 it finds 155 adopters.",
+   "kind": "number_mismatch",
+   "severity": "high",
+   "explanation": "The narration says tuned boosting finds 155 video adopters in the top 200 against 153 for the weighted sum, and immediately concludes 'Nobody needs an interval to feel that one.' In facts.json—and in this segment's own visual as well as the previous segment's table—tuned boosting finds 185 adopters in the top 200 (32 more than logistic regression, not 2).",
+   "evidence": "facts.json -> video.scoreboard[4] ('Gradient boosting, tuned by cross-validation'): top_200_adopters = 185; also contradicts segments[5].visual.right.sub ('top 200: 185 against 153 adopters')",
+   "fix": "Change 'In the top 200 it finds 155 adopters.' to 'In the top 200 it finds 185 adopters.'"
+  },
+  {
+   "where": "seg7 visual (segments[6])",
+   "quote": "Spread between runs: wider than the 0.309 churn gap",
+   "kind": "number_mismatch",
+   "severity": "high",
+   "explanation": "The bullet states the churn gap is 0.309 and claims the neural network's spread across six runs (0.835 - 0.808 = 0.027) is wider than 0.309. Both the number and the resulting comparison are wrong: the churn AUC gap between logistic regression (0.845) and tuned boosting (0.836) is 0.009, which the 0.027 spread is indeed wider than.",
+   "evidence": "facts.json -> uncertainty.difference_point = 0.009 (logreg.test.auc 0.845 minus boosting.test.auc 0.836 = 0.009; neural_net test_auc range 0.808 to 0.835 gives a 0.027 spread pushes past 0.009, not 0.309) ",
+   "fix": "Change 'Spread between runs: wider than the 0.309 churn gap' to 'Spread between runs: wider than the 0.009 churn gap'."
+  }
+ ],
+ "numbers_checked": 44,
+ "verdict": "Conceptually sound and well-aligned with the brief, but contains three high-severity numeric errors in the segments (two in visuals and one in narration) that contradict facts.json and distort key comparisons.",
+ "_hash": "42979e154240bfb6",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_ChdWZFFCYTZpSEVPeS1uc0VQMFlDSWtBYxIXVmRRQmE2aUhFT3ktbnNFUDBZQ0lrQWM | tokens in=67957 out=823 thought=17942]"
+}

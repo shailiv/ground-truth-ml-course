@@ -1,0 +1,198 @@
+{
+  "reviewer": "expert-2",
+  "lessons": ["2-5", "2-6", "3-1", "3-2", "3-3", "3-4", "3-5", "4-1", "4-2"],
+  "findings": [
+    {
+      "lesson": "2-5",
+      "where": "seg5 narration",
+      "quote": "Model B, about 7,800",
+      "kind": "number_mismatch",
+      "severity": "high",
+      "problem": "Model B's RMSE is 5,824, not about 7,800. The narration contradicts its own visual (RMSE $5,824), the seg6 table and quiz 2-5-q1, and it inflates the gap the whole lesson turns on from about 19% to about 60%.",
+      "evidence": "regression.models.gradient_boosting_squared_loss.rmse = 5824 (model A, linear_regression_dollars_plus_run_rate.rmse = 4878)",
+      "fix": "\"Model B, about 5,800.\""
+    },
+    {
+      "lesson": "2-5",
+      "where": "seg3 visual (bar, first item)",
+      "quote": "\"Same as last 8 weeks\", \"value\": 2704",
+      "kind": "number_mismatch",
+      "severity": "medium",
+      "problem": "The bar for the same-as-last-8-weeks baseline is drawn at 2,704; the MAE is 2,404. It contradicts seg2's visual ($2,404), the seg2 narration (about 2,400) and the seg6 table.",
+      "evidence": "regression.models.same_as_last_8_weeks.mae = 2404",
+      "fix": "\"value\": 2404"
+    },
+    {
+      "lesson": "2-5",
+      "where": "seg6 visual (table note)",
+      "quote": "Actual total: $21.0M across 6,000 test advertisers",
+      "kind": "number_mismatch",
+      "severity": "medium",
+      "problem": "Wrong row set: the test set is 4,000 advertisers (6,000 is the training set). Every other place in the lesson says 4,000 test advertisers.",
+      "evidence": "regression.test_rows = 4000; data.n_test = 4000; data.n_train = 6000; regression.total_actual = 21026436",
+      "fix": "\"Actual total: $21.0M across 4,000 test advertisers\""
+    },
+    {
+      "lesson": "2-6",
+      "where": "seg4 narration (last sentence)",
+      "quote": "A 95 percent interval tells you that 95 percent of the advertisers in the test set fall inside that range.",
+      "kind": "wrong_concept",
+      "severity": "high",
+      "problem": "False, and the classic misreading: an interval on a rate or a gap describes uncertainty about the estimate, not where individual advertisers fall (and no test set is involved in a month-to-month churn comparison). It contradicts seg2 ('nineteen draws in twenty land within it') and the lesson's own glossary entry for 'interval'.",
+      "evidence": "Principle: a 95% confidence interval is a procedure that covers the true value in about 95% of repeated samples. Glossary in the same file: 'a 95% interval is built to contain the truth 19 times in 20'. noise.comparisons[3].ci95_pts = [-1.7, 11.4] is an interval for a difference of two rates.",
+      "fix": "Delete the sentence, or replace with: \"A 95 percent interval is built so that, nineteen times in twenty, it contains the true difference.\""
+    },
+    {
+      "lesson": "3-1",
+      "where": "seg4 narration",
+      "quote": "The advertiser in the middle of the test set spends about 7,100 dollars.",
+      "kind": "number_mismatch",
+      "severity": "high",
+      "problem": "The median is 1,694 (about 1,700), not 7,100. As spoken, the middle advertiser spends more than the average, and the next sentence ('The average is about 5,300, three times as much') becomes nonsense; the skew argument of the segment collapses. The visual shows $1,694.",
+      "evidence": "regression.target_median = 1694; regression.target_mean = 5257 (5257 / 1694 = 3.1)",
+      "fix": "\"...spends about 1,700 dollars.\""
+    },
+    {
+      "lesson": "3-1",
+      "where": "seg3 visual (bar, first item)",
+      "quote": "\"Run-rate baseline\", \"value\": 2202",
+      "kind": "number_mismatch",
+      "severity": "medium",
+      "problem": "The run-rate MAE is 2,022, not 2,202. The bar contradicts the narration (about 2,000), the seg5 and seg9 visuals ($2,022) and its own note (gap +$339 to the regression's 2,361 implies 2,022).",
+      "evidence": "regression.models.run_rate.mae = 2022; paired_differences[1].mae_a_minus_mae_b = 339",
+      "fix": "\"value\": 2022"
+    },
+    {
+      "lesson": "3-1",
+      "where": "seg9 visual (quote sub)",
+      "quote": "plus run-rate column $3,733",
+      "kind": "number_mismatch",
+      "severity": "medium",
+      "problem": "The regression with the run-rate column misses by $1,733, not $3,733. As written the recap shows the improved model as the worst of the ladder, contradicting seg3, seg5 and quiz 3-1-q4.",
+      "evidence": "regression.models.linear_regression_dollars_plus_run_rate.mae = 1733",
+      "fix": "\"plus run-rate column $1,733\""
+    },
+    {
+      "lesson": "3-2",
+      "where": "seg4 narration (last sentence)",
+      "quote": "And because the weights come from the data, a large positive weight proves that the column causes the outcome.",
+      "kind": "wrong_concept",
+      "severity": "high",
+      "problem": "False, and the opposite of the lesson's central message (seg7, takeaway 3, every review-1 variant): a weight is an association. In this very data tracking's weight suggests -4.4 points while the true effect of switching it on is -2.3.",
+      "evidence": "logreg.how_to_read: 'None of these is a causal effect.' tracking_story.model_weight_for_tracking.avg_probability_shift_pts = -4.4 vs tracking_story.truth.effect_pts = -2.3; tracking_story.why (hidden sophistication).",
+      "fix": "Delete the sentence (the segment already ends correctly on 'So a weight always comes with a unit.')."
+    },
+    {
+      "lesson": "3-3",
+      "where": "seg2 narration",
+      "quote": "14 or fewer against 95 or more",
+      "kind": "number_mismatch",
+      "severity": "medium",
+      "problem": "The root split is active days <= 14.5, i.e. 14 or fewer against 15 or more. '95 or more' is impossible for a column that counts active days out of the last 28, and contradicts seg3 ('More than 14 active days') and the seg5 table ('Active (15 or more)').",
+      "evidence": "tree.root.feature = active_days_28, tree.root.threshold = 14.5",
+      "fix": "\"14 or fewer against 15 or more.\""
+    },
+    {
+      "lesson": "3-3",
+      "where": "seg5 narration",
+      "quote": "Among active ones, it takes churn from 5 percent to 12.",
+      "kind": "number_mismatch",
+      "severity": "medium",
+      "problem": "Among active advertisers, shrinking spend takes churn from 5.3% to 21.1%, not 12. The narration contradicts the visual in the same segment (21.1%).",
+      "evidence": "tree.root.no.no.churn = 0.053; tree.root.no.yes.churn = 0.211",
+      "fix": "\"...from 5 percent to 21.\""
+    },
+    {
+      "lesson": "3-3",
+      "where": "seg5 visual (table note)",
+      "quote": "a spend trend below 7.04 in the first row",
+      "kind": "number_mismatch",
+      "severity": "medium",
+      "problem": "The cut-off on the few-active-days branch is 0.74, not 7.04 (spend trend is a ratio around 1; p90 is 1.6). Contradicts seg3, the seg4 SQL and the predict reveal, all of which say 0.74.",
+      "evidence": "tree.root.yes.threshold = 0.74 (feature spend_trend); data.feature_stats_train.spend_trend.p90 = 1.604",
+      "fix": "\"...below 0.74 in the first row and below 0.69 in the second\""
+    },
+    {
+      "lesson": "3-3",
+      "where": "seg5 narration",
+      "quote": "So low activity matters far more when spend is also falling. ... Last lesson's weighted sum gave each column one weight for everyone.",
+      "kind": "misleading",
+      "severity": "low",
+      "problem": "The numbers offered as an 'it depends' the tree found and a weighted sum cannot express are not an interaction on the scale the weighted sum works on. Low activity multiplies the odds of churn by about 4 in both columns (4.0 when spend holds, 4.5 when it shrinks), which a single weight per column reproduces through the S-curve - exactly what 3-2 seg3 taught ('the same push moves an advertiser near 50 percent a long way'). The general claim about trees is right; this evidence does not show it.",
+      "evidence": "tree.root: 0.053 -> 0.182 (odds 0.056 -> 0.222, x4.0) and 0.211 -> 0.544 (odds 0.267 -> 1.193, x4.5). Consistent with logreg beating the tree (0.845 vs 0.761).",
+      "fix": "Say the gap is in percentage points (\"13 points when spend holds, 33 when it shrinks\") and rest the 'it depends' point on what the tree really does differently: each branch picks its own next question and cut-off (size on one branch, click rate on the other)."
+    },
+    {
+      "lesson": "3-3",
+      "where": "quiz 3-3-q2",
+      "quote": "test AUC above 0.95 ... the two sides churn at 94 percent and 1 percent",
+      "kind": "unsupported_number",
+      "severity": "low",
+      "problem": "A course-domain question states specific results for a leaky tree on this data (its AUC, the split at 30 days, the two branch rates) that are not in facts.json and cannot be derived; facts only hold the leak's effect on the logistic regression.",
+      "evidence": "leakage.auc_with_leak = 0.97 is for logistic regression; leakage has medians 86 vs 3 and leak_metrics_at_half (precision 0.975) but no tree split or branch rates.",
+      "fix": "Drop the invented figures: \"a test AUC far above anything honest, and a first question on 'days since last spend' that separates churners almost perfectly\" - or compute the leaky tree and add it to facts.json."
+    },
+    {
+      "lesson": "4-1",
+      "where": "seg5 narration (last sentence)",
+      "quote": "The safe rule is that a deeper tree never does worse on new advertisers, it just takes longer to train.",
+      "kind": "wrong_concept",
+      "severity": "high",
+      "problem": "False, and it contradicts the lesson itself: on this data the test AUC falls from 0.769 at depth 4 to 0.607 at depth 25, below a one-question tree (0.656). A learner who keeps this 'rule' would ask for the deepest tree every time.",
+      "evidence": "depth_sweep: depth 4 test_auc 0.769; depth 10 0.653; depth 15 0.527; depth 25 0.607; depth 1 0.656. Principle: unconstrained trees overfit.",
+      "fix": "Delete the sentence. If a closing rule is wanted: \"So depth is something to measure on new rows, never something to maximise.\""
+    },
+    {
+      "lesson": "4-1",
+      "where": "seg5 visual (table note)",
+      "quote": "lesson 3-3's tree was grown with a minimum leaf size and scored 0.761",
+      "kind": "unsupported_number",
+      "severity": "low",
+      "problem": "The explanation given for the two different depth-3 results (0.767 here, 0.761 in 3-3) is not recorded anywhere in facts.json; the facts simply hold two different depth-3 trees with no stated reason.",
+      "evidence": "tree: depth 3, leaves 8, test.auc 0.761, train_auc 0.786 (no leaf-size setting recorded); depth_sweep[2]: test_auc 0.767, train_auc 0.787.",
+      "fix": "Record the tree's settings in facts.json and cite them, or reword to what is known: \"Depth 3 scores 0.767 in this sweep; the tree of lesson 3-3 was fitted with slightly different settings and scored 0.761.\""
+    },
+    {
+      "lesson": "4-1",
+      "where": "seg2 narration and widget note",
+      "quote": "Take that tree at every depth from 1 to 25",
+      "kind": "number_mismatch",
+      "severity": "low",
+      "problem": "The sweep has 12 depths (1, 2, 3, 4, 5, 6, 8, 10, 12, 15, 20, 25), not every depth from 1 to 25. Lesson 4-2 then counts 'Twelve depths' and 'the best of twelve looks', so the two lessons disagree on how many trees were scored.",
+      "evidence": "depth_sweep has 12 entries; no depth 7, 9, 11, 13-14, 16-19, 21-24.",
+      "fix": "\"Take that tree at twelve depths between 1 and 25, and score it twice.\""
+    },
+    {
+      "lesson": "4-2",
+      "where": "seg5 narration (last sentence)",
+      "quote": "It is fine to try several settings against the test months and keep the best, as long as you report the winning score.",
+      "kind": "wrong_concept",
+      "severity": "high",
+      "problem": "This is the exact cheat the lesson exists to stop. Keeping the best of several looks at the test set fits the choice to those rows; the winning score is then optimistic and nothing untouched is left. It contradicts seg1, seg2, seg8, takeaway 1, quiz 4-2-q1 and q3, and review 1.",
+      "evidence": "Principle: selection on the test set biases the reported score upward (best of k noisy looks). boosting.tuning.chosen_by = '5-fold cross-validation on the training months only'. Same lesson, seg1: 'Pick the depth that scores best on the test set, and the test set has trained your model.'",
+      "fix": "Delete the sentence."
+    },
+    {
+      "lesson": "4-2",
+      "where": "ask_assistant; seg6 item 3; takeaway 2; seg3",
+      "quote": "If any advertiser has more than one row, keep all of its rows in the same fold, make each fold check on later months than it trains on",
+      "kind": "brief",
+      "severity": "low",
+      "problem": "The brief makes time-ordered folds conditional on repeated advertisers. Those are two separate conditions: a table with one row per advertiser and a time trend still needs folds that do not train on the future, and this brief would let shuffled folds through. The lesson's own example (seg3: shuffled five-fold over January-March rows, which do carry dates) also breaks its stated rule 'never train on the future' without saying why that is acceptable here.",
+      "evidence": "cv.note: 'shuffled folds are fine here only because every row is a different advertiser from the same three months; with repeated advertisers or a time trend, folds must respect groups and time'.",
+      "fix": "Brief: \"If any advertiser has more than one row, keep all of its rows in the same fold. If the rows span periods that differ, make each fold check on later months than it trains on. Say which of the two applied.\" Seg4: add one sentence that the three training months are alike, which is the only reason shuffled folds are acceptable in the main table."
+    },
+    {
+      "lesson": "4-2",
+      "where": "seg7 visual and narration; glossary 'learning curve'",
+      "quote": "The test score of one model trained on growing numbers of rows",
+      "kind": "contradiction",
+      "severity": "low",
+      "problem": "In the lesson whose rule is 'open the test set once', the learning curve is defined and drawn as 56 scorings of the test set (7 sizes x 8 samples), and the learner is told to ask for one, with no remark that it is a diagnostic or that it should be read off validation folds. A learner who follows the glossary breaks the audit item 'the test set was scored once'.",
+      "evidence": "learning_curve.what: 'train on a random sample of the training rows, score on all 4,000 May-June rows; 8 repeats per size'.",
+      "fix": "Glossary: \"The held-out score of one model trained on growing numbers of rows...\"; narration: \"Ask for a learning curve, scored on validation folds.\"; visual note: \"Shown here on the test months for illustration only; nothing was chosen from it.\""
+    }
+  ],
+  "clean": ["3-4", "3-5"],
+  "notes": "Method: every figure in narration, visuals, guesses, quizzes, reviews, drills, explain-backs, briefs, checklists and glossaries of the nine lessons was looked up in facts.json one at a time; every keyed answer and every cue marker index was checked. 3-4 and 3-5 came through with nothing to report (all numbers, both SQL/Python visuals and all 10 keyed answers each check out). Pattern worth knowing: the four false sentences (2-6 seg4, 3-2 seg4, 4-1 seg5, 4-2 seg5) each sit as the LAST sentence of a segment and contradict the rest of their own lesson; the number errors are digit transpositions or swaps (2404->2704, 2022->2202, 1733->3,733, 1,700->7,100, 5,800->7,800, 0.74->7.04, 15->95, 21->12, 4,000->6,000). Things in facts.json itself: (1) two different depth-3 trees: tree.test.auc 0.761 / train_auc 0.786 (also in model_table) versus depth_sweep depth 3 at 0.767 / 0.787; no setting is recorded that explains it, yet 4-1 asserts a minimum leaf size. (2) noise.margin_of_error_for_a_churn_rate.what says 'about 12.6%' but the rows are the margins for the overall 11.8% rate (n=100 gives 6.3 at 11.8%, 6.5 at 12.6%); harmless at spoken rounding. (3) noise.aa_test for groups of 4,000: typical gap 0.38 and 1-in-20 gap 1.15 are about 0.8x what two separate groups of 4,000 would show (0.49 / 1.41) and x sqrt(2/3) fits exactly, so the two groups look like independent draws from the same 12,000 rather than a split; the lesson's '0% of gaps over 2 points' still holds, but the figure understates the noise and disagrees with the margin table (+-1.0 per group). (4) regression has two sets of log-model totals on different rows: typical_vs_average (-3.6% / +0.1%) is on the 3,473 stayers, models.log_model_typical_value / _average_value total_error (+2.1% / +6.1%) is on all 4,000; 3-1 attaches both correctly, but they are easy to mis-attach. (5) Outside my lessons: tickets.paired.method and tickets.learning_curve.how both say '300 test tickets' while tickets.n_test = 450 (n_test_hard = 300). (6) Not verifiable from facts.json, so not raised as findings: 3-1 seg6 'this simulated world was built so that effects on spend multiply', 3-3 seg6 / quiz q4 'churn is built from many small pushes that add up' (only implied by video.how_it_was_built), and the forest setting min_samples_leaf=5 shown in the 3-5 seg4 code (forest records only n_trees = 300)."
+}

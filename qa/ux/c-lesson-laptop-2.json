@@ -1,0 +1,103 @@
+{
+ "base": "http://localhost:8791",
+ "out": "qa/ux/shots",
+ "seed": "__gt.store.put('lessons', '1-1', {guess: 2}); await new Promise(r => setTimeout(r, 300));",
+ "shots": [
+  {
+   "name": "c01-slide5",
+   "url": "/#/lesson/1-1/watch",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "await __gt.player.show(5, false); document.querySelector('.overlay').hidden = true; document.querySelectorAll('.cue.off').forEach(e => e.classList.remove('off')); return {type: __gt.player.segments[5].visual.type, fit: __gt.player.slide.style.cssText};"
+  },
+  {
+   "name": "c02-slide6",
+   "url": "/#/lesson/1-1/watch",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "await __gt.player.show(6, false); document.querySelector('.overlay').hidden = true; document.querySelectorAll('.cue.off').forEach(e => e.classList.remove('off')); return {type: __gt.player.segments[6].visual.type, fit: __gt.player.slide.style.cssText};"
+  },
+  {
+   "name": "c03-slide7",
+   "url": "/#/lesson/1-1/watch",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "await __gt.player.show(7, false); document.querySelector('.overlay').hidden = true; document.querySelectorAll('.cue.off').forEach(e => e.classList.remove('off')); return {type: __gt.player.segments[7].visual.type, fit: __gt.player.slide.style.cssText};"
+  },
+  {
+   "name": "c04-resume-overlay",
+   "url": "/#/lesson/1-1/watch",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "return {overlay: document.querySelector('.overlay .box').innerText, ghosts: [...document.querySelectorAll('.ghost')].map(e => e.textContent.trim().slice(0, 30) + '|' + getComputedStyle(e).visibility + '|' + getComputedStyle(e).display)};"
+  },
+  {
+   "name": "c05-transcript",
+   "url": "/#/lesson/1-1/watch",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "[...document.querySelectorAll('button, a.btn')].find(b => b.textContent.trim().startsWith(\"Show the transcript\")).click(); document.querySelector('.transcript').scrollIntoView({block: 'start'}); window.scrollBy(0, -140);"
+  },
+  {
+   "name": "c06-below-player",
+   "url": "/#/lesson/1-1/watch",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "window.scrollTo(0, 99999); return [...document.querySelectorAll('.ghost')].map(e => e.textContent.trim().slice(0, 30) + '|' + getComputedStyle(e).visibility + '|' + getComputedStyle(e).display);"
+  },
+  {
+   "name": "c07-complete",
+   "url": "/#/lesson/1-1/watch",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "await __gt.player.show(8, false); document.querySelector('.overlay').hidden = true; document.querySelectorAll('.cue.off').forEach(e => e.classList.remove('off')); __gt.player.next(true); await new Promise(r => setTimeout(r, 900)); return {banner: !document.querySelector('.done-banner').hidden, y: scrollY};"
+  },
+  {
+   "name": "c08-check-q1-before",
+   "url": "/#/lesson/1-1",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "return {hash: location.hash, keys: document.querySelector('.keys')?.textContent};"
+  },
+  {
+   "name": "c09-check-q1-right",
+   "url": "/#/lesson/1-1/check",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "{ const q = __gt.course.lessons.find(l => l.id === '1-1').quiz[0]; [...document.querySelectorAll('.opt')].find(b => (b.querySelector('span').textContent === q.options[q.answer]) === true).click(); } await new Promise(r => setTimeout(r, 300)); return scrollY;"
+  },
+  {
+   "name": "c10-check-q2-wrong",
+   "url": "/#/lesson/1-1/check",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "{ const q = __gt.course.lessons.find(l => l.id === '1-1').quiz[0]; [...document.querySelectorAll('.opt')].find(b => (b.querySelector('span').textContent === q.options[q.answer]) === true).click(); } [...document.querySelectorAll('button, a.btn')].find(b => b.textContent.trim().startsWith(\"Next question\")).click(); { const q = __gt.course.lessons.find(l => l.id === '1-1').quiz[1]; [...document.querySelectorAll('.opt')].find(b => (b.querySelector('span').textContent === q.options[q.answer]) === false).click(); } await new Promise(r => setTimeout(r, 300)); return scrollY;"
+  },
+  {
+   "name": "c11-check-keyboard",
+   "url": "/#/lesson/1-1/check",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "document.body.dispatchEvent(new KeyboardEvent('keydown', {key: 'b', bubbles: true})); await new Promise(r => setTimeout(r, 200)); const answered = document.querySelectorAll('.opt[disabled]').length; const focused = document.activeElement?.textContent; document.activeElement?.dispatchEvent(new KeyboardEvent('keydown', {key: 'Enter', bubbles: true})); await new Promise(r => setTimeout(r, 200)); return {answered, focused, label: document.querySelector('.q .concept').textContent};"
+  },
+  {
+   "name": "c12-check-score-2of4",
+   "url": "/#/lesson/1-1/check",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "{ const q = __gt.course.lessons.find(l => l.id === '1-1').quiz[0]; [...document.querySelectorAll('.opt')].find(b => (b.querySelector('span').textContent === q.options[q.answer]) === true).click(); } [...document.querySelectorAll('button, a.btn')].find(b => b.textContent.trim().startsWith(\"Next question\")).click(); { const q = __gt.course.lessons.find(l => l.id === '1-1').quiz[1]; [...document.querySelectorAll('.opt')].find(b => (b.querySelector('span').textContent === q.options[q.answer]) === false).click(); } [...document.querySelectorAll('button, a.btn')].find(b => b.textContent.trim().startsWith(\"Next question\")).click(); { const q = __gt.course.lessons.find(l => l.id === '1-1').quiz[2]; [...document.querySelectorAll('.opt')].find(b => (b.querySelector('span').textContent === q.options[q.answer]) === true).click(); } [...document.querySelectorAll('button, a.btn')].find(b => b.textContent.trim().startsWith(\"Next question\")).click(); { const q = __gt.course.lessons.find(l => l.id === '1-1').quiz[3]; [...document.querySelectorAll('.opt')].find(b => (b.querySelector('span').textContent === q.options[q.answer]) === false).click(); } await new Promise(r => setTimeout(r, 300)); [...document.querySelectorAll('button, a.btn')].find(b => b.textContent.trim().startsWith(\"Finish\")).click(); await new Promise(r => setTimeout(r, 400)); return {banner: document.querySelector('.done-banner')?.innerText, btns: [...document.querySelectorAll('.done-banner .btn')].map(b => b.textContent + '|' + getComputedStyle(b).visibility), tabs: [...document.querySelectorAll('.steps button')].map(b => b.textContent.trim() + (b.classList.contains('done') ? ':done' : '')), cards: Object.keys(__gt.store.state.cards)};"
+  }
+ ]
+}

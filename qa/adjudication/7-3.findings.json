@@ -1,0 +1,55 @@
+[
+ {
+  "reviewer": "expert-4",
+  "lesson": "7-3",
+  "where": "other_ways item 2 ('Embeddings with a simple trained model'), and seg7 narration",
+  "quote": "When you have labelled examples and a high volume of text, or the text must not leave the building.",
+  "kind": "misleading",
+  "severity": "medium",
+  "problem": "In this course the embeddings come from a hosted embedding model, so the ticket text leaves the building exactly as it does for the language models; lesson 7-2 says so in its limits and its audit list. Seg7 also presents 'the text leaves the building' as a cost of the language-model rungs alone. A learner following this would route confidential text through an embedding service believing it stays in-house.",
+  "evidence": "tickets.embedding_model = \"gemini-embedding-2\", a vendor model from the same family as the two classifiers (tickets.models). Lesson 7-2 seg7: 'embedding a ticket means sending its text to a model. Know where it goes.'; 7-2 other_ways gives word counts, not embeddings, as the route when 'the text must stay in-house'.",
+  "fix": "other_ways: '...or, with an embedding model you run in-house, when the text must not leave the building.' Seg7: say that of the five rungs only keyword rules and the bag-of-words model keep the text in-house by default."
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "7-3",
+  "where": "seg4 narration",
+  "quote": "Overlap alone does not settle it, because both models sat the same exam.",
+  "kind": "doubt",
+  "severity": "medium",
+  "problem": "Module 2 (per the outline) taught that a gap between two models smaller than their interval is a tie. Here overlapping intervals are not a tie. It reads as the course contradicting itself.",
+  "fix": "Name it as an upgrade: 'In module 2 we compared two separate intervals. That is the blunt version. When both models answer the same rows, put the interval on the difference.'"
+ },
+ {
+  "reviewer": "expert-4",
+  "lesson": "7-3",
+  "where": "ask_assistant",
+  "quote": "Classify the support tickets into our six categories with a language model given instructions only. Show me the exact instructions, the model name and version, and where the text is sent.",
+  "kind": "brief",
+  "severity": "low",
+  "problem": "The paste-ready brief has the assistant send client ticket text to a language model and report the destination afterwards. Unlike the 7-2 brief ('using an approved model') it sets no approval condition before any text is sent, against the course's own rule on client data (1-5, restated in 7-5).",
+  "evidence": "OUTLINE 1-5: 'do not paste client data into a tool that is not approved for it'; 7-5 seg7: 'Client data stays in tools approved for it ... ticket text sent to an outside model'.",
+  "fix": "\"...with an approved language model given instructions only. Before sending any ticket text, tell me the model and where the text will go.\""
+ },
+ {
+  "reviewer": "expert-4",
+  "lesson": "7-3",
+  "where": "seg6 narration",
+  "quote": "no method can score above their agreement",
+  "kind": "misleading",
+  "severity": "low",
+  "problem": "Stated as a hard ceiling, which it is not: a model can match one labeller's key, or an adjudicated key, more often than a second person does. What disagreement caps is how much a score above it can mean. The glossary of the same lesson has the careful wording ('cannot be meaningfully scored above it').",
+  "evidence": "Principle: agreement between labellers bounds how far a score can be trusted, not its arithmetic value; a model fitted to one labeller's key routinely exceeds a second labeller's agreement with that key. The same loose wording is in the OUTLINE brief and in tickets.honest_limits[0] ('caps what any method can score'), so it should be tightened at the source too.",
+  "fix": "\"...two people often disagree about the main issue, and a score above their rate of agreement stops meaning anything.\""
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "7-3",
+  "where": "seg1 narration",
+  "quote": "The assistant will build any of them in minutes.",
+  "kind": "not_usable",
+  "severity": "low",
+  "problem": "My assistant is itself a language model. The lesson never answers the obvious question: may the assistant that builds the classifier also supply the labels, and can it mark its own work?",
+  "fix": "One sentence: the labelled test set comes from people, blind to the model's answers."
+ }
+]

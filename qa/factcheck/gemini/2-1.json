@@ -1,0 +1,35 @@
+{
+ "issues": [
+  {
+   "where": "seg2 visual",
+   "quote": "82,000 advertisers",
+   "kind": "number_mismatch",
+   "severity": "high",
+   "explanation": "The flow visual states there are 82,000 advertisers under 'Rows with known outcomes', whereas the dataset contains 12,000 advertisers in total across the six months (6,000 train, 2,000 April gap, 4,000 test).",
+   "evidence": "facts.json -> data.n = 12000; data.one_row_is = 'one advertiser, observed once (12,000 different advertisers; nobody appears twice)'",
+   "fix": "Change '82,000 advertisers' to '12,000 advertisers'."
+  },
+  {
+   "where": "seg3 narration",
+   "quote": "Test on May and June, 8,000 advertisers from a later period.",
+   "kind": "number_mismatch",
+   "severity": "high",
+   "explanation": "The narration states that May and June contain 8,000 advertisers, but there are 2,000 advertisers per month so the May-June test set has 4,000 advertisers. This also contradicts seg3 visual, which correctly states 'Test: May-Jun · 4,000'.",
+   "evidence": "facts.json -> data.n_test = 4000, data.test_months = 'May-Jun', data.per_month = 2000; seg3 visual shows 'Test: May-Jun · 4,000'",
+   "fix": "Change to: 'Test on May and June, 4,000 advertisers from a later period.'"
+  },
+  {
+   "where": "seg6 narration",
+   "quote": "On the test months it is right about 78 percent of the time",
+   "kind": "number_mismatch",
+   "severity": "high",
+   "explanation": "Predicting that every advertiser stays is right 86.8% (about 87 percent) of the time on the test months, not 78 percent. This also contradicts the second half of the same sentence ('only about 13 percent of advertisers churn', giving ~87% non-churners), the later claim that 88% is 'less than two points better', seg6 visual ('86.8%'), and the takeaways, quiz, and recall sections ('about 87 percent').",
+   "evidence": "facts.json -> baseline.always_no_accuracy = 0.868, data.churn_rate_test = 0.1318; seg6 visual shows '86.8%'",
+   "fix": "Change to: 'On the test months it is right about 87 percent of the time, because only about 13 percent of advertisers churn.'"
+  }
+ ],
+ "numbers_checked": 44,
+ "verdict": "Needs revision: the conceptual framing, time-split gap logic, baselines, and assessment items are sound, but three high-severity numeric errors must be corrected (82,000 vs 12,000 total advertisers in seg2 visual, 8,000 vs 4,000 test advertisers in seg3 narration, and 78% vs 87% always-stay accuracy in seg6 narration).",
+ "_hash": "27b00dcf103081bc",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_Chd2OUVCYTd1M0FaT0NrZFVQcVpTZXdRcxIXdjlFQmE3dTNBWk9Da2RVUHFaU2V3UXM | tokens in=67207 out=704 thought=20524]"
+}

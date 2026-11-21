@@ -1,0 +1,1394 @@
+{
+ "lessons": {
+  "2-2": [
+   {
+    "src": "audio/2-2/01-bda025a8fe12c0.mp3",
+    "dur": 30.79
+   },
+   {
+    "src": "audio/2-2/02-a6ea733e956f29.mp3",
+    "dur": 49.92
+   },
+   {
+    "src": "audio/2-2/03-76322e9d8fa352.mp3",
+    "dur": 44.46
+   },
+   {
+    "src": "audio/2-2/04-0793a7acd337d6.mp3",
+    "dur": 32.14
+   },
+   {
+    "src": "audio/2-2/05-4970f8cdee77f2.mp3",
+    "dur": 47.72
+   },
+   {
+    "src": "audio/2-2/06-a90fdf554d6b41.mp3",
+    "dur": 51.25
+   },
+   {
+    "src": "audio/2-2/07-6a6d8dedbceafd.mp3",
+    "dur": 42.57
+   },
+   {
+    "src": "audio/2-2/08-e83e8aa9c83abf.mp3",
+    "dur": 36.27
+   },
+   {
+    "src": "audio/2-2/09-665927e339d3f9.mp3",
+    "dur": 16.33
+   }
+  ],
+  "1-1": [
+   {
+    "src": "audio/1-1/01-ac3a33252beebf.mp3",
+    "dur": 34.3
+   },
+   {
+    "src": "audio/1-1/02-05c5fc17325e26.mp3",
+    "dur": 36.74
+   },
+   {
+    "src": "audio/1-1/03-4e160ed21077c8.mp3",
+    "dur": 37.98
+   },
+   {
+    "src": "audio/1-1/04-d83b747db29916.mp3",
+    "dur": 28.72
+   },
+   {
+    "src": "audio/1-1/05-9be5b1a0df7f44.mp3",
+    "dur": 43.18
+   },
+   {
+    "src": "audio/1-1/06-d35c247f579558.mp3",
+    "dur": 40.23
+   },
+   {
+    "src": "audio/1-1/07-da708d586f1afa.mp3",
+    "dur": 33.04
+   },
+   {
+    "src": "audio/1-1/08-7b14ad0e50279b.mp3",
+    "dur": 36.31
+   },
+   {
+    "src": "audio/1-1/09-898d2456c5ded6.mp3",
+    "dur": 16.53
+   }
+  ],
+  "1-2": [
+   {
+    "src": "audio/1-2/01-cb496a71aa174e.mp3",
+    "dur": 42.45
+   },
+   {
+    "src": "audio/1-2/02-26f8c3102c8e62.mp3",
+    "dur": 49.83
+   },
+   {
+    "src": "audio/1-2/03-1fab4c9e6c5861.mp3",
+    "dur": 44.78
+   },
+   {
+    "src": "audio/1-2/04-743296c7b9ba19.mp3",
+    "dur": 31.32
+   },
+   {
+    "src": "audio/1-2/05-fccb3c15ec5399.mp3",
+    "dur": 40.62
+   },
+   {
+    "src": "audio/1-2/06-9ada4352c3909b.mp3",
+    "dur": 43.64
+   },
+   {
+    "src": "audio/1-2/07-6ec6c8b3a4a200.mp3",
+    "dur": 41.93
+   },
+   {
+    "src": "audio/1-2/08-e239d700ce3efd.mp3",
+    "dur": 17.08
+   }
+  ],
+  "1-3": [
+   {
+    "src": "audio/1-3/01-88db2b4c5098cf.mp3",
+    "dur": 45.69
+   },
+   {
+    "src": "audio/1-3/02-4b6ceee460567a.mp3",
+    "dur": 42.4
+   },
+   {
+    "src": "audio/1-3/03-409610dd198c43.mp3",
+    "dur": 35.9
+   },
+   {
+    "src": "audio/1-3/04-bebd8d10047c1e.mp3",
+    "dur": 42.7
+   },
+   {
+    "src": "audio/1-3/05-4d5f17afaf6753.mp3",
+    "dur": 46.76
+   },
+   {
+    "src": "audio/1-3/06-43ca9fcba51b22.mp3",
+    "dur": 43.36
+   },
+   {
+    "src": "audio/1-3/07-f4d2727b0053f3.mp3",
+    "dur": 40.25
+   },
+   {
+    "src": "audio/1-3/08-be4deab97c817b.mp3",
+    "dur": 14.6
+   }
+  ],
+  "1-4": [
+   {
+    "src": "audio/1-4/01-1e6e8c425ef59d.mp3",
+    "dur": 41.31
+   },
+   {
+    "src": "audio/1-4/02-cac73900f3b73b.mp3",
+    "dur": 36.46
+   },
+   {
+    "src": "audio/1-4/03-e0965225264e68.mp3",
+    "dur": 34.6
+   },
+   {
+    "src": "audio/1-4/04-b8847988ed6775.mp3",
+    "dur": 41.25
+   },
+   {
+    "src": "audio/1-4/05-c6384a19ac48df.mp3",
+    "dur": 39.76
+   },
+   {
+    "src": "audio/1-4/06-5914a4947659f9.mp3",
+    "dur": 37.79
+   },
+   {
+    "src": "audio/1-4/07-7d7ce5c1aaae58.mp3",
+    "dur": 42.88
+   },
+   {
+    "src": "audio/1-4/08-49a13c168cad38.mp3",
+    "dur": 38.85
+   },
+   {
+    "src": "audio/1-4/09-667eb2d99b9b60.mp3",
+    "dur": 16.61
+   }
+  ],
+  "1-5": [
+   {
+    "src": "audio/1-5/01-067784722f46b3.mp3",
+    "dur": 43.44
+   },
+   {
+    "src": "audio/1-5/02-9b7bebdaec0977.mp3",
+    "dur": 34.67
+   },
+   {
+    "src": "audio/1-5/03-a8d3e04d359e57.mp3",
+    "dur": 42.57
+   },
+   {
+    "src": "audio/1-5/04-1279227a37ab27.mp3",
+    "dur": 39.24
+   },
+   {
+    "src": "audio/1-5/05-d9c7974752fcb4.mp3",
+    "dur": 42.47
+   },
+   {
+    "src": "audio/1-5/06-e77aba303b1fb5.mp3",
+    "dur": 42.35
+   },
+   {
+    "src": "audio/1-5/07-b97db0d8824c69.mp3",
+    "dur": 45.17
+   },
+   {
+    "src": "audio/1-5/08-4575d42c3efdb0.mp3",
+    "dur": 15.06
+   }
+  ],
+  "2-1": [
+   {
+    "src": "audio/2-1/01-7ad56807517bdf.mp3",
+    "dur": 39.74
+   },
+   {
+    "src": "audio/2-1/02-b4421039c0538e.mp3",
+    "dur": 31.67
+   },
+   {
+    "src": "audio/2-1/03-c64e599ba527e4.mp3",
+    "dur": 36.61
+   },
+   {
+    "src": "audio/2-1/04-1699efdf59c2e7.mp3",
+    "dur": 36.92
+   },
+   {
+    "src": "audio/2-1/05-3ed6ace56a2a68.mp3",
+    "dur": 35.36
+   },
+   {
+    "src": "audio/2-1/06-6de43c7c06f194.mp3",
+    "dur": 35.37
+   },
+   {
+    "src": "audio/2-1/07-603a4e70f814fd.mp3",
+    "dur": 40.69
+   },
+   {
+    "src": "audio/2-1/08-6fe40c2db81315.mp3",
+    "dur": 38.23
+   },
+   {
+    "src": "audio/2-1/09-f2d35e7fe5ae25.mp3",
+    "dur": 15.53
+   }
+  ],
+  "2-3": [
+   {
+    "src": "audio/2-3/01-0955392d35e6ad.mp3",
+    "dur": 36.58
+   },
+   {
+    "src": "audio/2-3/02-06a6ce02449896.mp3",
+    "dur": 34.12
+   },
+   {
+    "src": "audio/2-3/03-d9dee53f59b4a4.mp3",
+    "dur": 32.18
+   },
+   {
+    "src": "audio/2-3/04-28fcb26c129e18.mp3",
+    "dur": 51.74
+   },
+   {
+    "src": "audio/2-3/05-6323c5fea05cde.mp3",
+    "dur": 42.75
+   },
+   {
+    "src": "audio/2-3/06-b35f193a099919.mp3",
+    "dur": 31.31
+   },
+   {
+    "src": "audio/2-3/07-cfe07eca678949.mp3",
+    "dur": 43.19
+   },
+   {
+    "src": "audio/2-3/08-5a05142efb29f4.mp3",
+    "dur": 34.49
+   },
+   {
+    "src": "audio/2-3/09-1734e45034c0e8.mp3",
+    "dur": 15.06
+   }
+  ],
+  "2-4": [
+   {
+    "src": "audio/2-4/01-c9c9b81ac6867b.mp3",
+    "dur": 44.82
+   },
+   {
+    "src": "audio/2-4/02-e238107a2d1bec.mp3",
+    "dur": 38.59
+   },
+   {
+    "src": "audio/2-4/03-768d29970c21b6.mp3",
+    "dur": 37.42
+   },
+   {
+    "src": "audio/2-4/04-c90c9b9248c539.mp3",
+    "dur": 37.17
+   },
+   {
+    "src": "audio/2-4/05-5a8832c696a367.mp3",
+    "dur": 50.8
+   },
+   {
+    "src": "audio/2-4/06-47b446c8092692.mp3",
+    "dur": 37.99
+   },
+   {
+    "src": "audio/2-4/07-5d342e434d121d.mp3",
+    "dur": 43.0
+   },
+   {
+    "src": "audio/2-4/08-3294b12ad40680.mp3",
+    "dur": 18.24
+   }
+  ],
+  "2-5": [
+   {
+    "src": "audio/2-5/01-fdc98a1ce5af77.mp3",
+    "dur": 41.06
+   },
+   {
+    "src": "audio/2-5/02-818b5a38550f3f.mp3",
+    "dur": 38.1
+   },
+   {
+    "src": "audio/2-5/03-dd853bbbdda593.mp3",
+    "dur": 31.99
+   },
+   {
+    "src": "audio/2-5/04-36e20639304f81.mp3",
+    "dur": 38.12
+   },
+   {
+    "src": "audio/2-5/05-1ca51491820bc4.mp3",
+    "dur": 41.17
+   },
+   {
+    "src": "audio/2-5/06-0ace1f4844fa0f.mp3",
+    "dur": 41.94
+   },
+   {
+    "src": "audio/2-5/07-0b9f662f086fa3.mp3",
+    "dur": 34.4
+   },
+   {
+    "src": "audio/2-5/08-580693f1df86eb.mp3",
+    "dur": 47.54
+   },
+   {
+    "src": "audio/2-5/09-48a02fed1080ea.mp3",
+    "dur": 16.28
+   }
+  ],
+  "2-6": [
+   {
+    "src": "audio/2-6/01-22db772f9d2cb3.mp3",
+    "dur": 40.49
+   },
+   {
+    "src": "audio/2-6/02-da9b1eb29705dd.mp3",
+    "dur": 48.34
+   },
+   {
+    "src": "audio/2-6/03-fbef12f24da89a.mp3",
+    "dur": 36.86
+   },
+   {
+    "src": "audio/2-6/04-5ad29b07fea0b9.mp3",
+    "dur": 21.49
+   },
+   {
+    "src": "audio/2-6/05-f188aa42aefb02.mp3",
+    "dur": 25.85
+   },
+   {
+    "src": "audio/2-6/06-d5d534365b68e3.mp3",
+    "dur": 55.45
+   },
+   {
+    "src": "audio/2-6/07-484faf74a4f841.mp3",
+    "dur": 39.55
+   },
+   {
+    "src": "audio/2-6/08-c171e491374251.mp3",
+    "dur": 50.82
+   },
+   {
+    "src": "audio/2-6/09-bf56a06d97860c.mp3",
+    "dur": 17.94
+   }
+  ],
+  "3-1": [
+   {
+    "src": "audio/3-1/01-0f09654c28e84b.mp3",
+    "dur": 41.5
+   },
+   {
+    "src": "audio/3-1/02-2c04abcdaa9f23.mp3",
+    "dur": 30.86
+   },
+   {
+    "src": "audio/3-1/03-5358f103671a9b.mp3",
+    "dur": 40.52
+   },
+   {
+    "src": "audio/3-1/04-3c5a0bcc44c7eb.mp3",
+    "dur": 47.93
+   },
+   {
+    "src": "audio/3-1/05-9aad060aab4d11.mp3",
+    "dur": 21.2
+   },
+   {
+    "src": "audio/3-1/06-d4996c3f6120c1.mp3",
+    "dur": 44.05
+   },
+   {
+    "src": "audio/3-1/07-2f10fd00d7ccbd.mp3",
+    "dur": 44.69
+   },
+   {
+    "src": "audio/3-1/08-e5f44472a7dd17.mp3",
+    "dur": 33.85
+   },
+   {
+    "src": "audio/3-1/09-95ed4319759b2f.mp3",
+    "dur": 12.81
+   }
+  ],
+  "3-2": [
+   {
+    "src": "audio/3-2/01-f6a126f2f30f35.mp3",
+    "dur": 36.06
+   },
+   {
+    "src": "audio/3-2/02-304f657a87e726.mp3",
+    "dur": 42.47
+   },
+   {
+    "src": "audio/3-2/03-492df7447dcebe.mp3",
+    "dur": 43.7
+   },
+   {
+    "src": "audio/3-2/04-088254d889ac2e.mp3",
+    "dur": 33.36
+   },
+   {
+    "src": "audio/3-2/05-4badb0b2142dba.mp3",
+    "dur": 31.91
+   },
+   {
+    "src": "audio/3-2/06-bb58a024211ca8.mp3",
+    "dur": 39.73
+   },
+   {
+    "src": "audio/3-2/07-8b4769aab24486.mp3",
+    "dur": 43.71
+   },
+   {
+    "src": "audio/3-2/08-e50a5f8199d2bf.mp3",
+    "dur": 37.85
+   },
+   {
+    "src": "audio/3-2/09-7fd9f08c97387e.mp3",
+    "dur": 18.15
+   }
+  ],
+  "3-3": [
+   {
+    "src": "audio/3-3/01-d2170790546c2d.mp3",
+    "dur": 40.73
+   },
+   {
+    "src": "audio/3-3/02-f81075969d5daf.mp3",
+    "dur": 49.63
+   },
+   {
+    "src": "audio/3-3/03-893373fe898b76.mp3",
+    "dur": 49.82
+   },
+   {
+    "src": "audio/3-3/04-014dce16f803cc.mp3",
+    "dur": 34.78
+   },
+   {
+    "src": "audio/3-3/05-7dd106cfdfcc72.mp3",
+    "dur": 47.41
+   },
+   {
+    "src": "audio/3-3/06-4625b60fd42c49.mp3",
+    "dur": 43.2
+   },
+   {
+    "src": "audio/3-3/07-9c9899710a87ac.mp3",
+    "dur": 45.51
+   },
+   {
+    "src": "audio/3-3/08-02c3db628d7169.mp3",
+    "dur": 15.8
+   }
+  ],
+  "3-4": [
+   {
+    "src": "audio/3-4/01-9c0d15cfbb1501.mp3",
+    "dur": 39.19
+   },
+   {
+    "src": "audio/3-4/02-d884e934f8b713.mp3",
+    "dur": 39.08
+   },
+   {
+    "src": "audio/3-4/03-7bc19fb3072d1e.mp3",
+    "dur": 39.45
+   },
+   {
+    "src": "audio/3-4/04-1f6bdd6be7f2e2.mp3",
+    "dur": 46.9
+   },
+   {
+    "src": "audio/3-4/05-8e78813b104332.mp3",
+    "dur": 40.08
+   },
+   {
+    "src": "audio/3-4/06-9cd6c88b368c92.mp3",
+    "dur": 42.35
+   },
+   {
+    "src": "audio/3-4/07-39f22082f33243.mp3",
+    "dur": 45.58
+   },
+   {
+    "src": "audio/3-4/08-fb49445dbcd310.mp3",
+    "dur": 14.92
+   }
+  ],
+  "3-5": [
+   {
+    "src": "audio/3-5/01-34e8b50f90895c.mp3",
+    "dur": 41.93
+   },
+   {
+    "src": "audio/3-5/02-8832a61854eb86.mp3",
+    "dur": 41.85
+   },
+   {
+    "src": "audio/3-5/03-010d85e6bad71c.mp3",
+    "dur": 45.41
+   },
+   {
+    "src": "audio/3-5/04-1aece7d2d1c7ba.mp3",
+    "dur": 36.34
+   },
+   {
+    "src": "audio/3-5/05-f1d946e71114b0.mp3",
+    "dur": 47.67
+   },
+   {
+    "src": "audio/3-5/06-6ed1783546da0b.mp3",
+    "dur": 39.62
+   },
+   {
+    "src": "audio/3-5/07-509d5c51e9bef8.mp3",
+    "dur": 48.23
+   },
+   {
+    "src": "audio/3-5/08-120db242bfd481.mp3",
+    "dur": 15.33
+   }
+  ],
+  "4-1": [
+   {
+    "src": "audio/4-1/01-a3f9aa802f6368.mp3",
+    "dur": 39.25
+   },
+   {
+    "src": "audio/4-1/02-107e5b522a1ef4.mp3",
+    "dur": 47.09
+   },
+   {
+    "src": "audio/4-1/03-6fceb0c8c4267e.mp3",
+    "dur": 43.9
+   },
+   {
+    "src": "audio/4-1/04-444c69ab8b3c6d.mp3",
+    "dur": 26.05
+   },
+   {
+    "src": "audio/4-1/05-2f3339cec54144.mp3",
+    "dur": 41.76
+   },
+   {
+    "src": "audio/4-1/06-23336cc076488d.mp3",
+    "dur": 41.84
+   },
+   {
+    "src": "audio/4-1/07-69206201e224d7.mp3",
+    "dur": 36.07
+   },
+   {
+    "src": "audio/4-1/08-17982ef4756a37.mp3",
+    "dur": 35.01
+   },
+   {
+    "src": "audio/4-1/09-93f883a5c4127f.mp3",
+    "dur": 15.94
+   }
+  ],
+  "4-2": [
+   {
+    "src": "audio/4-2/01-1631c46f869189.mp3",
+    "dur": 36.06
+   },
+   {
+    "src": "audio/4-2/02-ac8b1fdd59b076.mp3",
+    "dur": 34.16
+   },
+   {
+    "src": "audio/4-2/03-06cd1679aca1c9.mp3",
+    "dur": 42.07
+   },
+   {
+    "src": "audio/4-2/04-dbe11a7085d1c9.mp3",
+    "dur": 43.73
+   },
+   {
+    "src": "audio/4-2/05-3c2ab88ea174c9.mp3",
+    "dur": 42.92
+   },
+   {
+    "src": "audio/4-2/06-765d44d89c24e9.mp3",
+    "dur": 56.42
+   },
+   {
+    "src": "audio/4-2/07-27413b7c20a0a1.mp3",
+    "dur": 38.09
+   },
+   {
+    "src": "audio/4-2/08-3a985545b26f21.mp3",
+    "dur": 40.55
+   },
+   {
+    "src": "audio/4-2/09-4cd8bb7af803a2.mp3",
+    "dur": 15.82
+   }
+  ],
+  "4-3": [
+   {
+    "src": "audio/4-3/01-b4f289ded7efb9.mp3",
+    "dur": 40.69
+   },
+   {
+    "src": "audio/4-3/02-07aafed1fadedf.mp3",
+    "dur": 38.17
+   },
+   {
+    "src": "audio/4-3/03-31ee446dda0845.mp3",
+    "dur": 29.56
+   },
+   {
+    "src": "audio/4-3/04-ccef18fc4362ec.mp3",
+    "dur": 32.44
+   },
+   {
+    "src": "audio/4-3/05-f75335cdb88b99.mp3",
+    "dur": 50.19
+   },
+   {
+    "src": "audio/4-3/06-d9bf2c8c55c512.mp3",
+    "dur": 48.31
+   },
+   {
+    "src": "audio/4-3/07-2d512de04c52bb.mp3",
+    "dur": 41.69
+   },
+   {
+    "src": "audio/4-3/08-f7ee244e203ad5.mp3",
+    "dur": 35.71
+   },
+   {
+    "src": "audio/4-3/09-e95989a01baaef.mp3",
+    "dur": 14.95
+   }
+  ],
+  "4-4": [
+   {
+    "src": "audio/4-4/01-35c571f39f02f7.mp3",
+    "dur": 40.18
+   },
+   {
+    "src": "audio/4-4/02-88101d918b7b6a.mp3",
+    "dur": 32.5
+   },
+   {
+    "src": "audio/4-4/03-36b158e4985432.mp3",
+    "dur": 38.53
+   },
+   {
+    "src": "audio/4-4/04-20885d21ebaafb.mp3",
+    "dur": 38.33
+   },
+   {
+    "src": "audio/4-4/05-357a6c3d140bbf.mp3",
+    "dur": 38.56
+   },
+   {
+    "src": "audio/4-4/06-b464ac60f6c0a4.mp3",
+    "dur": 48.95
+   },
+   {
+    "src": "audio/4-4/07-85e23e4c1f304d.mp3",
+    "dur": 44.44
+   },
+   {
+    "src": "audio/4-4/08-25f14d1b9ecb39.mp3",
+    "dur": 42.13
+   },
+   {
+    "src": "audio/4-4/09-a5b7a6b2ba0e85.mp3",
+    "dur": 16.64
+   }
+  ],
+  "4-5": [
+   {
+    "src": "audio/4-5/01-d1245f962fdf8e.mp3",
+    "dur": 44.7
+   },
+   {
+    "src": "audio/4-5/02-3b5a18cff28113.mp3",
+    "dur": 40.59
+   },
+   {
+    "src": "audio/4-5/03-47c8c31a85d58c.mp3",
+    "dur": 38.78
+   },
+   {
+    "src": "audio/4-5/04-2d8959690e3994.mp3",
+    "dur": 44.96
+   },
+   {
+    "src": "audio/4-5/05-b6b311851272a6.mp3",
+    "dur": 48.11
+   },
+   {
+    "src": "audio/4-5/06-fe565a9b94c464.mp3",
+    "dur": 39.07
+   },
+   {
+    "src": "audio/4-5/07-7145e31b1c5d46.mp3",
+    "dur": 46.56
+   },
+   {
+    "src": "audio/4-5/08-80573bebbfcf9e.mp3",
+    "dur": 14.4
+   }
+  ],
+  "4-6": [
+   {
+    "src": "audio/4-6/01-a6ef78695aab45.mp3",
+    "dur": 41.65
+   },
+   {
+    "src": "audio/4-6/02-6f11795b7024d4.mp3",
+    "dur": 37.99
+   },
+   {
+    "src": "audio/4-6/03-03e74d13714bcb.mp3",
+    "dur": 48.1
+   },
+   {
+    "src": "audio/4-6/04-14d49295f4f5ff.mp3",
+    "dur": 40.04
+   },
+   {
+    "src": "audio/4-6/05-4bcd5a081615bc.mp3",
+    "dur": 32.23
+   },
+   {
+    "src": "audio/4-6/06-71a092bf6f0fa8.mp3",
+    "dur": 43.59
+   },
+   {
+    "src": "audio/4-6/07-635b021f4d1c5b.mp3",
+    "dur": 48.02
+   },
+   {
+    "src": "audio/4-6/08-e3eb9aba7d624e.mp3",
+    "dur": 16.0
+   }
+  ],
+  "5-1": [
+   {
+    "src": "audio/5-1/01-1d47c942acc347.mp3",
+    "dur": 43.4
+   },
+   {
+    "src": "audio/5-1/02-319db632bdb4d5.mp3",
+    "dur": 36.65
+   },
+   {
+    "src": "audio/5-1/03-e05cc555976a06.mp3",
+    "dur": 34.76
+   },
+   {
+    "src": "audio/5-1/04-fa97f35f5c0d74.mp3",
+    "dur": 38.32
+   },
+   {
+    "src": "audio/5-1/05-7207fb341eec2c.mp3",
+    "dur": 51.55
+   },
+   {
+    "src": "audio/5-1/06-efa4124a3e604b.mp3",
+    "dur": 42.68
+   },
+   {
+    "src": "audio/5-1/07-914ea9fc471403.mp3",
+    "dur": 36.84
+   },
+   {
+    "src": "audio/5-1/08-cd8999dedc13bd.mp3",
+    "dur": 42.68
+   },
+   {
+    "src": "audio/5-1/09-6788583c2ce3f2.mp3",
+    "dur": 17.13
+   }
+  ],
+  "5-2": [
+   {
+    "src": "audio/5-2/01-ca3137853fca34.mp3",
+    "dur": 40.74
+   },
+   {
+    "src": "audio/5-2/02-d64a3624cc0b44.mp3",
+    "dur": 36.41
+   },
+   {
+    "src": "audio/5-2/03-85102b02e00087.mp3",
+    "dur": 41.13
+   },
+   {
+    "src": "audio/5-2/04-3b10c6e97cad6e.mp3",
+    "dur": 45.21
+   },
+   {
+    "src": "audio/5-2/05-a84ef1d344a9c9.mp3",
+    "dur": 39.99
+   },
+   {
+    "src": "audio/5-2/06-27dca182fd4871.mp3",
+    "dur": 39.51
+   },
+   {
+    "src": "audio/5-2/07-c00f0070aa7a7b.mp3",
+    "dur": 36.29
+   },
+   {
+    "src": "audio/5-2/08-f240a6f028e8c3.mp3",
+    "dur": 40.61
+   },
+   {
+    "src": "audio/5-2/09-09d699f5c4ccd0.mp3",
+    "dur": 15.34
+   }
+  ],
+  "5-3": [
+   {
+    "src": "audio/5-3/01-2274e46c71ad61.mp3",
+    "dur": 35.23
+   },
+   {
+    "src": "audio/5-3/02-a06a8b160f626a.mp3",
+    "dur": 45.96
+   },
+   {
+    "src": "audio/5-3/03-5dc5ba5f09d257.mp3",
+    "dur": 38.88
+   },
+   {
+    "src": "audio/5-3/04-1f024e1363ca99.mp3",
+    "dur": 45.71
+   },
+   {
+    "src": "audio/5-3/05-ab00a78752a007.mp3",
+    "dur": 39.77
+   },
+   {
+    "src": "audio/5-3/06-d9509c961de2bc.mp3",
+    "dur": 44.33
+   },
+   {
+    "src": "audio/5-3/07-80eeabfd6ce3ab.mp3",
+    "dur": 42.47
+   },
+   {
+    "src": "audio/5-3/08-d46c149393643e.mp3",
+    "dur": 17.48
+   }
+  ],
+  "5-4": [
+   {
+    "src": "audio/5-4/01-446423fe72e82c.mp3",
+    "dur": 34.67
+   },
+   {
+    "src": "audio/5-4/02-b88bbcbf57f4a3.mp3",
+    "dur": 49.52
+   },
+   {
+    "src": "audio/5-4/03-fd677a2f0fba59.mp3",
+    "dur": 31.71
+   },
+   {
+    "src": "audio/5-4/04-098f00e187c75b.mp3",
+    "dur": 34.95
+   },
+   {
+    "src": "audio/5-4/05-70207a82ef6381.mp3",
+    "dur": 41.0
+   },
+   {
+    "src": "audio/5-4/06-b023085aaf4e22.mp3",
+    "dur": 41.78
+   },
+   {
+    "src": "audio/5-4/07-8563ff400e68cf.mp3",
+    "dur": 40.96
+   },
+   {
+    "src": "audio/5-4/08-8747341e37cce4.mp3",
+    "dur": 42.32
+   },
+   {
+    "src": "audio/5-4/09-e6eec0d6f03d8e.mp3",
+    "dur": 14.03
+   }
+  ],
+  "5-5": [
+   {
+    "src": "audio/5-5/01-3426ae013f8730.mp3",
+    "dur": 39.53
+   },
+   {
+    "src": "audio/5-5/02-c12cb7feee0cb8.mp3",
+    "dur": 42.03
+   },
+   {
+    "src": "audio/5-5/03-1bc51f69e09dc4.mp3",
+    "dur": 36.41
+   },
+   {
+    "src": "audio/5-5/04-a4fcb1c7e8af26.mp3",
+    "dur": 34.36
+   },
+   {
+    "src": "audio/5-5/05-79155d85a0454d.mp3",
+    "dur": 38.48
+   },
+   {
+    "src": "audio/5-5/06-3a05712b83f428.mp3",
+    "dur": 46.98
+   },
+   {
+    "src": "audio/5-5/07-bf3ce9f175d79b.mp3",
+    "dur": 41.95
+   },
+   {
+    "src": "audio/5-5/08-aa89c82a9aa361.mp3",
+    "dur": 32.56
+   },
+   {
+    "src": "audio/5-5/09-e2fe37d68454cc.mp3",
+    "dur": 15.1
+   }
+  ],
+  "5-6": [
+   {
+    "src": "audio/5-6/01-ae4f6242d38d63.mp3",
+    "dur": 37.5
+   },
+   {
+    "src": "audio/5-6/02-641a9d5cc56f90.mp3",
+    "dur": 43.69
+   },
+   {
+    "src": "audio/5-6/03-1d85338fa55be7.mp3",
+    "dur": 47.37
+   },
+   {
+    "src": "audio/5-6/04-3c93b6e1301107.mp3",
+    "dur": 47.5
+   },
+   {
+    "src": "audio/5-6/05-a49424449ec49f.mp3",
+    "dur": 39.3
+   },
+   {
+    "src": "audio/5-6/06-8c95736ef6e892.mp3",
+    "dur": 31.16
+   },
+   {
+    "src": "audio/5-6/07-c248e88fd4a7a3.mp3",
+    "dur": 45.33
+   },
+   {
+    "src": "audio/5-6/08-7f918e7e3b5f16.mp3",
+    "dur": 18.32
+   }
+  ],
+  "6-1": [
+   {
+    "src": "audio/6-1/01-ab796d490bc3c9.mp3",
+    "dur": 30.53
+   },
+   {
+    "src": "audio/6-1/02-2cc06f175fb749.mp3",
+    "dur": 44.84
+   },
+   {
+    "src": "audio/6-1/03-1a511b70a58724.mp3",
+    "dur": 40.79
+   },
+   {
+    "src": "audio/6-1/04-8b5bb5b569b3de.mp3",
+    "dur": 35.95
+   },
+   {
+    "src": "audio/6-1/05-79d93503a0f96c.mp3",
+    "dur": 30.63
+   },
+   {
+    "src": "audio/6-1/06-6fa1e346d65ee7.mp3",
+    "dur": 38.79
+   },
+   {
+    "src": "audio/6-1/07-4066153900d093.mp3",
+    "dur": 40.53
+   },
+   {
+    "src": "audio/6-1/08-45cae753abe336.mp3",
+    "dur": 43.38
+   },
+   {
+    "src": "audio/6-1/09-14c232fe2233f5.mp3",
+    "dur": 14.97
+   }
+  ],
+  "6-2": [
+   {
+    "src": "audio/6-2/01-9317a31ef1fac9.mp3",
+    "dur": 30.94
+   },
+   {
+    "src": "audio/6-2/02-fadadfb81befaa.mp3",
+    "dur": 43.62
+   },
+   {
+    "src": "audio/6-2/03-e2869dba3ec9e7.mp3",
+    "dur": 29.53
+   },
+   {
+    "src": "audio/6-2/04-ba33a0f1ef088b.mp3",
+    "dur": 31.06
+   },
+   {
+    "src": "audio/6-2/05-30bf13d5eeeff2.mp3",
+    "dur": 31.95
+   },
+   {
+    "src": "audio/6-2/06-1f138a36ebf71f.mp3",
+    "dur": 35.49
+   },
+   {
+    "src": "audio/6-2/07-631f4586eeaae0.mp3",
+    "dur": 37.32
+   },
+   {
+    "src": "audio/6-2/08-d3a330ff08f3c6.mp3",
+    "dur": 49.16
+   },
+   {
+    "src": "audio/6-2/09-955ea6c40d887e.mp3",
+    "dur": 17.21
+   }
+  ],
+  "6-3": [
+   {
+    "src": "audio/6-3/01-0d3da62fb31f56.mp3",
+    "dur": 33.94
+   },
+   {
+    "src": "audio/6-3/02-44062d5fbd44c4.mp3",
+    "dur": 47.49
+   },
+   {
+    "src": "audio/6-3/03-520c76c6f87f8d.mp3",
+    "dur": 40.0
+   },
+   {
+    "src": "audio/6-3/04-6ed1122c279a97.mp3",
+    "dur": 41.46
+   },
+   {
+    "src": "audio/6-3/05-27b47a29b934b3.mp3",
+    "dur": 40.55
+   },
+   {
+    "src": "audio/6-3/06-0205c5926d2fc9.mp3",
+    "dur": 29.98
+   },
+   {
+    "src": "audio/6-3/07-866256f44b2ba0.mp3",
+    "dur": 28.19
+   },
+   {
+    "src": "audio/6-3/08-6aad0f7560e6a0.mp3",
+    "dur": 35.04
+   },
+   {
+    "src": "audio/6-3/09-112c0ad8b0fe49.mp3",
+    "dur": 19.73
+   }
+  ],
+  "6-4": [
+   {
+    "src": "audio/6-4/01-3184f352dad502.mp3",
+    "dur": 38.69
+   },
+   {
+    "src": "audio/6-4/02-e90c62e9d18af1.mp3",
+    "dur": 39.49
+   },
+   {
+    "src": "audio/6-4/03-a54ba9fb44c35b.mp3",
+    "dur": 42.09
+   },
+   {
+    "src": "audio/6-4/04-b9578173ece3c9.mp3",
+    "dur": 42.13
+   },
+   {
+    "src": "audio/6-4/05-37d4ffec0e2f1f.mp3",
+    "dur": 36.31
+   },
+   {
+    "src": "audio/6-4/06-24344a29f13ca6.mp3",
+    "dur": 38.15
+   },
+   {
+    "src": "audio/6-4/07-b9d9625edca12b.mp3",
+    "dur": 25.32
+   },
+   {
+    "src": "audio/6-4/08-f008f618f56958.mp3",
+    "dur": 39.55
+   },
+   {
+    "src": "audio/6-4/09-f0eba13af7ff2a.mp3",
+    "dur": 13.29
+   }
+  ],
+  "7-1": [
+   {
+    "src": "audio/7-1/01-7c23276b148f97.mp3",
+    "dur": 40.77
+   },
+   {
+    "src": "audio/7-1/02-e224674bf2f8be.mp3",
+    "dur": 29.69
+   },
+   {
+    "src": "audio/7-1/03-ace26f9a2763c1.mp3",
+    "dur": 39.3
+   },
+   {
+    "src": "audio/7-1/04-bf8e61869db12e.mp3",
+    "dur": 39.94
+   },
+   {
+    "src": "audio/7-1/05-c75bc0dce6d23d.mp3",
+    "dur": 42.4
+   },
+   {
+    "src": "audio/7-1/06-e80eb3ad50b763.mp3",
+    "dur": 46.83
+   },
+   {
+    "src": "audio/7-1/07-e8dc93f25adaa2.mp3",
+    "dur": 39.74
+   },
+   {
+    "src": "audio/7-1/08-f7c6affdb2af2f.mp3",
+    "dur": 42.74
+   },
+   {
+    "src": "audio/7-1/09-f390be8baeb013.mp3",
+    "dur": 16.34
+   }
+  ],
+  "7-2": [
+   {
+    "src": "audio/7-2/01-4d481305893d2a.mp3",
+    "dur": 43.41
+   },
+   {
+    "src": "audio/7-2/02-f2b843e7d57afd.mp3",
+    "dur": 37.84
+   },
+   {
+    "src": "audio/7-2/03-7f3740e1e815ef.mp3",
+    "dur": 48.18
+   },
+   {
+    "src": "audio/7-2/04-d05e84b9664aa0.mp3",
+    "dur": 29.11
+   },
+   {
+    "src": "audio/7-2/05-de85f198922599.mp3",
+    "dur": 33.91
+   },
+   {
+    "src": "audio/7-2/06-23d26b3725cde6.mp3",
+    "dur": 39.19
+   },
+   {
+    "src": "audio/7-2/07-714b4986fdca40.mp3",
+    "dur": 47.64
+   },
+   {
+    "src": "audio/7-2/08-0bdd47327f6690.mp3",
+    "dur": 45.4
+   },
+   {
+    "src": "audio/7-2/09-171b2decb884f9.mp3",
+    "dur": 17.53
+   }
+  ],
+  "7-3": [
+   {
+    "src": "audio/7-3/01-e08d390a102f5f.mp3",
+    "dur": 40.45
+   },
+   {
+    "src": "audio/7-3/02-659df1651d5d5a.mp3",
+    "dur": 43.77
+   },
+   {
+    "src": "audio/7-3/03-debd130e24dd5e.mp3",
+    "dur": 40.64
+   },
+   {
+    "src": "audio/7-3/04-685bf1235393f9.mp3",
+    "dur": 42.67
+   },
+   {
+    "src": "audio/7-3/05-20d9c8df4de845.mp3",
+    "dur": 38.83
+   },
+   {
+    "src": "audio/7-3/06-89f4a608bf343d.mp3",
+    "dur": 41.4
+   },
+   {
+    "src": "audio/7-3/07-6128e2e5c7fc03.mp3",
+    "dur": 46.38
+   },
+   {
+    "src": "audio/7-3/08-a56d4a7d6d3860.mp3",
+    "dur": 47.24
+   },
+   {
+    "src": "audio/7-3/09-1cfef279c6bd49.mp3",
+    "dur": 15.38
+   }
+  ],
+  "7-4": [
+   {
+    "src": "audio/7-4/01-00bbb4375d58ac.mp3",
+    "dur": 45.41
+   },
+   {
+    "src": "audio/7-4/02-479295a205d366.mp3",
+    "dur": 48.8
+   },
+   {
+    "src": "audio/7-4/03-cf11b67e18a020.mp3",
+    "dur": 39.51
+   },
+   {
+    "src": "audio/7-4/04-543a3b28ae1445.mp3",
+    "dur": 49.15
+   },
+   {
+    "src": "audio/7-4/05-781e061e2390d4.mp3",
+    "dur": 47.36
+   },
+   {
+    "src": "audio/7-4/06-25b5bbc9f12d62.mp3",
+    "dur": 46.02
+   },
+   {
+    "src": "audio/7-4/07-b742eb8435eae3.mp3",
+    "dur": 49.99
+   },
+   {
+    "src": "audio/7-4/08-f1785a40688abc.mp3",
+    "dur": 14.23
+   }
+  ],
+  "7-5": [
+   {
+    "src": "audio/7-5/01-ea50ce128ecc0f.mp3",
+    "dur": 35.19
+   },
+   {
+    "src": "audio/7-5/02-4096c6b3cfcdbf.mp3",
+    "dur": 41.63
+   },
+   {
+    "src": "audio/7-5/03-d434225b35ea0e.mp3",
+    "dur": 41.61
+   },
+   {
+    "src": "audio/7-5/04-472e4ffac7155e.mp3",
+    "dur": 42.69
+   },
+   {
+    "src": "audio/7-5/05-2bde26aa4ddc82.mp3",
+    "dur": 41.17
+   },
+   {
+    "src": "audio/7-5/06-93cb8ef5a73db1.mp3",
+    "dur": 36.26
+   },
+   {
+    "src": "audio/7-5/07-7c084b3501b491.mp3",
+    "dur": 36.36
+   },
+   {
+    "src": "audio/7-5/08-c1f722a9b630af.mp3",
+    "dur": 43.65
+   },
+   {
+    "src": "audio/7-5/09-b40bbb58954db7.mp3",
+    "dur": 18.4
+   }
+  ]
+ },
+ "drills": {
+  "1": {
+   "src": "audio/drills/module-1-e92a550b6933a3.mp3",
+   "dur": 281.46
+  },
+  "2": {
+   "src": "audio/drills/module-2-cd2f1b814708f3.mp3",
+   "dur": 349.84
+  },
+  "3": {
+   "src": "audio/drills/module-3-27f030176f9c8e.mp3",
+   "dur": 288.68
+  },
+  "4": {
+   "src": "audio/drills/module-4-eef1ad857ae830.mp3",
+   "dur": 379.09
+  },
+  "5": {
+   "src": "audio/drills/module-5-fa3d055fd725b9.mp3",
+   "dur": 361.31
+  },
+  "6": {
+   "src": "audio/drills/module-6-1a7892d42dd85f.mp3",
+   "dur": 231.75
+  },
+  "7": {
+   "src": "audio/drills/module-7-e7dc6335d4e2e1.mp3",
+   "dur": 312.75
+  }
+ },
+ "voice": "Charon",
+ "model": "gemini-3.8-flash-tts"
+}

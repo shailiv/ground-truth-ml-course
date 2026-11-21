@@ -1,0 +1,106 @@
+  wrote billing batch 0 (train, normal, fast): 25
+  wrote billing batch 3 (train, hard, fast): 25
+  wrote billing batch 2 (train, normal, fast): 25
+  wrote billing batch 1 (train, normal, fast): 25
+  wrote billing batch 4 (test, normal, gemini-4-neon): 25
+  wrote tracking_setup batch 0 (train, normal, fast): 25
+  wrote tracking_setup batch 1 (train, normal, fast): 25
+  wrote tracking_setup batch 2 (train, normal, fast): 25
+  wrote billing batch 5 (test, hard, gemini-4-neon): 25
+  wrote tracking_setup batch 4 (test, normal, gemini-4-neon): 0
+  wrote tracking_setup batch 3 (train, hard, fast): 25
+  wrote ad_review batch 0 (train, normal, fast): 25
+  wrote billing batch 6 (test, hard, gemini-4-neon): 25
+  wrote ad_review batch 1 (train, normal, fast): 25
+  wrote ad_review batch 2 (train, normal, fast): 25
+  wrote ad_review batch 3 (train, hard, fast): 25
+  wrote tracking_setup batch 5 (test, hard, gemini-4-neon): 25
+  wrote ad_review batch 4 (test, normal, gemini-4-neon): 25
+  wrote performance batch 0 (train, normal, fast): 25
+  wrote performance batch 1 (train, normal, fast): 25
+  wrote ad_review batch 5 (test, hard, gemini-4-neon): 25
+  wrote tracking_setup batch 6 (test, hard, gemini-4-neon): 25
+  wrote performance batch 2 (train, normal, fast): 25
+  wrote performance batch 3 (train, hard, fast): 25
+  wrote ad_review batch 6 (test, hard, gemini-4-neon): 25
+  wrote account_access batch 0 (train, normal, fast): 25
+  wrote account_access batch 1 (train, normal, fast): 25
+  wrote account_access batch 2 (train, normal, fast): 25
+  wrote performance batch 4 (test, normal, gemini-4-neon): 25
+  wrote performance batch 5 (test, hard, gemini-4-neon): 25
+  wrote account_access batch 3 (train, hard, fast): 25
+  wrote performance batch 6 (test, hard, gemini-4-neon): 25
+  wrote account_access batch 4 (test, normal, gemini-4-neon): 25
+  wrote feature_request batch 0 (train, normal, fast): 25
+  wrote account_access batch 5 (test, hard, gemini-4-neon): 25
+  wrote feature_request batch 2 (train, normal, fast): 25
+  wrote feature_request batch 1 (train, normal, fast): 25
+  wrote account_access batch 6 (test, hard, gemini-4-neon): 25
+  wrote feature_request batch 3 (train, hard, fast): 25
+  wrote feature_request batch 4 (test, normal, gemini-4-neon): 25
+  wrote feature_request batch 6 (test, hard, gemini-4-neon): 0
+  wrote feature_request batch 5 (test, hard, gemini-4-neon): 25
+  embedded 50/1000
+  embedded 100/1000
+  embedded 150/1000
+  embedded 200/1000
+  embedded 250/1000
+  embedded 300/1000
+  embedded 350/1000
+  embedded 400/1000
+  embedded 450/1000
+  embedded 500/1000
+  embedded 550/1000
+  embedded 600/1000
+  embedded 650/1000
+  embedded 700/1000
+  embedded 750/1000
+  embedded 800/1000
+  embedded 850/1000
+  embedded 900/1000
+  embedded 950/1000
+  embedded 1000/1000
+  llm_cheap: 80/400
+  llm_cheap: 100/400
+  llm_cheap: 20/400
+  llm_cheap: 60/400
+  llm_cheap: 40/400
+  llm_cheap: 120/400
+  llm_cheap: 180/400
+  llm_cheap: 140/400
+  llm_cheap: 160/400
+  llm_cheap: 200/400
+  llm_cheap: 220/400
+  llm_cheap: 260/400
+  llm_cheap: 240/400
+  llm_cheap: 280/400
+  llm_cheap: 300/400
+  llm_cheap: 320/400
+  llm_cheap: 340/400
+  llm_cheap: 360/400
+  llm_cheap: 380/400
+  llm_cheap: 400/400
+  llm_default: 40/400
+  llm_default: 20/400
+  llm_default: 80/400
+  llm_default: 60/400
+  llm_default: 100/400
+  llm_default: 120/400
+  llm_default: 200/400
+  llm_default: 160/400
+  llm_default: 220/400
+  llm_default: 180/400
+  llm_default: 280/400
+  llm_default: 140/400
+  llm_default: 260/400
+  llm_default: 300/400
+  llm_default: 340/400
+  llm_default: 320/400
+  llm_default: 400/400
+  llm_default: 380/400
+  llm_default: 240/400
+  llm_default: 360/400
+tickets: 1000 (400 held out, 425 hard); writers: ['gemini-3.8-flash', 'gemini-4-neon']
+  zero-shot gemini-3.5-flash-lite: accuracy 0.830
+  zero-shot gemini-4-hydrogen: accuracy 0.955
+tickets exit 0

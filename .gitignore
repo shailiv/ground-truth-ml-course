@@ -1,0 +1,24 @@
+# machine-local tools and secrets
+.tools/
+.venv/
+.secrets/
+node_modules/
+.wrangler/
+
+# regenerated or scratch
+data/audio_wav/
+data/audio_transcripts/
+qa/shots/
+qa/labs_scratch/
+qa/voices/*.mp3
+__pycache__/
+*.pyc
+build/tmp_patch.py
+qa/ux/shots/
+qa/verify/
+qa/site_review_scratch/
+qa/tts_doc.md
+qa/dev_once.log
+build/tmp_*.py
+qa/app_before_design.css
+qa/js_before_design/

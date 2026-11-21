@@ -1,0 +1,33 @@
+[
+ {
+  "reviewer": "expert-1",
+  "lesson": "2-3",
+  "where": "quiz 2-3-q1, q3, q4; review 1 variants 2-3; review 2 variants 1 and 3",
+  "quote": "A comparison at one size: the model's top 1,200 against the rule's 1,200.",
+  "kind": "bad_question",
+  "severity": "low",
+  "problem": "The keyed option is the single longest option in 7 of the 10 questions (three of the four quiz questions). Examples: review 1 variant 2 keyed 73 characters against 37/26/53; 2-3-q3 keyed 90 against 61/64/68; review 2 variant 1 keyed 80 against 63/59/56.",
+  "evidence": "Option lengths in the file; principle: option length must carry no signal about the key.",
+  "fix": "Balance option lengths; in particular lengthen the short distractors in review 1 variant 2 ('Nothing: 40 percent beats 25 percent.', 'The accuracy of each list.')."
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "2-3",
+  "where": "seg3 narration (widget)",
+  "quote": "At 0.05 the model catches nine churners in ten",
+  "kind": "boring",
+  "severity": "low",
+  "problem": "The voice tells me what I will find at 0.05 and 0.7 before I touch the slider, and then never gives the answer to the one task it sets (which cut-off flags about 711).",
+  "fix": "Set the task first, stay quiet, and open the next segment with the answer."
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "2-3",
+  "where": "seg7 narration",
+  "quote": "Forget the curve.",
+  "kind": "not_usable",
+  "severity": "low",
+  "problem": "Good for understanding, but the assistant's HTML report will put a ROC curve chart in front of me and I have been told to forget it. I will not know what I am looking at.",
+  "fix": "One sentence and a thumbnail: 'If the report draws the curve, a line hugging the top-left is good and the diagonal is a coin.'"
+ }
+]

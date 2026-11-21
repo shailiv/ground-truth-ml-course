@@ -1,0 +1,17 @@
+{
+ "issues": [
+  {
+   "where": "predict",
+   "quote": "A churn model is 88.5 percent accurate on 4,000 test advertisers, of whom 527 churned. Roughly how many of those churners did it catch?",
+   "kind": "bad_question",
+   "severity": "medium",
+   "explanation": "Every one of the four options is mathematically consistent with the question as written, and presenting 'About one in five' as the answer contradicts the lesson's core thesis that accuracy alone does not tell you recall. With 4,000 rows, 527 churners, and 88.5% accuracy (3,540 correct predictions, 460 total errors = FP + FN), true positives equal 67 + FP, where FP can range from 0 to 460. Thus a churn model with 88.5% accuracy on these rows can catch anywhere from 67 churners (12.7%) to all 527 churners (100%): specifically, TP=474/FP=407 catches 89.9% ('Nearly nine in ten'), TP=351/FP=284 catches 66.6% ('About two in three'), TP=263/FP=196 catches 49.9% ('About half'), and TP=104/FP=37 catches 19.7% ('About one in five').",
+   "evidence": "Algebra from data.n_test = 4000, data.churners_test = 527, and accuracy = 0.885: TP + TN = 3540 and TN <= 3473 implies 67 <= TP <= 527 (recall between 12.7% and 100%). Only once flagged = 141 (logreg.test.flagged) or the specific course model at cut-off 0.5 is fixed is TP uniquely 104.",
+   "fix": "Either (a) test the core insight directly by replacing option 3 with 'You cannot tell from accuracy alone — anywhere from 13% to 100% fits' and updating reveal to 'You cannot tell from accuracy alone: 67 to all 527 churners can produce 88.5% accuracy. Our model at the 0.5 cut-off caught just 104 of 527 — about one in five.', or (b) add the flagged count to q so the answer is uniquely determined: 'Our churn model flags 141 of the 4,000 test advertisers (527 of whom churned) and is 88.5 percent accurate. Roughly how many of those churners did it catch?'"
+  }
+ ],
+ "numbers_checked": 127,
+ "verdict": "All factual numbers across the segments, visuals, baselines, uncertainty range, quiz items, review variants, and checklist match facts.json accurately, and the ML concepts (including why test sets must never be rebalanced) are sound. Only the pre-lesson guess question (predict) needs tightening, as all four recall options are mathematically achievable for an unspecified model with 88.5% accuracy on 4,000 rows and 527 churners.",
+ "_hash": "e2ceba51e0e57ce6",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_ChdUaElDYTQzelBNN1U3TThQel9hQnFBYxIXVGhJQ2E0M3pQTTdVN004UHpfYUJxQWM | tokens in=68274 out=770 thought=26712]"
+}

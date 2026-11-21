@@ -1,0 +1,42 @@
+[
+ {
+  "reviewer": "learner-2",
+  "lesson": "5-2",
+  "where": "seg3 narration",
+  "quote": "What you measure is the effect of the nudge, not of the practice itself.",
+  "kind": "not_usable",
+  "severity": "medium",
+  "problem": "My deliverable is a playbook line about the practice, and the test gives me the effect of a prompt that perhaps 40 percent followed. The lesson never shows how to word that.",
+  "fix": "Give the sentence I can write: 'Advertisers prompted to switch hit goal X points more often (interval); about 40 percent switched', and say plainly that the practice's own effect is larger and was not measured."
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "5-2",
+  "where": "other_ways (pattern across lessons)",
+  "quote": "A random holdout: everyone gets the change except a small random group",
+  "kind": "not_usable",
+  "severity": "medium",
+  "problem": "The two designs I could actually get approved at work (a random holdout, a rollout in random order) sit in a text-only box the voice never reads. The same happens elsewhere: 5-4's stop-gap list, 6-2's fix for a level shift, 6-4's cohort table and 7-1's tree on the outcome are all only in other_ways.",
+  "fix": "Give the most practical alternative one spoken sentence in each lesson's brief segment."
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "5-2",
+  "where": "seg7 narration",
+  "quote": "Your three practices sit at tier two.",
+  "kind": "doubt",
+  "severity": "low",
+  "problem": "Seg1 said I hold 'three gaps' and nobody adjusted anything in this lesson, so by its own table they are tier one.",
+  "fix": "'at tier one, or two if you have adjusted them'."
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "5-2",
+  "where": "seg4 narration",
+  "quote": "For a 2 point lift, over 9,000.",
+  "kind": "not_for_me",
+  "severity": "low",
+  "problem": "The experiments I already run (headlines, creatives) randomise impressions and have millions of them. Here the unit is the advertiser, so I have thousands, and the lesson never says that this is why the sizes feel so different from my A/B tests.",
+  "fix": "One sentence on the unit: 'you randomise advertisers here, not impressions, so the count that matters is advertisers'."
+ }
+]

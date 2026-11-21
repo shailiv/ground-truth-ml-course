@@ -1,0 +1,451 @@
+{
+ "id": "4-2",
+ "module": 4,
+ "title": "Validation without cheating",
+ "subtitle": "How do you choose a model's settings without spending the test set?",
+ "goal": "After this lesson you can tell the assistant how to choose settings by cross-validation on training data, and spot folds that let the same advertiser, or the future, onto both sides.",
+ "predict": {
+  "q": "A table has six monthly rows for every advertiser. A flexible model is checked the usual way, by cross-validation with rows dealt into folds at random, and scores an AUC of 0.80. What does it score on advertisers it has never seen?",
+  "options": [
+   "About 0.80: predicting that is what cross-validation is for",
+   "About 0.77: a little lower, as usual",
+   "About 0.63: much of the 0.80 was the model recognising advertisers",
+   "About 0.90: it does better once it has whole histories"
+  ],
+  "answer": 2,
+  "reveal": "About 0.63. With the same advertiser on both sides of a fold, validation rewards memory. The lesson shows why, and the fix."
+ },
+ "segments": [
+  {
+   "narration": "The assistant's depth table is still open in front of you, and the obvious instruction is forming. Depth 4 scored best on the test set, so use depth 4. Stop before you type it. Twelve depths were scored on the same 4,000 test advertisers, and you are about to keep the best. Part of that best is the tree. Part is luck on those rows. Pick the depth that scores best on the test set, and the test set has trained your model. The sealed envelope is open, and nothing honest is left to report.",
+   "visual": {
+    "type": "title",
+    "kicker": "Module 4 · Lesson 2",
+    "title": "Validation without cheating",
+    "sub": "Pick the depth that scores best on the test set, and the test set has trained your model"
+   }
+  },
+  {
+   "narration": "Choosing is also learning. [[1]] From its training rows, a model learns weights and splits. But a depth, a penalty, which columns go in: these are settings, and your assistant will call them hyperparameters. The model does not learn them. Somebody picks them, by trying several and keeping the best, and that picking needs rows of its own. [[2]] Those are validation rows: a mock exam, where you compare settings and choose. [[3]] The test rows are the final exam, opened once, after every choice is frozen.",
+   "visual": {
+    "type": "flow",
+    "title": "Three jobs for your rows",
+    "steps": [
+     {
+      "label": "Training rows",
+      "sub": "the model learns its weights and splits"
+     },
+     {
+      "label": "Validation rows",
+      "sub": "the mock exam: you choose the settings"
+     },
+     {
+      "label": "Test rows",
+      "sub": "the final exam: opened once, to report"
+     }
+    ]
+   }
+  },
+  {
+   "narration": "A single validation slice costs you training rows and returns one noisy number. Cross-validation eases both. Cut the training data into five parts, called folds. [[1]] Train on four and check on the fifth. [[2]] Rotate. [[3]] Again. [[4]] And again. [[5]] Until every part has been the mock exam once. Then average the five. For the weighted sum on the training months, the scores run from about 0.82 to 0.87. Same model, same settings, a different fifth. That spread is the wobble from the noise lesson, for free. When two settings differ by much less than that, treat it as a tie, and let the simpler one win.",
+   "visual": {
+    "type": "table",
+    "title": "Five-fold cross-validation: the weighted sum, training months only",
+    "columns": [
+     "Round",
+     "Trains on",
+     "Checks on",
+     "AUC"
+    ],
+    "rows": [
+     [
+      "1",
+      "parts 2, 3, 4, 5",
+      "part 1",
+      "0.856"
+     ],
+     [
+      "2",
+      "parts 1, 3, 4, 5",
+      "part 2",
+      "0.828"
+     ],
+     [
+      "3",
+      "parts 1, 2, 4, 5",
+      "part 3",
+      "0.838"
+     ],
+     [
+      "4",
+      "parts 1, 2, 3, 5",
+      "part 4",
+      "0.819"
+     ],
+     [
+      "5",
+      "parts 1, 2, 3, 4",
+      "part 5",
+      "0.868"
+     ]
+    ],
+    "note": "Mean 0.842, range 0.819 to 0.868. The sealed test months, opened afterwards: 0.845."
+   }
+  },
+  {
+   "narration": "Cross-validation assumes that a row in the mock exam is new to the model. [[1]] In the main table that holds: each of its 12,000 advertisers appears once. Give a table a row per advertiser per month, and it stops holding. The main table cannot show that, so the next result comes from a separate small simulation. [[2]] It has 1,500 advertisers. [[3]] Each has six monthly rows. [[4]] Within an advertiser, several columns hardly change from month to month, and the rows usually carry the same label. Deal those rows out at random, and an advertiser's March lands in training while its April sits in the mock exam.",
+   "visual": {
+    "type": "stat",
+    "title": "When the same advertiser has many rows",
+    "stats": [
+     {
+      "value": "12,000",
+      "label": "main table: advertisers, each seen once"
+     },
+     {
+      "value": "1,500",
+      "label": "separate small simulation: advertisers"
+     },
+     {
+      "value": "6",
+      "label": "monthly rows for each of them"
+     },
+     {
+      "value": "9,000",
+      "label": "rows; an advertiser's rows usually share one label"
+     }
+    ]
+   }
+  },
+  {
+   "narration": "Score a flexible model, one built from many trees, three ways. [[1]] Ordinary shuffled folds, with rows dealt at random, say about 0.80. [[2]] Folds that keep each advertiser's rows together say 0.63. [[3]] The truth, on 1,500 advertisers it has never met, is about the same. Nothing crashed, and the shuffled score was wrong. It is last lesson's memorising in a new place: the model recognises an advertiser by its near-constant columns and recalls how its other months turned out. [[4]] The simple weighted sum cannot do that. [[5]] Its shuffled and grouped scores match. [[6]] Both sit within two hundredths of the truth. And the cheat changes a decision. Shuffled folds say pick the flexible model, by a mile. On new advertisers, in this simulation, it is the one behind. It is fine to try several settings against the test months and keep the best, as long as you report the winning score.",
+   "visual": {
+    "type": "bar",
+    "title": "Three ways to score, two models (AUC)",
+    "data": [
+     {
+      "label": "Flexible · shuffled folds",
+      "value": 0.805
+     },
+     {
+      "label": "Flexible · advertisers held out",
+      "value": 0.632
+     },
+     {
+      "label": "Flexible · new advertisers (truth)",
+      "value": 0.625
+     },
+     {
+      "label": "Simple · shuffled folds",
+      "value": 0.683
+     },
+     {
+      "label": "Simple · advertisers held out",
+      "value": 0.679
+     },
+     {
+      "label": "Simple · new advertisers (truth)",
+      "value": 0.665
+     }
+    ],
+    "note": "Separate simulation. Flexible: many trees. Simple: logistic regression. Truth: 1,500 advertisers neither model has met."
+   }
+  },
+  {
+   "narration": "[[1]] Leave the advertiser ID in as a column and it gets worse: 0.83 in shuffled validation, 0.61 on new advertisers. An ID is the perfect fingerprint. The fix has two halves, who and when. [[2]] Who: all of an advertiser's rows go on the same side of every fold. Your assistant will call these grouped folds. [[3]] When: never train on the future. If rows carry dates, the mock exam comes from later months than the training rows. [[4]] ID columns stay out of the features. [[5]] And the group is whatever repeats in your data: an advertiser, a creative, a device.",
+   "visual": {
+    "type": "bullets",
+    "title": "Folds that respect who and when",
+    "items": [
+     "ID column left in: 0.830 in shuffled folds, 0.609 on new advertisers",
+     "Who: an advertiser's rows all on one side of every fold",
+     "When: check on later months than you train on",
+     "No ID columns among the features",
+     "The group is whatever repeats: advertiser, creative, device"
+    ]
+   }
+  },
+  {
+   "narration": "Each round trains on only four fifths of the rows. Can you afford that? Ask for a learning curve: the same model, trained on growing samples of rows. Here the weighted sum reaches about 0.83 with 1,000 training rows. All 6,000 take it to 0.845. Most of the way, on a sixth of the rows. With 100 rows, only 11 of them churners, the score swings widely from sample to sample. So count the churners, not the rows. Those figures belong to this simulated data. On yours, ask for the curve.",
+   "visual": {
+    "type": "line",
+    "title": "Learning curve: the weighted sum on churn",
+    "xlabel": "Training rows",
+    "ylabel": "Test AUC",
+    "x": [
+     "100",
+     "250",
+     "500",
+     "1,000",
+     "2,000",
+     "4,000",
+     "6,000"
+    ],
+    "series": [
+     {
+      "name": "Highest of 8 samples",
+      "values": [
+       0.778,
+       0.828,
+       0.849,
+       0.841,
+       0.846,
+       0.847,
+       0.845
+      ]
+     },
+     {
+      "name": "Average",
+      "values": [
+       0.731,
+       0.807,
+       0.824,
+       0.833,
+       0.84,
+       0.845,
+       0.845
+      ]
+     },
+     {
+      "name": "Lowest of 8 samples",
+      "values": [
+       0.654,
+       0.788,
+       0.797,
+       0.824,
+       0.834,
+       0.843,
+       0.845
+      ]
+     }
+    ],
+    "note": "Main table, scored on the 4,000 test advertisers. 100 training rows hold 11 churners; 1,000 hold 111."
+   }
+  },
+  {
+   "narration": "Brief and audit. [[1]] Tell the assistant to choose every setting by cross-validation on the training months only, and to leave the test months alone until one configuration is frozen. [[2]] Its output should say how the folds were made: by advertiser, by time, or shuffled. [[3]] If advertisers repeat, it should print how many sit on both sides of a fold, and that number should be zero. [[4]] It should list every fold score, not just the average, so you can hold the winner's lead against the spread. [[5]] And it should say the test set was scored once, after the choice. A validation score far above the test score is your cue to recheck this list.",
+   "visual": {
+    "type": "bullets",
+    "title": "Brief and audit",
+    "items": [
+     "Settings chosen by cross-validation, training months only",
+     "How the folds were made: by advertiser, by time, or shuffled",
+     "Advertisers on both sides of a fold: 0",
+     "Every fold score, not just the mean",
+     "Test set scored once, after the choice"
+    ]
+   }
+  },
+  {
+   "narration": "To recap. Choosing settings is learning, so it needs its own data. Do it by cross-validation inside the training rows, in folds that keep each advertiser whole and never look ahead in time. Then open the test set once. Next, the flexible models themselves, and two questions on one table that give them opposite verdicts.",
+   "visual": {
+    "type": "quote",
+    "text": "Choose on the mock exam. Report on the final exam. Open it once.",
+    "sub": "Folds keep each advertiser whole and never look ahead in time"
+   }
+  }
+ ],
+ "takeaways": [
+  "Choosing settings is learning: do it by cross-validation on training rows, and open the test set once.",
+  "Folds must keep whatever repeats, such as an advertiser, on one side, and must never train on the future.",
+  "Fold scores wobble; a lead much smaller than the wobble is a tie, and ties go to the simpler setting."
+ ],
+ "quiz": [
+  {
+   "id": "4-2-q1",
+   "concept": "choosing by the test score spends the test set",
+   "domain": "course",
+   "q": "The assistant's summary reads: 'I compared tree depths from 1 to 25 and selected depth 4, which had the highest test AUC (0.769). Final model: depth 4, test AUC 0.769.' What is the problem with the final number?",
+   "options": [
+    "There is none: the test rows were never passed to the fitting step, so the score is clean",
+    "Only that it lacks an interval: with one added, 0.769 can stand as the final score",
+    "The test set chose the depth, so 0.769 is the best of twelve looks at the same rows",
+    "The depth should have been the one with the highest training AUC instead"
+   ],
+   "answer": 2,
+   "why": "Choosing by test score fits the choice to the test rows: the winner is partly the depth whose luck on those 4,000 advertisers was best, and nothing untouched remains to check it. The fitting step never saw those rows, which is why this slips through, but the choice did; an interval describes noise and does not undo that. Choose by cross-validation on the training months, then score the test set once."
+  },
+  {
+   "id": "4-2-q2",
+   "concept": "folds must keep related rows together",
+   "domain": "other",
+   "q": "A creative-fatigue model is trained on 40,000 rows: one row per creative per week, from 3,000 creatives. The assistant reports a five-fold cross-validation AUC of 0.91. On creatives launched after the model was built, it scores 0.70. What is the most likely explanation?",
+   "options": [
+    "Rows from the same creative sat on both sides of the folds, rewarding recognition",
+    "Five folds are too few for 40,000 rows; ten folds would have shown the 0.70 in advance",
+    "New creatives are simply harder to predict; the 0.91 was correct for the data it was measured on",
+    "The model is too simple; a more flexible one would have held up better on the new creatives"
+   ],
+   "answer": 0,
+   "why": "With about thirteen weekly rows per creative, shuffled folds put the same creative in training and in the mock exam, where a flexible model can recognise it and recall its outcome. The fix is folds that hold whole creatives out and check on later weeks. More folds change nothing: the same creatives are still on both sides."
+  },
+  {
+   "id": "4-2-q3",
+   "concept": "fold scores wobble",
+   "domain": "course",
+   "q": "The assistant tunes a flexible churn model by five-fold cross-validation. Two of its leading settings average 0.837 and 0.835, and the fold scores for each wobble by about 0.02. It writes: 'Configuration A is superior.' What is the right response?",
+   "options": [
+    "Agree: the higher five-fold average is exactly what cross-validation is for",
+    "Score both on the test set and keep whichever does better there",
+    "Add more folds until one configuration pulls clearly ahead of the other",
+    "Call it a tie, keep the simpler of the two, and leave the test set closed"
+   ],
+   "answer": 3,
+   "why": "A lead of 0.002 is a tenth of the fold-to-fold wobble, so this evidence cannot separate the two; the tie goes to the simpler or cheaper setting. Using the test set as tie-breaker is the tempting move, and it is exactly the cheat this lesson is about: the test set would then have chosen your model."
+  },
+  {
+   "id": "4-2-q4",
+   "concept": "auditing how folds were made",
+   "domain": "course",
+   "q": "An audit block from the assistant reads: 'Rows: 54,000 (9,000 advertisers, 6 monthly snapshots each). Features: 18, including advertiser_id. Validation: 5-fold, shuffle=True. CV AUC: 0.88.' What has to change before you believe 0.88?",
+   "options": [
+    "Nothing: shuffled five-fold cross-validation is the standard recipe",
+    "Keep each advertiser's rows in one fold, check on later months, and drop the ID column",
+    "Only the number of folds: 54,000 rows deserve ten rather than five",
+    "Only the ID column: once it is dropped, shuffled folds are safe again for these rows"
+   ],
+   "answer": 1,
+   "why": "Six rows per advertiser with shuffled folds puts every advertiser on both sides, and the ID column hands the model a perfect way to recognise them. Dropping the ID alone is not enough: in the course's small simulation the flexible model without it still scored 0.80 in shuffled folds against about 0.63 on new advertisers, because near-constant columns identify an advertiser almost as well."
+  }
+ ],
+ "review": [
+  {
+   "concept": "choosing by the test score spends the test set",
+   "variants": [
+    {
+     "q": "An analyst builds 30 versions of a model that predicts which advertisers will accept a price increase, scores each on the same held-out accounts, and reports the best version's score: 0.81. What is the honest status of 0.81?",
+     "options": [
+      "Optimistic: it is the luckiest of 30 looks at the same accounts",
+      "Reliable: none of the 30 versions was ever trained on the held-out accounts",
+      "Pessimistic: the best of 30 versions would score higher still on fresh accounts",
+      "Reliable, provided that all 30 versions were given the same set of columns"
+     ],
+     "answer": 0,
+     "why": "Thirty versions scored on the same accounts means the reported one is the luckiest of thirty looks, so 0.81 flatters it. No version was fitted to those accounts, which is why this feels safe; but the choice was fitted to them, so the final figure needs accounts that played no part."
+    },
+    {
+     "q": "A team tweaks a ticket-routing model eight times. After each tweak they re-score it on the same 300 test tickets and keep the change if the score went up. After the eighth tweak, what are those 300 tickets?",
+     "options": [
+      "Still a test set: the model was never trained on any of those tickets",
+      "A validation set: a fresh, untouched batch is needed for the final score",
+      "Useless: any tickets scored more than once have to be thrown away for good",
+      "A training set: the model has by now memorised all 300 of them"
+     ],
+     "answer": 1,
+     "why": "Eight keep-or-discard decisions were made from those tickets, so they have helped shape the model and their score now runs high. They are still useful for choosing between versions, which is what a validation set is; the reported figure needs tickets that played no part."
+    },
+    {
+     "q": "Your assistant offers to 'select the ten strongest columns for the churn model by trying combinations and keeping the set with the best score on the test months'. What do you tell it?",
+     "options": [
+      "Go ahead: choosing columns is preparation, not training, so the test months stay clean",
+      "Go ahead, but report the average of all the test scores it tried",
+      "Select on the test months, then report the score from the training months",
+      "Select by cross-validation on the training months; score the test months once"
+     ],
+     "answer": 3,
+     "why": "Which columns go in is a setting like any other, and choosing it by test score fits the choice to the test rows. Cross-validation inside the training months does the same job and leaves the test months untouched for one honest score."
+    }
+   ]
+  },
+  {
+   "concept": "folds must keep related rows together and never look ahead",
+   "variants": [
+    {
+     "q": "An invalid-traffic model is trained on click logs with about 200 clicks per device. Shuffled five-fold cross-validation gives an AUC of 0.97. What must be true of the folds before that figure says anything about devices the model has not seen?",
+     "options": [
+      "Every fold must hold the same share of invalid clicks",
+      "All the clicks from one device must fall in the same fold",
+      "Every device must be represented in every one of the folds",
+      "The folds must be reshuffled several times and averaged"
+     ],
+     "answer": 1,
+     "why": "With 200 clicks per device, shuffled folds put every device on both sides, and the model can score well just by recognising devices. Holding whole devices out is the only check that resembles meeting a new device; reshuffling or balancing the folds leaves the same devices on both sides."
+    },
+    {
+     "q": "A model predicts each advertiser's spend next month from two years of monthly rows. The assistant validates with shuffled folds, so in some rounds the model trains on December rows and is checked on rows from the June before. What is wrong with that?",
+     "options": [
+      "It trains on the future and is checked on the past, which never happens in use",
+      "Nothing, provided every month appears in the checking part exactly once across the rounds",
+      "June and December have different numbers of rows, so the folds are unbalanced",
+      "Two years of monthly rows is too little data to support five folds"
+     ],
+     "answer": 0,
+     "why": "In use the model only ever predicts months later than everything it was trained on, so validation has to do the same: train on earlier months, check on later ones. Covering every month once does not help if the model has already seen what came after."
+    },
+    {
+     "q": "A lead-scoring table has several rows per company, one for each contact who filled in a form. With shuffled folds a flexible model scores 0.86. With whole companies held out it scores 0.71. Which figure describes how it will do on companies it has not met?",
+     "options": [
+      "0.86, because shuffled folds are the standard method",
+      "About 0.79, the midpoint, as a fair compromise",
+      "0.71, because only there is every checked company new to the model",
+      "0.86, because holding out companies wastes training data"
+     ],
+     "answer": 2,
+     "why": "Only the grouped folds check the model on companies it has never seen, which is how it will be used. The extra 0.15 under shuffled folds is the model recognising companies from their other contacts, and it disappears on new ones."
+    }
+   ]
+  }
+ ],
+ "drill": [
+  {
+   "q": "Why can you not use the test set to choose a model's settings?",
+   "a": "Because choosing is a form of learning. Pick the best of several scores on the test rows and the choice is fitted to those rows, so the score flatters and nothing untouched is left to report."
+  },
+  {
+   "q": "Your table has one row per advertiser per month. What must cross-validation do differently?",
+   "a": "Keep all of an advertiser's rows on the same side of every fold, and check on later months than it trains on. Otherwise a flexible model is rewarded for recognising advertisers it has already seen."
+  }
+ ],
+ "recall": {
+  "prompt": "Explain in 30 seconds how a model can score well in cross-validation and badly on new advertisers, and what you would ask the assistant to change.",
+  "model_answer": "If the same advertiser has rows on both sides of a fold, a flexible model can recognise it and recall its outcome, so validation rewards memory. In the course's small simulation that gave 0.80 in shuffled folds and about 0.63 on advertisers the model had never met. I would ask for folds that keep each advertiser's rows together and check on later months than they train on, with ID columns removed. Settings get chosen on those folds only, and the test set is scored once at the end."
+ },
+ "ask_assistant": "Choose every setting by five-fold cross-validation on the training months only; do not score the test months until one final configuration is fixed. If any advertiser has more than one row, keep all of its rows in the same fold, make each fold check on later months than it trains on, and print the number of advertisers that appear on both sides of any fold. Remove ID columns from the features. For each candidate report all five fold scores with their mean and range, then score the chosen configuration on the test months once and show that number beside its cross-validation mean.",
+ "audit_checklist": [
+  "How the folds were made (by advertiser, by time, or shuffled), and the count of advertisers on both sides of any fold: 0",
+  "Every fold score for each candidate setting, with mean and range, not only the winner's mean",
+  "A statement that the test set was scored once, after the settings were frozen",
+  "The feature list, with no ID column in it"
+ ],
+ "transfer": [
+  "Creative performance with one row per creative per day: are the same creatives on both sides of your validation?",
+  "Invalid-traffic detection with hundreds of clicks per device or publisher: what is the group to hold out together?",
+  "A support-ticket router tweaked again and again against one test batch: is that batch still a test set?"
+ ],
+ "other_ways": [
+  {
+   "approach": "One validation month held out of training",
+   "when": "When there is plenty of dated data: train on January and February, choose on March, and the check mirrors how the model will be used."
+  },
+  {
+   "approach": "Walk-forward validation",
+   "when": "When things drift over time: train up to each month in turn and check on the next, so every check looks forward."
+  },
+  {
+   "approach": "A fresh test set",
+   "when": "When the old one has been looked at too often to trust: a new month of data gives you a sealed envelope again."
+  }
+ ],
+ "glossary": [
+  {
+   "term": "hyperparameter",
+   "def": "A setting, such as a tree's depth, that somebody chooses before fitting; the model does not learn it from the rows."
+  },
+  {
+   "term": "validation set",
+   "def": "Rows held out of training and used to compare settings or versions, so that the test set stays untouched."
+  },
+  {
+   "term": "cross-validation",
+   "def": "Cutting the training data into parts called folds, training on all but one and checking on the one left out, in rotation."
+  },
+  {
+   "term": "grouped folds",
+   "def": "Folds in which all rows from the same advertiser, or whatever else repeats, are kept on the same side."
+  },
+  {
+   "term": "learning curve",
+   "def": "The test score of one model trained on growing numbers of rows; it shows what more data would buy."
+  }
+ ]
+}

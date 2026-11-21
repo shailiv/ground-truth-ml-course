@@ -1,0 +1,17 @@
+{
+ "issues": [
+  {
+   "where": "seg4 narration",
+   "quote": "And because the weights come from the data, a large positive weight proves that the column causes the outcome.",
+   "kind": "wrong_concept",
+   "severity": "high",
+   "explanation": "Logistic regression weights learned from observational data measure conditional associations, not causal effects. Claiming that a large positive weight proves causation teaches a false principle of causal inference and directly contradicts the lesson's stated goal, Segment 7 ('For now, a weight is an association. Say goes with, never drives.'), the takeaways, and Quiz 3-2-q3.",
+   "evidence": "facts.json -> logreg.how_to_read: 'None of these is a causal effect.' and tracking_story (model weight -4.4 pts vs true causal effect -2.3 pts); standard causal inference principle that regression adjustment on observational data cannot rule out unmeasured confounding.",
+   "fix": "Remove the false causal claim or replace that sentence with: 'Even on a common scale, though, a large weight only shows a strong association in this table — it never proves that the column causes the outcome.'"
+  }
+ ],
+ "numbers_checked": 53,
+ "verdict": "All numeric claims match facts.json accurately, and the questions and explanations are sound, but Segment 4 narration contains a high-severity false statement claiming that a large positive weight proves causation, contradicting both statistical principles and the rest of the lesson.",
+ "_hash": "fdd02842dfaa4dbc",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_ChcxdElCYTdHOUxkbmR4czBQc1lMcndRZxIXMXRJQmE3RzlMZG5keHMwUHNZTHJ3UWc | tokens in=67475 out=301 thought=29379]"
+}

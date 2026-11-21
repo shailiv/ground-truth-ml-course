@@ -1,0 +1,268 @@
+{
+  "id": "7-1",
+  "module": 7,
+  "title": "Clustering: segments without labels",
+  "subtitle": "The algorithm returned four tidy segments. How do you know they mean anything?",
+  "goal": "After this lesson you can commission a clustering and run the checks that show whether its segments are a finding or an artefact of the method.",
+  "predict": {
+    "q": "The assistant runs k-means and gets four advertiser segments. You ask for the identical analysis again, changing only the random starting point. What comes back?",
+    "options": [
+      "Exactly the same four segments: the data has not changed",
+      "The same four segments, listed in a different order",
+      "Possibly a noticeably different set of segments",
+      "An error: clustering needs an answer column to learn from"
+    ],
+    "answer": 2,
+    "reveal": "Possibly quite different: on this course's table, six re-runs agreed with the first anywhere from 0.76 down to 0.17, where 1 means identical. The lesson shows why, and what to check."
+  },
+  "segments": [
+    {
+      "narration": "The request lands on a Tuesday: segment our advertisers. You hand it to the assistant, and twenty minutes later four tidy segments are on your screen. Churn runs from under 5 percent in the best to 35 percent in the worst. Someone is already drafting names. Champions. Strugglers. Before those names reach a slide, one awkward fact. Clustering always hands back groups. Ask for four and you get four, whether or not four kinds of advertiser exist. Whether they mean anything is yours to check.",
+      "visual": {"type": "title", "kicker": "Module 7 · Lesson 1", "title": "Clustering: segments without labels", "sub": "Four tidy segments, churn from 4.5% to 35.1%. Are they real?"}
+    },
+    {
+      "narration": "The assistant ran k-means. Think of it as a GROUP BY where nobody supplied the groups. [[1]] You choose k, the number of groups. Here, four. [[2]] The method drops four centres into the data at random. [[3]] Each advertiser joins its nearest centre. [[4]] Each centre moves to the middle of its advertisers. [[5]] Assign again, move again, until nothing changes. That is the whole algorithm. Notice what never appeared: an answer column. Churn was not shown to it. It only made the groups compact.",
+      "visual": {"type": "flow", "title": "k-means: a GROUP BY that invents its own groups", "steps": [
+        {"label": "Choose k", "sub": "your decision: 4"},
+        {"label": "Drop k centres", "sub": "at random"},
+        {"label": "Assign", "sub": "each row to its nearest centre"},
+        {"label": "Move", "sub": "each centre to the middle of its rows"},
+        {"label": "Repeat", "sub": "until nothing changes"}
+      ]}
+    },
+    {
+      "narration": "Nearest centre. That word needs a ruler. Distance adds up the differences between two advertisers, column by column. Spend runs in the thousands of dollars. Active days, campaigns and creatives are small numbers. So on raw columns, distance is almost entirely a difference in spend. Here is a test of the ruler alone: predict churn from the 25 most similar past advertisers. [[1]] On raw columns that scores an AUC of about 0.63. [[2]] Put every column on a common scale first, as you did for the weighted sum, and it scores about 0.80. Only the ruler changed.",
+      "visual": {"type": "compare", "title": "Predict churn from the 25 most similar advertisers (AUC)",
+        "left": {"label": "Raw columns", "value": "0.628", "sub": "distance is almost all spend"},
+        "right": {"label": "Columns on a common scale", "value": "0.797", "sub": "every column gets a say"}}
+    },
+    {
+      "narration": "The assistant did use a common scale, on eight behaviour columns. The best segment holds over a third of advertisers and loses under 5 percent of them. The worst holds about one in ten and loses 35 percent. It looks like a discovery. Now read across the columns instead of down the churn. In the first segment, everyone uses auto-bidding. In the second, nobody does, and everybody has conversion tracking. In the third, nobody has tracking. Only the fourth is something new: creatives last refreshed about 80 days ago. Three of your four segments are, near enough, two yes-or-no columns you already had.",
+      "visual": {"type": "table", "title": "The four segments k-means returned",
+        "columns": ["Segment", "Advertisers", "Auto-bidding", "Tracking", "Days since creative refresh", "Churn"],
+        "rows": [
+          ["A", "4,428", "100%", "92%", "16", "4.5%"],
+          ["B", "2,565", "0%", "100%", "17", "8.8%"],
+          ["C", "3,720", "29%", "0%", "18", "14.6%"],
+          ["D", "1,287", "29%", "29%", "80", "35.1%"]
+        ],
+        "note": "k = 4, eight behaviour columns on a common scale. Churn was never shown to the method."}
+    },
+    {
+      "narration": "Two checks make that precise. [[1]] First, write the plain GROUP BY yourself: tracking, yes or no, by auto-bidding, yes or no. Score how closely the two groupings agree, where zero means unrelated and one means identical. The score is 0.7. On a common scale a yes-or-no column is two piles with a wide gap between them, and k-means loves a gap. [[2]] Second, the centres start at random. So run the same clustering from six different starting points and compare each with the first. Agreement ranged from 0.76 down to 0.17. Same data, same settings, and at the low end nearly a different segmentation.",
+      "visual": {"type": "stat", "title": "Two honesty checks (1 = identical, 0 = unrelated)", "stats": [
+        {"value": "0.70", "label": "agreement with a plain GROUP BY on tracking × auto-bidding"},
+        {"value": "0.17 – 0.76", "label": "agreement with its own first run, across six random starts"}
+      ]}
+    },
+    {
+      "narration": "[[1]] A third check. Drop those two columns and cluster on the six that remain. [[2]] The new segments are close to unrelated to the old ones: agreement 0.17. Yet churn spreads just as widely, from 4 percent to 32. Two unrelated ways of cutting the same advertisers, and both seem to explain churn. Why? In this simulated world good habits and low churn travel together, so almost any grouping on behaviour sorts advertisers by churn. A GROUP BY on spend tier and account manager, no algorithm at all, spreads churn from 5 percent to 19. That is the baseline. Only one profile shows up both times and beats it: the stale creatives, at 35 and 32 percent churn.",
+      "visual": {"type": "compare", "title": "Cluster again without the two yes/no columns",
+        "left": {"label": "With them", "value": "4.5% → 35.1%", "sub": "churn, best segment to worst"},
+        "right": {"label": "Without them", "value": "4.0% → 32.4%", "sub": "agreement with the first segments: 0.17"}}
+    },
+    {
+      "narration": "And the number four? You chose it. K-means reports an error: how far advertisers sit from their centres. Add a segment and the error falls. It always does, because more centres are always closer. A natural number of groups would show as a sharp bend. From two segments to eight the error simply keeps sliding. Nothing in the data says four. So when does clustering earn its place? When there are many columns and no obvious cut. And when a segment holds up: it returns from a different random start and in a second month of data, and it separates an outcome it never saw better than your GROUP BY does.",
+      "visual": {"type": "line", "title": "More segments always fit better: nothing says stop at four", "xlabel": "Number of segments (k)", "ylabel": "Error", "x": [2, 3, 4, 5, 6, 7, 8],
+        "series": [{"name": "Total squared distance to centres", "values": [78563, 72405, 65746, 61272, 57096, 54086, 51180]}],
+        "note": "A natural number of groups would show as a sharp bend. The curve keeps sliding."}
+    },
+    {
+      "narration": "Brief and audit. [[1]] Ask the assistant to list the columns it clustered on and how they were scaled, with no outcome column among them. [[2]] Ask for a profile of every segment: its size and the average of each column, so a segment that is one column in disguise shows itself. [[3]] Ask for runs from several random starts, with an agreement score between them. [[4]] Ask for the error at each k from two to eight. [[5]] And ask for the plain GROUP BY you would have written, beside the segments, on the same outcome. One run, one k and four clever names is not evidence yet.",
+      "visual": {"type": "bullets", "title": "Brief and audit", "items": [
+        "Show: columns used, how scaled, no outcome column among them",
+        "Show: a profile per segment (size, average of every column)",
+        "Show: agreement between runs from several random starts",
+        "Show: the error for k = 2 to 8",
+        "Show: a plain GROUP BY beside the segments, same outcome"
+      ]}
+    },
+    {
+      "narration": "To recap. [[1]] Clustering is a GROUP BY that invents its own groups, and it returns groups every time, real or not. [[2]] Distance decides everything, so columns go on a common scale first. [[3]] A segment earns belief when it survives a re-run and beats the GROUP BY you could have written. Which columns dominated here is a quirk of this simulated table. The habit of checking is not. Next, distance does something less obvious. It measures how close two pieces of text are in meaning.",
+      "visual": {"type": "bullets", "title": "Keep this", "items": [
+        "Clustering always returns groups, real or not",
+        "Distance needs a common scale, or the biggest unit wins",
+        "Believe a segment that survives a re-run and beats a plain GROUP BY"
+      ]}
+    }
+  ],
+  "takeaways": [
+    "Clustering returns as many groups as you ask for, every time; tidy segments are not evidence that the groups exist.",
+    "Similarity depends on the ruler: put columns on a common scale, or the column with the biggest units decides everything.",
+    "Trust a segment only after it survives a re-run from another random start and separates an unseen outcome better than a plain GROUP BY."
+  ],
+  "quiz": [
+    {
+      "id": "7-1-q1",
+      "concept": "scale before distance",
+      "domain": "course",
+      "q": "The assistant clusters advertisers on eight columns left in their raw units. The four segments differ sharply on spend, from a group of very small accounts up to a group of very large ones, and hardly at all on any other column. What is the most likely explanation?",
+      "options": [
+        "Spend is what truly separates kinds of advertiser, and the method has simply discovered that.",
+        "Raw dollars swamp the other columns in the distance, so this is a spend tier.",
+        "Four segments are too few; with more of them, the other columns would start to show up.",
+        "K-means cannot handle money columns, so spend should be removed from the inputs."
+      ],
+      "answer": 1,
+      "why": "Distance adds up differences column by column, so a column in thousands of dollars drowns columns measured in single digits and the result is a GROUP BY on spend tier. That is a property of the units, not a discovery about advertisers, which is why the first option is tempting and wrong. More segments would only cut spend finer; the fix is a common scale, not dropping the column."
+    },
+    {
+      "id": "7-1-q2",
+      "concept": "a churn spread is not proof",
+      "domain": "course",
+      "q": "The assistant's report reads: 'K-means, k = 4, eight standardised behaviour columns, one run with random seed 42. Churn was not used. Segment churn ranges from 4.5 to 35.1 percent, which confirms the segments are real.' What is missing before you can accept the last sentence?",
+      "options": [
+        "Nothing: churn was never shown to the method, so the spread is independent proof of the segments.",
+        "The churn column among the inputs, so that the segments are built to explain churn.",
+        "A larger k: four segments cannot describe twelve thousand different advertisers.",
+        "Re-runs from other random starts, and a plain GROUP BY's churn spread beside it."
+      ],
+      "answer": 3,
+      "why": "One run with a fixed seed hides whether the segments come back, and a churn spread proves little on its own: on this table an unrelated clustering and a plain GROUP BY on spend tier and account manager also spread churn widely. The first option is the tempting one, but any grouping on behaviour will sort churn when good habits and low churn travel together. Feeding churn in would simply bake the answer into the groups."
+    },
+    {
+      "id": "7-1-q3",
+      "concept": "clusters differ on their own inputs by construction",
+      "domain": "other",
+      "q": "A sales-operations analyst clusters 8,000 inbound leads into five personas using twenty form and browsing columns. The deck's evidence that the personas are real: 'the five groups differ significantly on 17 of the 20 columns.' What is the right response?",
+      "options": [
+        "That is circular. Do the personas return next month and differ on conversion?",
+        "That is convincing: seventeen significant differences out of twenty cannot be chance.",
+        "Drop the three columns that do not separate the personas and run the clustering again.",
+        "Increase the number of personas until all twenty columns differ between the groups."
+      ],
+      "answer": 0,
+      "why": "Groups built by pulling leads apart on those twenty columns must differ on them, so the test would pass for any clustering of any data. Evidence comes from outside the inputs: the same personas reappearing on fresh leads, and differing on an outcome the method never saw. Counting significant differences feels rigorous, which is what makes the second option the usual mistake."
+    },
+    {
+      "id": "7-1-q4",
+      "concept": "the data does not choose k",
+      "domain": "course",
+      "q": "To settle the number of segments, the assistant runs k-means for every k from 2 to 8 and writes: 'The error is lowest at k = 8, so eight segments is the best choice.' The error falls by a similar amount at each step. What is the right read?",
+      "options": [
+        "Eight is correct: a lower error means the segments describe the advertisers better.",
+        "Keep increasing k beyond eight until the error finally stops falling altogether.",
+        "The error always falls as k grows; with no sharp bend, the number is your call to make and to check.",
+        "Choose two segments, because the first step is where the method learned the most."
+      ],
+      "answer": 2,
+      "why": "More centres are always closer to the rows, so the error keeps falling until every advertiser is its own segment: lowest error simply means most segments. A natural number of groups would show as a sharp bend, and a smooth slide means the data is not choosing. Pick the number the team can act on, then check those segments hold up."
+    }
+  ],
+  "review": [
+    {
+      "concept": "clustering always returns groups: check they hold up",
+      "variants": [
+        {
+          "q": "An analyst clusters 3,000 publisher sites into six groups by traffic pattern and labels one small group 'suspicious'. A re-run with a different random seed splits that group, and half its sites land in a large ordinary one. The fraud team wants to block the original list today. What is the right call?",
+          "options": [
+            "Block the list: the first run is the official one, and its seed can be fixed so the result is reproducible.",
+            "Hold off: the group is unstable, so test it against sites already known to be invalid.",
+            "Run it a third time and block the sites that two of the three runs agree on.",
+            "Average the two runs' group numbers for each site and block the highest values."
+          ],
+          "answer": 1,
+          "why": "A group that dissolves when only the random start changes is a product of the start, not yet of the sites. Fixing the seed makes the result repeatable without making it true, and a vote between runs still never asks whether the group means anything. Treat the cluster as a lead and check it against an outcome the method never saw, such as confirmed invalid traffic."
+        },
+        {
+          "q": "A retailer's analyst presents three customer segments from a clustering on twelve columns. A colleague notices that grouping by two existing flags, loyalty card and online-only, reproduces the segments almost exactly. What should the team take from that?",
+          "options": [
+            "The clustering is confirmed twice over, so the three segments are certainly real.",
+            "The two flags should be removed, because they are contaminating the clustering.",
+            "The clustering has failed, and the twelve columns should be collected again.",
+            "The segments are those two flags, so use the plain GROUP BY instead."
+          ],
+          "answer": 3,
+          "why": "When a clustering mostly matches a GROUP BY you could have written, it has rediscovered columns you already had, and the GROUP BY is easier to explain and does not move between runs. That is not a second confirmation: both groupings come from the same two flags. Dropping the flags is worth trying as a check, but not because they 'contaminate' anything."
+        },
+        {
+          "q": "Four advertiser segments have been named and an account plan is being built around them for the year. Before sign-off you may ask the assistant for one more piece of evidence. Which is most useful?",
+          "options": [
+            "The same clustering on a later month from other random starts, with churn beside a plain GROUP BY.",
+            "A chart showing how different the four segments are on each of the columns used to build them.",
+            "The same clustering with ten segments, to see whether finer groups look even tidier.",
+            "A longer description of each segment, so the names are easier for the sales team to remember."
+          ],
+          "answer": 0,
+          "why": "A year-long plan needs segments that come back on new data and from a different start, and that separate an outcome better than the obvious GROUP BY. Segments always look different on the columns that built them, so that chart would pass for any clustering. More segments and better names add polish, not evidence."
+        }
+      ]
+    },
+    {
+      "concept": "distance needs a common scale",
+      "variants": [
+        {
+          "q": "To find advertisers 'like this one', the assistant measures distance on raw columns: monthly impressions in the millions, click rate around 0.3, and number of campaigns between 1 and 20. The ten nearest matches to a gaming advertiser come from every vertical but have almost identical impressions. Why?",
+          "options": [
+            "Impressions are the best single description of an advertiser, so the matches are right.",
+            "Ten neighbours are too few; with fifty, the other columns would begin to count.",
+            "Impressions are in millions, so they decide the distance on their own.",
+            "Nearest-neighbour matching only works within one vertical at a time."
+          ],
+          "answer": 2,
+          "why": "A difference of a million impressions dwarfs any possible difference in click rate or campaign count, so 'nearest' means 'nearest in impressions'. More neighbours would just be more advertisers with similar impressions. Put the columns on a common scale and every column gets a say."
+        },
+        {
+          "q": "A retail chain clusters 400 stores on annual revenue in dollars, a satisfaction score from 1 to 5, and staff count. The result is three groups: small, medium and large. The operations lead concludes that satisfaction plays no part in what kind of store it is. Is that a fair conclusion?",
+          "options": [
+            "Yes: the algorithm weighed all three columns and satisfaction turned out not to matter.",
+            "No: revenue in dollars dominated the distance, so satisfaction never got a say.",
+            "Yes: a score from 1 to 5 has too few distinct values to be useful in a clustering.",
+            "No: clustering can never use a column that was collected by survey."
+          ],
+          "answer": 1,
+          "why": "With revenue in the hundreds of thousands and satisfaction between 1 and 5, raw distance is a revenue difference and nothing else. The method did not weigh the columns; the units did. Rescale the columns and run it again before concluding anything about satisfaction."
+        },
+        {
+          "q": "The assistant clusters video creatives on length in seconds and completion rate as a fraction between 0 and 1. A colleague re-runs it with length converted to minutes and gets completely different groups. What does that tell you?",
+          "options": [
+            "The first run was wrong, and minutes are the correct unit for video length.",
+            "Clustering is too unreliable to use on creatives of different lengths.",
+            "The second run was wrong, and seconds are the correct unit for video length.",
+            "The groups depend on an arbitrary unit: neither run had a sensible ruler."
+          ],
+          "answer": 3,
+          "why": "If changing seconds to minutes changes the answer, the grouping reflects the unit, not the creatives: in seconds, length drowned completion rate, and in minutes it no longer does. Neither unit is the right one. Put both columns on a common scale so the result no longer depends on how a column happens to be recorded."
+        }
+      ]
+    }
+  ],
+  "drill": [
+    {
+      "q": "A clustering comes back with five neat customer segments. Why is that, on its own, not evidence that five kinds of customer exist?",
+      "a": "Because the method returns as many groups as you ask for, every time, whatever the data looks like. Believe them only if they come back from a different random start and on fresh data, and beat a plain GROUP BY on an outcome they never saw."
+    },
+    {
+      "q": "Why do columns need a common scale before you measure how similar two rows are?",
+      "a": "Because distance adds up differences across columns, so a column in thousands of dollars drowns columns measured in single digits. Without a common scale you are grouping by the biggest unit, not by behaviour."
+    }
+  ],
+  "recall": {
+    "prompt": "A stakeholder loves the four named segments and wants to build the account plan around them. Explain what you would check first, and why.",
+    "model_answer": "Clustering returned four groups because I asked for four, so first I check they are not an artefact of the method. I compare them with a plain GROUP BY, since here they mostly matched two yes-or-no columns, and I re-run from other random starts to see whether the same segments come back. Then I check that they separate an outcome they never saw, such as churn, better than the GROUP BY I could have written. Only what survives those checks goes into the plan."
+  },
+  "ask_assistant": "Cluster the advertisers with k-means on the behaviour columns I list, put on a common scale, with no outcome column among the inputs. Show the error for k = 2 to 8, and for k = 4 a profile table: size, the average of every input column, and the churn rate per segment. Re-run from six different random seeds and report an agreement score (adjusted Rand index) between each run and the first. Beside the segments, show churn for a plain GROUP BY on spend tier and account manager. Do not name the segments.",
+  "audit_checklist": [
+    "The input columns and their scaling are listed, and no outcome column is among them.",
+    "A profile per segment shows its size and the average of every input, so a segment that is one column in disguise is visible.",
+    "Agreement between runs from several random starts is reported, not one run with a fixed seed.",
+    "The same outcome is shown for a plain GROUP BY beside the segments."
+  ],
+  "transfer": [
+    "What kinds of publisher sites send us traffic? Groups will come back either way; check they survive a re-run before anyone acts on a 'suspicious' one.",
+    "What personas are in our inbound leads? A persona should reappear in next month's leads and differ on conversion.",
+    "Which creatives are alike? Length in seconds and click rate need a common scale before 'alike' means anything."
+  ],
+  "other_ways": [
+    {"approach": "A plain GROUP BY on two or three business columns you already trust", "when": "When an obvious cut exists: it is stable, easy to explain, and the baseline any clustering has to beat."},
+    {"approach": "A shallow decision tree on the outcome you care about", "when": "When you have an answer column and want segments built to differ on it: each leaf is a segment with a rate."},
+    {"approach": "Other clustering methods: hierarchical clustering, DBSCAN, Gaussian mixtures", "when": "When you do not want to fix the number of groups in advance or expect groups of uneven shape; the same checks apply."}
+  ],
+  "glossary": [
+    {"term": "clustering", "def": "Grouping rows by how similar they are, with no answer column to learn from."},
+    {"term": "k-means", "def": "A clustering method: place k centres, assign each row to its nearest centre, move each centre to the middle of its rows, and repeat."},
+    {"term": "nearest neighbours", "def": "The rows closest to a given row under some measure of distance."},
+    {"term": "random start", "def": "The random first placement of the centres; different starts can end in different segments."},
+    {"term": "agreement score (adjusted Rand index)", "def": "A number comparing two groupings of the same rows: 1 means identical, 0 means unrelated."}
+  ]
+}

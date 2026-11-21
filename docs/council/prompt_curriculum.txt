@@ -1,0 +1,12 @@
+You are a member of a review council for a new course. Your seat: an expert in machine-learning education who has designed applied ML curricula for working professionals, and who knows the learning-science evidence (retrieval practice, spacing, interleaving, cognitive load, multimedia learning).
+
+Attached is the draft syllabus. Read it closely and be a tough, specific critic - the author explicitly wants to be kept honest, not reassured.
+
+Answer in this structure:
+1. VERDICT - two sentences: is this the right course for this learner, and what is the single biggest risk?
+2. COVERAGE - for "general ML fundamentals for a working analyst who directs and audits an AI assistant": what essential ideas are missing or under-weighted? What is included that this learner does not need? Name lessons to ADD, CUT, MERGE or SPLIT, each with a one-line reason. Respect the constraint of short lessons and about 30 lessons total; if you add, say what to remove.
+3. SEQUENCE - any ordering problems (a lesson that depends on an idea taught later, a module in the wrong place, too many hard lessons in a row)? Propose the corrected order.
+4. PEDAGOGY - will a fast learner who forgets easily actually retain this, given the format (5-7 minute narrated lessons, quiz, spaced review, case files, labs)? What would you change about the format or the retention mechanics? Is anything likely to be confusing or to overload a listener who cannot see the screen?
+5. GENERALITY - the learner said: teach general fundamentals; my two questions are only examples; do not teach one way of solving them. Where does the syllabus still over-fit to churn or to this one dataset? How should it show transfer and alternative approaches?
+6. TOP 10 CHANGES - ranked, concrete, each actionable in one sentence.
+Be direct. Do not praise. Do not pad.

@@ -1,0 +1,35 @@
+{
+ "issues": [
+  {
+   "where": "seg3 narration",
+   "quote": "For advertisers who churned, the typical value is 68 days.",
+   "kind": "number_mismatch",
+   "severity": "high",
+   "explanation": "States that the typical (median) value of days_since_last_spend for advertisers who churned is 68 days, whereas in facts.json the median is 86 days (and the mean is 75.8 days). It also disagrees with seg3 visual, which states 66 days.",
+   "evidence": "facts.json -> leakage.median_value_churned = 86 (leakage.mean_value_churned = 75.8; BRIEF.md also specifies 86 days for churners) —",
+   "fix": "For advertisers who churned, the typical value is 86 days."
+  },
+  {
+   "where": "seg3 visual",
+   "quote": "66 days",
+   "kind": "number_mismatch",
+   "severity": "high",
+   "explanation": "The first stat card gives 66 days as the typical value of days_since_last_spend for advertisers who churned, contradicting facts.json where the median is 86 days (mean 75.8 days) and also contradicting seg3 narration, which says 68 days.",
+   "evidence": "facts.json -> leakage.median_value_churned = 86; seg3 narration states '68 days'",
+   "fix": "Change stats[0].value from '66 days' to '86 days'."
+  },
+  {
+   "where": "seg4 narration",
+   "quote": "The label describes the 90 days after it.",
+   "kind": "number_mismatch",
+   "severity": "high",
+   "explanation": "States that the churn label describes the 90 days after the snapshot, whereas churn in this dataset is defined over the 60 days after the snapshot. This also directly contradicts seg4 visual ('Outcome: 60 days', span 56 to 116) and seg3 narration ('no spend at all in the 60 days after the snapshot').",
+   "evidence": "facts.json -> data.outcome_columns.churned_next_60d = 'no spend at all in the 60 days after the snapshot'; data.why_a_gap ('60 days after a snapshot'); seg4 visual spans[1].label = 'Outcome: 60 days'",
+   "fix": "The label describes the 60 days after it."
+  }
+ ],
+ "numbers_checked": 30,
+ "verdict": "Conceptually strong and well-aligned with the brief, with valid quiz and review questions, but contains three high-severity numeric mismatches (which also create narration-visual contradictions) in segments 3 and 4: typical days_since_last_spend for churners is given as 68 days in seg3 narration and 66 days in seg3 visual instead of 86 days, and the churn outcome window is given as 90 days in seg4 narration instead of 60 days.",
+ "_hash": "5357eac138fee90a",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_ChdyOUFCYTlXT0M5Ymluc0VQOTlpN2tRcxIXcjlBQmE5V09DOWJpbnNFUDk5aTdrUXM | tokens in=67061 out=631 thought=24801]"
+}

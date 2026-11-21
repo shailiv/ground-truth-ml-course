@@ -1,0 +1,105 @@
+{
+ "base": "http://localhost:8791",
+ "out": "qa/ux/shots",
+ "seed": "const s = __gt.store, now = Date.now(); for (const id of ['1-1','1-2','1-3']) { s.put('lessons', id, {guess: 1, watched: now, quiz: {score: 3, of: 4, t: now}, done: now}); } await new Promise(r => setTimeout(r, 400));",
+ "shots": [
+  {
+   "name": "i01-practice-laptop",
+   "url": "/#/practice",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark"
+  },
+  {
+   "name": "i02-practice-phone",
+   "url": "/#/practice",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "dark"
+  },
+  {
+   "name": "i03-case-top-laptop",
+   "url": "/#/case/c1",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "const c = __gt.course.practice.find(p => p.id === 'c1'); return {file: c.file, blocks: c.report.map(b => b.type), findings: c.findings.length, real: c.findings.filter(f => f.real).length, h: document.documentElement.scrollHeight};"
+  },
+  {
+   "name": "i04-case-report-laptop-light",
+   "url": "/#/case/c1",
+   "w": 1366,
+   "h": 768,
+   "theme": "light",
+   "js": "window.scrollTo(0, 420);"
+  },
+  {
+   "name": "i05-case-audit-ticked",
+   "url": "/#/case/c1",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "const c = __gt.course.practice.find(p => p.id === 'c1'); const boxes = [...document.querySelectorAll('.check input')]; boxes.forEach((b, i) => { if (i % 2 === 0) b.click(); }); document.querySelector('.check').scrollIntoView({block: 'center'});"
+  },
+  {
+   "name": "i06-case-judged-result",
+   "url": "/#/case/c1",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "const c = __gt.course.practice.find(p => p.id === 'c1'); const boxes = [...document.querySelectorAll('.check input')]; boxes.forEach((b, i) => { if (i % 2 === 0) b.click(); }); [...document.querySelectorAll('button, a.btn')].find(b => b.textContent.trim().startsWith(\"Check my audit\")).click(); await new Promise(r => setTimeout(r, 900)); return {y: scrollY, h3: document.querySelector('.panel .section h3')?.textContent, ghosts: [...document.querySelectorAll('.ghost')].map(e => e.textContent.trim().slice(0, 30) + '|' + getComputedStyle(e).visibility + '|' + getComputedStyle(e).display), marks: [...document.querySelectorAll('.blk.marked')].map(b => b.dataset.mark)};"
+  },
+  {
+   "name": "i07-case-judged-redline-report",
+   "url": "/#/case/c1",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "const c = __gt.course.practice.find(p => p.id === 'c1'); const boxes = [...document.querySelectorAll('.check input')]; boxes.forEach((b, i) => { if (i % 2 === 0) b.click(); }); [...document.querySelectorAll('button, a.btn')].find(b => b.textContent.trim().startsWith(\"Check my audit\")).click(); await new Promise(r => setTimeout(r, 900)); document.querySelector('.blk.marked').scrollIntoView({block: 'center'});"
+  },
+  {
+   "name": "i08-case-judged-bottom",
+   "url": "/#/case/c1",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "const c = __gt.course.practice.find(p => p.id === 'c1'); const boxes = [...document.querySelectorAll('.check input')]; boxes.forEach((b, i) => { if (i % 2 === 0) b.click(); }); [...document.querySelectorAll('button, a.btn')].find(b => b.textContent.trim().startsWith(\"Check my audit\")).click(); await new Promise(r => setTimeout(r, 900)); window.scrollTo(0, 99999);"
+  },
+  {
+   "name": "i09-case-phone-top",
+   "url": "/#/case/c1",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "dark"
+  },
+  {
+   "name": "i10-case-phone-report",
+   "url": "/#/case/c1",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "dark",
+   "js": "document.querySelector('.report').scrollIntoView({block: 'start'}); window.scrollBy(0, 500);"
+  },
+  {
+   "name": "i11-case-phone-judged",
+   "url": "/#/case/c1",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "dark",
+   "js": "const c = __gt.course.practice.find(p => p.id === 'c1'); const boxes = [...document.querySelectorAll('.check input')]; boxes.forEach((b, i) => { if (i % 2 === 0) b.click(); }); [...document.querySelectorAll('button, a.btn')].find(b => b.textContent.trim().startsWith(\"Check my audit\")).click(); await new Promise(r => setTimeout(r, 900)); return scrollY;"
+  },
+  {
+   "name": "i12-case-phone-redline",
+   "url": "/#/case/c1",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "light",
+   "js": "const c = __gt.course.practice.find(p => p.id === 'c1'); const boxes = [...document.querySelectorAll('.check input')]; boxes.forEach((b, i) => { if (i % 2 === 0) b.click(); }); [...document.querySelectorAll('button, a.btn')].find(b => b.textContent.trim().startsWith(\"Check my audit\")).click(); await new Promise(r => setTimeout(r, 900)); document.querySelector('.blk.marked').scrollIntoView({block: 'center'});"
+  }
+ ]
+}

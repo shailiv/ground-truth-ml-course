@@ -1,0 +1,3 @@
+interaction id: v1_Chc0cmNCYTd1dUllU3Vuc0VQZ3VUT3FRZxIXNHJjQmE3dXVJZVN1bnNFUGd1VE9xUWc
+research started (deep-research-preview-04-2026). It usually takes 5-20 min, max 60.
+Collect with: gemini.py get v1_Chc0cmNCYTd1dUllU3Vuc0VQZ3VUT3FRZxIXNHJjQmE3dXVJZVN1bnNFUGd1VE9xUWc --wait --out report.md

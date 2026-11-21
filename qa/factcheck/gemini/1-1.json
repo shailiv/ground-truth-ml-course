@@ -1,0 +1,35 @@
+{
+ "issues": [
+  {
+   "where": "seg3 narration and visual",
+   "quote": "Each row has 17 columns describing eight weeks of that advertiser's history",
+   "kind": "number_mismatch",
+   "severity": "low",
+   "explanation": "Both the narration and the table note ('Features: 17 columns from 8 weeks of history') state that all 17 feature columns come from an 8-week history window. In facts.json, only some features cover 8 weeks (such as spend_8w, spend_trend, cpa_vs_goal, support_tickets_8w and payment_failures_8w), while others span much longer histories (tenure_weeks has a training mean of 39.2 weeks and 90th percentile of 84 weeks; creative_refresh_days is 120 days for advertiser 111754 shown in the same table), cover 28 days (active_days_28), or record static/current account profile and setup (vertical, managed, has_conversion_tracking, uses_auto_bidding).",
+   "evidence": "facts.json -> data.feature_columns; data.feature_stats_train.tenure_weeks (mean: 39.152, p90: 84); explain_examples.examples[0].row.creative_refresh_days (120); feature_groups.cumulative (profile, setup and practices, performance vs goal, recent behaviour)",
+   "fix": "Change the narration to 'Each row has 17 columns describing the advertiser up to that point: profile, setup, and recent activity over the last four to eight weeks' and the visual note to 'Features: 17 columns known at the snapshot. Label: what happened in the 60 days after. Simulated data.'"
+  },
+  {
+   "where": "review 1 variant 2",
+   "quote": "A traffic-quality model, trained on sources that were later confirmed valid or invalid, returns 0.83 for a new source.",
+   "kind": "bad_question",
+   "severity": "low",
+   "explanation": "The stem never specifies whether 'valid' or 'invalid' is coded as the positive label (1), and calling it a 'traffic-quality model' naturally implies higher scores mean higher quality (valid traffic). Yet the keyed answer (option 0) states that 0.83 means 'it resembles past invalid sources', which is only true if invalid traffic was defined as the positive class.",
+   "evidence": "Direction of a [0, 1] classification score depends on which outcome is defined as the positive label; Lesson glossary defines score as 'higher means more like past positive cases'.",
+   "fix": "Change the stem to: 'An invalid-traffic model, trained to flag sources that were later confirmed invalid, returns 0.83 for a new source. What is that number?'"
+  },
+  {
+   "where": "review 2 variant 1",
+   "quote": "An assistant says its lead-scoring model 'correctly reproduces the outcome of 98 percent of last year's leads'.",
+   "kind": "bad_question",
+   "severity": "low",
+   "explanation": "Unlike quiz 1-1-q2 and the other two review variants for this concept, the question stem omits that the model was trained on last year's leads. Without that premise in the stem, the keyed answer ('Very little: last year's leads are the cases it was adjusted to match') asserts a fact about the training set that the question never gave.",
+   "evidence": "Evaluation principle: outcomes on historical rows are training-set performance only if those rows were used to fit/tune the model.",
+   "fix": "Clarify in the stem that those were the training rows: 'An assistant trains a lead-scoring model on last year's leads and says it \"correctly reproduces the outcome of 98 percent of them\". What does that tell you about next month's leads?'"
+  }
+ ],
+ "numbers_checked": 43,
+ "verdict": "All row counts, baseline cut-offs, column counts, and sample advertiser figures match facts.json exactly, and core ML concepts follow the brief cleanly; only three minor issues were found (overgeneralizing the 8-week lookback window to all 17 features, and two review stems missing small premises).",
+ "_hash": "88bd568d490f77c0",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_ChdydEFCYV83ZFBLeWtrZFVQNTYyVGtROBIXcnRBQmFfN2RQS3lra2RVUDU2MlRrUTg | tokens in=67225 out=935 thought=30927]"
+}

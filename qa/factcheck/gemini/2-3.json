@@ -1,0 +1,17 @@
+{
+ "issues": [
+  {
+   "where": "seg5 narration",
+   "quote": "An AUC of 0.85 simply means the model's yes-or-no answer is correct for 85 percent of advertisers.",
+   "kind": "wrong_concept",
+   "severity": "high",
+   "explanation": "Confuses AUC with classification accuracy. AUC is a cut-off-free ranking metric equal to the probability that a randomly chosen churner scores higher than a randomly chosen stayer, whereas the share of advertisers given the right yes-or-no answer is accuracy at a chosen cut-off (at 0.5, logistic regression accuracy is 88.5%, and even 'always predict stays' achieves 86.8% accuracy with an AUC of 0.5). The sentence also directly contradicts Segment 1 ('The model never said yes or no'), Segment 7's definition of AUC, Quiz 2-3-q3, and Review 2 Variant 1, and brings up AUC prematurely before Segment 7 introduces it.",
+   "evidence": "Principle: ROC AUC = P(score_positive > score_negative), not classification accuracy. In facts.json: logreg.test.auc = 0.845 while logreg.test.accuracy = 0.885 (at threshold 0.5), and baseline.always_no_accuracy = 0.868 while model_table[0].test_auc = 0.5.",
+   "fix": "Delete the sentence 'An AUC of 0.85 simply means the model's yes-or-no answer is correct for 85 percent of advertisers.' from Segment 5 narration, leaving Segment 7 to introduce and define AUC."
+  }
+ ],
+ "numbers_checked": 102,
+ "verdict": "All numeric claims match facts.json, and the questions, visuals and supporting materials are sound, except for one high-severity false statement at the end of Segment 5 narration that defines AUC as yes-or-no accuracy and contradicts the rest of the lesson.",
+ "_hash": "8140a783704dba1b",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_Chc2OUVCYTVUdEVKcXlrZFVQcE92cGdBYxIXNjlFQmE1VHRFSnF5a2RVUHBPdnBnQWM | tokens in=67675 out=451 thought=19766]"
+}

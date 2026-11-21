@@ -1,0 +1,397 @@
+{
+ "id": "6-3",
+ "module": 6,
+ "title": "Anomalies: is this unusual?",
+ "subtitle": "How do you tell a real incident from an ordinary Saturday?",
+ "goal": "After this lesson you can specify an alert as an expectation plus a band, and insist that it is tested on planted incidents with alert days, incidents caught and false alarms counted separately.",
+ "predict": {
+  "q": "An alert fires whenever daily platform spend moves more than 15 percent from the day before. Over nine months it fired on 89 days. On which days did most of those alerts land?",
+  "options": [
+   "Days with a real incident",
+   "Saturdays and Mondays",
+   "Public holidays",
+   "Evenly across the week"
+  ],
+  "answer": 1,
+  "reveal": "Saturdays and Mondays: more than four in five of them. The lesson shows why, and what to compare with instead of yesterday."
+ },
+ "segments": [
+  {
+   "narration": "Somebody once set an alert on the platform spend dashboard: tell me when spend moves more than 15 percent since yesterday. Run it over nine months of the daily series, the version with its incidents left in. Seven were planted there, so we know exactly where they are: an outage, a slow leak, a few spikes. The alert fired on 89 days. On 6 of them an incident was under way. On the other 83 it cried wolf. An alert like that stops being read, so it is also ignored on the day it is right.",
+   "visual": {
+    "type": "title",
+    "kicker": "Module 6 · Lesson 3",
+    "title": "Anomalies: is this unusual?",
+    "sub": "First say what was expected"
+   }
+  },
+  {
+   "narration": "[[1]] Look at when it fired. [[2]] More than four in five of those alerts were Saturdays and Mondays. Spend falls into the weekend and climbs back out by more than 15 percent, week after week. The rule has no idea what a weekend is. [[3]] The one incident it missed is the instructive one: a spike on a Saturday, 30 percent above a normal Saturday. That looks like an ordinary weekday. Compared with yesterday, nothing happened. So the rule fails in both directions for one reason. Yesterday is the wrong thing to compare with. Unusual means far from what was expected. So first, say what was expected.",
+   "visual": {
+    "type": "stat",
+    "title": "When 'moved 15% since yesterday' fired",
+    "stats": [
+     {
+      "value": "89",
+      "label": "alert days in 270"
+     },
+     {
+      "value": "13%",
+      "label": "of them on a Saturday or a Monday"
+     },
+     {
+      "value": "1",
+      "label": "incident missed: a +30% spike on a Saturday"
+     }
+    ]
+   }
+  },
+  {
+   "narration": "Second attempt. [[1]] Expect today to look like the same weekday over the last six weeks, and take the middle value. [[2]] Measure how far today is from that, in percent. Call it the surprise. [[3]] Alert only when the surprise is beyond three times its own normal wobble. Now a Saturday is judged against Saturdays. Alert days drop from 89 to 17. It still catches six of the seven incidents. Its false alarms are no longer random: seven of the nine fall on known holidays. A holiday really is odd for its weekday; the detector just does not know the calendar. Have it skip the known holiday dates and nine false alarms become two.",
+   "visual": {
+    "type": "formula",
+    "title": "A better expectation: the same weekday",
+    "lines": [
+     "expected = middle value of the same weekday, last 6 weeks",
+     "surprise = today ÷ expected − 1",
+     "alert when the surprise is beyond 3 × its normal wobble"
+    ],
+    "note": "Result: 47 alert days · 6 of 7 incidents · 9 false-alarm days, 7 on known holidays (2 left if holidays are skipped)."
+   }
+  },
+  {
+   "narration": "[[1]] So far: a rule that compares with yesterday, [[2]] and one that compares with the same weekday. [[3]] The third takes its expectation from the forecast of the last two lessons, which already knows the weekday, the season, the trend and the holidays. Same band. Ten alert days, all seven incidents caught, no false alarms. Keep two counts apart here. Those incidents lasted 13 days in all, and 10 of those days were flagged. An incident counts as caught when any one of its days raises an alert. This detector also caught what the weekday one missed, a leak of 12 percent a day for five days. But it spoke up on the third day, not the first.",
+   "visual": {
+    "type": "table",
+    "title": "Three detectors, the same nine months",
+    "columns": [
+     "Compared with",
+     "Alert days",
+     "Incidents caught",
+     "Incident days hit",
+     "False-alarm days"
+    ],
+    "rows": [
+     [
+      "Yesterday (moved 15%)",
+      "89",
+      "6 of 7",
+      "6 of 13",
+      "83"
+     ],
+     [
+      "Same weekday, band of 3",
+      "17",
+      "6 of 7",
+      "8 of 13",
+      "9"
+     ],
+     [
+      "The forecast, band of 3",
+      "10",
+      "7 of 7",
+      "10 of 13",
+      "0"
+     ]
+    ],
+    "highlight": [
+     2
+    ],
+    "note": "Seven planted incidents lasting 13 days in all. An incident is caught if any of its days is flagged."
+   }
+  },
+  {
+   "narration": "Why can the forecast see a leak that the weekday comparison could not? On an ordinary day, spend sits about 5 percent away from its same weekday level. It sits under 2 and a half percent away from the forecast. A 12 percent drop hides inside the first and stands clear of the second. The sharper the expectation, the smaller the problem you can see. Now the caveat. This forecast has the same form as the equation that generated the series, in a world that never changes. No false alarms is a best case. On a real series, expect more. Try it now: switch between the three detectors, and find the leak in late January.",
+   "visual": {
+    "type": "widget",
+    "name": "anomalies",
+    "title": "The series, its incidents and each detector's alerts",
+    "note": "Switch detectors. Count two mistakes for each: alerts with no incident, and incidents with no alert."
+   }
+  },
+  {
+   "narration": "Where to set the band is module two's cut-off decision, unchanged. Take the weekday detector. [[1]] Set the band at two and it catches every incident. The price is 32 alert days, 32 of them false. [[2]] Three was the setting we used: fewer alerts, one incident missed. [[3]] At five there are 5 alert days, none of them false. But now only four of the seven incidents are caught. Precision one way, recall the other. Which to favour is a business call: what does a missed outage cost, against a wasted morning?",
+   "visual": {
+    "type": "table",
+    "title": "The weekday detector at three band settings",
+    "columns": [
+     "Band",
+     "Alert days",
+     "Incidents caught",
+     "False-alarm days"
+    ],
+    "rows": [
+     [
+      "2 × normal wobble",
+      "32",
+      "7 of 7",
+      "23"
+     ],
+     [
+      "3 × normal wobble",
+      "17",
+      "6 of 7",
+      "9"
+     ],
+     [
+      "5 × normal wobble",
+      "5",
+      "4 of 7",
+      "0"
+     ]
+    ],
+    "note": "A wider band: fewer false alarms, more missed incidents."
+   }
+  },
+  {
+   "narration": "How do we know any of these counts? Only because the incidents were planted. On your own series nobody has labelled the outages, so do the same: take a stretch of history, inject drops and spikes of known size and length, and count what the detector finds. And the recipe is not tied to time. For rows in a table, say an advertiser whose click rate is far from what its vertical would suggest, it is the same four steps. [[1]] Define normal. [[2]] Measure the distance from it. [[3]] Choose a cut-off. [[4]] Test with planted cases.",
+   "visual": {
+    "type": "flow",
+    "title": "The recipe, for a series or for rows",
+    "steps": [
+     {
+      "label": "Define normal",
+      "sub": "what was expected?"
+     },
+     {
+      "label": "Measure distance",
+      "sub": "against the normal wobble"
+     },
+     {
+      "label": "Choose a cut-off",
+      "sub": "false alarms against misses"
+     },
+     {
+      "label": "Test with planted cases",
+      "sub": "known size, known place"
+     }
+    ]
+   }
+  },
+  {
+   "narration": "The brief. Ask the assistant for an alert, and make the output state five things. [[1]] What each day is compared with. If the answer is yesterday, send it back. [[2]] The band, and the reason for that setting. [[3]] A test on planted incidents of several sizes and lengths, including a slow one. [[4]] Three counts kept apart: alert days, incidents caught, false alarm days. Precision alone hides the misses; incidents caught alone hides the noise. [[5]] And the dates of the false alarms. Here they were mostly holidays, which told us what the detector did not know.",
+   "visual": {
+    "type": "bullets",
+    "title": "Brief and audit",
+    "items": [
+     "Compared with what? Not just yesterday",
+     "The band, and why that setting",
+     "Tested on planted incidents, including a slow one",
+     "Three counts: alert days, incidents caught, false-alarm days",
+     "The dates of the false alarms"
+    ]
+   }
+  },
+  {
+   "narration": "To recap. Unusual means far from expected, so an alert is only as good as its expectation: yesterday, the same weekday, or a forecast that knows the calendar. The band is precision and recall again. And you test a detector by planting incidents, because nobody labels the real ones. The last lesson on time asks not whether an advertiser will leave, but when, and what to do about the ones who have not left yet.",
+   "visual": {
+    "type": "quote",
+    "text": "Unusual means far from what was expected. So first, say what was expected.",
+    "sub": "Then choose the band, and test it on planted incidents."
+   }
+  }
+ ],
+ "takeaways": [
+  "Unusual means far from expected: compare with the same weekday or a forecast, never just with yesterday.",
+  "The alert band is a cut-off: wider means fewer false alarms and more missed incidents.",
+  "Test a detector on planted incidents, counting alert days, incidents caught and false alarms separately."
+ ],
+ "quiz": [
+  {
+   "id": "6-3-q1",
+   "concept": "expectation before alert",
+   "domain": "course",
+   "q": "The conversions dashboard has an alert: 'conversions down more than 20 percent versus yesterday'. It fires most Saturdays and nobody reads it any more. Which change fixes the cause instead of the symptom?",
+   "options": [
+    "Raise the trigger to 40 percent, so that an ordinary Saturday no longer fires",
+    "Mute the alert at weekends, when the drop is expected and nobody is watching",
+    "Compare each day with what is expected for that weekday, and alert on the gap",
+    "Alert on the seven-day average instead, which smooths the weekend away"
+   ],
+   "answer": 2,
+   "why": "The alert fires because yesterday is the wrong comparison for a metric with a weekly rhythm; judging a Saturday against Saturdays removes the cause. Raising the trigger or muting weekends quietens the alert by also silencing real incidents, and a seven-day average spreads a one-day incident over seven days until it is too small to see."
+  },
+  {
+   "id": "6-3-q2",
+   "concept": "alert days versus incidents caught",
+   "domain": "course",
+   "q": "The assistant reports on a new spend alert: 'Tested on nine months of history: 10 alert days, every one of them during a real incident. Precision 100 percent.' What must the output also show before you call it a good detector?",
+   "options": [
+    "Nothing more: every alert it raised was real, which is what precision measures",
+    "How many incidents occurred in those nine months, and how many of them it caught",
+    "The alert threshold expressed in dollars instead of a percentage",
+    "The same test repeated on at least five years of history"
+   ],
+   "answer": 1,
+   "why": "A detector that rarely alerts can be perfectly precise while missing most incidents: on the course series the weekday detector at its widest band raised no false alarms and caught only four of seven. Precision counts the alerts that were right; you also need the incidents that got no alert."
+  },
+  {
+   "id": "6-3-q3",
+   "concept": "define normal first",
+   "domain": "other",
+   "q": "The traffic-quality team wants to flag publishers with suspicious clicks. Nobody has labelled past fraud. In your data, click rate runs several times higher on some placement types than on others. The assistant proposes flagging the top 1 percent of publishers by click rate. What is the first gap?",
+   "options": [
+    "No definition of normal: 'high' must be judged against what is expected for that placement type",
+    "The cut-off: flag the top 5 percent instead of the top 1 percent, to be safe",
+    "Labels: without known fraud cases no detector can be built or tested",
+    "The method: a ranking is too simple, so a more advanced algorithm is needed"
+   ],
+   "answer": 0,
+   "why": "Ranking by raw click rate mostly finds the placement types that always run high, just as the yesterday rule mostly found Saturdays. Say what is expected for each kind of publisher first; and missing labels are handled by planting known cases, not by giving up."
+  },
+  {
+   "id": "6-3-q4",
+   "concept": "the band is a cut-off",
+   "domain": "course",
+   "q": "The spend alert has been live for a month. The on-call analyst is tired of false alarms and asks you to widen the band until there are none. What do you bring to that conversation?",
+   "options": [
+    "Agreement: a detector that raises no false alarms is exactly the goal",
+    "A refusal: a band of three is the statistical standard and should stay",
+    "A proposal to narrow the band instead, since more alerts are always safer",
+    "A table of band settings: false-alarm days beside planted incidents missed"
+   ],
+   "answer": 3,
+   "why": "Widening the band buys fewer false alarms at the price of more missed incidents, so the right setting depends on what each mistake costs; the table puts both on the page. No setting is a standard: three happened to suit one simulated series."
+  }
+ ],
+ "review": [
+  {
+   "concept": "say what was expected before calling something unusual",
+   "variants": [
+    {
+     "q": "Spend for one vertical is 18 percent lower on a Sunday than on the Saturday before, and an alert calls it an anomaly. What do you check first?",
+     "options": [
+      "Whether the 18 percent drop is above the trigger the alert was set to",
+      "What that vertical's recent Sundays looked like compared with their Saturdays",
+      "Whether the vertical's account managers or large clients changed that week",
+      "Spend on the same date one year earlier, which is the only fair comparison"
+     ],
+     "answer": 1,
+     "why": "A day is unusual only against what was expected for it, and for a Sunday that is what recent Sundays looked like. A drop from Saturday to Sunday, taken alone, measures the weekly rhythm, which is how the yesterday rule ended up firing on Saturdays and Mondays."
+    },
+    {
+     "q": "An advertiser's CPA is 40 dollars against a platform average of 15, and a report lists it as an anomaly. The advertiser is in finance, where your data shows CPAs running several times higher than in gaming. What is the right read?",
+     "options": [
+      "It is an anomaly: 40 is far from the platform average",
+      "It cannot be judged at all without a trained model",
+      "Judge it against what is normal for finance advertisers; there it may be ordinary",
+      "Remove finance advertisers from the report"
+     ],
+     "answer": 2,
+     "why": "The platform average is the wrong expectation for a vertical that always runs high, just as yesterday is the wrong expectation for a Saturday. Define normal for the kind of row you are looking at, then measure the distance from that."
+    },
+    {
+     "q": "Support tickets on the day after a product release are double the daily average, and an alert fires. Releases have always been followed by a jump of about that size. What is the alert really telling you?",
+     "options": [
+      "That the latest release has broken something customers depend on",
+      "That the detector does not know about releases; for such a day this is normal",
+      "That the alert's trigger is set too low and should be raised until it stops",
+      "That daily ticket counts are too erratic to be worth monitoring"
+     ],
+     "answer": 1,
+     "why": "The day is far from an average day but not far from what a release day normally looks like, so the surprise comes from the detector's ignorance of the calendar. It is the holiday false alarm again: tell the detector the dates."
+    }
+   ]
+  },
+  {
+   "concept": "an alert cut-off trades false alarms for misses",
+   "variants": [
+    {
+     "q": "A spend alert's band is widened from three to five times the normal wobble, and false-alarm days fall from 9 to 0. What else must you look at before celebrating?",
+     "options": [
+      "Nothing: no false alarms is the ideal detector",
+      "How many of the known incidents it still catches at the wider band",
+      "Whether the total number of alert days also fell",
+      "Whether a band of five works for other metrics too"
+     ],
+     "answer": 1,
+     "why": "A wider band removes false alarms and catches together: on the course series the same change took the weekday detector from six of seven incidents caught to four. Fewer alert days is guaranteed by a wider band and tells you nothing about misses."
+    },
+    {
+     "q": "A click-fraud filter has been tuned so that it never blocks a legitimate publisher, and the team reports this as success. Which number is missing?",
+     "options": [
+      "The share of known or planted fraudulent publishers that it lets through",
+      "The average click rate of the publishers it blocks",
+      "The total number of publishers on the platform",
+      "The time the filter takes to run"
+     ],
+     "answer": 0,
+     "why": "Never blocking a legitimate publisher is perfect precision, which a filter that blocks almost nobody achieves easily. The other half of the trade is recall: how much real fraud passes untouched."
+    },
+    {
+     "q": "You want to know whether a detector for daily refund volume would catch a slow rise of 10 percent a day lasting a week. Nothing like it is in the history. What do you do?",
+     "options": [
+      "Wait until such a rise happens for real, then see whether the alert fired",
+      "Assume that it would, since 10 percent a day for a week is a large change",
+      "Inject that pattern into a copy of the history and see when it is flagged",
+      "Narrow the band step by step until the detector flags almost every day"
+     ],
+     "answer": 2,
+     "why": "A planted case of known size and place is the only way to measure misses when nobody has labelled real ones. Assuming is risky: on the course series a 12 percent leak for five days slipped past one detector entirely and was flagged by the other only on day three."
+    }
+   ]
+  }
+ ],
+ "drill": [
+  {
+   "q": "An alert fires whenever a daily number moves more than a fixed percentage from the day before. Why is that a poor alert for a metric with a weekly rhythm, and what should it compare with instead?",
+   "a": "Every weekend looks like a big move, so it fires constantly, and a real problem at a weekend can look normal. Compare each day with what is expected for that weekday, or with a forecast."
+  },
+  {
+   "q": "Nobody has labelled past incidents. How do you find out what an anomaly detector would miss?",
+   "a": "Plant incidents of known size and length in a copy of the history, then count how many it catches and how many false alarms it raises."
+  }
+ ],
+ "recall": {
+  "prompt": "Explain what a good anomaly alert needs, and how you would show that one works.",
+  "model_answer": "An alert needs an expectation and a band. Say what the value should have been, such as the same weekday in recent weeks or a forecast that knows the calendar, and flag days that are further from it than the normal wobble explains. The band is a cut-off, so widening it trades false alarms for missed incidents. To show it works, plant incidents of known size in the history and report alert days, incidents caught and false alarms separately."
+ },
+ "ask_assistant": "Build an anomaly alert for daily platform spend. Compare each day with an expectation that knows the weekday: the median of the same weekday over the last six weeks, or a forecast. Alert when the gap exceeds a band measured against its normal variation. Test it by injecting incidents of several sizes and lengths, including a slow multi-day one, into the history. For three band settings report alert days, incidents caught, incident days flagged and false-alarm days, and list the dates of the false alarms.",
+ "audit_checklist": [
+  "The expectation is stated in words, and it is not simply yesterday's value",
+  "Alert days, incidents caught and false-alarm days are reported separately, for more than one band setting",
+  "The planted incidents are listed with their size and length, including a slow one",
+  "The false-alarm dates are listed, so you can see whether they are holidays or other known events"
+ ],
+ "transfer": [
+  "Is this advertiser's click-through rate suspiciously high for its vertical and placement mix?",
+  "Did the conversion rate on a client's landing page really break yesterday?",
+  "Which of this month's invoices are unusual enough to check by hand?"
+ ],
+ "other_ways": [
+  {
+   "approach": "Average the surprise over several days",
+   "when": "In principle, for slow drifts too small to stand out on one day. Test it first: on this series a seven-day average caught only two of the seven incidents."
+  },
+  {
+   "approach": "Alert on the parts as well as the total",
+   "when": "When a problem in one vertical or one large account is too small to move the platform total."
+  },
+  {
+   "approach": "A fixed business limit",
+   "when": "When what matters is a hard line, such as spend above a credit limit, and not whether the day is statistically unusual."
+  }
+ ],
+ "glossary": [
+  {
+   "term": "anomaly",
+   "def": "A value far from what was expected for that moment, given what is known about the calendar."
+  },
+  {
+   "term": "expectation",
+   "def": "What a detector assumes the value should have been: yesterday, the same weekday in recent weeks, or a forecast."
+  },
+  {
+   "term": "band",
+   "def": "How far from the expectation a value may fall before an alert fires, measured against the normal day-to-day wobble."
+  },
+  {
+   "term": "planted incident",
+   "def": "A made-up problem of known size and date, injected into history to test what a detector catches."
+  },
+  {
+   "term": "incident caught",
+   "def": "An incident with at least one of its days flagged; not the same as flagging every bad day."
+  }
+ ]
+}

@@ -1,0 +1,26 @@
+{
+ "issues": [
+  {
+   "where": "seg5 narration and visual",
+   "quote": "whether the calls are worth making at all, you need to know who changes because of the call",
+   "kind": "wrong_concept",
+   "severity": "medium",
+   "explanation": "Segment 5 gets two causal and targeting framings crossed. First, deciding whether outreach calls are worth making at all (program evaluation) does not require knowing who changes because of the call; it only requires the average causal effect (how many churns calling prevents overall, e.g. from an A/B test), and individual-level counterfactuals are never observed directly anyway, as seg4 just noted. Second, knowing who changes because of the call (uplift) is actually the causal framing for whom the success team should call (Row 1), whereas Row 1 presents a plain churn-risk score ('Yes or no, with a score: a ranked list') without the caveat that churn risk ranks who will leave rather than who can be saved, and serves only as a proxy when you lack experimental outreach data.",
+   "evidence": "facts.json -> uplift.experiment_readout.all_advertisers (an A/B readout of 8.9% vs 11.7% churn answers whether calls work overall without identifying which individuals changed); facts.json -> economics.caveat ('assumes outreach saves 1 in 5 churners whoever they are; the model predicts who will leave, not who can be persuaded'); facts.json -> uplift.policies_call_400 (calling top 400 by churn risk prevents 32 churns vs 44 by predicted uplift because 44.8% of the risk list are lost causes).",
+   "fix": "In seg5 narration and visual, state that for 'Whom should the success team call?' a ranked churn score is a practical starting proxy when you can only predict who will leave (whereas 'who changes because of the call' is the sharper causal framing once you can test outreach), and for 'Are the calls worth making at all?' change the framing from 'Who changes because of the call' to 'How many stay because of the call (a causal effect)'."
+  },
+  {
+   "where": "seg3 narration",
+   "quote": "One series, day after day, means forecasting rather than scoring rows.",
+   "kind": "contradiction",
+   "severity": "low",
+   "explanation": "Equating 'one series, day after day' directly with forecasting contradicts both Thursday's example in seg1/seg2 ('spend dropped yesterday, is that unusual?' on daily platform spend, which is anomaly detection on a daily series) and review 1 variant 3, whose explanation explicitly warns that having one series over time tempts you towards forecasting when the question is actually anomaly detection. Having one time series only means forecasting when the goal is projecting future values forward.",
+   "evidence": "facts.json -> series_anomalies (270 days of daily platform spend used for anomaly detection) and review 1 variant 3 why ('Time being the main axis tempts you towards forecasting... but nobody asked what next month looks like').",
+   "fix": "Change the sentence to: 'Projecting one series forward, day after day, means forecasting rather than scoring rows.'"
+  }
+ ],
+ "numbers_checked": 13,
+ "verdict": "All dataset figures, column names, time windows (60 days, 8 weeks), feature counts (17), and baseline rules (spend_trend < 0.7) match facts.json, and all quiz and review answer keys are defensible; fix the causal framing mix-up in seg5 (program evaluation vs uplift targeting) and tighten the time-series triage phrasing in seg3.",
+ "_hash": "c7d724b274871cc0",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_ChdyOUFCYThTWUM1WFBuc0VQcHJIUjhBYxIXcjlBQmE4U1lDNVhQbnNFUHBySFI4QWM | tokens in=66853 out=767 thought=27524]"
+}

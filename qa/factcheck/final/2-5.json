@@ -1,0 +1,7 @@
+{
+ "issues": [],
+ "numbers_checked": 92,
+ "verdict": "Pass: all 92 numeric claims about the simulated data match facts.json, toy and external-domain calculations are mathematically sound, and all ML/statistical explanations and question keys are accurate.",
+ "_hash": "e026d3c2ab5852a4",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_ChdZQk1DYTltSkthX192ZElQaFBqejJBaxIXWUJNQ2E5bUpLYV9fdmRJUGhQanoyQWs | tokens in=68198 out=68 thought=30121]"
+}

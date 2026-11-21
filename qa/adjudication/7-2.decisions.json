@@ -1,0 +1,46 @@
+{
+ "lesson": "7-2",
+ "decisions": [
+  {
+   "n": 0,
+   "reviewer": "learner-2",
+   "finding": "The similarity score tops out at one, but no floor is given, so 0.72 for another category cannot be judged as close or far.",
+   "decision": "accepted",
+   "reason": "Real. tickets.nearest_example: average_similarity_same_category 0.809, average_similarity_other_categories 0.716. The floor in this data is that second figure: tickets about other things still score about 0.72. A general 'two unrelated sentences score X' is not in facts.json and cannot be stated (SPEC rule 5).",
+   "change": "Segment 3 narration: 'A gap, though not a wide one.' replaced by 'So the scale does not start near zero: tickets about other things still score high. Read the gap between scores, not the level.' Table note and the glossary entry for similarity score say the same."
+  },
+  {
+   "n": 1,
+   "reviewer": "learner-2",
+   "finding": "The brief says 'using an approved model' but the lesson never says what kinds of embedding model exist, what one costs, or who approves it.",
+   "decision": "partly",
+   "reason": "Hosted against in-house is a principle the lesson needs (and the 7-3 ruling depends on it). A price per thousand tickets is not in facts.json, and SPEC rule 5 forbids quoting outside figures, so the cost is made something the assistant must state before it sends anything. Who approves is organisation-specific; the lesson keeps the course's own rule from 1-5 (an approved destination).",
+   "change": "Segment 8 item 1 now reads: 'Before anything is embedded, ask which model, what it will cost, and where the text goes. A hosted model receives every ticket. One that runs on your own machines does not. Client text needs an approved destination first.' The brief asks for hosted or in-house, the destination and the cost for [that many texts], then waits for a go-ahead. Audit item 1 and the 'embedding model' glossary entry (hosted or in-house; embedded once, stored and reused) follow."
+  },
+  {
+   "n": 2,
+   "reviewer": "learner-2",
+   "finding": "Two lessons of text work both run on support tickets; wants one run on ad headlines checked against policy.",
+   "decision": "out_of_scope",
+   "reason": "A new dataset and a re-based lesson. docs/council/DECISIONS.md already rejected 'Ad headlines instead of support tickets' (tickets give a clean labelled task; headlines appear in the questions).",
+   "change": "None for the finding itself. The R1 sentence in segment 1 now names live ad headlines checked against policy as the same problem; quiz 3 and the transfer list already use headlines."
+  }
+ ],
+ "rulings": {
+  "R1": "Segment 1, one added sentence: 'That need is general: place any text by what it means, and you can find the live ad headlines repeating a claim policy already rejected, whatever their wording.'",
+  "R2": "Not applicable.",
+  "R3": "Brief rewritten as a template (115 words): slots for where the model may run, the text, the text column, the items to inspect, N neighbours, labelled examples per category, the baseline, and the easy/hard split. It now makes the assistant state model, hosting, destination and cost and wait before any text is sent.",
+  "R4": "Recap is 48 spoken words, two sentences, cue markers removed, 'Keep this' card kept.",
+  "R5": "Keyed answer is the longest option in 1 of 10. Replaced: the two 'Nothing ...' options in review 1 variant 1 (now a sentiment-score misreading and a label-everything-first misreading); 'Accept the 40' (quiz 1, now a margin-of-error misreading); 'Accept it' (review 2 variant 2, now 'run ten of your own'); the two 'Fine ...' options in quiz 4 (now two routing actions that keep the same misreadings); 'Agree:' in review 1 variant 3 (now 'Drop the 80:'). Whys extended. Keyed positions unchanged.",
+  "R6": "Segment 8, one added sentence for the move that sat only in other_ways: 'When what you want has a fixed spelling, an error code or a product name, a plain keyword search is still the right tool.'",
+  "R7": "Audit items reworded as things printed in the output: model, hosting, destination and quoted cost before any text is sent; neighbours with their scores; counts of training and test examples with none in both, beside the guessing baseline; accuracy by training size with the range, and the easy/hard split.",
+  "specific": "Bag-of-words: the only bag-of-words figures in this lesson are the 'Word counts' series of the segment 6 chart, which already ends at 54.2 (tickets.learning_curve.rows[5].bag_of_words_accuracy 0.542, now equal to tickets.methods.bag_of_words_model.accuracy). All twelve points of the chart re-checked. 'It needs all 600 tickets to match what the embedding managed with twelve' is still true: 54.2 against 54.3. Test set of 450 is quoted once (review 2 variant 3) and is right. The ticket_map segment (4) is kept and its narration is byte-identical; checked against site/public/js/widgets.js and widgets.json: each dot is a ticket, 256 numbers drawn in 2, six categories in the legend, pointing at a category isolates it. Everything the narration says about the map is true."
+ },
+ "segments_changed": [1, 3, 8, 9],
+ "numbers_verified": 81,
+ "open_questions": [
+  "Cost (finding 1): facts.json holds no cost figure for embedding the tickets. If you want the lesson to say what it costs as a number, add it to tickets (for example cost of embedding 1,050 tickets) and segment 8 can quote it.",
+  "The map draws 360 of the 1,050 tickets (widgets.json ticket_map). The narration does not claim otherwise; add 'a sample of 360' to the widget note if you want it stated.",
+  "Narration is 930 words (SPEC aims at 900, hard cap 950) after the R1 and R6 sentences, the floor in segment 3 and the hosted/in-house lines in segment 8."
+ ]
+}

@@ -1,0 +1,34 @@
+[
+ {
+  "reviewer": "gemini",
+  "lesson": "3-4",
+  "where": "ask_assistant",
+  "quote": "Do not drop rows with missing values: report how many values are missing in each column, fill them, and add a yes/no flag column for each column you filled.",
+  "kind": "misleading",
+  "severity": "medium",
+  "explanation": "Because this prompt is meant to be handed directly to a coding assistant and begins with 'Before any modelling, build the table step by step', a blanket instruction to fill missing values in 'each column' while building the table causes two real mistakes: (1) if the outcome/label column itself has missing values (for example, recent cohorts whose 60-day churn window has not closed, or untracked advertisers when CPA goal is the outcome), filling the outcome fabricates fake ground-truth labels; and (2) filling missing feature values on the whole table before the train/test split computes fill statistics using test rows, leaking test-set information into training.",
+  "evidence": "Supervised learning principle: targets/labels must never be imputed (compare facts.json happy.definition, where hit_cpa_goal is 'only knowable for advertisers with conversion tracking' on n_tracked = 7016), and feature imputation statistics (such as medians or means) must be fit on training rows only, never across the full table prior to splitting.",
+  "fix": "Do not drop rows because a feature is missing: report how many values are missing in each column, add a yes/no flag column for each feature with missing values, and fill missing feature values using statistics from the training split only (never fill a missing outcome; if outcomes are missing, separate and report those rows explicitly).",
+  "problem": "Because this prompt is meant to be handed directly to a coding assistant and begins with 'Before any modelling, build the table step by step', a blanket instruction to fill missing values in 'each column' while building the table causes two real mistakes: (1) if the outcome/label column itself has missing values (for example, recent cohorts whose 60-day churn window has not closed, or untracked advertisers when CPA goal is the outcome), filling the outcome fabricates fake ground-truth labels; and (2) filling missing feature values on the whole table before the train/test split computes fill statistics using test rows, leaking test-set information into training."
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "3-4",
+  "where": "seg7 narration",
+  "quote": "because an ID names a row and describes nothing",
+  "kind": "lost",
+  "severity": "low",
+  "problem": "If it describes nothing, I would expect a model to ignore it. There is no example of the damage, so the rule feels arbitrary.",
+  "fix": "'A flexible model can use an ID to memorise individual rows, so the score looks great on rows it has seen.' One number if the course has it."
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "3-4",
+  "where": "seg4 narration",
+  "quote": "about 0.845 with the flag against 0.84 without. Keep it anyway.",
+  "kind": "doubt",
+  "severity": "low",
+  "problem": "The only evidence shown says the flag makes no difference, and in this table the flag already existed. I am asked to enforce a rule on the strength of 'you cannot know in advance'.",
+  "fix": "Show where it does bite: predicted against actual churn for the untracked with a silent fill versus with the flag, or the zero-fill case with a number."
+ }
+]

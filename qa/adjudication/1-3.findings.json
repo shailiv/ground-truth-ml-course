@@ -1,0 +1,89 @@
+[
+ {
+  "reviewer": "gemini",
+  "lesson": "1-3",
+  "where": "quiz 1-3-q1",
+  "quote": "Churn means no spend in the 60 days after the snapshot. It reports: 'Churn by snapshot month: 11, 12, 11, 12, 6 and 2 percent.'",
+  "kind": "bad_question",
+  "severity": "high",
+  "explanation": "The question pairs the course's inactivity definition ('no spend in the 60 days after the snapshot') and 'one snapshot per month' with a pattern ('6 and 2 percent') and explanation ('advertisers who will still leave are sitting in the stayed column') that only hold for point-in-time events like account cancellations. Under 'no spend at all in the 60 days after the snapshot', any advertiser who has already spent since the snapshot has positive 60-day spend and can never become a churner for that snapshot even if they stop later. Meanwhile, querying spend == 0 on an unclosed window makes recent churn spike upward (every true 60-day churner has zero spend so far, plus temporary pausers have zero spend so far), and defaulting unclosed monthly snapshots to stayed would produce 0% for an entire unclosed snapshot date, not 6% and 2%.",
+  "evidence": "facts.json -> data.outcome_columns.churned_next_60d = 'no spend at all in the 60 days after the snapshot'; monotonicity of cumulative spend: spend_60d == 0 implies spend_td == 0 for all t < 60.",
+  "fix": "Either change the rule in the stem to a point-in-time event ('Churn means cancelling an account within 60 days of the snapshot'), or keep 'no spend in the 60 days after the snapshot' and flip the error direction: 'Churn by snapshot month: 11, 12, 11, 12, 18 and 35 percent. Churn is surging.' with keyed answer 'The newest snapshots' 60 days are not over, so temporary pausers with no spend yet count as churned'.",
+  "problem": "The question pairs the course's inactivity definition ('no spend in the 60 days after the snapshot') and 'one snapshot per month' with a pattern ('6 and 2 percent') and explanation ('advertisers who will still leave are sitting in the stayed column') that only hold for point-in-time events like account cancellations. Under 'no spend at all in the 60 days after the snapshot', any advertiser who has already spent since the snapshot has positive 60-day spend and can never become a churner for that snapshot even if they stop later. Meanwhile, querying spend == 0 on an unclosed window makes recent churn spike upward (every true 60-day churner has zero spend so far, plus temporary pausers have zero spend so far), and defaulting unclosed monthly snapshots to stayed would produce 0% for an entire unclosed snapshot date, not 6% and 2%."
+ },
+ {
+  "reviewer": "gemini",
+  "lesson": "1-3",
+  "where": "seg3 narration",
+  "quote": "An advertiser whose snapshot was 20 days ago has not survived 60 days. They have survived 20. Label them as stayed, and you have filed some future churners under loyal.",
+  "kind": "contradiction",
+  "severity": "medium",
+  "explanation": "This contradicts the 60-day zero-spend definition just taught in the predict question and seg1 ('no spend at all in the 60 days after a snapshot date'). Under that definition, an advertiser who spent during the first 20 days already has spend inside the 60-day window and cannot become a churner for that snapshot even if they stop on day 21. Conversely, an advertiser with zero spend in those 20 days has not 'survived 20'—they are undecided between a temporary pause and a 60-day churn (and naive spend == 0 queries file pausers under churned, while only a default-to-stayed rule files already-silent accounts under stayed).",
+  "evidence": "predict & seg1 narration ('no spend at all in the 60 days after a snapshot date... Under that definition the three-week pauser stayed: they spent again inside the window') vs seg3 narration.",
+  "fix": "Replace with wording consistent with the 60-day zero-spend rule: 'An advertiser with no spend in the 20 days since their snapshot is still undecided: they might be gone for good, or on a three-week pause. Count zero spend so far as churned and pausers look like churners; default open windows to stayed and real churners hide under loyal.' (Or explicitly specify 'If churn means cancelling within 60 days...' for the survival example.)",
+  "problem": "This contradicts the 60-day zero-spend definition just taught in the predict question and seg1 ('no spend at all in the 60 days after a snapshot date'). Under that definition, an advertiser who spent during the first 20 days already has spend inside the 60-day window and cannot become a churner for that snapshot even if they stop on day 21. Conversely, an advertiser with zero spend in those 20 days has not 'survived 20'—they are undecided between a temporary pause and a 60-day churn (and naive spend == 0 queries file pausers under churned, while only a default-to-stayed rule files already-silent accounts under stayed)."
+ },
+ {
+  "reviewer": "gemini",
+  "lesson": "1-3",
+  "where": "drill 2",
+  "quote": "Why can you not label an advertiser as retained when their snapshot was three weeks ago? ... some of them will still churn.",
+  "kind": "contradiction",
+  "severity": "medium",
+  "explanation": "In the context of the lesson's churn rule ('no spend at all in the 60 days after a snapshot'), an advertiser who has spent during the first three weeks is already retained for that 60-day window and cannot 'still churn' for that snapshot. What is unknown at three weeks is whether advertisers with zero spend so far will return before day 60, which also makes the whole three-week-old cohort unusable because stayers become confirmed early while churners can only be confirmed at day 60.",
+  "evidence": "facts.json -> data.outcome_columns.churned_next_60d = 'no spend at all in the 60 days after the snapshot'; seg1 narration.",
+  "fix": "Change the drill question and answer to match the 60-day zero-spend rule: Q: 'Churn means no spend in the sixty days after a snapshot. Why can you not include a snapshot from three weeks ago in your training table?' A: 'Because its sixty-day outcome window has not closed. Advertisers with no spend so far might be churners or merely on a three-week pause, and keeping only the ones who already spent would drop every future churner.'",
+  "problem": "In the context of the lesson's churn rule ('no spend at all in the 60 days after a snapshot'), an advertiser who has spent during the first three weeks is already retained for that 60-day window and cannot 'still churn' for that snapshot. What is unknown at three weeks is whether advertisers with zero spend so far will return before day 60, which also makes the whole three-week-old cohort unusable because stayers become confirmed early while churners can only be confirmed at day 60."
+ },
+ {
+  "reviewer": "expert-1",
+  "lesson": "1-3",
+  "where": "seg4 narration; quiz 1-3-q1; drill 2",
+  "quote": "Label them as stayed, and you have filed some future churners under loyal.",
+  "kind": "misleading",
+  "severity": "medium",
+  "problem": "The lesson treats the churn label as an event that accrues over the window ('has not survived 60 days', 'some of them will still churn'), but the course's label is an absence: churned = no spend at all in the 60 days, and one spend anywhere in the window settles the row as stayed (the lesson's own guess-first answer). For that label an open window errs the other way when computed literally (SUM of spend in the window = 0): everyone who has not spent yet is counted as churned, so recent months come out too HIGH, and an advertiser who has already spent is a confirmed stayer who cannot 'still churn'. The 6 and 2 percent collapse in 1-3-q1 arises only for an event-type label or an 'inactive for 60 days so far' implementation, which the question does not state. A learner taught 'open window = suspiciously low' will read an inflated recent churn rate as a real rise.",
+  "evidence": "facts.data.outcome_columns.churned_next_60d = 'no spend at all in the 60 days after the snapshot'; predict reveal: 'Stayed: they spent again inside the 60 days'. The lesson's own review 1 variant 3 handles the same structure correctly (an absence label, 'CTR holds for 30 days', cannot be awarded early).",
+  "fix": "seg4: 'An advertiser whose snapshot was 20 days ago has no label yet. If they have not spent since, you cannot call them churned: they have had 20 of their 60 days. Depending on how the flag is computed, a month whose window is still open comes out too high or too low. Either way it is not a real rate.' 1-3-q1: state how churn was flagged ('marked churned once 60 days without spend have been seen') or switch the scenario to an event label such as video adoption. Drill 2: ask why an advertiser with no spend since a snapshot three weeks ago cannot be labelled yet."
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "1-3",
+  "where": "seg4 narration",
+  "quote": "The same goes for whole months: on the day you score May's advertisers, April's 60 days are still running.",
+  "kind": "lost",
+  "severity": "medium",
+  "problem": "A jump from one advertiser who is 20 days old to scoring May while April is 'still running'. At this point I did not know months were scored in sequence, so I had to replay it.",
+  "fix": "Either drop it here (2-1 does it properly with a timeline) or say it in the same picture: 'Same for a whole batch: last month's advertisers have had 30 of their 60 days.'"
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "1-3",
+  "where": "seg7 narration + audit checklist item 2",
+  "quote": "If the newest snapshot is more recent than the outcome window is long, some of those labels are not real yet.",
+  "kind": "ear",
+  "severity": "medium",
+  "problem": "Could not parse it by ear: it compares a date with a length. The checklist repeats the same twist ('the newest one older than the outcome window is long').",
+  "fix": "'If the newest snapshot is less than 60 days old, its labels are not finished.'"
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "1-3",
+  "where": "guess",
+  "quote": "comes back three weeks later. How is that row labelled?",
+  "kind": "question",
+  "severity": "low",
+  "problem": "Not a guess: the 60-day definition is in the question, and three weeks is less than 60 days. I answered by arithmetic and the reveal taught me nothing.",
+  "fix": "Ask something I have to commit to: 'The same table is labelled with a 14-day and a 60-day definition. Does the churn rate go up, down or stay the same?' or 'Which of these four rows cannot be labelled yet?'"
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "1-3",
+  "where": "seg7 narration",
+  "quote": "twenty example rows of each class",
+  "kind": "lost",
+  "severity": "low",
+  "problem": "'Class' has never been introduced; the segment before said 'labelled churned' and 'labelled stayed'.",
+  "fix": "Say 'twenty churned and twenty stayed', or define class once."
+ }
+]

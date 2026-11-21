@@ -1,0 +1,104 @@
+{
+ "base": "http://localhost:8791",
+ "out": "qa/ux/shots",
+ "seed": "const s = __gt.store, now = Date.now(), day = 864e5; for (const l of __gt.course.lessons) { s.put('lessons', l.id, {guess: 1, watched: now - day, quiz: {score: 4, of: 4, t: now - day}, recall: 2, done: now - day}); l.review.forEach((_, k) => { s.state.cards[l.id + '-c' + k] = {box: 2, due: now + 5 * day, n: 2, ok: 2, t: now - day}; }); } for (const p of __gt.course.practice) s.put(p.kind === 'case' ? 'cases' : 'labs', p.id, {done: now}); for (const m of __gt.course.modules) s.put('missions', m.n, {done: true}); await new Promise(r => setTimeout(r, 800));",
+ "shots": [
+  {
+   "name": "n01-login-laptop-dark",
+   "url": "/login",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "return {title: document.title, focused: document.activeElement?.id};"
+  },
+  {
+   "name": "n02-login-wrong-phone-light",
+   "url": "/login?wrong=1#wrong",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "light"
+  },
+  {
+   "name": "n03-home-finished-laptop",
+   "url": "/#/",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "return {hero: document.querySelector('.hero').innerText, side: document.querySelector('.home-side .side-card').innerText, howto: !!document.querySelector('.howto')};"
+  },
+  {
+   "name": "n04-home-finished-phone",
+   "url": "/#/",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "dark"
+  },
+  {
+   "name": "n05-home-finished-laptop-light-s2",
+   "url": "/#/",
+   "w": 1366,
+   "h": 768,
+   "theme": "light",
+   "js": "window.scrollTo(0, 420);"
+  },
+  {
+   "name": "n06-guide-all-unlocked",
+   "url": "/#/guide",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "document.querySelectorAll('.panel')[1].scrollIntoView({block: 'start'}); window.scrollBy(0, -80); return document.querySelectorAll('.panel h2')[1].textContent;"
+  },
+  {
+   "name": "n07-drills-all-phone",
+   "url": "/#/drills",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "dark",
+   "js": "window.scrollTo(0, 500); return document.querySelectorAll('.audio-card').length;"
+  },
+  {
+   "name": "n08-theme-toggle",
+   "url": "/#/practice",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "document.querySelector('#theme').click(); await new Promise(r => setTimeout(r, 300)); const t = document.documentElement.dataset.theme; return {theme: t, label: document.querySelector('#theme').getAttribute('aria-label')};"
+  },
+  {
+   "name": "n09-tutor-open-url",
+   "url": "/#/lesson/1-1/take",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "let opened = null; window.open = (u) => { opened = u; return null; }; [...document.querySelectorAll('button, a.btn')].find(b => b.textContent.trim().startsWith(\"Ask Claude\")).click(); await new Promise(r => setTimeout(r, 500)); const toast = document.querySelector('.toast')?.textContent; window.scrollTo(0, 99999); return {len: opened?.length, head: opened?.slice(0, 60), toast};"
+  },
+  {
+   "name": "n10-review-one-due-phone-light",
+   "url": "/#/",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "light",
+   "js": "__gt.store.state.cards['1-1-c0'].due = Date.now() - 1000; location.hash = '#/review'; await new Promise(r => setTimeout(r, 700)); return document.querySelector('.lesson-head')?.innerText;"
+  },
+  {
+   "name": "n11-last-lesson-take",
+   "url": "/#/lesson/7-5/take",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "return [...document.querySelectorAll('.panel .row .btn')].slice(0, 3).map(b => b.textContent + '|' + getComputedStyle(b).visibility);"
+  },
+  {
+   "name": "n12-take-tablet",
+   "url": "/#/lesson/1-5/take",
+   "w": 820,
+   "h": 1100,
+   "theme": "light"
+  }
+ ]
+}

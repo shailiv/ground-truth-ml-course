@@ -1,0 +1,105 @@
+{
+ "base": "http://localhost:8791",
+ "out": "qa/ux/shots",
+ "seed": "const s = __gt.store, now = Date.now(); for (const id of ['1-1','1-2','1-3']) { s.put('lessons', id, {guess: 1, watched: now, quiz: {score: 3, of: 4, t: now}, done: now}); } await new Promise(r => setTimeout(r, 400));",
+ "shots": [
+  {
+   "name": "j01-two-reports-open",
+   "url": "/#/practice",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "const b = [...document.querySelectorAll('a, button')].filter(x => /handsome|plain/.test(x.textContent)).map(x => x.tagName + '|' + x.textContent.trim() + '|' + (x.getAttribute('href') || '') + '|' + (x.target || '')); const d = document.querySelector('details') || [...document.querySelectorAll('button, summary')].find(x => x.textContent.includes('What separates')); if (d?.tagName === 'DETAILS') d.open = true; else d?.click(); await new Promise(r => setTimeout(r, 300)); window.scrollTo(0, 260); return b;"
+  },
+  {
+   "name": "j02-practice-labs-list",
+   "url": "/#/practice",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "window.scrollTo(0, 99999);"
+  },
+  {
+   "name": "j03-lab-top-laptop",
+   "url": "/#/lab/l1",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "const c = __gt.course.practice.find(p => p.id === 'l1'); return {files: c.files, steps: c.steps.length, h: document.documentElement.scrollHeight};"
+  },
+  {
+   "name": "j04-lab-stage-laptop",
+   "url": "/#/lab/l1",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "document.querySelectorAll('.panel')[1].scrollIntoView({block: 'start'}); window.scrollBy(0, -70);"
+  },
+  {
+   "name": "j05-lab-bottom-laptop-light",
+   "url": "/#/lab/l1",
+   "w": 1366,
+   "h": 768,
+   "theme": "light",
+   "js": "window.scrollTo(0, 99999); return [...document.querySelectorAll('.ghost')].map(e => e.textContent.trim().slice(0, 30) + '|' + getComputedStyle(e).visibility + '|' + getComputedStyle(e).display);"
+  },
+  {
+   "name": "j06-lab-phone-top",
+   "url": "/#/lab/l1",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "dark"
+  },
+  {
+   "name": "j07-lab-phone-stage",
+   "url": "/#/lab/l1",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "dark",
+   "js": "document.querySelectorAll('.panel')[1].scrollIntoView({block: 'start'});"
+  },
+  {
+   "name": "j08-drills-laptop",
+   "url": "/#/drills",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "return {cards: document.querySelectorAll('.audio-card').length, locked: [...document.querySelectorAll('.panel .lead')].map(p => p.textContent).slice(0, 8)};"
+  },
+  {
+   "name": "j09-drills-playing",
+   "url": "/#/drills",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "document.querySelector('.audio-card .play').click(); await new Promise(r => setTimeout(r, 6000)); const t = document.querySelector('.audio-card .time').textContent; const d = document.querySelector('details'); d.open = true; return {time: t, range: document.querySelector('.audio-card input').value};",
+   "wait": 300
+  },
+  {
+   "name": "j10-drills-phone",
+   "url": "/#/drills",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "dark"
+  },
+  {
+   "name": "j11-drills-phone-light-s2",
+   "url": "/#/drills",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "light",
+   "js": "document.querySelector('details').open = true; window.scrollTo(0, 300);"
+  },
+  {
+   "name": "j12-drills-tablet",
+   "url": "/#/drills",
+   "w": 820,
+   "h": 1100,
+   "theme": "light"
+  }
+ ]
+}

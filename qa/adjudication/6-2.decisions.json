@@ -1,0 +1,71 @@
+{
+ "lesson": "6-2",
+ "decisions": [
+  {
+   "n": 0,
+   "reviewer": "expert-4",
+   "finding": "The only range the lesson builds is for one day's value, yet the quiz, the brief and the transfer items hand it over with a monthly figure",
+   "decision": "partly",
+   "reason": "The quiz text it quotes ('just one number', 'next month's spend') is no longer in the file: the author had already rewritten q2 to ask about daily spend and added to the range segment that the band is for one day and that a 28-day total typically misses by about 1 percent (forecast.interval.how: percentiles of DAILY percentage errors, -0.0449 to +0.0381; forecast.backtest.methods.trend_plus_seasonality_regression.error_of_28_day_total_typical = 0.0097). What was still open, and is also the lesson ruling: the brief asked for one band without saying for which number, and nothing told the learner how to get a range for a total.",
+   "change": "New seg5 says it outright: 'when finance wants a total, build its range the same way, from the rehearsals' totals. The daily band, stretched over a month, would be far too wide.' ask_assistant now asks for a range 'for [the number I need: one day, or the total over the horizon] from backtest errors of that same kind'. Audit item 3 requires the range to name what it covers and to be built from errors of that kind. A new quiz q4 (replacing the trees question) is an audit question on exactly this error. Take-away 2 and the explain-back answer say 'a day or a total'."
+  },
+  {
+   "n": 1,
+   "reviewer": "expert-4",
+   "finding": "Keyed option is the longest option in 9 of 10 questions",
+   "decision": "not_applicable",
+   "reason": "The lengths quoted (q1 102 vs 83/80/76 ...) are no longer in the file: the author rebalanced after the review copy. Before my edits the key was the longest in 4 of 10 and the validator passed; after them it is 1 of 10.",
+   "change": "None for this finding. Under R5 four 'nothing is wrong' distractors were replaced (see rulings)."
+  },
+  {
+   "n": 2,
+   "reviewer": "learner-2",
+   "finding": "Seven ideas in one sitting (shuffled vs backtest, the rehearsal, error by distance, the range, a level shift, trees and trends, scenarios); proposes splitting into two lessons",
+   "decision": "partly",
+   "reason": "The phrase quoted ('One last rehearsal') is gone, but the overload was still there in the current file: nine segments carried all seven ideas. Splitting into two lessons is out of scope (it changes the course map; recorded under open questions). The lesson ruling is to cut to three ideas, which is what I did.",
+   "change": "Three ideas now: the backtest (segs 1-3), the honest range (segs 4-5), a level shift and its fix (segs 6-7), then the brief and a two-sentence recap. Removed from the narration: the error-by-week-ahead segment (old seg4) and the year-ahead / trees segment (old seg7); both survive, with their figures, in other_ways. The trees quiz question was replaced, take-away 3 and the goal no longer mention trees or distance. Scenarios keep one sentence in the brief, as the consequence of the range's limit (review concept 2 and drill 2 depend on it). Narration went from 899 to 894 words but each idea now has room: no segment introduces more than one."
+  },
+  {
+   "n": 3,
+   "reviewer": "learner-2",
+   "finding": "seg6 (level shift): the verdict flips twice in about 110 words over a three-line chart whose 4-week line is already at 9 percent in September; no stated conclusion on which method to use after a shift",
+   "decision": "accepted",
+   "reason": "Every clause in the old segment was true (forecast.level_shift), but it gave three verdicts and no conclusion. The 4-week line's 9.0% and 7.3% in September and October are its ordinary error during the autumn climb (mape_by_month_normal_world.average_of_last_4_same_weekdays), nothing to do with the step, and on the chart they read as part of the story.",
+   "change": "New seg6 makes one claim per method: the four week average is wrong in November and back to exactly its normal error from December; the trend model is still about 8 percent off in December and January (7.96, 7.59 against a normal 3.51, 3.09) and takes four months to get back within a point of normal (months_until_back_within_1_point_of_normal = 4). New seg7 states the conclusion: on this series do not switch to the quick method (it misses by about twice as much over an ordinary year, 5.69% against 2.78%); tell the better model about the break. The chart now has two lines (trend model with and without the step), so the September-October bump is gone; the four week average's figures (18.6% in November against a normal 8.9%, then identical) are in the note, with the April figure (4.4% against 1.9%)."
+  },
+  {
+   "n": 4,
+   "reviewer": "learner-2",
+   "finding": "The only actionable advice about a level shift ('tell the model about the break, or refit from it') sits in a quiz explanation",
+   "decision": "accepted",
+   "reason": "Correct, and it is the lesson ruling. A learner left with 'expect a long memory to adjust slowly' has nothing to do on Monday.",
+   "change": "seg7 narration: name the break date, have the assistant add a step from that date (a column that is zero before it and one after, like last lesson's holiday flags), run the backtest again and check the months after the break; plus the sign of an unnamed break (a run of misses all on the same side). seg8 narration and bullet 4; ask_assistant ends 'If I name a break date, add a step from that date and re-run the backtest: [break date, or none]'; audit item 4 asks for the fitted size of the step and the error by month before and after; take-away 3; a glossary entry 'step from a break date'; quiz q3's explanation now names the step. No figure is quoted for how well the step works, because facts.json has none: the lesson says to check it with the backtest."
+  },
+  {
+   "n": 5,
+   "reviewer": "learner-2",
+   "finding": "The 'best case, not a promise' caveat gets a full segment in 6-1 and is repeated twice in 6-2 and again in 6-3",
+   "decision": "partly",
+   "reason": "Fair for 6-2, where it was spoken in old seg4 and again in the recap. SPEC rule 6 still requires a simulation-specific result to be flagged, so it stays once in full in 6-1 seg7 (unchanged) and in 6-3 seg5 (unchanged: 'no false alarms' is a new result of that lesson, the outline lists the caveat for it, and 6-3 was to be changed as little as the rulings require).",
+   "change": "6-2: both spoken instances are gone (old seg4 removed, recap rewritten under R4). One on-screen reminder remains in the seg6 chart note ('Same simulated series, incidents removed: a best case'), and seg7 says 'Not on this series' instead of stating a rule. 6-1 and 6-3: no change."
+  }
+ ],
+ "rulings": {
+  "R1": "seg2, one sentence added: 'And it is general: any forecast is tested from a past date forward, and a forecast of weekly lead volume for sales needs exactly this test.' (The footnote that follows was tightened by two words to keep the segment at 129.)",
+  "R2": "Not applicable.",
+  "R3": "ask_assistant rewritten as a template (116 words) with slots [series], [twelve], [month starts], [horizon], [month], [week ahead], [80], [the number I need: one day, or the total over the horizon], [break date, or none]. Evidence demanded: forecast date and last training date printed per backtest; error by period and by distance beside two naive methods; a range built on the earlier backtests from errors of the same kind as the number wanted, with its hit rate on the later ones; the step and the re-run when a break date is named.",
+  "R4": "seg9 cut from 80 to 49 words, two sentences: the 3 percent that opened the lesson would now be sent back for a rehearsal and a range; pointer to 6-3. Quote visual kept.",
+  "R5": "Key is the longest option in 1 of 10 (was 4). Replaced 'nothing is wrong' distractors: quiz q1 C ('There is none ...' -> blaming the metric), quiz q3 C ('Nothing needs doing ...' -> a seasonal misreading), review 1 v2 D ('Nothing ...' -> a stricter metric on the same hidden weeks), review 1 v3 A ('Nothing ...' -> comparing 97 percent with an accepted level). New quiz q4 has four specific options of 97-101 characters. Kept 'As usual: a range built from a year of errors already allows for surprises like this one' in review 2 v1: it states the misconception the question tests and is not the form R5 targets.",
+  "R6": "seg8, one sentence: 'If you cannot, train on recent history only, and check it the same way.' (the recent-window alternative from other_ways, for a shift with no clean break date).",
+  "R7": "Items 1 and 2 unchanged (dates and tables in the output). Item 3 tightened: the range must name what it covers, be built from errors of that same kind and show its hit rate on backtests it was not built from. Item 4 replaced (it was about tree models): if a break date was named, the fitted size of the step is printed and the error by month is shown before and after adding it.",
+  "specific": "Cut to three ideas: the backtest (rolling origins, never shuffled), the honest range, what a level shift does (see n=2, n=3). The level-shift fix is in the narration (seg7, seg8) and in the brief, in the ruling's words (n=4). A range built from daily errors is no longer handed over as a monthly figure anywhere (n=0). Quiz: q1 audit (shuffled folds), q2 the range, q3 level shift (other domain), q4 audit (daily band on a total) - one question per idea plus one transfer."
+ },
+ "segments_changed": [2, 4, 5, 6, 7, 8, 9],
+ "numbers_verified": 98,
+ "open_questions": [
+  "Segment numbers above are the NEW ones. Segments 1 and 3 are byte-identical to the old 1 and 3 (their audio is reusable; clips are keyed by text hash in build/tts.py). Old seg4 (error by week ahead) and old seg7 (a year ahead, trees) were deleted; old seg5 became new 4 and 5; old seg6 became new 6 and 7. The lesson still has nine segments.",
+  "facts.json has no result for the trend model refitted with a step from the break date, so the fix is taught as a procedure to check by backtest, with no number. If the analysis adds one (for example forecast.level_shift.mape_by_month_with_a_step_added), seg7 could show that the months after the break return to normal.",
+  "Error by distance and trees-versus-trend now live only in other_ways, with their figures. The learner reviewer's own proposal was a second lesson on what breaks a forecast (level shift, trees and trends, scenarios): out of scope here, collected for you. content/OUTLINE.md still lists both items in the 6-2 brief; I did not edit it.",
+  "The recent-window fallback (R6) and the step fix are both advice without a figure from this simulation. I judged that acceptable because each comes with 'check it with the same backtest'; say if you would rather have them only in other_ways."
+ ]
+}

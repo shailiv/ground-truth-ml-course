@@ -1,0 +1,76 @@
+[
+ {
+  "reviewer": "gemini",
+  "lesson": "1-5",
+  "where": "seg2 narration vs seg6 narration",
+  "quote": "it cannot know ... when a column was recorded vs show me the top five columns and when each was recorded",
+  "kind": "contradiction",
+  "severity": "medium",
+  "explanation": "Segment 2 explicitly states that the assistant cannot know when a column was recorded, because flat exports and overwritten tables (such as the accounts table behind the leak in facts.json) carry no per-column recording timestamp. Segment 6 (and review 2 variant 3) then tells the learner to ask the assistant to show the top five columns and when each was recorded, treating the reply as readable evidence. Beyond the internal contradiction, asking an LLM when columns in an undated export were recorded often causes it to guess from column names or snapshot_month rather than report that the timestamp is unknown.",
+  "evidence": "seg2 narration ('it cannot know what one row should be in your business, or when a column was recorded') vs seg6 narration ('show me the top five columns and when each was recorded'); facts.json -> leakage.why ('it was read from the accounts table on the day of the export, 60-120 days AFTER the snapshot date')",
+  "fix": "Reconcile the two segments: keep the pushback question in seg6 or expand it to 'show me the top five columns, which table each came from, and when each was recorded (or say if the data does not record that)', and clarify that while the assistant surfaces the top columns, source tables and date filters, you must verify when a source table is updated if timestamps are absent.",
+  "problem": "Segment 2 explicitly states that the assistant cannot know when a column was recorded, because flat exports and overwritten tables (such as the accounts table behind the leak in facts.json) carry no per-column recording timestamp. Segment 6 (and review 2 variant 3) then tells the learner to ask the assistant to show the top five columns and when each was recorded, treating the reply as readable evidence. Beyond the internal contradiction, asking an LLM when columns in an undated export were recorded often causes it to guess from column names or snapshot_month rather than report that the timestamp is unknown."
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "1-5",
+  "where": "seg4 narration (audit block item 4)",
+  "quote": "The list of features, each with the table it came from.",
+  "kind": "doubt",
+  "severity": "medium",
+  "problem": "The lesson before taught that the source table is not enough: I need 'the latest date of data it used'. The standing audit block drops the date, so the leak I just learned to catch would pass this block.",
+  "fix": "'Each feature, its source table and the latest date it used.' Same change in the brief and checklist."
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "1-5",
+  "where": "seg8 narration",
+  "quote": "The list of checks will grow, because each later lesson adds a line to it.",
+  "kind": "not_usable",
+  "severity": "medium",
+  "problem": "By the end of module 3 it has grown into 16 separate briefs and about 60 checklist lines spread over 16 lessons. I am never shown the grown block, and I forget fast.",
+  "fix": "End each module with the cumulative audit block on one card and one pasteable standing instruction (after 1-5, 2-6 and 3-5)."
+ },
+ {
+  "reviewer": "gemini",
+  "lesson": "1-5",
+  "where": "seg4 narration and ask_assistant vs seg5 visual",
+  "quote": "The label rate, overall and by month. The list of features, each with the table it came from.",
+  "kind": "contradiction",
+  "severity": "low",
+  "explanation": "Segment 3 states that stage two checks the label's rate month by month, and segment 4 and ask_assistant require every reply's audit block to include the label rate overall and by month plus each feature with its source table (qualifying only the baseline as starting at stage three). However, at stage one the target is not yet defined, at stages one and two model features are not yet chosen, and segment 5's own stage-two audit block omits both the feature list and the monthly churn rates (giving only overall, Jan-Mar and May-Jun rates, with no rate for April).",
+  "evidence": "seg3 narration ('its rate month by month'), seg4 visual ('The audit block: every output ends with it'), ask_assistant ('End every reply with an audit block: ... the label rate overall and by month, each feature with its source table, and from stage three the baseline'), seg5 visual (omits monthly rates and feature list); facts.json -> data.churn_by_month (Jan 0.1125, Feb 0.109, Mar 0.1125, Apr 0.1125, May 0.1265, Jun 0.137)",
+  "fix": "In seg4 and ask_assistant, note that the audit block accumulates as stages progress (label rates from stage two; feature sources and baseline from stage three), and add a monthly line to seg5's stage-two audit block: 'by month = Jan 11.3%, Feb 10.9%, Mar 11.3%, Apr 11.3%, May 12.7%, Jun 13.7%'.",
+  "problem": "Segment 3 states that stage two checks the label's rate month by month, and segment 4 and ask_assistant require every reply's audit block to include the label rate overall and by month plus each feature with its source table (qualifying only the baseline as starting at stage three). However, at stage one the target is not yet defined, at stages one and two model features are not yet chosen, and segment 5's own stage-two audit block omits both the feature list and the monthly churn rates (giving only overall, Jan-Mar and May-Jun rates, with no rate for April)."
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "1-5",
+  "where": "guess",
+  "quote": "Four short requests, checking each output before the next",
+  "kind": "question",
+  "severity": "low",
+  "problem": "The title is 'Brief in stages' and the right option is the only one that is not 'one prompt'. No guessing involved.",
+  "fix": "Show the one-shot report's headline (churn 7.2 percent, top 200 all churned) and ask which of four numbers on the page I could verify from the page alone."
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "1-5",
+  "where": "seg5 visual vs seg4",
+  "quote": "AUDIT BLOCK - stage 2",
+  "kind": "doubt",
+  "severity": "low",
+  "problem": "Seg4 says every output ends with the same five lines, but the example has no feature list and adds lines that are not among the five (missing, left out). I do not know which one is the template to paste.",
+  "fix": "Make the example carry exactly the five lines (features: 'none yet, stage 3'), or define the block per stage."
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "1-5",
+  "where": "seg5, seg6, seg8 narration",
+  "quote": "None of it required reading Python.",
+  "kind": "boring",
+  "severity": "low",
+  "problem": "Told four times in one lesson that I will not read code ('None of it required reading Python', 'You do not open the script', 'not Python' twice in seg8), after 'You are not reading code' in 1-4. I believed it the first time.",
+  "fix": "Say it once, in seg4."
+ }
+]

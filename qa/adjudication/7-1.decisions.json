@@ -1,0 +1,37 @@
+{
+ "lesson": "7-1",
+ "decisions": [
+  {
+   "n": 0,
+   "reviewer": "learner-2",
+   "finding": "The same agreement score is read two ways in segment 5: 0.70 against the GROUP BY means 'near enough the same', 0.76 between runs is presented as instability. What value counts as 'the same segments came back'?",
+   "decision": "accepted",
+   "reason": "Real. segments.honesty_checks: agreement_with_a_plain_group_by.adjusted_rand_index 0.7; stability.agreement_min 0.17, agreement_max 0.76. One scale, two different expectations, and the narration never said which expectation applied. facts.json has no 'share of advertisers who keep their segment', so the anchor is given in words, not as a new number.",
+   "change": "Segment 5 narration: 'The score is 0.7: a lot of overlap for a method meant to find something new' and 'The same method on the same data should score close to one. The best re-run scored 0.76 and the worst 0.17: nearly a different segmentation.' The stat card labels, audit item 3 and the glossary entry for the agreement score carry the same anchor (re-runs should score close to 1)."
+  },
+  {
+   "n": 1,
+   "reviewer": "learner-2",
+   "finding": "A nearest-neighbour model and an AUC appear in a no-labels lesson to 'test the ruler'; momentary confusion about why churn is being predicted again. Suggests showing one advertiser's five neighbours on raw and scaled columns.",
+   "decision": "partly",
+   "reason": "The suggested fix needs figures facts.json does not hold (distance has only raw_columns 0.628, standardised_columns 0.797 and the note that 25 neighbours was untuned). The narration already says 'Here is a test of the ruler alone'; the confusion is brief and low severity, so it does not justify re-recording the segment (R8).",
+   "change": "Visual only. Card title is now 'Grading the ruler, not building groups: predict churn from the 25 most similar advertisers (AUC)' and the right-hand line adds 'churn is only the referee here'. Narration of segment 3 untouched."
+  }
+ ],
+ "rulings": {
+  "R1": "Segment 1, one added sentence: 'That holds for any rows grouped without an answer column: ask what kinds of publisher send you traffic, and groups come back just the same.'",
+  "R2": "Not applicable.",
+  "R3": "Brief rewritten as a template (116 words) with slots for the rows, the columns, the range of k, the chosen k, the unseen outcome, the number of seeds, a second period and the GROUP BY columns. No course column names, no k = 4, no 'six seeds'. Every demand for evidence kept; the second-period repeat that segment 7 asks for is now in the brief too.",
+  "R4": "Recap is 45 spoken words, two sentences, cue markers removed, 'Keep this' card kept. The caveat that lived in the old recap ('which columns dominated is a quirk of this simulated table') moved to the note under the segment 4 table; segment 6 still says 'In this simulated world good habits and low churn travel together'.",
+  "R5": "Keyed answer is the longest option in 2 of 10. Replaced the literal 'Nothing: ...' option (quiz 2) and every option that only endorsed the output shown: quiz 3 ('That is convincing'), quiz 4 ('Eight is correct'), review 1 variant 1 ('Block the list'), variant 2 ('confirmed twice over'), review 2 variant 1 ('so the matches are right'). Review 2 variant 2 was Yes / No / Yes / No, so two options could be struck unread; it now asks 'What does the result actually show?' with four explanations. Whys extended to answer each new distractor. Keyed positions unchanged.",
+  "R6": "Segment 8, one added sentence for the move that sat only in other_ways: 'When you already hold the outcome the segments should differ on, ask for a shallow decision tree on it instead: each leaf is a segment with a rate.' The plain GROUP BY alternative was already spoken.",
+  "R7": "Audit items reworded so each is something printed: an agreement score per re-run (with what 'came back' looks like), the same unseen outcome for segments and GROUP BY side by side, the error for each k tried.",
+  "specific": "None for this lesson."
+ },
+ "segments_changed": [1, 5, 8, 9],
+ "numbers_verified": 75,
+ "open_questions": [
+  "Narration is 916 words (SPEC aims at 900, hard cap 950): the R1 and R6 sentences and the two anchors in segment 5 add 56 words, the short recap gives back 40. Say if you would rather lose the decision-tree sentence or the k-means-loves-a-gap sentence to get under 900.",
+  "Finding 0 would be answered best by a number: the share of advertisers who keep the same segment between two runs. If segments.honesty_checks.stability gains that figure, segment 5 can quote it in place of 'close to one'."
+ ]
+}

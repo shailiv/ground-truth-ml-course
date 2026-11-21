@@ -1,0 +1,26 @@
+  ... HTTP 429, retry in 20s
+  ... HTTP 429, retry in 20s
+  ... HTTP 429, retry in 19s
+  ... HTTP 429, retry in 19s
+  ... HTTP 429, retry in 19s
+  ... HTTP 429, retry in 18s
+2-4 seg2: numbers differ: script has [], heard ['30s']
+2-4 seg3: numbers differ: script has [], heard ['2', '20s', '1']
+2-5 seg2: 9% of words differ
+2-5 seg3: 10% of words differ
+2-5 seg4: numbers differ: script has ['100000'], heard ['100']
+2-6 seg6: numbers differ: script has ['0'], heard []
+3-1 seg5: numbers differ: script has ['100'], heard ['100000']; 7% of words differ
+3-5 seg1: numbers differ: script has ['0.98'], heard ['.98']
+4-3 seg4: numbers differ: script has ['9'], heard ['9000th']; 9% of words differ
+4-5 seg1: numbers differ: script has [], heard ['00']
+5-1 seg4: numbers differ: script has ['6'], heard ['6.5', '10']; 8% of words differ
+5-3 seg3: 8% of words differ
+5-5 seg8: 8% of words differ
+6-1 seg7: numbers differ: script has [], heard ['1st']
+6-2 seg3: numbers differ: script has ['3.5'], heard ['2', '3', '1']
+6-2 seg6: numbers differ: script has [], heard ['1st']
+6-3 seg5: numbers differ: script has ['2.5'], heard ['2', '1']
+7-1 seg4: numbers differ: script has ['2'], heard []
+7-4 seg4: numbers differ: script has [], heard ['2', '1']
+319 clips heard back, mean word difference 1.5%, 19 flagged

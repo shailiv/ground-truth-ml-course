@@ -1,0 +1,17 @@
+{
+ "issues": [
+  {
+   "where": "quiz 5-3-q2",
+   "quote": "the gap between the two groups was narrowing by 0.33 points a week",
+   "kind": "bad_question",
+   "severity": "low",
+   "explanation": "The question stem never states that the launch group started below the comparison group, yet Option 1 ('some of the 8 points was coming anyway') and the explanation ('it points the dangerous way... makes the estimate probably too high') deduce that a narrowing pre-launch gap inflates the +7.9-point estimate. If the launch group had started above the comparison group, a narrowing pre-launch gap would mean the launch group was losing ground relative to the comparison group before launch, making +7.9 points an underestimate rather than an overestimate.",
+   "evidence": "facts.json -> before_after.averages (got_the_flow_before = 0.605, comparison_before = 0.668) and before_after.when_the_assumption_fails (pre_launch_drift_of_the_gap_pts_per_week = 0.33, reading = 'credits the launch with improvement the treated group was already making'); DiD bias equals the counterfactual change in (treated - comparison), whose sign cannot be inferred from 'narrowing' without knowing which group started lower.",
+   "fix": "Specify which group started lower or state the signed relative trend in the stem, e.g.: \"Pre-launch check: the launch group started lower, and the gap between the two groups was narrowing by 0.33 points a week, plus or minus 0.31\" (or \"the launch group was gaining on the comparison group by 0.33 points a week, plus or minus 0.31\")."
+  }
+ ],
+ "numbers_checked": 125,
+ "verdict": "All numeric claims and visuals match facts.json accurately, and the causal inference concepts are well taught; one quiz item (5-3-q2) omits which group started lower, which is needed for 'gap narrowing' to imply that the DiD estimate is overstated.",
+ "_hash": "e6180320cb942a1a",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_ChdVaGdDYTZydU8teUF4czBQdXBEZi1RZxIXVWhnQ2E2cnVPLXlBeHMwUHVwRGYtUWc | tokens in=68330 out=473 thought=25111]"
+}

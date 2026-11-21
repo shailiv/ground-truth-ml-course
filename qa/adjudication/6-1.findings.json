@@ -1,0 +1,44 @@
+[
+ {
+  "reviewer": "expert-4",
+  "lesson": "6-1",
+  "where": "quiz (all 4) and review (5 of 6 variants)",
+  "quote": "keyed option is the longest option in 9 of 10 questions",
+  "kind": "bad_question",
+  "severity": "medium",
+  "problem": "Picking the longest option scores 9 out of 10 without reading the stem: the keyed answer is strictly the longest in every quiz question (by 10, 21, 24 and 34 characters) and in five of the six review variants. The distractors are short dismissals; the key is the only qualified sentence.",
+  "evidence": "Option lengths, keyed first: q1 91 vs 81/78/76; q2 108 vs 87/80/73; q3 104 vs 80/71/68; q4 117 vs 83/82/79; review 1 v1 85 vs 74, v3 79 vs 52; review 2 v1 66 vs 62, v2 68 vs 46, v3 88 vs 57. Only review 1 v2 breaks the pattern. Lessons 7-1 to 7-5 show it can be avoided (keyed longest in 9 of 50).",
+  "fix": "Lengthen two distractors per question to the key's length with an equally specific, wrong reason, or trim the keys."
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "6-1",
+  "where": "quiz 6-1-q4 (pattern in 6-1, 6-2 and 6-4)",
+  "quote": "rehearse on your own history and quote that",
+  "kind": "question",
+  "severity": "medium",
+  "problem": "The key is the longest option in all four questions of 6-1, all four of 6-2 and three of four in 6-4. By the second quiz I was choosing by length.",
+  "fix": "Shorten the keys and lengthen one distractor per question."
+ },
+ {
+  "reviewer": "expert-4",
+  "lesson": "6-1",
+  "where": "quiz 6-1-q2 (question stem and option B)",
+  "quote": "average daily error 3.1 percent over twelve monthly forecasts, against 6.4 percent for the baseline",
+  "kind": "unsupported_number",
+  "severity": "low",
+  "problem": "Course-domain question. The report it describes (trend, weekday and time of year, no event dates, twelve monthly forecasts, baseline 6.4) is exactly the facts' model without holidays, which scores 3.3 percent; 3.1 is in no fact, and the explanation of the same question then says 3.3.",
+  "evidence": "forecast.backtest.methods.regression_not_told_about_holidays.mape = 0.0333; same_weekday_last_week.mape = 0.0636",
+  "fix": "Use 3.3 percent in the stem."
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "6-1",
+  "where": "seg4 narration",
+  "quote": "three smooth waves for the time of year",
+  "kind": "lost",
+  "severity": "low",
+  "problem": "Unexplained, and I would not recognise it in the assistant's output or know why three.",
+  "fix": "'a smooth yearly curve' is enough; the brief's 'time-of-year terms' already covers the request."
+ }
+]

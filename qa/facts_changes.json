@@ -1,0 +1,434 @@
+[
+ {
+  "change": "CHANGED",
+  "path": ".data.columns",
+  "was": "['advertiser_id', 'snapshot_month', 'vertical', 'managed', '",
+  "now": "['advertiser_id', 'snapshot_month', 'vertical', 'managed', 'tenure_weeks', 'spend_8w', 'sp"
+ },
+ {
+  "change": "ADDED",
+  "path": ".depth_sweep[0].cv_auc_on_training_months",
+  "was": "",
+  "now": "0.645"
+ },
+ {
+  "change": "ADDED",
+  "path": ".depth_sweep[1].cv_auc_on_training_months",
+  "was": "",
+  "now": "0.737"
+ },
+ {
+  "change": "ADDED",
+  "path": ".depth_sweep[2].cv_auc_on_training_months",
+  "was": "",
+  "now": "0.755"
+ },
+ {
+  "change": "ADDED",
+  "path": ".depth_sweep[3].cv_auc_on_training_months",
+  "was": "",
+  "now": "0.763"
+ },
+ {
+  "change": "ADDED",
+  "path": ".depth_sweep[4].cv_auc_on_training_months",
+  "was": "",
+  "now": "0.766"
+ },
+ {
+  "change": "ADDED",
+  "path": ".depth_sweep[5].cv_auc_on_training_months",
+  "was": "",
+  "now": "0.747"
+ },
+ {
+  "change": "ADDED",
+  "path": ".depth_sweep[6].cv_auc_on_training_months",
+  "was": "",
+  "now": "0.711"
+ },
+ {
+  "change": "ADDED",
+  "path": ".depth_sweep[7].cv_auc_on_training_months",
+  "was": "",
+  "now": "0.646"
+ },
+ {
+  "change": "ADDED",
+  "path": ".depth_sweep[8].cv_auc_on_training_months",
+  "was": "",
+  "now": "0.606"
+ },
+ {
+  "change": "ADDED",
+  "path": ".depth_sweep[9].cv_auc_on_training_months",
+  "was": "",
+  "now": "0.611"
+ },
+ {
+  "change": "ADDED",
+  "path": ".depth_sweep[10].cv_auc_on_training_months",
+  "was": "",
+  "now": "0.609"
+ },
+ {
+  "change": "ADDED",
+  "path": ".depth_sweep[11].cv_auc_on_training_months",
+  "was": "",
+  "now": "0.609"
+ },
+ {
+  "change": "ADDED",
+  "path": ".depth_sweep_note",
+  "was": "",
+  "now": "test_auc is shown to demonstrate over-fitting; it must not be used to CHOOSE the depth. cv_auc_on_training_months (5-fold cross-validation i"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".leakage.why",
+  "was": "it was read from the accounts table on the day of the export",
+  "now": "it was read from the live accounts table when each month's snapshot was exported, 60-120 d"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".logreg.coefs[0].one_sd_is",
+  "was": "0.411",
+  "now": "0.41"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".logreg.coefs[3].one_sd_is",
+  "was": "5.304",
+  "now": "5.303"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".logreg.coefs[8].one_sd_is",
+  "was": "34.316",
+  "now": "34.314"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".logreg.coefs[11].avg_probability_shift_pts",
+  "was": "0.9",
+  "now": "0.7"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".logreg.coefs[11].one_sd_is",
+  "was": "0.399",
+  "now": "0.307"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".logreg.coefs[15].one_sd_is",
+  "was": "25.64",
+  "now": "25.638"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".logreg.coefs[20].one_sd_is",
+  "was": "4.28",
+  "now": "4.279"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".noise.aa_test.by_group_size.1000.gap_exceeded_1_time_in_20_pts",
+  "was": "2.7",
+  "now": "2.8"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".noise.aa_test.by_group_size.1000.share_of_gaps_over_2_pts",
+  "was": "0.143",
+  "now": "0.165"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".noise.aa_test.by_group_size.1000.typical_gap_pts",
+  "was": "0.9",
+  "now": "1"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".noise.aa_test.by_group_size.4000.gap_exceeded_1_time_in_20_pts",
+  "was": "1.15",
+  "now": "1.4"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".noise.aa_test.by_group_size.4000.share_of_gaps_over_2_pts",
+  "was": "0",
+  "now": "0.005"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".noise.aa_test.by_group_size.4000.typical_gap_pts",
+  "was": "0.38",
+  "now": "0.5"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".noise.aa_test.what",
+  "was": "split advertisers at random into two groups 2,000 times and ",
+  "now": "draw two groups of advertisers at random 2,000 times and record the gap in churn rate; the"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".noise.margin_of_error_for_a_churn_rate.what",
+  "was": "95% margin of error around an observed churn rate of about 1",
+  "now": "95% margin of error around an observed churn rate of about 11.8% (the overall rate), by nu"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".partial_dependence.method",
+  "was": "set the column to x for every advertiser, average the predic",
+  "now": "set the column to x for every training advertiser and average the predictions (for cpa_vs_"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".tickets.learning_curve.how",
+  "was": "train on a random handful of labelled tickets per category, ",
+  "now": "train on a random handful of labelled tickets per category, score on the 450 test tickets,"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".tickets.methods.bag_of_words_model.accuracy",
+  "was": "0.531",
+  "now": "0.542"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".tickets.methods.bag_of_words_model.accuracy_95[0]",
+  "was": "0.485",
+  "now": "0.496"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".tickets.methods.bag_of_words_model.accuracy_95[1]",
+  "was": "0.577",
+  "now": "0.588"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".tickets.methods.bag_of_words_model.accuracy_on_hard_tickets",
+  "was": "0.413",
+  "now": "0.4"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".tickets.methods.bag_of_words_model.accuracy_on_ordinary_tickets",
+  "was": "0.767",
+  "now": "0.827"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".tickets.methods.bag_of_words_model.correct",
+  "was": "239",
+  "now": "244"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".tickets.methods.bag_of_words_model.macro_f1",
+  "was": "0.528",
+  "now": "0.539"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".tickets.methods.bag_of_words_model.most_common_confusions[0].actual",
+  "was": "tracking_setup",
+  "now": "performance"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".tickets.methods.bag_of_words_model.most_common_confusions[0].predicted_as",
+  "was": "feature_request",
+  "now": "account_access"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".tickets.methods.bag_of_words_model.most_common_confusions[1].actual",
+  "was": "performance",
+  "now": "feature_request"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".tickets.methods.bag_of_words_model.most_common_confusions[1].predicted_as",
+  "was": "account_access",
+  "now": "billing"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".tickets.methods.bag_of_words_model.most_common_confusions[2].predicted_as",
+  "was": "billing",
+  "now": "account_access"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".tickets.methods.bag_of_words_model.most_common_confusions[3].actual",
+  "was": "tracking_setup",
+  "now": "ad_review"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".tickets.methods.bag_of_words_model.most_common_confusions[3].predicted_as",
+  "was": "performance",
+  "now": "account_access"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".tickets.methods.bag_of_words_model.per_category.account_access.precision",
+  "was": "0.521",
+  "now": "0.535"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".tickets.methods.bag_of_words_model.per_category.account_access.recall",
+  "was": "0.653",
+  "now": "0.707"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".tickets.methods.bag_of_words_model.per_category.ad_review.precision",
+  "was": "0.544",
+  "now": "0.529"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".tickets.methods.bag_of_words_model.per_category.billing.precision",
+  "was": "0.53",
+  "now": "0.512"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".tickets.methods.bag_of_words_model.per_category.billing.recall",
+  "was": "0.587",
+  "now": "0.573"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".tickets.methods.bag_of_words_model.per_category.feature_request.precision",
+  "was": "0.479",
+  "now": "0.534"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".tickets.methods.bag_of_words_model.per_category.feature_request.recall",
+  "was": "0.467",
+  "now": "0.413"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".tickets.methods.bag_of_words_model.per_category.performance.precision",
+  "was": "0.558",
+  "now": "0.553"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".tickets.methods.bag_of_words_model.per_category.performance.recall",
+  "was": "0.573",
+  "now": "0.56"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".tickets.methods.bag_of_words_model.per_category.tracking_setup.precision",
+  "was": "0.564",
+  "now": "0.603"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".tickets.methods.bag_of_words_model.per_category.tracking_setup.recall",
+  "was": "0.413",
+  "now": "0.507"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".tickets.paired.method",
+  "was": "same 300 tickets, bootstrap interval on the difference in ac",
+  "now": "same 450 test tickets, bootstrap interval on the difference in accuracy; an interval that "
+ },
+ {
+  "change": "CHANGED",
+  "path": ".tickets.paired.rows[0].accuracy_a_minus_b_pts",
+  "was": "24",
+  "now": "25.1"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".tickets.paired.rows[0].ci95_pts[0]",
+  "was": "18.9",
+  "now": "20"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".tickets.paired.rows[0].ci95_pts[1]",
+  "was": "29.6",
+  "now": "30.7"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".tickets.paired.rows[0].tickets_only_a_got_right",
+  "was": "147",
+  "now": "148"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".tickets.paired.rows[0].tickets_only_b_got_right",
+  "was": "39",
+  "now": "35"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".tickets.paired.rows[1].accuracy_a_minus_b_pts",
+  "was": "21.8",
+  "now": "20.7"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".tickets.paired.rows[1].ci95_pts[0]",
+  "was": "16.4",
+  "now": "15.6"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".tickets.paired.rows[1].ci95_pts[1]",
+  "was": "26.9",
+  "now": "26"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".tickets.paired.rows[1].tickets_only_a_got_right",
+  "was": "129",
+  "now": "126"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".tickets.paired.rows[1].tickets_only_b_got_right",
+  "was": "31",
+  "now": "33"
+ },
+ {
+  "change": "CHANGED",
+  "path": ".tickets.what",
+  "was": "synthetic advertiser support tickets, written to order by Ge",
+  "now": "synthetic advertiser support tickets, written to order by Gemini models (the true category"
+ },
+ {
+  "change": "ADDED",
+  "path": ".tree.min_rows_per_leaf",
+  "was": "",
+  "now": "100"
+ },
+ {
+  "change": "ADDED",
+  "path": ".tree.note",
+  "was": "",
+  "now": "this is the tree shown in the lessons: depth 3 and at least 100 training rows in every end point. depth_sweep grows trees with no minimum le"
+ },
+ {
+  "change": "ADDED",
+  "path": ".uplift.policies_call_400_note",
+  "was": "",
+  "now": "churns_prevented is NET: advertisers a call saves minus advertisers a call pushes out (a few would have stayed if left alone)"
+ }
+]

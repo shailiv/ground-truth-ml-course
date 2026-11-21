@@ -1,0 +1,392 @@
+{
+  "id": "2-1",
+  "module": 2,
+  "title": "Hold-out, the gap, and baselines",
+  "subtitle": "When does a model's result actually count?",
+  "goal": "After this lesson you can say which rows a model must be judged on, why a month is left out between training and test, and which baseline belongs next to any result.",
+  "predict": {
+    "q": "Churn means no spend in the 60 days after a snapshot. It is the May snapshot date and you are about to score the May advertisers. Which earlier months can the model learn from?",
+    "options": [
+      "January to April: the most recent data is the most relevant",
+      "January to March: April's outcomes are not known yet",
+      "April only: the older months are out of date",
+      "January to April, with April given less weight"
+    ],
+    "answer": 1,
+    "reveal": "January to March. April's 60 days are not over on the day you score May, so its labels do not exist yet. The lesson shows why that gap is the honest design."
+  },
+  "segments": [
+    {
+      "narration": "Monday stand-up. Someone shares the new churn model and says it is 88 percent accurate. Accurate means the share of advertisers where its yes or no call turned out right. Heads nod. Eighty-eight sounds like a good grade. But a number like that is missing two things, and without them it means almost nothing. Measured on which advertisers? And compared with what?",
+      "visual": {
+        "type": "title",
+        "kicker": "Module 2 · Lesson 1",
+        "title": "Hold-out, the gap, and baselines",
+        "sub": "Measured on what? Compared with what?"
+      }
+    },
+    {
+      "narration": "Start with measured on what. In the first lesson we said that matching the past is easy, and holding up on new rows is the whole game. A model graded on the rows it learned from is a student marking the exam with the answer key open. [[1]] So before any training, the rows with known outcomes are divided. [[2]] One part is the training set, which the model learns from. [[3]] The other part is held out, and it is called the test set. The model never sees it while learning, and only the result on the test set counts. The interesting question is which rows to hold out.",
+      "visual": {
+        "type": "flow",
+        "title": "Hold some rows back",
+        "steps": [
+          {
+            "label": "Rows with known outcomes",
+            "sub": "12,000 advertisers"
+          },
+          {
+            "label": "Training set",
+            "sub": "the model learns from these"
+          },
+          {
+            "label": "Test set",
+            "sub": "never seen while learning; the result that counts"
+          }
+        ]
+      }
+    },
+    {
+      "narration": "The obvious way is to shuffle all the rows and hold out a random slice. But think about how the model will be used. You train it on advertisers whose outcome is already known, then score advertisers whose outcome has not happened yet. Past to future. So the split should rehearse exactly that. [[1]] Train on the January to March snapshots, 6,000 advertisers. [[2]] Test on May and June, 4,000 advertisers from a later period. [[3]] And April, 2,000 advertisers, is used for neither. That looks wasteful. It is the most honest part of the design.",
+      "visual": {
+        "type": "timeline",
+        "title": "Split by time: learn on the past, judge on later months",
+        "spans": [
+          {
+            "label": "Train: Jan–Mar · 6,000",
+            "from": 0,
+            "to": 3,
+            "kind": "obs"
+          },
+          {
+            "label": "Test: May–Jun · 4,000",
+            "from": 4,
+            "to": 6,
+            "kind": "ok"
+          },
+          {
+            "label": "Left out: Apr",
+            "from": 3,
+            "to": 4,
+            "kind": "bad"
+          }
+        ],
+        "note": "Snapshot months, 2,000 advertisers in each."
+      }
+    },
+    {
+      "narration": "Here is why. Churn means no spend in the 60 days after a snapshot. [[1]] So the label for an April advertiser is not finished until 60 days after the April snapshot. [[2]] Now stand on the day you score the May advertisers, about a month later. April's window is only about half over, and you cannot yet say who from April churned. A model trained on April would be using answers that did not exist on scoring day. You know this pattern. It is the time-travel test from the leakage lesson, applied to rows instead of columns. Whenever a label takes time to appear, the most recent period cannot be used for training.",
+      "visual": {
+        "type": "timeline",
+        "title": "Why April is left out",
+        "spans": [
+          {
+            "label": "April's outcome window: 60 days",
+            "from": 0,
+            "to": 60,
+            "kind": "out"
+          },
+          {
+            "label": "Not yet happened on scoring day",
+            "from": 30,
+            "to": 60,
+            "kind": "bad"
+          }
+        ],
+        "marks": [
+          {
+            "at": 0,
+            "label": "April snapshot"
+          },
+          {
+            "at": 30,
+            "label": "May snapshot: scoring day"
+          }
+        ],
+        "note": "On the day you score May, nobody yet knows who from April churned."
+      }
+    },
+    {
+      "narration": "Two cautions. First, a quirk of this simulated data. Here a shuffled split and a time split give almost the same result, because every row is a different advertiser and little changes from month to month. That is a property of this data, not a rule. The time split is still the right design, because only a later period can show you that the world has moved, and a later lesson has a month where it does. Second, treat the test set as a sealed envelope. Each time you look at a test result and then change the model, a little of the answer leaks into your choices. Open it for the final answer, not for every experiment.",
+      "visual": {
+        "type": "quote",
+        "text": "The test set is a sealed envelope. Open it for the final answer, not for every experiment.",
+        "sub": "Split by time even when a shuffle happens to score the same"
+      }
+    },
+    {
+      "narration": "Now the second question: compared with what. Take the laziest model imaginable. It predicts that every advertiser stays. [[1]] On the test months it is right about 87 percent of the time, because only about 13 percent of advertisers churn. [[2]] It also finds exactly none of the 527 advertisers who left. [[3]] So the 88 percent from the stand-up is less than two points better than doing nothing at all. A simple reference result like this is called a baseline. It does not have to be clever. Its job is to tell you what a number means.",
+      "visual": {
+        "type": "stat",
+        "title": "Baseline one: predict that everyone stays",
+        "stats": [
+          {
+            "value": "86.8%",
+            "label": "accuracy of predicting 'stays' for all 4,000"
+          },
+          {
+            "value": "0 of 527",
+            "label": "churners it finds"
+          },
+          {
+            "value": "88.5%",
+            "label": "accuracy of the model"
+          }
+        ]
+      }
+    },
+    {
+      "narration": "A better baseline is what you would do today with no model. Your rule from the first lesson: flag every advertiser whose spend trend is below 0.7. [[1]] On the test months it flags 711 advertisers. [[2]] Of those, 246 really churned, about one in three. [[3]] It misses the other 281. That is the bar. A model earns its place only by beating the rule on the same advertisers, with the same number of flags. [[4]] This one does: its top 711 contain 321 churners. When the target is a number, like next month's spend, the idea is identical. The baselines are the plain average, or the same as last period.",
+      "visual": {
+        "type": "stat",
+        "title": "Baseline two: the rule you would write today",
+        "stats": [
+          {
+            "value": "711",
+            "label": "flagged: spend trend below 0.7"
+          },
+          {
+            "value": "246",
+            "label": "of those really churned"
+          },
+          {
+            "value": "281",
+            "label": "churners the rule missed"
+          },
+          {
+            "value": "321",
+            "label": "churners in the model's top 711"
+          }
+        ]
+      }
+    },
+    {
+      "narration": "Brief and audit. [[1]] Tell the assistant to split by snapshot month, not by shuffling: train on January to March, leave April out, test on May and June. [[2]] Ask the output to show the months, the row count and the churn rate for each part. [[3]] Ask it to confirm that the test months were not used for any decision along the way. [[4]] And ask for both baselines next to the model, on the same test rows: how many each one flagged, and of those flagged, how many really churned. A result without these is not wrong. It is just not yet evidence.",
+      "visual": {
+        "type": "bullets",
+        "title": "Brief and audit",
+        "items": [
+          "Split by snapshot month: train Jan–Mar, leave out Apr, test May–Jun",
+          "Show months, rows and churn rate for each part",
+          "Test months untouched until the model is final",
+          "Both baselines beside the model, on the same test rows"
+        ]
+      }
+    },
+    {
+      "narration": "So, back to the stand-up. Eighty-eight percent accurate: measured on what, compared with what. A result counts only on rows the model never saw, split the way the model will be used, with a gap wherever labels arrive late, and with a baseline beside it. And notice what happened to accuracy along the way. It could barely tell a working model from one that does nothing. The next lesson takes accuracy apart and replaces it with two sharper questions.",
+      "visual": {
+        "type": "bullets",
+        "title": "A result counts only when it is",
+        "items": [
+          "On rows the model never saw",
+          "Split the way it will be used, with a gap for late labels",
+          "Next to a baseline, on the same rows"
+        ]
+      }
+    }
+  ],
+  "takeaways": [
+    "A result counts only on a test set the model never saw, split by time when the question is about the future.",
+    "Leave a gap wherever labels arrive late: April is out because its 60 days are not over when May is scored.",
+    "No number without a baseline on the same rows: 'everyone stays' is about 87 percent accurate and finds no churners."
+  ],
+  "quiz": [
+    {
+      "id": "2-1-q1",
+      "concept": "compared with what: the baseline",
+      "domain": "course",
+      "q": "A stakeholder says: 'The churn model is 88 percent accurate. That is a solid B plus, let us ship it.' What is the right first response?",
+      "options": [
+        "Agree: anything well above 50 percent clearly beats a coin flip",
+        "Ask what predicting 'everyone stays' scores on the same rows",
+        "Ask for the accuracy to one more decimal place before deciding",
+        "Ask for a larger group of test advertisers before deciding"
+      ],
+      "answer": 1,
+      "why": "On these test months, predicting that everyone stays is about 87 percent accurate, so 88 is barely above doing nothing. Comparing with a coin flip is the tempting mistake: when the outcome is rare, the real floor is the do-nothing baseline, not 50 percent."
+    },
+    {
+      "id": "2-1-q2",
+      "concept": "the gap for late labels",
+      "domain": "course",
+      "q": "The assistant's audit block reads: 'Label: no spend in the 60 days after the snapshot. Train: January to April, 8,000 rows. Test: May and June, 4,000 rows. Test months untouched during training.' What is the flaw?",
+      "options": [
+        "The test set is too small next to the training set",
+        "The split should be random, so that both parts have the same churn rate",
+        "There is none: it trains on the past and tests on later months",
+        "April is in training, yet its labels do not exist when May is scored"
+      ],
+      "answer": 3,
+      "why": "Churn takes 60 days to show, so on the day you score May you cannot yet know who from April churned; training on April uses answers from the future. It looks like a clean past-to-future split, which is exactly why the missing gap is easy to wave through."
+    },
+    {
+      "id": "2-1-q3",
+      "concept": "measured on what: unseen rows",
+      "domain": "other",
+      "q": "A model predicts which creatives will fatigue. The assistant reports that it 'correctly identifies 94 percent of the fatigued creatives in the dataset'. What do you ask first?",
+      "options": [
+        "Did it learn from those creatives? Show it on later ones it never saw",
+        "Could the remaining 6 percent be caught by adding a few more columns to it?",
+        "Which algorithm was used, and would a stronger one push the number higher?",
+        "Is 94 percent above the level the creative team said they would need?"
+      ],
+      "answer": 0,
+      "why": "A result on the rows a model learned from only shows that it can match the past; it counts when measured on creatives it never saw, from a later period. Chasing the last 6 percent assumes the 94 is real."
+    },
+    {
+      "id": "2-1-q4",
+      "concept": "a baseline for a predicted number",
+      "domain": "other",
+      "q": "A model predicts each advertiser's spend for next month and is 'off by 400 dollars on average' on held-out advertisers. Finance asks whether that is good. What do you need in order to answer?",
+      "options": [
+        "The model's average error on the advertisers it was trained on",
+        "The error as a share of average spend: under 10 percent is good",
+        "The error of 'same as last month' on the same advertisers",
+        "The error after a few more columns have been added to the model"
+      ],
+      "answer": 2,
+      "why": "A number is judged against the simplest alternative: if 'same as last month' is off by 420 dollars the model adds little, and if it is off by 900 the model is earning its keep. A fixed rule of thumb like 10 percent is tempting, but it says nothing about what you could get for free."
+    }
+  ],
+  "review": [
+    {
+      "concept": "judge on unseen rows, split the way the model will be used",
+      "variants": [
+        {
+          "q": "A lead counts as converted if it starts spending within 30 days. Today you want to score this week's new leads. Which past leads can the model learn from?",
+          "options": [
+            "All past leads, including last week's, to keep the model current",
+            "Only leads from the past 30 days, as the most relevant ones",
+            "Leads whose 30 days have fully passed",
+            "A random half of all the leads ever created"
+          ],
+          "answer": 2,
+          "why": "A lead created ten days ago has no finished label yet, so counting it as 'not converted' teaches the model something false. Using the freshest leads feels right, but their answers do not exist yet."
+        },
+        {
+          "q": "Twelve weeks of creatives are labelled fatigued or not. The model will be used every Monday to score new creatives. The assistant shuffles all the rows and holds out a random fifth. What do you ask for instead?",
+          "options": [
+            "A larger random hold-out, such as a third of the rows",
+            "Train on the earlier weeks, test on the latest weeks",
+            "The same random shuffle, repeated several times and averaged",
+            "No hold-out at all, so the model can learn from every row"
+          ],
+          "answer": 1,
+          "why": "The model will be trained on the past and used on the future, so the test should rehearse that with a later period it never saw. A bigger or repeated shuffle still mixes later weeks into the training rows."
+        },
+        {
+          "q": "An upsell model predicts who will adopt a new ad format within 60 days of a monthly snapshot. The audit block says: 'Train: July to October snapshots. Test: November.' Scoring happens on the November snapshot date. What is wrong?",
+          "options": [
+            "October's 60-day outcomes are not known on the November date",
+            "Nothing: every training month comes before the test month",
+            "The test month should have been picked at random from the five",
+            "Four training months are too few for a model of this kind"
+          ],
+          "answer": 0,
+          "why": "On the November snapshot date only about a month of October's 60-day window has passed, so October's labels do not exist yet and cannot be trained on. The months are in the correct order, which is what hides the missing gap."
+        }
+      ]
+    },
+    {
+      "concept": "no number without a baseline on the same rows",
+      "variants": [
+        {
+          "q": "An invalid-traffic model is reported as 99.2 percent accurate on held-out clicks. About 0.5 percent of clicks are invalid. What is the right read?",
+          "options": [
+            "Excellent: almost every single click is classified correctly",
+            "Good, but it should be confirmed on a larger sample of clicks",
+            "Unclear until we know which algorithm produced the number",
+            "Calling every click valid scores 99.5, so this says little"
+          ],
+          "answer": 3,
+          "why": "When only 0.5 percent of clicks are invalid, the do-nothing baseline is right 99.5 percent of the time, so 99.2 is no evidence of skill. The number sounds excellent only because nobody put the baseline beside it."
+        },
+        {
+          "q": "A model forecasts next month's spend per advertiser and misses by 350 dollars on average. On the same advertisers, 'same as last month' misses by 340. What do you conclude?",
+          "options": [
+            "The model is good: 350 dollars is small next to typical monthly spend",
+            "The model does not yet beat the baseline that costs nothing",
+            "The baseline must be miscalculated: nothing that simple matches a model",
+            "The two cannot be compared, because one of them is not a model"
+          ],
+          "answer": 1,
+          "why": "The baseline is free and misses by slightly less, so the model has not earned its complexity. Judging 350 dollars against typical spend is the tempting mistake: the question is what it beats, not whether it sounds small."
+        },
+        {
+          "q": "A support team escalates any ticket containing the word 'refund': 300 tickets last month, of which 120 were real escalations. A new model is 'right about escalation 80 percent of the time'. Which comparison settles whether to switch?",
+          "options": [
+            "The model's 80 percent against the 50 percent of a coin flip",
+            "The model's 80 percent against the rule's 120 out of 300, or 40 percent",
+            "Both on the same new tickets, 300 flags each: escalations found by each",
+            "The model's result on the tickets it learned from against the rule's"
+          ],
+          "answer": 2,
+          "why": "The bar is what the team already does, compared on the same unseen tickets with the same number flagged. Setting 80 percent against 40 percent compares two different kinds of number: a share of all tickets against a share of the flagged ones."
+        }
+      ]
+    }
+  ],
+  "drill": [
+    {
+      "q": "Someone tells you a model is ninety percent accurate. Which two questions do you ask before reacting?",
+      "a": "Measured on which rows: ones the model never saw, from a later period? And compared with what: what does the simplest baseline score on those same rows?"
+    },
+    {
+      "q": "Why leave a gap month between the training months and the test months?",
+      "a": "Because the label takes sixty days to appear. On the day you score a new month, the month just before it has no finished answers yet, so training on it would use information you would not have."
+    }
+  ],
+  "recall": {
+    "prompt": "Someone says 'our model is 88 percent accurate'. Explain what you would need to know before that number means anything.",
+    "model_answer": "First, which rows it was measured on: it only counts on a test set the model never saw, split by time if the model will be used on the future, with a gap wherever labels take time to appear. Second, compared with what: on our test months, predicting that everyone stays is already about 87 percent accurate and finds no churners, so 88 is barely above doing nothing. The real bar is the simple rule we would use today, compared on the same advertisers with the same number flagged."
+  },
+  "ask_assistant": "Split by snapshot month, not at random: train on January to March, leave April out because its 60-day labels would not exist when May is scored, and test on May and June. Do not use the test months for any choice until the model is final. On the test months, report two baselines beside the model: predicting that everyone stays, and my rule 'spend trend below 0.7'. For each, show how many advertisers were flagged and how many of those really churned, and state the rows and churn rate for each part of the split.",
+  "audit_checklist": [
+    "A split table: which snapshot months train, which are left out, which test, with rows and churn rate for each",
+    "The gap, with its reason: the last training labels were complete before the first test snapshot",
+    "A statement that the test months were not used for any choice before the final run",
+    "Both baselines beside the model on the same test rows: how many flagged, and how many of those really churned"
+  ],
+  "transfer": [
+    "Which leads will convert? Train on leads whose conversion window has closed, test on a later month, and compare with the sales team's current priority rule.",
+    "Which creatives are about to fatigue? Judge the model on creatives launched after its training period, next to the rule 'flag anything older than three weeks'.",
+    "How much will each advertiser spend next month? Test on months after the training period, with 'same as last month' beside the model."
+  ],
+  "other_ways": [
+    {
+      "approach": "A random hold-out",
+      "when": "When the rows have no time order that matters and the model will be used on rows like the ones it learned from, such as sorting a fixed pile of tickets."
+    },
+    {
+      "approach": "Several time splits: repeat train-then-test from more than one starting month",
+      "when": "When a single test period is small or might be unusual, and you want to see how much the result moves."
+    },
+    {
+      "approach": "A silent live trial: run the model next to the current rule for a period without acting on it, then compare",
+      "when": "When you can afford to wait for the outcomes and want the most honest test before anyone relies on the model."
+    }
+  ],
+  "glossary": [
+    {
+      "term": "test set",
+      "def": "Rows held back from training and used only to judge the model; also called a hold-out."
+    },
+    {
+      "term": "time split",
+      "def": "Training on earlier periods and testing on later ones, to rehearse how the model will be used."
+    },
+    {
+      "term": "gap",
+      "def": "A period left out between training and test because its labels would not yet exist on scoring day."
+    },
+    {
+      "term": "baseline",
+      "def": "A simple reference result, such as predicting that everyone stays or a hand rule, that a model must beat on the same rows."
+    },
+    {
+      "term": "accuracy",
+      "def": "The share of all cases where the yes or no prediction turned out right."
+    }
+  ]
+}

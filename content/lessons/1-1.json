@@ -1,0 +1,395 @@
+{
+  "id": "1-1",
+  "module": 1,
+  "title": "From rules to learned models",
+  "subtitle": "What does a model do that your CASE WHEN does not?",
+  "goal": "After this lesson you can explain a model as a rule whose columns, cut-offs and weights were chosen by data, and point to the row, the features, the label and the score in any modelling task.",
+  "predict": {
+    "q": "You flag advertisers with a hand-written rule: spend trend below 0.7. How is a machine-learning model different from that rule?",
+    "options": [
+      "It is not a rule at all: it reasons about each advertiser one by one",
+      "It is the same kind of thing, but past outcomes choose the columns, cut-offs and weights",
+      "It works from information that is not in your table",
+      "It explains why advertisers leave, where a rule can only flag them"
+    ],
+    "answer": 1,
+    "reveal": "The same kind of thing: a model is a rule whose columns, cut-offs and weights were chosen by checking against known outcomes. The lesson shows what that changes, and what it leaves to you."
+  },
+  "segments": [
+    {
+      "narration": "Monday morning. An account director wants to know which advertisers are about to walk away. You know what you would do: flag every advertiser whose spend trend is below 0.7. Spend trend compares the last four weeks of spend with the four weeks before. Below 0.7 means spend is down thirty percent or more. A sensible rule. Hold on to it. That rule is already most of what a model is. So is any hand rule: block a traffic source as invalid when its click-through rate passes a line you picked, and you have built a small model too.",
+      "visual": {
+        "type": "title",
+        "kicker": "Module 1 · Lesson 1",
+        "title": "From rules to learned models",
+        "sub": "Your CASE WHEN is already most of a model"
+      }
+    },
+    {
+      "narration": "Look at what you decided when you wrote it. You chose the column: spend trend, out of everything in the table. You chose the cut-off: 0.7, because it felt about right. And you chose that nothing else counts. Two advertisers with the same spend trend get the same flag, even if one logged in this morning and the other has been gone for two weeks. Three decisions, all yours. That is already a model, a small one, with one column and one hand-picked cut-off. Machine learning starts from a plain question. What if those decisions were checked against what actually happened?",
+      "visual": {
+        "type": "code",
+        "title": "The rule you would write today",
+        "lang": "sql",
+        "code": "SELECT advertiser_id,\n       CASE WHEN spend_trend < 0.7\n            THEN 'at risk'\n            ELSE 'ok'\n       END AS flag\nFROM advertisers;",
+        "note": "Three choices, all yours: the column, the cut-off, and that nothing else counts."
+      }
+    },
+    {
+      "narration": "Checking needs past cases where the ending is known. The practice table for this course has 12,000 advertisers, one row each. It is simulated, so that the truth is knowable, but it is shaped like a table you could pull yourself. Each row has 17 columns describing one advertiser on one date: who they are, how they are set up, and what they did in the eight weeks before. Those input columns are called features. Then one more column. Did this advertiser stop spending in the 60 days after that date? That answer column is called the label. Features are what you knew at the time. The label is what happened next.",
+      "visual": {
+        "type": "table",
+        "title": "12,000 advertisers, one row each",
+        "columns": [
+          "advertiser",
+          "spend trend",
+          "active days (of 28)",
+          "days since login",
+          "+14 more",
+          "churned in next 60 days"
+        ],
+        "rows": [
+          [
+            "100002",
+            "1.449",
+            "24",
+            "2",
+            "…",
+            "no"
+          ],
+          [
+            "100004",
+            "0.812",
+            "13",
+            "1",
+            "…",
+            "no"
+          ],
+          [
+            "100005",
+            "0.799",
+            "22",
+            "11",
+            "…",
+            "no"
+          ],
+          [
+            "111754",
+            "0.886",
+            "5",
+            "8",
+            "…",
+            "yes"
+          ],
+          [
+            "111200",
+            "1.295",
+            "25",
+            "0",
+            "…",
+            "no"
+          ]
+        ],
+        "highlight": [
+          3
+        ],
+        "note": "Features: 17 columns, all known on one date. Label: what happened in the 60 days after it. Simulated data."
+      }
+    },
+    {
+      "narration": "Take one advertiser out of those 12,000. [[1]] Their spend trend is about 0.89, comfortably above your cut-off, so the rule says they are fine. [[2]] But they were active on only five of the last 28 days. [[3]] And over the next 60 days they did not spend a dollar. Your rule was never going to catch that one. It took a second column, and somebody had to know to look there. And that is one row out of thousands, each with its own mix of signals.",
+      "visual": {
+        "type": "stat",
+        "title": "Advertiser 111754",
+        "stats": [
+          {
+            "value": "0.886",
+            "label": "spend trend: the rule says ok"
+          },
+          {
+            "value": "5 of 28",
+            "label": "days active"
+          },
+          {
+            "value": "Churned",
+            "label": "no spend in the next 60 days"
+          }
+        ]
+      }
+    },
+    {
+      "narration": "So let the table do the checking. [[1]] Your rule is one column and one cut-off, picked by you. [[2]] A learned model can lean on many columns at once, each with its own cut-off or its own weight, which means how much that column counts. Is active days a better signal than spend trend? Is 0.7 really the best cut-off? Nobody tries every possible rule. The computer starts from a rough guess, measures how far its outputs are from what really happened to thousands of past advertisers, nudges the cut-offs and weights to shrink that miss, and repeats. That adjusting is called training. What comes out is still a rule. The data chose it, instead of you.",
+      "visual": {
+        "type": "compare",
+        "title": "Who makes the choices?",
+        "left": {
+          "label": "Your rule",
+          "value": "1 column, 1 cut-off",
+          "sub": "chosen by you, from experience"
+        },
+        "right": {
+          "label": "A learned model",
+          "value": "many columns, cut-offs, weights",
+          "sub": "chosen by checking against known outcomes"
+        }
+      }
+    },
+    {
+      "narration": "The order matters. [[1]] First, learn. Training runs on past rows where the label is known. [[2]] Then freeze. The rule stops changing. [[3]] Then score. The frozen rule is applied to new rows, today's advertisers, whose ending nobody knows yet. For each one it returns a score, a number between 0 and 1. Higher means this advertiser looks more like the ones who left. It is not a yes or a no. Nor is it a percentage yet: whether 0.3 means a 30 percent chance is checked in a later lesson. How high is high enough to act on is a business decision, not something the model settles for you.",
+      "visual": {
+        "type": "flow",
+        "title": "Learn, freeze, score",
+        "steps": [
+          {
+            "label": "Learn",
+            "sub": "past rows, label known"
+          },
+          {
+            "label": "Freeze",
+            "sub": "the rule stops changing"
+          },
+          {
+            "label": "Score",
+            "sub": "new rows get a number from 0 to 1"
+          }
+        ]
+      }
+    },
+    {
+      "narration": "Here is the catch, and most of this course lives inside it. Matching the past is easy. Give the computer enough freedom and it can reproduce almost every known outcome in its table, the way you could memorise last year's exam answers. That proves nothing. What counts is whether the frozen rule holds up on rows it has never seen. And know what a model is not. It knows only the columns it was given. If an advertiser leaves because their marketing budget was cut, and no column records that, the model cannot see it. It finds patterns in your table. It does not understand your advertisers.",
+      "visual": {
+        "type": "quote",
+        "text": "Matching the past is easy. Holding up on new rows is the whole game.",
+        "sub": "And a model knows only the columns it was given."
+      }
+    },
+    {
+      "narration": "Which leaves your part. Your assistant can write training code in minutes. It cannot know what churn should mean for your business, or when each column was actually recorded. You are the director and the auditor. So at this first stage, ask for a description of the table, not a model, and look for four things in it. [[1]] What one row is, in a sentence, with the row count. [[2]] Which column is the label, and exactly how it is defined. [[3]] The list of features, with the label nowhere in it. [[4]] And a few example rows you can hold up against accounts you know. Meanwhile, keep your hand rule: it is the bar any model has to beat.",
+      "visual": {
+        "type": "bullets",
+        "title": "Brief and audit: describe the table first",
+        "items": [
+          "What one row is, and how many rows there are",
+          "The label column, and its exact definition",
+          "The feature list, with the label not in it",
+          "Example rows you can check against accounts you know"
+        ]
+      }
+    },
+    {
+      "narration": "So the next time a model lands on your desk, treat it as what it is, a rule, and ask what went in, what it was trained to match, and how it does on rows it never saw. Next, before anything gets built: which kind of problem is this?",
+      "visual": {
+        "type": "bullets",
+        "title": "From rules to learned models",
+        "items": [
+          "Your CASE WHEN is a model: one column, one cut-off, chosen by you",
+          "Learning: known outcomes choose the columns, cut-offs and weights; then freeze and score",
+          "It counts only on rows it has not seen, and it knows only its columns"
+        ]
+      }
+    }
+  ],
+  "takeaways": [
+    "A model is a rule whose columns, cut-offs and weights were chosen by data instead of by you.",
+    "Training matches past rows with known labels; the frozen model then gives each new row a score between 0 and 1.",
+    "Matching the past proves nothing: what counts is new rows, and a model knows only the columns it was given."
+  ],
+  "quiz": [
+    {
+      "id": "1-1-q1",
+      "concept": "a model is a learned rule",
+      "domain": "course",
+      "q": "Your assistant trains a model on past advertisers and reports: 'It leans most on spend trend and active days, each with its own cut-off.' The account director asks who decided all that. Which reply is accurate?",
+      "options": [
+        "The assistant did: it picked those columns and cut-offs from what it knows about advertisers in general",
+        "Past outcomes did, among the columns we supplied. What churn means, and which columns exist, we chose",
+        "Nobody did: a model weighs up each advertiser individually and has no fixed columns or cut-offs at all",
+        "The data did, all of it, including what counts as churned, so nobody's opinion is in the model at all"
+      ],
+      "answer": 1,
+      "why": "Training chooses among the columns it was given, and sets their cut-offs and weights, by checking against known outcomes. It does not choose what the outcome means or which columns were put in the table: those stay your decisions, so 'the data decided everything' goes too far. And the assistant only ran the training; the cut-offs did not come from its general knowledge."
+    },
+    {
+      "id": "1-1-q2",
+      "concept": "matching the past is not the test",
+      "domain": "course",
+      "q": "The assistant reports: 'I trained a model on all 12,000 advertisers. It reproduces the known outcome for almost every one of them, so it is ready to use.' What is the right read?",
+      "options": [
+        "Good news: reproducing the known outcomes is exactly what training a model is supposed to achieve",
+        "The code must be broken: no honest model matches its known outcomes that closely",
+        "Fine, provided all 17 feature columns were used and not just a convenient handful of them",
+        "No evidence yet: those are the rows it was adjusted to match. Ask about advertisers it never saw"
+      ],
+      "answer": 3,
+      "why": "Matching the rows a model was trained on is the easy part and says nothing about new advertisers, which is the only place the model will be used. It is not proof of a bug either: the result is simply untested, so the next request is for results on rows the model never saw."
+    },
+    {
+      "id": "1-1-q3",
+      "concept": "features, label and score",
+      "domain": "other",
+      "q": "Sales wants inbound leads ranked by how likely each is to become a paying customer. You have last year's leads with company size, source channel, pages viewed, and whether each one eventually paid. Which description gets the vocabulary right?",
+      "options": [
+        "Each lead is a row; size, channel and pages viewed are features; 'eventually paid' is the label",
+        "Each lead is a row; all four columns are features, so that the model can use everything available",
+        "Each lead is a row; 'eventually paid' is a feature; the ranking the model produces is the label",
+        "Each column is a row of the model; the label is the list of leads that sales should call first"
+      ],
+      "answer": 0,
+      "why": "Features are what you know about a lead at the time; the label is the known outcome the model is trained to match. Feeding 'eventually paid' in as a feature hands the model the answer, and the ranking it produces is built from scores, not labels."
+    },
+    {
+      "id": "1-1-q4",
+      "concept": "a model knows only its columns",
+      "domain": "course",
+      "q": "A frozen churn model gives a large gaming advertiser a low score. Their account manager knows the client's marketing lead resigned last week and all budgets are on hold. What is the right read?",
+      "options": [
+        "Trust the score: it was learned from thousands of advertisers, and one anecdote should not outweigh that",
+        "The model has been shown to be wrong, so it should be switched off until it has been retrained",
+        "The score reflects only the model's columns. This news is in none of them, so it should override the score here",
+        "Type the resignation into the account notes and score the advertiser again, so the model can take it into account"
+      ],
+      "answer": 2,
+      "why": "A model sees only the columns it was trained on, and none of them records a resignation, so the account manager holds information the score cannot contain. Scoring again does not help, because a frozen model cannot use a column it never learned from; and one blind spot is no reason to discard the model for every other account."
+    }
+  ],
+  "review": [
+    {
+      "concept": "features, label and score",
+      "variants": [
+        {
+          "q": "A colleague wants to predict which new creatives will lose half their click-through rate within two weeks of launch. She has 9,000 past creatives with format, headline length, launch-day CTR, and whether each one did lose half its CTR. What is the label?",
+          "options": [
+            "Launch-day CTR, because CTR is the metric the team cares about",
+            "The number between 0 and 1 the model gives each new creative",
+            "Whether the creative lost half its CTR within two weeks",
+            "Format, because it separates the two groups most clearly"
+          ],
+          "answer": 2,
+          "why": "The label is the known outcome for past cases that the model is trained to match: here, whether CTR halved. Launch-day CTR is known at the start, so it is a feature, and the number the model returns for a new creative is a score."
+        },
+        {
+          "q": "A model built to flag invalid traffic, trained on sources that were later confirmed valid or invalid, returns 0.83 for a new source. What is that number?",
+          "options": [
+            "A score: it resembles past invalid sources; where to draw the line is still your call",
+            "A verdict: the model has established that the traffic from this source is in fact invalid",
+            "A measurement: about 83 percent of the clicks from this source are invalid",
+            "A label: the source can now be added to the training table as a confirmed case"
+          ],
+          "answer": 0,
+          "why": "A model returns a score between 0 and 1, where higher means the row looks more like past positive cases. It is not a yes or no, not a share of clicks, and not a confirmed outcome: labels come from what actually happened, never from the model's own output."
+        },
+        {
+          "q": "Finance wants a model that predicts each client's revenue for the coming quarter. You have three years of quarterly history per client. Which rows can the model be trained on?",
+          "options": [
+            "Only the latest quarter, since it is closest to the one being predicted",
+            "Client-quarters for which the following quarter's revenue is already known",
+            "Every client-quarter, with the unknown revenue after the latest one set to zero",
+            "Only the largest clients, whose revenue is recorded most carefully"
+          ],
+          "answer": 1,
+          "why": "Training adjusts a model until its outputs match known outcomes, so it needs rows whose label already exists. The latest quarter has no outcome yet: those are the rows you score, and writing zero where the answer is unknown would teach the model something false."
+        }
+      ]
+    },
+    {
+      "concept": "matching the past is not the test",
+      "variants": [
+        {
+          "q": "An assistant trains a lead-scoring model on last year's leads and says it 'correctly reproduces the outcome of 98 percent of them'. What does that tell you about next month's leads?",
+          "options": [
+            "It should be right about roughly 98 percent of them as well",
+            "Very little: last year's leads are the cases it was adjusted to match",
+            "It will do a bit worse, so take about ten points off to be safe",
+            "Nothing can be known about any model until it is running in production"
+          ],
+          "answer": 1,
+          "why": "A model can match the cases it was trained on without having learned anything that carries over, so the 98 is not a forecast, and there is no standard discount to apply to it. You do not have to wait for production either: check it on leads the model never saw."
+        },
+        {
+          "q": "Two analysts each tuned a rule on last quarter's 40 confirmed invalid traffic sources. Analyst A's rule flags all 40; analyst B's flags 31. Which rule will catch more invalid sources next quarter?",
+          "options": [
+            "A's rule: it caught every one of the confirmed cases",
+            "B's rule: a looser fit to the past always holds up better",
+            "A's rule, provided that it does not also flag too many valid sources",
+            "Unknown: both counts come from the cases the rules were tuned on"
+          ],
+          "answer": 3,
+          "why": "Both numbers measure how well each rule matches the cases it was built around, which is the easy part. Catching all 40 may mean A's rule is better or merely more tailored to those 40, and a looser fit is not automatically better either. Only sources neither rule has seen can settle it."
+        },
+        {
+          "q": "A model trained on last year's 8,000 advertisers matches their known churn outcomes almost perfectly. The success team wants to start calling from its list tomorrow. What do you ask for first?",
+          "options": [
+            "Its results on advertisers that were not used to train it",
+            "The full training code, so you can read it line by line",
+            "More feature columns, to push the match closer still",
+            "The same check run again on those 8,000, to confirm the match is stable"
+          ],
+          "answer": 0,
+          "why": "A match on training rows shows the model can reproduce the past, not that it holds up on new advertisers, which is where the list will be used. More columns would only tighten the fit to the past, repeating the check on the same 8,000 repeats the easy part, and reading code does not answer the question. Results on unseen rows do."
+        }
+      ]
+    }
+  ],
+  "drill": [
+    {
+      "q": "In one sentence, what is the difference between a rule you write by hand and a machine learning model?",
+      "a": "They are the same kind of thing. In a model, the columns, the cut-offs and the weights are chosen by checking against past cases with known outcomes, instead of being chosen by you."
+    },
+    {
+      "q": "A model reproduces almost every known outcome in the table it was trained on. Why is that not good news yet?",
+      "a": "Because matching the past is easy. The test that counts is how the frozen model does on rows it has never seen."
+    }
+  ],
+  "recall": {
+    "prompt": "Explain to a colleague, in about thirty seconds, what training a model does. Use the words feature, label and score.",
+    "model_answer": "You start with past rows where the outcome is known: the input columns are the features and the known outcome is the label. Training tries out which columns, cut-offs and weights make the output match those labels best, then freezes the result. Applied to a new row, the frozen model returns a score between 0 and 1. It deserves trust only if it holds up on rows it never saw, and it knows nothing that is not in its columns."
+  },
+  "ask_assistant": "Before building anything, describe the table you would train on to answer this: [the question, in one sentence]. In one sentence, say what one row is, and give the row count and the number of distinct [units, such as advertisers, leads or creatives]. Name the label column, the outcome to be predicted, and write its exact definition in plain words. List every feature column with a one-line description; the label must not be in that list. Show five example rows including the label, with at least one row for [each outcome]. Do not train a model yet: stop and wait for my go-ahead.",
+  "audit_checklist": [
+    "A one-sentence statement of what one row is, with the row count and the number of distinct units",
+    "The label column, named, with its definition in plain words",
+    "The full feature list, one line each, and the label is not in it",
+    "Example rows, label included, that you can check against accounts you know"
+  ],
+  "transfer": [
+    "Lead scoring: 'call anyone from a company with more than 200 staff' is a one-column rule; past won and lost leads could choose the columns and cut-offs instead.",
+    "Invalid traffic: a hand-set threshold on clicks per source, versus cut-offs learned from sources already confirmed valid or invalid.",
+    "Creative fatigue: 'refresh every 30 days' is a hand-picked cut-off; past creatives whose decline is already known could set it."
+  ],
+  "other_ways": [
+    {
+      "approach": "Keep the hand rule",
+      "when": "When it is cheap, people trust it, and nobody has yet shown that anything better is needed. It also becomes the bar any model has to beat."
+    },
+    {
+      "approach": "A report cut by segment",
+      "when": "When the question is what is happening, not who is next: no prediction is required."
+    },
+    {
+      "approach": "Ask the people who know the accounts",
+      "when": "When the reason sits in no column: account managers know things a table cannot hold."
+    }
+  ],
+  "glossary": [
+    {
+      "term": "model",
+      "def": "A rule that turns a row's columns into an output, with its columns, cut-offs and weights chosen by data."
+    },
+    {
+      "term": "feature",
+      "def": "An input column: something known about the row at the time of the prediction."
+    },
+    {
+      "term": "label",
+      "def": "The answer column: the known outcome of past rows, which the model is trained to match."
+    },
+    {
+      "term": "training",
+      "def": "Adjusting a model until its outputs line up with the known labels of past rows."
+    },
+    {
+      "term": "score",
+      "def": "The number between 0 and 1 a model returns for a row; higher means more like past positive cases."
+    }
+  ]
+}

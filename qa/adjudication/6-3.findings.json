@@ -1,0 +1,22 @@
+[
+ {
+  "reviewer": "learner-2",
+  "lesson": "6-3",
+  "where": "seg3 narration",
+  "quote": "beyond three times its own normal wobble",
+  "kind": "lost",
+  "severity": "low",
+  "problem": "How the normal wobble is measured is never said, so when the assistant reports a band in its own terms I cannot tell whether it is the same thing.",
+  "fix": "One clause: 'the typical size of the surprise over those same weeks'."
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "6-3",
+  "where": "guess",
+  "quote": "How do you tell a real incident from an ordinary Saturday?",
+  "kind": "question",
+  "severity": "low",
+  "problem": "The subtitle shown above the guess-first question names Saturday, which is the answer.",
+  "fix": "Change the subtitle ('How do you tell a real incident from an ordinary day?') or ask how many of the 89 alerts were real."
+ }
+]

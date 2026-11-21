@@ -1,0 +1,368 @@
+{
+ "id": "6-1",
+ "module": 6,
+ "title": "Forecasting: start with the calendar",
+ "subtitle": "What does a forecast have to know to beat 'same as last week'?",
+ "goal": "After this lesson you can direct a forecast in the right order: naive baselines first, then a model that names the trend, the weekly and yearly rhythm and the known event dates, and you can check what it found against what you already know.",
+ "predict": {
+  "q": "Copying the same weekday from last week forward misses daily platform spend by about 6 percent on this series. A model that is told the trend, the weekday, the time of year and the holiday dates removes how much of that error?",
+  "options": [
+   "Almost none: the rest is noise",
+   "About a fifth of it",
+   "More than half of it",
+   "Nearly all of it"
+  ],
+  "answer": 2,
+  "reveal": "More than half: about 6 percent falls to under 3. The lesson shows which ingredient buys what, and why this is a best case."
+ },
+ "segments": [
+  {
+   "narration": "It is the last week of the month and finance wants a number: platform spend, day by day, for the next four weeks. The quickest answer in the building is, same as last week. That is not a silly answer. It is a baseline, the forecasting cousin of predicting that everyone stays. So what does a forecast have to know to beat it, and by how much? Our series is simulated daily spend for a whole platform, 851 days of it, so we know exactly what went into it.",
+   "visual": {
+    "type": "title",
+    "kicker": "Module 6 · Lesson 1",
+    "title": "Forecasting: start with the calendar",
+    "sub": "Trend, rhythm and the dates you already know"
+   }
+  },
+  {
+   "narration": "Pull the series apart and you find four ingredients and a leftover. [[1]] A trend: growth of about 15 percent a year. [[2]] A weekly rhythm: weekends run roughly 20 percent below weekdays. [[3]] A yearly rhythm: spend sags through spring and summer, then climbs to a peak in late November. [[4]] Known events: Black Friday week, Christmas, New Year's Day. [[5]] The leftover is noise, the wobble no method can forecast. None of this is machine learning yet. It is the calendar, and you could find every piece of it with a GROUP BY on weekday and month.",
+   "visual": {
+    "type": "bullets",
+    "title": "What is in 851 days of platform spend",
+    "items": [
+     "Trend: about +15% a year",
+     "Week: weekends about 20% below weekdays",
+     "Year: low in March, peak in late November",
+     "Known events: Black Friday week, Christmas, New Year's Day",
+     "Noise: whatever is left"
+    ]
+   }
+  },
+  {
+   "narration": "Start with three naive forecasts. Each predicts the next 28 days from the first of a month, twelve months running. The score is the average daily miss, as a percentage of that day's actual spend. [[1]] Carry the last day's value forward and you are off by about 14 percent a day: the last day you saw may be a Friday, and tomorrow is a Saturday. [[2]] Use the same weekday from last week instead, and the miss falls to about 6 percent. More than half the error was the weekly rhythm. [[3]] Average the last four of each weekday and it improves a little more. Its worst month is far milder too: one unusual week is no longer copied forward alone.",
+   "visual": {
+    "type": "bar",
+    "title": "Naive forecasts: average daily error (MAPE), 28 days ahead",
+    "unit": "%",
+    "data": [
+     {
+      "label": "Last value carried forward",
+      "value": 13.6
+     },
+     {
+      "label": "Same weekday last week",
+      "value": 6.4
+     },
+     {
+      "label": "Average of last 4 same weekdays",
+      "value": 5.7
+     }
+    ],
+    "note": "Worst of the twelve months: 27.3%, 23.6% and 9.8%."
+   }
+  },
+  {
+   "narration": "Now give a model those ingredients by name. [[1]] It is the weighted sum from module three, fitted on the log of spend: a trend, an effect for each weekday, three smooth waves for the time of year, and a flag for each known event. [[2]] It trains only on days before the forecast date, then predicts the next 28. [[3]] Its average daily miss is under 3 percent, about half that of the best naive method, and its worst month is barely worse than its average. A boosted tree model given the same calendar columns manages about 5 percent, level with the four week average.",
+   "visual": {
+    "type": "formula",
+    "title": "A model that names the calendar",
+    "lines": [
+     "log(spend) = trend + weekday + time of year + event dates",
+     "trained only on days before the forecast date",
+     "average daily error 2.8%  ·  best naive method 5.7%"
+    ],
+    "note": "Worst month 3.5%. Boosted trees on the same calendar columns: 7.4%."
+   }
+  },
+  {
+   "narration": "The model is also readable, which a copied week is not. [[1]] It found growth of about 15 percent a year, the rate that was built into the series. [[3]] Saturdays and Sundays around a fifth below Mondays. [[4]] Black Friday week about 22 percent up. [[6]] Christmas and New Year's Day down by a fifth to a quarter. Because it works on the log scale, these effects multiply, as they did in the spend model from module three. Each of those is something you can check against a dashboard you already own, and argue about with finance.",
+   "visual": {
+    "type": "table",
+    "title": "What the model found",
+    "columns": [
+     "Ingredient",
+     "Effect on daily spend"
+    ],
+    "rows": [
+     [
+      "Trend",
+      "+14.7% a year"
+     ],
+     [
+      "Saturday vs Monday",
+      "−17.9%"
+     ],
+     [
+      "Sunday vs Monday",
+      "−21.9%"
+     ],
+     [
+      "Black Friday week",
+      "+21.9%"
+     ],
+     [
+      "Christmas",
+      "−19.4%"
+     ],
+     [
+      "New Year's Day",
+      "−26.2%"
+     ]
+    ],
+    "note": "Fitted on log spend, so the effects multiply."
+   }
+  },
+  {
+   "narration": "Now take one ingredient away: fit the same model without the event dates. [[1]] With them, the average miss was 2.8 percent and the worst month 3.5. [[2]] Without them the average barely moves, to 3.7 percent. But the worst month climbs to 6.3, close to double. An average can hide a holiday; the worst month cannot. Nothing in the rhythm of the data tells a model that one particular week in late November is special. Somebody has to say so. The calendar is where your domain knowledge goes in, the way features were in module four.",
+   "visual": {
+    "type": "compare",
+    "title": "Same model, with and without the event dates",
+    "left": {
+     "label": "Told the dates",
+     "value": "5.5%",
+     "sub": "worst month · average 2.8%"
+    },
+    "right": {
+     "label": "Not told",
+     "value": "6.3%",
+     "sub": "worst month · average 3.3%"
+    }
+   }
+  },
+  {
+   "narration": "Before you quote 2.8 percent to anyone, look at where it came from. This series has a version with seven planted incidents, kept for a later lesson. These scores use the version without them, so forecast error is not mixed up with outage days. And this world is stable by construction, with a model of the same form as the equation that generated it. It was even handed the holiday dates. That is a best case, and a real series, with breaks nobody planned, will score worse. What carries over is the order of work, not the number. Now try it: switch between the methods and see where each forecast parts from what happened.",
+   "visual": {
+    "type": "widget",
+    "name": "forecast",
+    "title": "Each method's forecast against what happened",
+    "note": "Switch methods and compare each forecast with actual spend, month by month."
+   }
+  },
+  {
+   "narration": "The brief. Ask the assistant to work in this order, and make the output prove each step. [[1]] Baselines first: same weekday last week, and the average of the last four. [[2]] Then the model, with event dates that you supply and it lists back. [[3]] Every method scored on the same forecast dates, each trained only on earlier days. [[4]] The worst month beside the average. [[5]] And the fitted effects in plain percent: growth per year, the weekend dip, each event. If the weekend dip it reports is not the one on your dashboard, stop there. No code reading required.",
+   "visual": {
+    "type": "bullets",
+    "title": "Brief and audit",
+    "items": [
+     "Baselines first: same weekday last week, average of the last four",
+     "The model, with your event dates listed back",
+     "Same forecast dates for every method, trained on earlier days only",
+     "Worst month beside the average",
+     "Fitted effects in percent: trend, weekdays, events"
+    ]
+   }
+  },
+  {
+   "narration": "To recap. A forecast is mostly calendar: a trend, a weekly and a yearly rhythm, and the dates you already know matter. On this simulated series, naming the ingredients roughly halved the best naive error, and leaving out the holidays showed in the worst month, not the average. I asked you to take the testing on trust. Next lesson is about why a forecast must be tested from a past date forward, and how to give finance a range instead of one number.",
+   "visual": {
+    "type": "quote",
+    "text": "Most of a forecast is calendar: trend, rhythm and the dates you already know.",
+    "sub": "Baselines first. Then name the ingredients."
+   }
+  }
+ ],
+ "takeaways": [
+  "Ask for naive baselines first: the same weekday last week, and the average of the last four.",
+  "Most of a forecast is trend, weekly and yearly rhythm, and known event dates; a model that names them can be read and checked.",
+  "Event dates are knowledge only you can supply, and a score from a stable simulated series is a best case."
+ ],
+ "quiz": [
+  {
+   "id": "6-1-q1",
+   "concept": "naive baselines",
+   "domain": "course",
+   "q": "An analyst forecasts each day's platform spend as equal to the day before and reports an average miss of 14 percent. A colleague concludes that the series is simply too noisy to forecast. What is the better read?",
+   "options": [
+    "The colleague is right: a 14 percent miss is noise that no method can remove",
+    "Most of that miss is the weekly rhythm: score 'same weekday last week' before blaming noise",
+    "The series needs a more flexible model with more columns to cut through the noise",
+    "A longer average is the fix: forecast each day as the mean of the last 30 days"
+   ],
+   "answer": 1,
+   "why": "Yesterday is a poor guide when weekdays and weekends differ: on this series, copying the same weekday from last week cut the miss from about 14 to about 6 percent with no model at all. A 30-day mean still predicts the same value for a Saturday as for a Wednesday, so the rhythm that caused the miss is still unaccounted for."
+  },
+  {
+   "id": "6-1-q2",
+   "concept": "known events and the worst month",
+   "domain": "course",
+   "q": "The assistant's report says: 'Calendar model: average daily error 3.1 percent over twelve monthly forecasts, against 6.4 percent for the baseline.' The features listed are trend, weekday and time of year. What do you ask for before this goes to finance?",
+   "options": [
+    "The worst month, and a rerun with the known event dates added, since an average can hide a bad holiday month",
+    "Nothing more: the model halves the baseline's error, which is what was asked for",
+    "The same test with a more complex model, to see whether 3.1 percent can be pushed lower",
+    "The error restated in dollars, because finance cannot act on a percentage"
+   ],
+   "answer": 0,
+   "why": "The feature list has no event dates, and that gap does not show in an average: on this series leaving them out moved the average from 2.8 to 3.3 percent but nearly doubled the worst month. A more complex model chases the average while the hole in the feature list stays open."
+  },
+  {
+   "id": "6-1-q3",
+   "concept": "ingredients of a series",
+   "domain": "other",
+   "q": "The support lead needs daily ticket volumes for next month's staffing. In the history, Mondays run far above Fridays, volume drifts up month after month, and it jumps whenever a product release ships. The assistant proposes forecasting every day as the average of the last 30 days. What is missing?",
+   "options": [
+    "Nothing: a 30-day average is the standard way to smooth out daily noise",
+    "History: several more years of data are needed before any pattern can be trusted",
+    "The three things already known to be in the series: the weekday pattern, the drift and the release dates",
+    "Power: a pattern this complex needs a neural network, not an average"
+   ],
+   "answer": 2,
+   "why": "The weekday pattern, the drift and the release calendar are the ingredients a forecast should name; a flat average predicts the same volume for a Monday as for a Friday and knows nothing about the next release. More history or a bigger model does not help while those ingredients are still left out."
+  },
+  {
+   "id": "6-1-q4",
+   "concept": "a simulated best case",
+   "domain": "course",
+   "q": "On the simulated series the calendar model missed by under 3 percent a day. A stakeholder asks whether you can promise the same accuracy for the real platform next quarter. What is the honest answer?",
+   "options": [
+    "Yes: the method is identical, so the accuracy will carry over to the real platform",
+    "Yes, as long as the real model is given more columns than the simulated one had",
+    "Probably better than that, because the real platform has many more years of history",
+    "No: that series is stable and built like the model, so it is a best case; rehearse on your own history and quote that"
+   ],
+   "answer": 3,
+   "why": "The simulated series never changes its behaviour and the model has the same form as the equation behind it, so under 3 percent is the most you could hope for, not a prediction of your accuracy. The method carries over; the number has to be measured on your own data."
+  }
+ ],
+ "review": [
+  {
+   "concept": "naive baselines come first",
+   "variants": [
+    {
+     "q": "A new model for daily platform spend reports an average miss of 5.5 percent on its test forecasts. What do you need to see before deciding whether that is good?",
+     "options": [
+      "Whether 5.5 percent is under the 10 percent that counts as a good forecast",
+      "What 'same weekday last week' and a four-week weekday average score on the same dates",
+      "How many columns the model was given",
+      "Whether the model is a regression or built from trees"
+     ],
+     "answer": 1,
+     "why": "A forecast error means nothing without the cheap alternatives beside it: on the course series a four-week weekday average already scores 5.7 percent, so 5.5 would be almost no gain. There is no universal percentage that makes a forecast good."
+    },
+    {
+     "q": "A client's e-commerce team forecasts daily orders with a model that misses by 9 percent on average. Orders run much higher at weekends. Which comparison tells you whether the model earns its keep?",
+     "options": [
+      "Its error on the period it was trained on",
+      "Last year's total orders divided by 365, used for every day",
+      "A 9 percent error is acceptable for retail, so no comparison is needed",
+      "The same weekday last week, scored on the same days as the model"
+     ],
+     "answer": 3,
+     "why": "With a strong weekly rhythm the fair bar is a baseline that already knows the weekday; if copying last week scores 9 percent too, the model adds nothing. Error on the training period flatters any model and is not a comparison at all."
+    },
+    {
+     "q": "A team shows a forecast of weekly new-advertiser sign-ups and says its error is 12 percent. Sign-ups have grown steadily all year. What is the natural naive forecast to demand beside it?",
+     "options": [
+      "Last week's figure carried forward, perhaps with the recent weekly growth added",
+      "The average of all weeks since the platform launched",
+      "A random draw from the historical range",
+      "None: baselines only make sense for daily data"
+     ],
+     "answer": 0,
+     "why": "For a weekly series the cheap forecast is 'same as last week', possibly nudged by recent growth; a model has to beat that to be worth running. An all-time average ignores the growth, lands far too low, and would make almost any model look brilliant."
+    }
+   ]
+  },
+  {
+   "concept": "known event dates are domain knowledge",
+   "variants": [
+    {
+     "q": "A spend forecast is accurate most of the year, yet every year it misses badly in the week of a large shopping event. The model has a trend, weekday effects and smooth yearly terms. What is the best fix?",
+     "options": [
+      "Add a flag for the event's dates, taken from the business calendar",
+      "Add more years of history and let the model discover the event",
+      "Switch to a more flexible algorithm",
+      "Drop that week from the evaluation as an outlier"
+     ],
+     "answer": 0,
+     "why": "Smooth yearly terms cannot single out one particular week, so the model has to be told the dates; then it can learn the size of the effect. Dropping the week from the evaluation hides the miss in exactly the week the business cares about most."
+    },
+    {
+     "q": "Support ticket volume jumps for three days after every product release. Releases are scheduled by the product team and never fall on fixed dates. The forecast keeps missing those days. What should you ask the assistant to do?",
+     "options": [
+      "Smooth the history so that the jumps disappear",
+      "Add the release dates, past and planned, as an input to the forecast",
+      "Train only on weeks that had no release",
+      "Strengthen the yearly rhythm terms"
+     ],
+     "answer": 1,
+     "why": "Release dates are known to the business but invisible in the calendar: given as an input, past releases teach the size of the jump and planned ones place it. Smoothing or excluding those days teaches the model that releases do not exist."
+    },
+    {
+     "q": "An education client's lead volume drops sharply during school holidays, whose dates shift each year and differ by region. A forecast built on weekday and month of year keeps missing them. Why, and what fixes it?",
+     "options": [
+      "The model is memorising; remove the month term",
+      "Lead volume is too noisy to forecast during holidays",
+      "Month of year cannot follow dates that move; supply the holiday calendar for each region",
+      "Daily data is the problem; forecast yearly totals instead"
+     ],
+     "answer": 2,
+     "why": "A month term assumes the same pattern on the same dates every year, which moving holidays break; the actual holiday dates are knowledge the model can only get from you. Aggregating to yearly totals removes the miss by removing the forecast anyone needed."
+    }
+   ]
+  }
+ ],
+ "drill": [
+  {
+   "q": "Before any forecasting model is built, which simple forecasts should you ask for, and why?",
+   "a": "The same weekday last week, and the average of the last few of that weekday. They are the bar: a model that cannot beat them is not worth having."
+  },
+  {
+   "q": "A forecast has the trend and the weekly rhythm right, but its worst month is twice as bad as its average month. What is probably missing?",
+   "a": "The known events: holidays, promotions, launches. The rhythm of the data cannot tell a model those dates are special, so you have to supply them."
+  }
+ ],
+ "recall": {
+  "prompt": "Explain to a colleague why 'same as last week' is a respectable forecast, and what a model has to be told to beat it.",
+  "model_answer": "Copying the same weekday from last week already handles the weekly rhythm, which is most of the day-to-day movement, so it is the baseline any model must beat. To do better, a model has to name what else is in the series: the trend, the time-of-year rhythm, and the dates of known events such as holidays. Those event dates are domain knowledge the data cannot supply by itself. On the simulated series this roughly halved the error, which is a best case because that series is stable and built like the model."
+ },
+ "ask_assistant": "Forecast daily platform spend for the next 28 days. Start with two baselines: the same weekday last week, and the average of the last four same weekdays. Then fit a regression on log spend with a trend, weekday effects, time-of-year terms and flags for the event dates I list below. Score every method on the same forecasts: 28 days ahead from the first of each of the last twelve months, each trained only on earlier days. Show the average error and the worst month for each method, the event dates you used, and the fitted effects in percent.",
+ "audit_checklist": [
+  "Baselines and model are scored side by side on the same forecast dates",
+  "Each forecast shows its last training day, and that day is before the days it predicts",
+  "The worst month is reported next to the average",
+  "The event dates used are listed, and the fitted trend and weekend effects match your dashboards"
+ ],
+ "transfer": [
+  "How many support tickets will arrive each day next month, so the team can be staffed?",
+  "How many new advertisers will sign up each week next quarter?",
+  "How much traffic will a client's landing page get each day over the holiday season?"
+ ],
+ "other_ways": [
+  {
+   "approach": "Forecast the big pieces separately and add them up",
+   "when": "When a few verticals or large clients move the total and you know something about their plans."
+  },
+  {
+   "approach": "A boosted-tree model on calendar columns",
+   "when": "When rhythms interact in ways a fixed formula cannot express. Judge it against the same baselines: on this series it scored 5.4%, level with the four-week average."
+  },
+  {
+   "approach": "A run-rate from the last four weeks, adjusted by hand for known events",
+   "when": "When the horizon is short, the decision is small and a spreadsheet is all the question deserves."
+  }
+ ],
+ "glossary": [
+  {
+   "term": "trend",
+   "def": "The slow, persistent rise or fall of a series underneath its ups and downs."
+  },
+  {
+   "term": "seasonality",
+   "def": "A pattern that repeats on a calendar cycle, such as the weekend dip or the yearly peak in late November."
+  },
+  {
+   "term": "naive forecast",
+   "def": "A forecast that needs no model, such as the same weekday last week; it is the baseline a model must beat."
+  },
+  {
+   "term": "known event",
+   "def": "A dated occasion, such as a holiday or a promotion, whose effect a model can only learn if it is told the dates."
+  },
+  {
+   "term": "MAPE",
+   "def": "Mean absolute percentage error: the average daily miss as a percentage of that day's actual value."
+  }
+ ]
+}

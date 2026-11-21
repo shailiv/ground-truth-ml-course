@@ -1,0 +1,87 @@
+[
+ {
+  "reviewer": "gemini",
+  "lesson": "1-2",
+  "where": "seg5 narration and visual",
+  "quote": "whether the calls are worth making at all, you need to know who changes because of the call",
+  "kind": "wrong_concept",
+  "severity": "medium",
+  "explanation": "Segment 5 gets two causal and targeting framings crossed. First, deciding whether outreach calls are worth making at all (program evaluation) does not require knowing who changes because of the call; it only requires the average causal effect (how many churns calling prevents overall, e.g. from an A/B test), and individual-level counterfactuals are never observed directly anyway, as seg4 just noted. Second, knowing who changes because of the call (uplift) is actually the causal framing for whom the success team should call (Row 1), whereas Row 1 presents a plain churn-risk score ('Yes or no, with a score: a ranked list') without the caveat that churn risk ranks who will leave rather than who can be saved, and serves only as a proxy when you lack experimental outreach data.",
+  "evidence": "facts.json -> uplift.experiment_readout.all_advertisers (an A/B readout of 8.9% vs 11.7% churn answers whether calls work overall without identifying which individuals changed); facts.json -> economics.caveat ('assumes outreach saves 1 in 5 churners whoever they are; the model predicts who will leave, not who can be persuaded'); facts.json -> uplift.policies_call_400 (calling top 400 by churn risk prevents 32 churns vs 44 by predicted uplift because 44.8% of the risk list are lost causes).",
+  "fix": "In seg5 narration and visual, state that for 'Whom should the success team call?' a ranked churn score is a practical starting proxy when you can only predict who will leave (whereas 'who changes because of the call' is the sharper causal framing once you can test outreach), and for 'Are the calls worth making at all?' change the framing from 'Who changes because of the call' to 'How many stay because of the call (a causal effect)'.",
+  "problem": "Segment 5 gets two causal and targeting framings crossed. First, deciding whether outreach calls are worth making at all (program evaluation) does not require knowing who changes because of the call; it only requires the average causal effect (how many churns calling prevents overall, e.g. from an A/B test), and individual-level counterfactuals are never observed directly anyway, as seg4 just noted. Second, knowing who changes because of the call (uplift) is actually the causal framing for whom the success team should call (Row 1), whereas Row 1 presents a plain churn-risk score ('Yes or no, with a score: a ranked list') without the caveat that churn risk ranks who will leave rather than who can be saved, and serves only as a proxy when you lack experimental outreach data."
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "1-2",
+  "where": "guess",
+  "quote": "None of these: it asks what would happen if something changed",
+  "kind": "question",
+  "severity": "medium",
+  "problem": "The three wrong options lead with words I have not been taught yet (classification, regression, clustering). The right one is the only one in plain words and the only 'None of these', so I picked it by its shape, not by thinking.",
+  "fix": "Write all four in plain words: predict who hits goal / predict each CPA / group advertisers by how they bid / find out what changes if we switch it on."
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "1-2",
+  "where": "seg3 + seg8 narration",
+  "quote": "Four questions do it",
+  "kind": "doubt",
+  "severity": "medium",
+  "problem": "I tried the four questions on Thursday's request (spend dropped yesterday, is that unusual). Question 1 says 'groups, or the unusual' without telling me which, question 3 sends it to forecasting because time is the axis, and nothing routes anything to language models. Four questions do not sort the seven kinds.",
+  "fix": "Add the tie-breaker ('no answer column: do you want groups, or outliers?') and say plainly that a time axis can still be an anomaly question, as the review question on last night's conversions already admits."
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "1-2",
+  "where": "seg8 narration (recap), same pattern in every lesson",
+  "quote": "Four questions do it: is there an answer column, is it a category or a number, is time the main axis, and do I want to predict or to change.",
+  "kind": "boring",
+  "severity": "medium",
+  "problem": "Third full recitation of the four questions in six minutes, and takeaways, drill and recall then say them again. Every one of my 16 lessons ends the same way: a 'Brief and audit' segment, then a recap that re-reads the bullets. The last 40 seconds of each lesson is skippable.",
+  "fix": "Cut the recap narration to one sentence plus the 'next' hook, and let the takeaways card carry the summary. Spend the saved time on a second worked example."
+ },
+ {
+  "reviewer": "gemini",
+  "lesson": "1-2",
+  "where": "seg3 narration",
+  "quote": "One series, day after day, means forecasting rather than scoring rows.",
+  "kind": "contradiction",
+  "severity": "low",
+  "explanation": "Equating 'one series, day after day' directly with forecasting contradicts both Thursday's example in seg1/seg2 ('spend dropped yesterday, is that unusual?' on daily platform spend, which is anomaly detection on a daily series) and review 1 variant 3, whose explanation explicitly warns that having one series over time tempts you towards forecasting when the question is actually anomaly detection. Having one time series only means forecasting when the goal is projecting future values forward.",
+  "evidence": "facts.json -> series_anomalies (270 days of daily platform spend used for anomaly detection) and review 1 variant 3 why ('Time being the main axis tempts you towards forecasting... but nobody asked what next month looks like').",
+  "fix": "Change the sentence to: 'Projecting one series forward, day after day, means forecasting rather than scoring rows.'",
+  "problem": "Equating 'one series, day after day' directly with forecasting contradicts both Thursday's example in seg1/seg2 ('spend dropped yesterday, is that unusual?' on daily platform spend, which is anomaly detection on a daily series) and review 1 variant 3, whose explanation explicitly warns that having one series over time tempts you towards forecasting when the question is actually anomaly detection. Having one time series only means forecasting when the goal is projecting future values forward."
+ },
+ {
+  "reviewer": "expert-1",
+  "lesson": "1-2",
+  "where": "quiz 1-2-q4 (keyed option and explanation)",
+  "quote": "Start with a report: churn rate by vertical, with group sizes, already answers this decision",
+  "kind": "misleading",
+  "severity": "low",
+  "problem": "The report answers the question asked (which vertical loses the most advertisers) and is the right first rung, but it does not answer the decision. Where an extra account manager should go depends on where a manager would change the outcome, which is the 'predict it or change it' distinction this lesson's own fourth triage question and quiz 1-2-q1 teach. The explanation tells the learner a descriptive cut settles an intervention decision.",
+  "evidence": "Principle (association versus effect of an action); the lesson's seg3 ('a model that predicts does not answer it') and seg5 ('Are the calls worth making at all? Who changes because of the call'). The key is still the best of the four options.",
+  "fix": "Option: 'Start with a report: churn rate by vertical, with group sizes, answers the question asked'. Why: '... the bottom rung already answers which vertical loses most. Whether an account manager would reduce churn there is a separate question, about changing something.'"
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "1-2",
+  "where": "seg2 narration",
+  "quote": "Two more finish the map.",
+  "kind": "ear",
+  "severity": "low",
+  "problem": "Seven names in about 45 seconds; by the sixth I had lost the third. The very next segment says I do not need to memorise seven names, so why were all seven read aloud?",
+  "fix": "Narrate only the five from the week. Let the table show forecasting and language models silently, or give them one clause."
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "1-2",
+  "where": "seg4 narration + table",
+  "quote": "Frame it as a length of time: how long do advertisers last?",
+  "kind": "lost",
+  "severity": "low",
+  "problem": "The third framing has a kind ('A length of time') that is not on the map of seven I was shown two segments earlier. I looked for it in the table and it is not there.",
+  "fix": "Add a row to the map, or label it on the card: 'time-to-event, module 6'."
+ }
+]

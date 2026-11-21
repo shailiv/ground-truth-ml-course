@@ -1,0 +1,395 @@
+{
+  "id": "1-2",
+  "module": 1,
+  "title": "Which kind of problem is this?",
+  "subtitle": "Five requests in one week: are they all the same job?",
+  "goal": "After this lesson you can sort a business question into its kind of problem with four triage questions, and choose between framings by the decision the answer feeds.",
+  "predict": {
+    "q": "An account director asks: 'Does auto-bidding actually help our advertisers?' What kind of problem is that?",
+    "options": [
+      "Classification: predict which advertisers will hit their goal",
+      "Regression: predict each advertiser's CPA",
+      "Clustering: group advertisers by how they bid",
+      "None of these: it asks what would happen if something changed"
+    ],
+    "answer": 3,
+    "reveal": "It is a causal question: it asks about changing something, not predicting it. The lesson gives four questions that sort any request this way."
+  },
+  "segments": [
+    {
+      "narration": "Here is one week of requests. Monday: which advertisers are going to leave? Tuesday: how much will each of them spend over the next eight weeks? Wednesday: what kinds of advertisers do we actually have? Thursday: spend dropped yesterday, is that unusual? Friday: does auto-bidding actually help? It is tempting to pass all five to your assistant with the same four words: build me a model. But these are five different kinds of problem, with different data, different methods and different ways of being wrong. Choosing the kind comes first. Get it wrong, and clean code will not rescue you.",
+      "visual": {
+        "type": "title",
+        "kicker": "Module 1 · Lesson 2",
+        "title": "Which kind of problem is this?",
+        "sub": "Five requests, five different jobs"
+      }
+    },
+    {
+      "narration": "So here is the map. [[1]] Who will leave is a yes or a no for each advertiser. Predicting a category is called classification. [[2]] How much will they spend is predicting a number. That is regression. [[3]] What kinds of advertisers do we have? Nobody has an answer column for that. Finding groups without one is clustering. [[4]] Is yesterday's drop unusual? Judging what is far from normal is anomaly detection. [[5]] Does auto-bidding help is not a prediction at all. It asks what would happen if you changed something, which makes it a causal question. Two more finish the map. [[6]] Projecting a daily series forward is forecasting. [[7]] And reading or writing text, like sorting support tickets, is work for language models.",
+      "visual": {
+        "type": "table",
+        "title": "The map",
+        "columns": [
+          "The question",
+          "Kind of problem"
+        ],
+        "rows": [
+          [
+            "Who will leave?",
+            "Classification: predict a category"
+          ],
+          [
+            "How much will they spend?",
+            "Regression: predict a number"
+          ],
+          [
+            "What kinds of advertisers do we have?",
+            "Clustering: find groups, no answer column"
+          ],
+          [
+            "Is yesterday's drop unusual?",
+            "Anomaly detection: far from normal?"
+          ],
+          [
+            "Does auto-bidding actually help?",
+            "Causal: what if we change it?"
+          ],
+          [
+            "What will platform spend be next month?",
+            "Forecasting: project a series forward"
+          ],
+          [
+            "What is this support ticket about?",
+            "Language models: read or write text"
+          ]
+        ]
+      }
+    },
+    {
+      "narration": "You do not need to memorise seven names. You need four questions. [[1]] First: is there an answer column for past cases? Last lesson called that the label. If there is, you can learn to predict it. If not, you are looking for groups, or for the unusual. [[2]] Second: is the answer a category or a number? [[3]] Third: is time the main axis? One series, day after day, means forecasting rather than scoring rows. [[4]] Fourth, and the one people skip: do I want to predict it, or change it? Knowing who will leave is prediction. Knowing what would make them stay is a causal question, and a model that predicts does not answer it.",
+      "visual": {
+        "type": "bullets",
+        "title": "Four triage questions",
+        "items": [
+          "Is there an answer column for past cases?",
+          "Is the answer a category or a number?",
+          "Is time the main axis?",
+          "Do I want to predict it, or change it?"
+        ]
+      }
+    },
+    {
+      "narration": "Now the awkward part. One business question can sit in several boxes. Take retention. [[1]] Frame it as a yes or no: will this advertiser stop spending in the next 60 days? [[2]] Frame it as a number: how many dollars will they spend in the next eight weeks? [[3]] Frame it as a length of time: how long do advertisers last? [[4]] Or frame it around action: which advertisers would stay because we called them? Same word in the meeting. Four different pieces of work, and four different things you would hand back.",
+      "visual": {
+        "type": "table",
+        "title": "One question, four framings: retention",
+        "columns": [
+          "Framed as",
+          "Kind",
+          "In the practice table"
+        ],
+        "rows": [
+          [
+            "Will they stop spending within 60 days?",
+            "Classification",
+            "churned_next_60d"
+          ],
+          [
+            "How many dollars in the next 8 weeks?",
+            "Regression",
+            "spend_next_8w"
+          ],
+          [
+            "How long do advertisers last?",
+            "A length of time",
+            "not in this table"
+          ],
+          [
+            "Who would stay because we called?",
+            "Causal",
+            "never observed directly"
+          ]
+        ]
+      }
+    },
+    {
+      "narration": "So which is right? None of them, in the abstract. The decision the answer feeds picks the framing. [[1]] Say the success team can call two hundred accounts a month. They need a ranked list, so a yes or no with a score is the fit. [[2]] Finance is building a revenue plan. A list of names is no use to them. They need dollars. [[3]] And if the real question is whether the calls are worth making at all, you need to know who changes because of the call. A list of likely leavers does not tell you that. So before you choose a kind of problem, ask one thing. What will somebody do differently once they have the answer?",
+      "visual": {
+        "type": "table",
+        "title": "The decision picks the framing",
+        "columns": [
+          "The decision",
+          "The framing that fits"
+        ],
+        "rows": [
+          [
+            "Whom should the success team call?",
+            "Yes or no, with a score: a ranked list"
+          ],
+          [
+            "What goes into the revenue plan?",
+            "A number: dollars"
+          ],
+          [
+            "Are the calls worth making at all?",
+            "Who changes because of the call"
+          ]
+        ]
+      }
+    },
+    {
+      "narration": "One more choice, and it is about ambition. Think of a ladder. [[1]] The bottom rung is a report: churn by vertical, by month. Sometimes that settles it and you are finished. [[2]] Next comes a rule, like spend trend below 0.7. [[3]] Then a simple model, where the data picks the columns and the weights. [[4]] Then a complex model, which can capture patterns a simple one misses, and is harder to explain and to check. Every rung up costs something. So climb only when the step pays, meaning the rung you are standing on has been tried and is not good enough for the decision. Start at the top, and you can spend a month modelling what a GROUP BY had already answered.",
+      "visual": {
+        "type": "flow",
+        "title": "The ladder: climb only when the step pays",
+        "steps": [
+          {
+            "label": "A report",
+            "sub": "churn by vertical, by month"
+          },
+          {
+            "label": "A rule",
+            "sub": "spend trend below 0.7"
+          },
+          {
+            "label": "A simple model",
+            "sub": "data picks columns and weights"
+          },
+          {
+            "label": "A complex model",
+            "sub": "more patterns, harder to check"
+          }
+        ]
+      }
+    },
+    {
+      "narration": "Which brings us to the brief. At this stage, do not ask your assistant for a model. Ask it to restate the problem before it writes any code. [[1]] What kind of problem it thinks this is, and why. [[2]] Which column is the answer column, or a plain statement that there is none. [[3]] What decision the output is supposed to feed. [[4]] And the lowest rung of the ladder that could answer it. Then read that restatement carefully. If you asked whether a practice helps, and it describes a prediction of who will churn, stop right there. It has swapped your question for an easier one, and nothing built afterwards will repair that.",
+      "visual": {
+        "type": "bullets",
+        "title": "Brief and audit: restate before you build",
+        "items": [
+          "What kind of problem, and why",
+          "The answer column, or \"there is none\"",
+          "The decision the output feeds",
+          "The lowest rung that could answer it"
+        ]
+      }
+    },
+    {
+      "narration": "So. [[1]] Before any method, name the kind of problem. Four questions do it: is there an answer column, is it a category or a number, is time the main axis, and do I want to predict or to change. [[2]] One business question can be framed several ways, and the decision it feeds picks the framing. [[3]] Start low on the ladder, and climb only when it pays. Next: once you have decided to predict something, you have to say exactly what it is. What counts as churned, for whom, and by when.",
+      "visual": {
+        "type": "bullets",
+        "title": "Which kind of problem is this?",
+        "items": [
+          "Name the kind first: four triage questions",
+          "One question, several framings: the decision picks",
+          "Report, rule, simple model, complex model: climb only when it pays"
+        ]
+      }
+    }
+  ],
+  "takeaways": [
+    "Name the kind of problem first: answer column or not, category or number, time or not, predict or change.",
+    "One business question has several framings; the decision it feeds picks the one to build.",
+    "Report, rule, simple model, complex model: climb a rung only when the one below is not good enough."
+  ],
+  "quiz": [
+    {
+      "id": "1-2-q1",
+      "concept": "predict or change",
+      "domain": "course",
+      "q": "A stakeholder says: 'Build a churn model so we finally know what makes advertisers stay.' What is the best first response?",
+      "options": [
+        "Agree: the columns the model leans on most heavily will show what makes advertisers stay",
+        "Two questions are tangled here: who will leave, and what would change it. Ask which one they need",
+        "Decline: nothing useful can be said about churn until a properly designed experiment has been run",
+        "Suggest clustering instead, because the goal is understanding advertisers, not predicting them"
+      ],
+      "answer": 1,
+      "why": "Who will leave is a prediction; what makes them stay asks what happens if something is changed, and a model that predicts does not answer that. Reading the model's strongest columns as levers is the tempting mistake: they show what goes along with churn, not what would alter it."
+    },
+    {
+      "id": "1-2-q2",
+      "concept": "is there an answer column",
+      "domain": "course",
+      "q": "You ask the assistant: 'What kinds of advertisers do we have?' It comes back with a model that predicts churn in the next 60 days from 17 columns, plus a ranked list of risky accounts. What went wrong?",
+      "options": [
+        "Nothing: churn risk is the most useful way there is to describe advertisers",
+        "It should have predicted spend instead of churn, because spend is a number",
+        "It chose an answer column you never asked about; your question has none",
+        "Seventeen columns are too few to describe the different kinds of advertiser"
+      ],
+      "answer": 2,
+      "why": "'What kinds do we have' has no answer column: it is a question about finding groups. The assistant quietly swapped it for a prediction of churn, which is a different kind of problem. Predicting spend instead would repeat the same swap with a different column."
+    },
+    {
+      "id": "1-2-q3",
+      "concept": "is there an answer column",
+      "domain": "other",
+      "q": "The traffic-quality team wants to 'use ML to find bad sources'. They have click logs for every source, but no source has ever been confirmed as invalid. A colleague proposes training a classifier. What is the right read?",
+      "options": [
+        "A classifier needs past cases with a known answer; without them, look for the unusual or collect labels",
+        "Go ahead: given enough click logs, a classifier will work out for itself what invalid traffic looks like",
+        "Use regression instead: click counts are numbers, so the model should be predicting a number, not a category",
+        "Forecast each source's clicks: the sources that turn out hardest to forecast will be the invalid ones"
+      ],
+      "answer": 0,
+      "why": "The first triage question is whether past cases have an answer column. Here they do not, so there is nothing for a classifier to be trained to match, however many logs there are. The honest options are to judge which sources are far from normal, or to get some sources reviewed first."
+    },
+    {
+      "id": "1-2-q4",
+      "concept": "the ladder",
+      "domain": "course",
+      "q": "The head of sales must decide which vertical gets an extra account manager, and asks which vertical loses the most advertisers. The assistant proposes a complex model on all 17 columns. What is your call?",
+      "options": [
+        "Accept: the more columns a model uses, the more reliable its answer about verticals will be",
+        "Ask for a simple model first, and the complex one only if the simple model is not good enough",
+        "Reframe it as clustering, so that the natural groupings among the verticals can emerge",
+        "Start with a report: churn rate by vertical, with group sizes, already answers this decision"
+      ],
+      "answer": 3,
+      "why": "The decision is about groups, not individual advertisers, so the bottom rung, a report of churn by vertical, already answers it. A simple model is still a rung too high until the report has been shown not to be enough: climb only when the step pays."
+    }
+  ],
+  "review": [
+    {
+      "concept": "which kind of problem",
+      "variants": [
+        {
+          "q": "Pricing asks: 'If we raise the minimum daily budget, how many small advertisers will we lose?' Which kind of problem is this?",
+          "options": [
+            "Classification: predict which small advertisers will churn",
+            "A causal question: it asks what happens if we change something",
+            "Regression: predict the daily budget of each small advertiser",
+            "Forecasting: project the number of small advertisers forward"
+          ],
+          "answer": 1,
+          "why": "The question is about the effect of a change you would make. A classifier trained under today's pricing predicts who leaves as things are; it has never seen the higher minimum, so it cannot say what that change would do."
+        },
+        {
+          "q": "Product asks: 'What types of publishers are in our network?' You have 30 columns per publisher, and nobody has ever assigned a type. Which kind of problem is this?",
+          "options": [
+            "Clustering: finding groups, because there is no answer column",
+            "Classification: predict each publisher's type from its columns",
+            "Regression: predict a single quality number for each publisher",
+            "Anomaly detection: find the publishers that do not fit in"
+          ],
+          "answer": 0,
+          "why": "No past publisher has a known type, so there is nothing to train a classifier to match; with no answer column, looking for groups is clustering. Anomaly detection also works without an answer column, but it asks who is unusual, not what the groups are."
+        },
+        {
+          "q": "An ops lead asks: 'Did conversions from this traffic source look strange last night?' You have the source's hourly conversions for the past six months. Which kind of problem is this?",
+          "options": [
+            "Forecasting: the data is a series over time, so project it forward",
+            "Classification: label each past hour as normal or strange",
+            "Anomaly detection: is last night far from this source's normal?",
+            "A causal question: work out what made conversions change"
+          ],
+          "answer": 2,
+          "why": "The question is whether something is unusual, which is anomaly detection. Time being the main axis tempts you towards forecasting, and a forecast may well supply the expected value, but nobody asked what next month looks like. And no hour was ever labelled strange, so there is nothing to classify."
+        }
+      ]
+    },
+    {
+      "concept": "the decision picks the framing",
+      "variants": [
+        {
+          "q": "The video team asks for 'a model for video adoption'. Sales can make 300 calls this quarter and is measured on how many advertisers adopt. Which framing fits?",
+          "options": [
+            "A yes or no with a score: who is likely to adopt in the next 60 days",
+            "A number: the dollars of video spend each advertiser would bring in",
+            "Both at once, so that sales can decide later which output they prefer",
+            "Groups: cluster the advertisers and describe the habits of each cluster"
+          ],
+          "answer": 0,
+          "why": "The decision is whom to call with a fixed number of calls, and success is counted in adoptions, so a ranked yes or no score is the fit. Dollars sound richer, but nobody here is deciding on dollars; building everything to decide later skips the question that should come first."
+        },
+        {
+          "q": "Finance is building next quarter's revenue plan and asks to 'plug in the churn model', which gives each advertiser a score between 0 and 1. What is the mismatch?",
+          "options": [
+            "None: multiply each score by 100 and report it as a percentage of the revenue",
+            "The plan should be built from clusters of advertisers, not from scores",
+            "A plan needs dollars; a score for leaving does not say how much is at stake",
+            "None: count every advertiser scoring above one half as lost revenue"
+          ],
+          "answer": 2,
+          "why": "A revenue plan is a decision about dollars, so the framing that fits predicts a number: how much each advertiser will spend. A score for leaving says nothing about whether the account is worth fifty dollars or fifty thousand, and rescaling it or cutting it at one half does not change that."
+        },
+        {
+          "q": "The creative team plans production a month ahead and asks: 'When do our creatives wear out?' Analyst A proposes predicting, yes or no, whether each creative drops below a CTR floor next week. Analyst B proposes estimating how many days a creative lasts. Which framing serves the decision?",
+          "options": [
+            "A's: a yes or no is the simplest framing and should always come first",
+            "B's: a production schedule needs to know how long creatives last",
+            "Either: it is one question with two different output formats",
+            "Neither: this is really about spotting unusual drops in CTR"
+          ],
+          "answer": 1,
+          "why": "The team is deciding how many replacements to produce and when, a month ahead, so it needs a length of time. A next-week yes or no would suit a different decision, such as which creatives to pause on Monday. The two framings are not interchangeable: they produce different outputs for different actions."
+        }
+      ]
+    }
+  ],
+  "drill": [
+    {
+      "q": "What are the four triage questions for working out which kind of problem you are facing?",
+      "a": "Is there an answer column for past cases. Is the answer a category or a number. Is time the main axis. And do I want to predict it, or change it."
+    },
+    {
+      "q": "There is a ladder of four ways to answer a business question, from simplest to most complex. Name the rungs, and the rule for climbing.",
+      "a": "A report, a rule, a simple model, a complex model. Climb a rung only when the one below has been tried and is not good enough for the decision."
+    }
+  ],
+  "recall": {
+    "prompt": "A stakeholder says: 'We need machine learning for retention.' Talk through how you would work out what kind of problem that is.",
+    "model_answer": "First I would ask what decision the answer feeds, because retention can be framed as a yes or no within 60 days, as dollars, as how long advertisers last, or as who would stay because we acted. Then the four triage questions: is there an answer column, is it a category or a number, is time the main axis, and do we want to predict or to change. And I would start on the lowest rung, a report or a rule, and climb only if that is not enough."
+  },
+  "ask_assistant": "Before writing any code, restate my request. Tell me what kind of problem you think it is and why, which column would be the answer column (or that there is none), what decision the output would feed, and the simplest approach that could answer it: a report, a rule or a simple model. List any other reasonable framings of the same question, then wait for my go-ahead.",
+  "audit_checklist": [
+    "The kind of problem, named in plain words, with a reason",
+    "The answer column, or an explicit statement that there is none",
+    "The decision the output feeds, in one sentence",
+    "The lowest rung of the ladder that could answer it, proposed first"
+  ],
+  "transfer": [
+    "Creative fatigue: predicting which creatives will fade, and finding what would slow the fade, are two different kinds of problem.",
+    "Invalid traffic: with confirmed cases it is classification; with none, it is a question about what is unusual.",
+    "A forecast for finance: one daily series projected forward, not a score for each advertiser."
+  ],
+  "other_ways": [
+    {
+      "approach": "Start from the data instead of the question",
+      "when": "As a sanity check: if no answer column exists yet, some framings are simply not available today."
+    },
+    {
+      "approach": "Sketch the same question in two framings",
+      "when": "When stakeholders cannot agree on what they need: two mock outputs side by side make the choice concrete."
+    },
+    {
+      "approach": "Stay on the bottom rung with a report by segment",
+      "when": "When the decision is about groups (which vertical, which month) and not about individual advertisers."
+    }
+  ],
+  "glossary": [
+    {
+      "term": "classification",
+      "def": "Predicting a category, such as will churn or will not."
+    },
+    {
+      "term": "regression",
+      "def": "Predicting a number, such as dollars of spend."
+    },
+    {
+      "term": "clustering",
+      "def": "Finding groups in rows that have no answer column."
+    },
+    {
+      "term": "anomaly detection",
+      "def": "Judging whether something is far from what is normal."
+    },
+    {
+      "term": "causal question",
+      "def": "A question about what would happen if you changed something, as opposed to predicting what will happen anyway."
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+ "issues": [
+  {
+   "where": "review 2 variant 3",
+   "quote": "A difference smaller than its own interval is a tie",
+   "kind": "wrong_concept",
+   "severity": "medium",
+   "explanation": "A difference is a tie (statistically indistinguishable from zero) when its confidence interval includes zero—that is, when the magnitude of the difference is smaller than its margin of error (the half-width of the interval), not the full width of its interval. Because a 95% confidence interval has width roughly 2 x 1.96 SE = 3.92 SE while significance requires exceeding 1.96 SE, any difference between 1.96 SE and 3.92 SE is smaller than the width of its own interval yet excludes zero and is not a tie.",
+   "evidence": "Statistical definition of confidence-interval significance, plus facts.json -> regression.paired_method ('a difference whose interval includes 0 is a tie'), uncertainty.difference_point = 0.009 with difference_logreg_minus_boosting_95 = [0.002, 0.015] (width 0.013 > 0.009, excludes 0), and tickets.paired.rows[2] (accuracy_a_minus_b_pts = 6, ci95_pts = [1.1, 10.9] of width 9.8 > 6, clear_winner = 'llm_zero_shot_cheap').",
+   "fix": "Replace 'A difference smaller than its own interval is a tie' with 'When the interval around a difference includes zero, it is a tie' (or 'A difference smaller than its margin of error—so its interval includes zero—is a tie')."
+  },
+  {
+   "where": "seg6 narration",
+   "quote": "The 3,363 advertisers in the safest leaf all get exactly the same number, so the tree cannot say which of them is riskier.",
+   "kind": "number_mismatch",
+   "severity": "low",
+   "explanation": "3,363 is the count of training advertisers (out of 6,000 in January-March) in the safest leaf—accounts whose 60-day churn outcomes are already known—whereas predicting unknown risk and the immediately following top-200 and AUC figures ('Ask for the 200 most at-risk accounts...', visual 'top 200 hold 111 churners', 'AUC 0.761') are on the 4,000 May-June test advertisers. Omitting 'training' conflates the 6,000-row training leaf count with the 4,000-row test evaluation.",
+   "evidence": "facts.json -> tree.root.no.no.no.n = 3363 (out of tree.root.n = 6000 training advertisers), whereas data.n_test = 4000, tree.test.auc = 0.761, and model_table[1].top_200_churners = 111 are evaluated on the 4,000 test advertisers.",
+   "fix": "Clarify the split: 'The 3,363 training advertisers in the safest leaf all share one number, and every new advertiser landing there gets that same score too, so the tree cannot say which of them is riskier.'"
+  }
+ ],
+ "numbers_checked": 60,
+ "verdict": "Strong, faithful lesson overall: all tree cut-offs, leaf rates, branch counts, SQL logic, and model AUCs match facts.json accurately, with two fixes needed—one false statistical rule of thumb in a review explanation ('smaller than its own interval' instead of 'interval includes zero' / 'smaller than its margin of error') and one unlabelled training-set leaf count (3,363) mixed into the test-set ranking discussion.",
+ "_hash": "1d738fee4483614d",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_ChdzeFFDYTRuNENfYnJ2ZElQenQtdmdBbxIXc3hRQ2E0bjRDX2JydmRJUHp0LXZnQW8 | tokens in=67916 out=867 thought=31852]"
+}

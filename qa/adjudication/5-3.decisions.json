@@ -1,0 +1,33 @@
+{
+ "lesson": "5-3",
+ "decisions": [
+  {
+   "n": 0,
+   "reviewer": "expert-3",
+   "finding": "The brief and checklist ask the assistant to list anything else that changed around launch; it cannot know about events outside the data, and an empty list reads as a clean bill.",
+   "decision": "accepted",
+   "reason": "Events outside the dataset are not recoverable from it; the lesson's own review item (the suspended publisher) turns on one.",
+   "change": "Brief: the learner supplies 'Other changes around the launch that I know of: [list, or none known]'; the assistant prints it back and reports any break in either group's size or mix, without guessing at causes. Seg 7: 'You supply that list, because the data cannot know about a price change.' Seg 7 bullet and audit item 4 reworded to match."
+  }
+ ],
+ "rulings": {
+  "R1": "Seg 2 ends: 'The same holds for any launch, an invalid-traffic filter as much as a setup flow: you need the change in a similar group that went without.'",
+  "R2": "Not applicable.",
+  "R3": "ask_assistant rewritten as a template ([Change], [treated group], [launch date], [outcome], [comparison group], [weekly], the learner's list of other changes); 120 words.",
+  "R4": "Seg 8 cut from 92 to 47 words and no longer re-reads the three answers; the table visual is kept and now shows all rows from the start.",
+  "R5": "Keyed answer longest in 3 of 10 (was 3; one of the three is a four-way tie). Two 'Nothing: ...' options replaced with specific wrong demands; one 'Nothing: ...' in review 2 reworded. Options tightened to about fifteen words.",
+  "R6": "Seg 7: 'If another rollout wave is coming, ask for it in random order.' Seg 7 also gives the sentence the learner may write: 'goal attainment rose 4.7 points more than in the comparison group, assuming the two would have moved together', shown on the card as a fifth bullet.",
+  "R7": "Item 4 is now evidence: the learner's list printed back, plus each group's size and mix either side of the launch date. Item 3 adds that a borderline result is a warning.",
+  "specific": "before_after.when_the_assumption_fails: drift 0.33 +/- 0.31. Seg 6 no longer says 'that drift is distinguishable from zero'; it says the warning is faint, the margin is almost as large as the drift, and a borderline flag is to be taken seriously because a small weekly drift adds up. 5-3-q2: keyed option now 'probably closing', and the 'why' calls it 'a borderline flag, not a pass'. Glossary entry for the pre-launch check says the same."
+ },
+ "segments_changed": [
+  2,
+  6,
+  7,
+  8
+ ],
+ "numbers_verified": 208,
+ "open_questions": [
+  "Seg 5 (first world, drift 0.12 +/- 0.17) is unchanged: 'there is no sign the groups were pulling apart ... That is not proof'. Strictly the interval there still allows a drift of nearly 0.3 a week; I judged the existing caveat enough."
+ ]
+}

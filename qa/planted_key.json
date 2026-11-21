@@ -1,0 +1,446 @@
+[
+ {
+  "lesson": "1-4",
+  "type": "number",
+  "where": "seg3 narration",
+  "was": "86",
+  "now": "68",
+  "context": "For advertisers who churned, the typical value is 86 days. [[2]] For everyone else"
+ },
+ {
+  "lesson": "1-4",
+  "type": "number",
+  "where": "seg3 visual",
+  "was": "86",
+  "now": "66",
+  "context": " extra column: days since last spend\", \"stats\": [{\"value\": \"86 days\", \"label\": \"typical valu"
+ },
+ {
+  "lesson": "1-4",
+  "type": "number",
+  "where": "seg4 narration",
+  "was": "60",
+  "now": "90",
+  "context": "efore the snapshot. [[2]] The label describes the 60 days after it. [[3]] This col"
+ },
+ {
+  "lesson": "2-1",
+  "type": "number",
+  "where": "seg6 narration",
+  "was": "87",
+  "now": "78",
+  "context": "stays. [[1]] On the test months it is right about 87 percent of the time, because "
+ },
+ {
+  "lesson": "2-1",
+  "type": "number",
+  "where": "seg2 visual",
+  "was": "12,000",
+  "now": "82,000",
+  "context": "k\", \"steps\": [{\"label\": \"Rows with known outcomes\", \"sub\": \"12,000 advertisers\"}, {\"label\": \"Tra"
+ },
+ {
+  "lesson": "2-1",
+  "type": "number",
+  "where": "seg3 narration",
+  "was": "4,000",
+  "now": "8,000",
+  "context": "s, 6,000 advertisers. [[2]] Test on May and June, 4,000 advertisers from a later peri"
+ },
+ {
+  "lesson": "2-2",
+  "type": "number",
+  "where": "seg3 narration",
+  "was": "104",
+  "now": "134",
+  "context": "xes. The model flagged 141 advertisers. Of those, 104 really churned. The other 37 "
+ },
+ {
+  "lesson": "2-2",
+  "type": "number",
+  "where": "seg6 narration",
+  "was": "47",
+  "now": "41",
+  "context": "cent, far below the model's, and its recall about 47, far above. At this cut-off t"
+ },
+ {
+  "lesson": "2-2",
+  "type": "number",
+  "where": "seg5 visual",
+  "was": "527",
+  "now": "257",
+  "context": "all = flagged who churned ÷ everyone who churned\", \"= 104 ÷ 527\", \"= 19.7%\"], \"note\": \"What m"
+ },
+ {
+  "lesson": "2-2",
+  "type": "concept",
+  "where": "seg5 narration",
+  "now": "Recall, remember, is the share of your flags that turn out to be right, so a model with high recall rarely wastes a call."
+ },
+ {
+  "lesson": "2-3",
+  "type": "concept",
+  "where": "seg5 narration",
+  "now": "An AUC of 0.85 simply means the model's yes-or-no answer is correct for 85 percent of advertisers."
+ },
+ {
+  "lesson": "2-4",
+  "type": "number",
+  "where": "seg4 visual",
+  "was": "57.6",
+  "now": "50.6",
+  "context": "%\"], [\"40–50%\", \"105\", \"44.4%\", \"51.4%\"], [\"50–70%\", \"98\", \"57.6%\", \"66.3%\"]], \"highlight\": [3"
+ },
+ {
+  "lesson": "2-4",
+  "type": "number",
+  "where": "seg2 visual",
+  "was": "32.6",
+  "now": "23.6",
+  "context": "del said\", \"Churned\"], \"rows\": [[\"20–30%\", \"291\", \"24.6%\", \"32.6%\"], [\"30–40%\", \"153\", \"34.6%\""
+ },
+ {
+  "lesson": "2-4",
+  "type": "number",
+  "where": "seg5 narration",
+  "was": "13",
+  "now": "93",
+  "context": "]] Then it was tested on May and June, when about 13 percent churned. It still exp"
+ },
+ {
+  "lesson": "2-5",
+  "type": "number",
+  "where": "seg6 visual",
+  "was": "4,000",
+  "now": "6,000",
+  "context": ", \"$5,824\", \"+6.2%\"]], \"note\": \"Actual total: $21.0M across 4,000 test advertisers\"}"
+ },
+ {
+  "lesson": "2-5",
+  "type": "number",
+  "where": "seg5 narration",
+  "was": "5,800",
+  "now": "7,800",
+  "context": "RMSE of about 4,900 dollars. [[2]] Model B, about 5,800. Same average miss, but when "
+ },
+ {
+  "lesson": "2-5",
+  "type": "number",
+  "where": "seg3 visual",
+  "was": "2404",
+  "now": "2704",
+  "context": "\": \"$\", \"data\": [{\"label\": \"Same as last 8 weeks\", \"value\": 2404}, {\"label\": \"Run-rate\", \"valu"
+ },
+ {
+  "lesson": "2-6",
+  "type": "concept",
+  "where": "seg4 narration",
+  "now": "A 95 percent interval tells you that 95 percent of the advertisers in the test set fall inside that range."
+ },
+ {
+  "lesson": "3-1",
+  "type": "number",
+  "where": "seg4 narration",
+  "was": "1,700",
+  "now": "7,100",
+  "context": "rtiser in the middle of the test set spends about 1,700 dollars. [[2]] The average is"
+ },
+ {
+  "lesson": "3-1",
+  "type": "number",
+  "where": "seg9 visual",
+  "was": "1,733",
+  "now": "3,733",
+  "context": "un-rate $2,022 · raw dollars $2,361 · plus run-rate column $1,733 · log scale $1,428\"}"
+ },
+ {
+  "lesson": "3-1",
+  "type": "number",
+  "where": "seg3 visual",
+  "was": "2022",
+  "now": "2202",
+  "context": "nit\": \"$\", \"data\": [{\"label\": \"Run-rate baseline\", \"value\": 2022}, {\"label\": \"Regression, ever"
+ },
+ {
+  "lesson": "3-2",
+  "type": "concept",
+  "where": "seg4 narration",
+  "now": "And because the weights come from the data, a large positive weight proves that the column causes the outcome."
+ },
+ {
+  "lesson": "3-3",
+  "type": "number",
+  "where": "seg5 visual",
+  "was": "0.74",
+  "now": "7.04",
+  "context": "%\", \"21.1%\"]], \"note\": \"Shrinking means a spend trend below 0.74 in the first row and below 0."
+ },
+ {
+  "lesson": "3-3",
+  "type": "number",
+  "where": "seg2 narration",
+  "was": "15",
+  "now": "95",
+  "context": "t. Here that was active days: 14 or fewer against 15 or more. [[3]] Then do the sa"
+ },
+ {
+  "lesson": "3-3",
+  "type": "number",
+  "where": "seg5 narration",
+  "was": "21",
+  "now": "12",
+  "context": "ong active ones, it takes churn from 5 percent to 21. So low activity matters far "
+ },
+ {
+  "lesson": "4-1",
+  "type": "concept",
+  "where": "seg5 narration",
+  "now": "The safe rule is that a deeper tree never does worse on new advertisers, it just takes longer to train."
+ },
+ {
+  "lesson": "4-2",
+  "type": "concept",
+  "where": "seg5 narration",
+  "now": "It is fine to try several settings against the test months and keep the best, as long as you report the winning score."
+ },
+ {
+  "lesson": "4-3",
+  "type": "number",
+  "where": "seg7 visual",
+  "was": "0.009",
+  "now": "0.309",
+  "context": "t AUC 0.808 to 0.835\", \"Spread between runs: wider than the 0.009 churn gap\"]}"
+ },
+ {
+  "lesson": "4-3",
+  "type": "number",
+  "where": "seg5 visual",
+  "was": "126",
+  "now": "156",
+  "context": "5\", \"136\", \"0.861\", \"153\"], [\"Forest, 300 trees\", \"0.831\", \"126\", \"0.895\", \"184\"], [\"Boosting"
+ },
+ {
+  "lesson": "4-3",
+  "type": "number",
+  "where": "seg6 narration",
+  "was": "185",
+  "now": "155",
+  "context": " from about 0.03 to 0.05. In the top 200 it finds 185 adopters. The weighted sum fi"
+ },
+ {
+  "lesson": "4-5",
+  "type": "number",
+  "where": "seg5 visual",
+  "was": "20.5",
+  "now": "24.5",
+  "context": ", \"Push (points)\"], \"rows\": [[\"Active days, last 28\", \"5\", \"20.5\", \"+1.33\"], [\"CPA vs goal\", \""
+ },
+ {
+  "lesson": "4-5",
+  "type": "number",
+  "where": "seg6 narration",
+  "was": "0.7",
+  "now": "0.4",
+  "context": "urth push, and your old rule of spend trend below 0.7 would have missed her. [[2]] "
+ },
+ {
+  "lesson": "4-5",
+  "type": "number",
+  "where": "seg2 narration",
+  "was": "0.07",
+  "now": "7.07",
+  "context": "[[1]] Shuffle spend trend, and AUC falls by about 0.07. [[2]] Shuffle active days, a"
+ },
+ {
+  "lesson": "5-1",
+  "type": "concept",
+  "where": "seg5 narration",
+  "now": "Once you have adjusted for the other columns in the table, whatever gap is left is the causal effect of the practice."
+ },
+ {
+  "lesson": "5-2",
+  "type": "concept",
+  "where": "seg4 narration",
+  "now": "With a randomised experiment you no longer need a comparison group, because randomising removes the noise."
+ },
+ {
+  "lesson": "5-3",
+  "type": "number",
+  "where": "seg3 visual",
+  "was": "69.5",
+  "now": "89.5",
+  "context": "t\", \"left\": {\"label\": \"Ecommerce (got the flow)\", \"value\": \"69.5%\", \"sub\": \"before launch: 60."
+ },
+ {
+  "lesson": "5-3",
+  "type": "number",
+  "where": "seg6 visual",
+  "was": "0.31",
+  "now": "0.13",
+  "context": "unch\", \"value\": \"+7.9 pts\", \"sub\": \"pre-launch drift 0.33 ± 0.31 pts a week\"}}"
+ },
+ {
+  "lesson": "5-3",
+  "type": "number",
+  "where": "seg2 narration",
+  "was": "71",
+  "now": "17",
+  "context": " rate climbed too, from about 67 percent to about 71. So some of ecommerce's 9 poi"
+ },
+ {
+  "lesson": "5-5",
+  "type": "number",
+  "where": "seg6 narration",
+  "was": "1,600",
+  "now": "6,100",
+  "context": "e line were really at break-even, and going on to 1,600 earns about the same. This ti"
+ },
+ {
+  "lesson": "5-5",
+  "type": "number",
+  "where": "seg3 visual",
+  "was": "84,900",
+  "now": "48,900",
+  "context": "311\", \"0.10 (break-even)\", \"$84,570\"], [\"1,600\", \"0.073\", \"$84,900\"], [\"4,000\", \"near 0\", \"$38,1"
+ },
+ {
+  "lesson": "5-5",
+  "type": "number",
+  "where": "seg9 narration",
+  "was": "0.5",
+  "now": "3.5",
+  "context": "So the cut-off is not 0.5, and it is not a matter of ta"
+ },
+ {
+  "lesson": "5-6",
+  "type": "number",
+  "where": "seg5 visual",
+  "was": "60",
+  "now": "40",
+  "context": " \"Today · scores: the share of advertisers flagged\", \"After 60 days · predicted vs actual, b"
+ },
+ {
+  "lesson": "5-6",
+  "type": "number",
+  "where": "seg2 narration",
+  "was": "14",
+  "now": "41",
+  "context": "el. [[1]] For gaming in June the model said about 14 percent, and the truth was ab"
+ },
+ {
+  "lesson": "5-6",
+  "type": "number",
+  "where": "seg2 visual",
+  "was": "30.5",
+  "now": "50.5",
+  "context": "t\": {\"label\": \"Gaming · 272 advertisers\", \"value\": \"13.5% → 30.5%\", \"sub\": \"actual ± 5.5 point"
+ },
+ {
+  "lesson": "6-1",
+  "type": "number",
+  "where": "seg4 visual",
+  "was": "5.4",
+  "now": "7.4",
+  "context": "rst month 3.5%. Boosted trees on the same calendar columns: 5.4%.\"}"
+ },
+ {
+  "lesson": "6-1",
+  "type": "number",
+  "where": "seg6 narration",
+  "was": "3.3",
+  "now": "3.7",
+  "context": ". [[2]] Without them the average barely moves, to 3.3 percent. But the worst month "
+ },
+ {
+  "lesson": "6-1",
+  "type": "number",
+  "where": "seg6 visual",
+  "was": "3.5",
+  "now": "5.5",
+  "context": "event dates\", \"left\": {\"label\": \"Told the dates\", \"value\": \"3.5%\", \"sub\": \"worst month · aver"
+ },
+ {
+  "lesson": "6-2",
+  "type": "concept",
+  "where": "seg4 narration",
+  "now": "Shuffling the days before you split is the fairest way to test a forecast, because it removes the calendar's influence."
+ },
+ {
+  "lesson": "6-3",
+  "type": "number",
+  "where": "seg2 visual",
+  "was": "83",
+  "now": "13",
+  "context": " [{\"value\": \"89\", \"label\": \"alert days in 270\"}, {\"value\": \"83%\", \"label\": \"of them on a Sat"
+ },
+ {
+  "lesson": "6-3",
+  "type": "number",
+  "where": "seg3 visual",
+  "was": "17",
+  "now": "47",
+  "context": "urprise is beyond 3 × its normal wobble\"], \"note\": \"Result: 17 alert days · 6 of 7 incidents"
+ },
+ {
+  "lesson": "6-3",
+  "type": "number",
+  "where": "seg6 narration",
+  "was": "23",
+  "now": "32",
+  "context": "tches every incident. The price is 32 alert days, 23 of them false. [[2]] Three wa"
+ },
+ {
+  "lesson": "6-4",
+  "type": "number",
+  "where": "seg5 visual",
+  "was": "27",
+  "now": "72",
+  "context": ", {\"label\": \"Weeks 14–26\", \"value\": 17.9}, {\"label\": \"Weeks 27–39\", \"value\": 14.4}, {\"label\""
+ },
+ {
+  "lesson": "6-4",
+  "type": "number",
+  "where": "seg2 visual",
+  "was": "6,000",
+  "now": "8,000",
+  "context": "alf of everyone has left\", \"value\": \"43 weeks\", \"sub\": \"all 6,000 advertisers counted\"}}"
+ },
+ {
+  "lesson": "6-4",
+  "type": "number",
+  "where": "seg6 narration",
+  "was": "4,734",
+  "now": "6,734",
+  "context": "watched for at least 26 weeks. [[1]] Here that is 4,734 of the 6,000. The newest fift"
+ },
+ {
+  "lesson": "7-1",
+  "type": "concept",
+  "where": "seg4 narration",
+  "now": "The clustering algorithm also tells you the correct number of segments, so there is no judgement in choosing it."
+ },
+ {
+  "lesson": "7-3",
+  "type": "number",
+  "where": "seg3 narration",
+  "was": "29",
+  "now": "92",
+  "context": "ks, from the bottom rung up. [[1]] Keyword rules: 29 percent. On 103 tickets no ke"
+ },
+ {
+  "lesson": "7-3",
+  "type": "number",
+  "where": "seg2 narration",
+  "was": "450",
+  "now": "490",
+  "context": " model, same instructions. All five face the same 450 unseen test tickets, where bl"
+ },
+ {
+  "lesson": "7-3",
+  "type": "number",
+  "where": "seg8 narration",
+  "was": "81",
+  "now": "18",
+  "context": "cision and recall per category. The cheap model's 81 percent hides that it catches"
+ }
+]

@@ -1,0 +1,45 @@
+{
+ "lesson": "6-4",
+ "decisions": [
+  {
+   "n": 0,
+   "reviewer": "expert-4",
+   "finding": "Keyed option is the longest option in 9 of 10 questions",
+   "decision": "not_applicable",
+   "reason": "The lengths quoted (q1 93 vs 81/80/74, q3 105 vs 75/70/70 ...) are no longer in the file: the author rebalanced after the review copy. Before my edits the key was the longest in 4 of 10 and the validator passed; after them it is 1 of 10.",
+   "change": "None for this finding. Under R5 five distractors were replaced or reworded (see rulings)."
+  },
+  {
+   "n": 1,
+   "reviewer": "learner-2",
+   "finding": "The learner already builds cohort retention tables and leaves unfinished cells blank; that bridge sits in other_ways while the narration introduces 'censored' and 'Kaplan-Meier' cold",
+   "decision": "accepted",
+   "reason": "Right for this learner (SPEC: lean on what they know) and it is the lesson ruling. A cohort table with its unfinished cells left blank is the same handling of censoring, one join month at a time; the survival curve is that table pooled.",
+   "change": "seg1 now opens 'You already build cohort retention tables, and you leave the unfinished cells blank. Hold that thought.' and then runs the original hook (21 weeks against 43). seg3 introduces the curve as 'your cohort table pooled across join months' before naming Kaplan-Meier. seg8 asks for the curve by join period, 'your cohort table again'. The term 'censored' still arrives in seg2, after the opening. seg2's 'But they are not blanks' became 'But they are not missing data', so it no longer argues with the blank-cell image. Glossary 'survival curve' and the cohort-table entry in other_ways say the same thing."
+  },
+  {
+   "n": 2,
+   "reviewer": "expert-4",
+   "finding": "seg3 'nobody is assumed to have stayed or gone': the curve does rest on an unstated assumption, that advertisers who drop out of view face the same risk as those still watched; with staggered join dates the far end rests on the earliest joiners",
+   "decision": "accepted",
+   "reason": "Correct principle: Kaplan-Meier needs censoring to be unrelated to churn risk. Here censoring is decided by join date (time_to_event.setup: 'joined at different times over the last two years'), so the pooled curve describes today's customers only if recent joiners behave like earlier ones at the same tenure. The lesson said the tail rests on few people, not on which people.",
+   "change": "seg3: 'That is your cohort table pooled across join months, which assumes recent joiners behave like earlier ones.' and 'nobody is assumed to have stayed or gone' -> 'nobody's outcome is guessed'. seg8, a fifth ask: 'the curve by join period: your cohort table again, which shows whether recent joiners behave like earlier ones' (fifth bullet added to the visual). Audit item 3 adds curves by join period; ask_assistant asks for the curve split by [join period]. No figure is quoted: facts.time_to_event has no curve by join period."
+  }
+ ],
+ "rulings": {
+  "R1": "seg2, one sentence added: 'Any how long question has this trap: ask how long a creative lasts before it fades, and the long lived ones are still running.' (creative fatigue). The fixed-window segment already says 'a yes or no label' before 'churned within 26 weeks'.",
+  "R2": "Not applicable.",
+  "R3": "ask_assistant rewritten as a template (105 words) with slots [customers], [left], [active], [four or five tenure points], [leaving], [block of tenure], [join period], [event], [N weeks]. Evidence demanded: how many went in and how many are still active; the number still being watched at each point; the median lifetime; risk per block of tenure; the curve by join period; for any fixed-window rate, how many were left out.",
+  "R4": "seg9 cut from 81 to 40 words, two sentences: what to ask the next time a lifetime or a time to convert appears on a slide; pointer to module 7. Quote visual ('Not yet is not no.') kept.",
+  "R5": "Key is the longest option in 1 of 10 (was 4). Replaced: quiz q1 A ('Accept it ...' -> asking for a margin of error on the 21 weeks, with a clause added to the 'why'), quiz q2 B ('Nothing: 8 percent against 39 ...' -> asking for a longer, 52-week window), review 1 v2 A ('Nothing ...' -> trimming first-day launchers), review 2 v2 A ('None ...' -> reweighting by week of creation). Reworded quiz q3 B so it states the belief instead of opening with 'Nothing at all'. Kept 'About right' (review 1 v1) and 'All of them' (review 2 v1): each is one member of a parallel set (about right / too low / too high / unknowable; which advertisers go in), not an escape hatch.",
+  "R6": "The cohort retention table, which sat only in other_ways, is now spoken in the Brief and audit segment ('the curve by join period: your cohort table again ...') as well as in seg1 and seg3.",
+  "R7": "Item 1 was a claim ('states ... that they were kept in'); now a check on the output: everyone in = already churned + still active, and the curve's first point starts from everyone. Item 3 was a claim about where the median came from; now: the median is the week where the plotted curve crosses one half, and curves by join period show whether recent joiners differ. Item 2 unchanged; item 4 'states' -> 'prints'.",
+  "specific": "Opens from the cohort retention table the learner already builds, then introduces the terms (see n=1). Segments 4-7 are byte-identical, including the survival widget segment; its narration (three quarters at 13 weeks, about 45 percent at a year, one half at 43 weeks, 26 against a true 28 at two years, split by account manager) still matches time_to_event.kaplan_meier and the widget (week slider 1-104, split by account manager, median 43)."
+ },
+ "segments_changed": [1, 2, 3, 8, 9],
+ "numbers_verified": 83,
+ "open_questions": [
+  "facts.time_to_event has no curve by join period, and the survival widget splits only by account manager. The pooling assumption is therefore taught as a check to ask for, with no figure. If the simulation can supply a by-join-period split, seg8 (or the widget) could show it.",
+  "Narration is exactly 900 words, the SPEC ceiling: the cohort opening, R1, the pooling assumption and the by-join-period ask all add sentences, and the shorter recap plus small trims inside the re-recorded segments pay for them. To fit, seg1 no longer says the 21 weeks 'goes on a slide' and seg8's caution about gaps between segments lost its reference to module five ('a gap between curves is a gap between groups, not proof of cause')."
+ ]
+}

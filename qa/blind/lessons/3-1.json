@@ -1,0 +1,417 @@
+{
+ "id": "3-1",
+ "module": 3,
+ "title": "Linear regression: predicting a number",
+ "subtitle": "Can a model that reads every column beat the run-rate, and why does the first attempt lose?",
+ "goal": "After this lesson you can read a linear regression as a weighted sum, say what one weight means, and check which scale it was fitted on and how its predictions were turned back into dollars.",
+ "predict": {
+  "q": "The run-rate baseline misses next-8-week spend by about $2,000 per advertiser. You fit a linear regression in dollars on every column in the table. What happens to the average miss?",
+  "options": [
+   "It drops a lot: more columns means more information",
+   "It drops a little",
+   "It gets worse than the baseline",
+   "It cannot be compared with a baseline"
+  ],
+  "answer": 2,
+  "reveal": "It gets worse: about $2,360. The lesson shows why, and the two changes, neither of them a cleverer algorithm, that bring it down to about $1,430."
+ },
+ "segments": [
+  {
+   "narration": "Finance still wants a spend forecast for every advertiser. The bar to beat is the run-rate: twice the last four weeks, which misses by about 2,000 dollars on average. Surely a model that reads all seventeen columns can beat one multiplication. So you ask the assistant for the standard first model for a number, a linear regression. It comes back with an average miss of about 2,360 dollars. Worse than the baseline. That is not a bug. It is the lesson.",
+   "visual": {
+    "type": "title",
+    "kicker": "Module 3 · Lesson 1",
+    "title": "Linear regression",
+    "sub": "A weighted sum, and the scale you fit it on"
+   }
+  },
+  {
+   "narration": "A linear regression is a weighted sum. [[1]] Start from a base amount. Then multiply each column by its own weight and add everything up. If you have written a sum-product formula in a spreadsheet, you have written this model. [[2]] The weights are not typed in. They are learned: the fit picks the set of weights that makes the squared misses on the training advertisers as small as possible. [[3]] And each weight has a precise reading: how much the prediction moves for one more unit of that column, with the other columns held fixed.",
+   "visual": {
+    "type": "formula",
+    "title": "Linear regression = a weighted sum",
+    "lines": [
+     "predicted spend = base + weight 1 × column 1 + weight 2 × column 2 + …",
+     "weights are learned: the set with the smallest squared misses on the training rows",
+     "one weight = change in the prediction per unit of its column, others held fixed"
+    ],
+    "note": "In a spreadsheet: base + SUMPRODUCT(weights, columns)"
+   }
+  },
+  {
+   "narration": "So why did it lose? [[1]] The baseline sits at about 2,000 dollars. [[2]] The regression, fed every raw column, at about 2,360. The interval on that gap is nowhere near zero: worse, not tied. One reason sits in the columns. The run-rate combines two of them, spend and spend trend, by multiplying and dividing. A weighted sum can only add. [[3]] So hand it the run-rate as one more column. Now it misses by about 1,730 dollars, clearly ahead of the baseline. The gain came from a column you knew to build, not from the algorithm.",
+   "visual": {
+    "type": "bar",
+    "title": "Average miss (MAE), 4,000 test advertisers",
+    "unit": "$",
+    "data": [
+     {
+      "label": "Run-rate baseline",
+      "value": 2202
+     },
+     {
+      "label": "Regression, every raw column",
+      "value": 2361
+     },
+     {
+      "label": "Same, plus run-rate as a column (model A of lesson 2-5)",
+      "value": 1733
+     }
+    ],
+    "highlight": [
+     1
+    ],
+    "note": "Gap to baseline: +$339 (interval +$205 to +$479), then −$288 (−$407 to −$171)"
+   }
+  },
+  {
+   "narration": "The second reason is the shape of money. [[1]] The advertiser in the middle of the test set spends about 7,100 dollars. [[2]] The average is about 5,300, three times as much. [[3]] The largest account spends about 174,000. Recall that the weights were chosen to make squared misses small. Squared, a miss fifty times bigger counts 2,500 times more. [[4]] So the fit bends its weights to suit a handful of giant accounts, and thousands of ordinary ones get worse predictions.",
+   "visual": {
+    "type": "stat",
+    "title": "Spend in the next 8 weeks, 4,000 test advertisers",
+    "stats": [
+     {
+      "value": "$1,694",
+      "label": "the advertiser in the middle (median)"
+     },
+     {
+      "value": "$5,257",
+      "label": "the average"
+     },
+     {
+      "value": "$174,408",
+      "label": "the largest account"
+     },
+     {
+      "value": "$904 vs $490",
+      "label": "miss for the advertiser in the middle: raw-dollar regression vs run-rate"
+     }
+    ]
+   }
+  },
+  {
+   "narration": "The fix is a change of scale, not a cleverer model. Put spend on a log scale, the kind you pick for a chart axis when one bar dwarfs the rest. There, one thousand dollars to ten thousand is the same step as ten thousand to a hundred thousand. Equal steps are equal percentage changes, so the giants no longer dominate. [[4]] Fit the same weighted sum to the log of spend, and the average miss falls to about 1,430 dollars, the best so far. [[5]] It even edges out a more flexible kind of model fitted in dollars, which gets to about 1,500. The interval on that gap only just clears zero.",
+   "visual": {
+    "type": "bar",
+    "title": "The ladder: average miss (MAE)",
+    "unit": "$",
+    "data": [
+     {
+      "label": "Run-rate baseline",
+      "value": 2022
+     },
+     {
+      "label": "Regression, raw dollars",
+      "value": 2361
+     },
+     {
+      "label": "Plus run-rate column",
+      "value": 1733
+     },
+     {
+      "label": "Same regression on log spend",
+      "value": 1428
+     },
+     {
+      "label": "A more flexible model, in dollars",
+      "value": 1500
+     }
+    ],
+    "highlight": [
+     3
+    ],
+    "note": "Log regression vs flexible model: −$72, interval −$155 to −$5"
+   }
+  },
+  {
+   "narration": "On a log scale the weights read as percentages. Holding the rest fixed, a managed account is predicted to spend about 13 percent more. In the dollar version that weight was about 600 dollars: the same 600 for an account spending five hundred dollars or fifty thousand. A percentage scales with the account. These are associations, not levers to pull. And this simulated world was built so that effects on spend multiply, which is exactly what a log fit assumes. On your data, fit it both ways and compare on the same test rows.",
+   "visual": {
+    "type": "table",
+    "title": "Log model: weights read as percentages",
+    "columns": [
+     "Column",
+     "Compared",
+     "Predicted spend"
+    ],
+    "rows": [
+     [
+      "Managed account",
+      "yes vs no",
+      "+12.8%"
+     ],
+     [
+      "CPA vs goal",
+      "1 SD higher",
+      "−8.4%"
+     ],
+     [
+      "Conversion tracking",
+      "yes vs no",
+      "+7.1%"
+     ],
+     [
+      "Payment failures",
+      "1 SD more",
+      "−6.6%"
+     ],
+     [
+      "Spend trend",
+      "1 SD higher",
+      "+6.5%"
+     ],
+     [
+      "Had an optimisation review",
+      "yes vs no",
+      "−4.6%"
+     ]
+    ],
+    "highlight": [
+     0,
+     1
+    ],
+    "note": "Other columns held fixed. Associations, not causes. 1 SD = one typical step."
+   }
+  },
+  {
+   "narration": "Now the catch. Turn a log prediction back into dollars and you get the typical advertiser of that kind: the one in the middle, with half spending more and half less. Not the average, because a few accounts spend far more than the middle and pull the average up. That is fine for one account and wrong for a total. [[1]] Add up the typical values for the advertisers who kept spending, and the total comes out about 4 percent low. [[2]] Scale every prediction up by a correction factor of about 1.04, and the total lands within a fraction of a percent. On average miss the two versions are close, and nothing here shows that gap is more than noise.",
+   "visual": {
+    "type": "compare",
+    "title": "Log model, summed over the 3,473 test advertisers who kept spending",
+    "left": {
+     "label": "Typical values, added up",
+     "value": "−3.6%",
+     "sub": "predicted total vs actual total"
+    },
+    "right": {
+     "label": "Corrected to averages (× 1.039)",
+     "value": "+0.1%",
+     "sub": "predicted total vs actual total"
+    }
+   }
+  },
+  {
+   "narration": "So, the brief. Ask for the regression in dollars and on a log scale, beside the baseline, on the same test advertisers. The output must show four things. [[1]] The scale it was fitted on. [[2]] How log predictions were turned back into dollars, with predicted total against actual. [[3]] Which rows were used. A log cannot take a zero, so this model was fitted only on advertisers who kept spending, and it predicts spend even for those who then churn. Scored on everyone, the corrected total runs about 6 percent high. The uncorrected one looks better, about 2 percent high, but only because its two errors pull in opposite directions. Churners get their own lesson later. [[4]] And an interval on every gap between one model and the next.",
+   "visual": {
+    "type": "bullets",
+    "title": "Brief and audit: what the output must show",
+    "items": [
+     "The scale: dollars or log, for the target and the spend columns",
+     "Back to dollars: typical or corrected? Predicted total vs actual",
+     "Rows fitted and rows scored. All 4,000, churners included: total +2.1% typical, +6.1% corrected",
+     "The baseline beside each model, with an interval on each gap"
+    ]
+   }
+  },
+  {
+   "narration": "To recap. A linear regression is a weighted sum, its weights fitted to past outcomes, each read with the other columns held fixed. Know its limits: every column pushes at one steady rate, and for an account bigger than any it has seen, it just extends the same line. What moved the result here was a column you built and the scale you chose, not a cleverer algorithm. Next, the same weighted sum is bent to answer a yes or no question: will this advertiser churn?",
+   "visual": {
+    "type": "quote",
+    "text": "What moved the result was the column you built and the scale you chose, not the algorithm.",
+    "sub": "Run-rate $2,022 · raw dollars $2,361 · plus run-rate column $3,733 · log scale $1,428"
+   }
+  }
+ ],
+ "takeaways": [
+  "A linear regression is a weighted sum; each weight is read with the other columns held fixed, and is an association.",
+  "With a skewed target like money, the column you build and the scale you fit on can matter more than the algorithm.",
+  "A log model turned back into dollars gives typical values: correct to averages before you add predictions up."
+ ],
+ "quiz": [
+  {
+   "id": "3-1-q1",
+   "concept": "reading a weight",
+   "domain": "course",
+   "q": "A linear regression for next-8-week spend, fitted in dollars, shows the weight 'managed: +598'. An account director reads it as: 'Give an account a manager and it spends about $600 more.' What does the weight actually say?",
+   "options": [
+    "Managed accounts spend $598 more on average than unmanaged accounts",
+    "Assigning a manager will add about $598 to an account's spend",
+    "Of two advertisers alike on every other column, the managed one is predicted $598 higher",
+    "The weight is smaller than the model's MAE, so it carries no meaning"
+   ],
+   "answer": 2,
+   "why": "A weight is the change in the prediction with the other columns held fixed, so it compares otherwise similar advertisers; it is not the raw gap between the two groups. It is also an association learned from past data, not a promise about what happens if you assign a manager."
+  },
+  {
+   "id": "3-1-q2",
+   "concept": "typical versus average",
+   "domain": "course",
+   "q": "The assistant fits spend on a log scale, converts the predictions back to dollars and reports: 'Lowest MAE of all models. Per-advertiser forecasts summed into a revenue total for finance.' What must you check before that total goes out?",
+   "options": [
+    "Whether the converted predictions are typical values, which sum below the real total",
+    "Whether MAE is a valid measure for a model fitted on a log scale",
+    "Whether the same model also had the lowest RMSE",
+    "Whether the log model used fewer columns than the dollar model"
+   ],
+   "answer": 0,
+   "why": "A log model turned straight back into dollars predicts the typical advertiser, not the average, so the sum runs low: 3.6% low here among advertisers who kept spending, until a correction factor is applied. How low depends on how spread out spend is. MAE in dollars is a fair way to score the model; the problem is what the predictions are used for, not the measure."
+  },
+  {
+   "id": "3-1-q3",
+   "concept": "skewed targets and scale",
+   "domain": "other",
+   "q": "A linear regression predicts how many minutes a support ticket will take. Most tickets take 5 to 10 minutes; a few escalations take days. Fitted on raw minutes, it does worse than always predicting the median. What is the most promising first change?",
+   "options": [
+    "Switch to a more complex kind of model",
+    "Fit the same model on the log of handling time",
+    "Remove the escalations from the test set",
+    "Add more tickets to the training set"
+   ],
+   "answer": 1,
+   "why": "With a few enormous values, a squared-error fit spends its weights on the escalations and gets ordinary tickets wrong; a log scale turns the giants into ordinary-sized steps. A more complex model changes the algorithm but leaves the same scale problem, and removing escalations from the test only hides the error."
+  },
+  {
+   "id": "3-1-q4",
+   "concept": "what a weighted sum cannot build",
+   "domain": "course",
+   "q": "Fitted in dollars on all 17 raw columns, the regression misses by $2,361 on average. The run-rate baseline misses by $2,022, and the interval on the gap excludes zero. A colleague concludes that linear regression is too weak for this problem. What is the better next step?",
+   "options": [
+    "Agree, and report that no model beats the run-rate here",
+    "Move straight to a more complex kind of model",
+    "Drop the baseline from the report, since it uses recent spend",
+    "Add the run-rate as a column: a weighted sum cannot multiply columns itself"
+   ],
+   "answer": 3,
+   "why": "The run-rate is a combination of two columns that a weighted sum cannot construct, so the model was missing its best input; given that column it misses by $1,733 and clearly beats the baseline. One losing configuration is not evidence about the whole method, and removing the baseline removes the only honest yardstick."
+  }
+ ],
+ "review": [
+  {
+   "concept": "A regression weight: the change per unit with other columns held fixed, an association and not a lever",
+   "variants": [
+    {
+     "q": "A linear regression predicts deal size for inbound leads. Its weight for 'attended a webinar' is +$1,200. Which reading is correct?",
+     "options": [
+      "Leads who attended a webinar close deals $1,200 larger on average",
+      "Among leads alike on the other columns, attendees are predicted $1,200 higher",
+      "Inviting a lead to a webinar will add $1,200 to the deal",
+      "Webinar attendance accounts for $1,200 of every deal"
+     ],
+     "answer": 1,
+     "why": "The weight compares leads that match on every other column, which is not the raw average gap between attendees and everyone else. And it describes a pattern in past deals, not the effect of inviting someone."
+    },
+    {
+     "q": "A regression predicts ticket handling time in minutes. Its weight for 'customer is on the enterprise plan' is +4. The support lead says: 'So enterprise tickets take 4 minutes longer than the rest.' What needs correcting?",
+     "options": [
+      "Nothing: that is exactly what the weight means",
+      "The weight is in percent, so it means 4 percent longer",
+      "It is 4 minutes longer than otherwise similar tickets, not than all the rest",
+      "A weight as small as 4 is too small to interpret"
+     ],
+     "answer": 2,
+     "why": "The weight holds the other columns fixed, so it compares enterprise tickets with otherwise similar ones. The raw gap between enterprise tickets and all others can be larger or smaller, because enterprise tickets differ on the other columns too."
+    },
+    {
+     "q": "A regression of campaign CTR on creative features gives 'headline contains a number: +0.08 points'. A creative strategist wants numbers added to every headline. What is the honest position?",
+     "options": [
+      "Do it: the weight shows that numbers cause a higher CTR",
+      "Do it, but only for campaigns whose CTR is below average",
+      "The weight cannot be used, because CTR is a percentage",
+      "It is an association among similar campaigns, not yet a proven lever"
+     ],
+     "answer": 3,
+     "why": "The weight says that, among otherwise similar campaigns, those with a number in the headline had a slightly higher CTR. Whether adding a number would change CTR is a different question, which a pattern in past data cannot settle by itself."
+    }
+   ]
+  },
+  {
+   "concept": "Skewed targets: fit on a log scale, and remember that log predictions are typical values, not averages",
+   "variants": [
+    {
+     "q": "A model fitted on the log of annual contract value predicts each customer's renewal amount. The CFO adds the predictions up, and the total is consistently a few percent below what comes in. What is the most likely reason?",
+     "options": [
+      "Back from a log scale, predictions are typical values, which sum too low",
+      "The model was fitted on too few customers to get a total right",
+      "Log models always underestimate the smallest customers",
+      "Per-customer predictions should never be added into a total"
+     ],
+     "answer": 0,
+     "why": "A log model turned back into dollars predicts the middle customer of each kind, and because a few customers spend far more than the middle, the average sits above it. Summing typical values therefore runs low until they are corrected to averages."
+    },
+    {
+     "q": "A regression predicts monthly revenue per publisher in raw dollars. Three giant publishers earn more than the other 2,000 combined, and the model is poor for almost everyone else. Why, and what do you try first?",
+     "options": [
+      "There are too few publishers; collect more months of data",
+      "The squared-error fit is dominated by the giants; fit on log revenue",
+      "Raw dollars are fine; the model simply needs more columns",
+      "The giants are outliers; delete them and report on the rest"
+     ],
+     "answer": 1,
+     "why": "Squared misses on the giants dwarf everything else, so the weights are tuned to them; on a log scale equal percentage errors count equally. Deleting the giants hides exactly the accounts finance cares about most."
+    },
+    {
+     "q": "A log-scale model predicts next month's spend per campaign. An account manager wants a forecast for one typical campaign; finance wants the sum over all campaigns. Which version of the prediction does each need?",
+     "options": [
+      "Both need the version corrected to averages",
+      "Both need the uncorrected, typical version",
+      "The manager the typical value; finance the corrected one",
+      "The manager the corrected value; finance the typical one"
+     ],
+     "answer": 2,
+     "why": "Converted straight back, a log prediction is the middle outcome for a campaign of that kind, which is the right answer for one campaign. A sum needs averages, so finance gets the corrected version; typical values would make the total run low."
+    }
+   ]
+  }
+ ],
+ "drill": [
+  {
+   "q": "What is a linear regression, and how are its weights chosen?",
+   "a": "A weighted sum: a base amount, plus each column multiplied by its own weight. The weights are the ones that make the squared misses on the training rows as small as possible."
+  },
+  {
+   "q": "A model fitted on the log of spend is turned back into dollars and added up into a revenue total. What goes wrong, and what is the fix?",
+   "a": "A log model predicts the typical account, and a few very large accounts pull the average above the typical, so the total runs low. Correct the predictions to averages before adding them up, and check the predicted total against the actual one."
+  }
+ ],
+ "recall": {
+  "prompt": "Your first linear regression lost to the run-rate baseline. Explain what a linear regression is, why it lost, and the two changes that fixed it.",
+  "model_answer": "A linear regression is a weighted sum of the columns, with weights chosen to make the squared misses on the training rows as small as possible; each weight is the change per unit with the other columns held fixed. It lost because a weighted sum cannot build the run-rate out of two columns by itself, and because spend is so skewed that a few giant accounts dominate a squared-error fit. Adding the run-rate as a column and fitting on a log scale fixed both. The catch: log predictions are typical values, so correct them to averages before summing."
+ },
+ "ask_assistant": "Predict spend_next_8w with a linear regression fitted two ways: in dollars, and on log spend with the past-spend columns logged too. Give both the run-rate (2 × the last 4 weeks) as a column. Train on January–March, score on May–June, and show the run-rate baseline beside both: MAE, RMSE, predicted total versus actual total, and a bootstrap interval on each MAE gap. For the log model, say which rows it was fitted on, how you converted back to dollars, and show the total with and without the correction to averages. Print the weights with their units.",
+ "audit_checklist": [
+  "The scale of the target and of the spend columns, stated in words",
+  "How many rows were fitted and how many scored, and what happened to advertisers with zero spend",
+  "Predicted total versus actual total, with and without the correction to averages",
+  "The run-rate baseline on the same test rows, with an interval on each gap"
+ ],
+ "transfer": [
+  "Predicting the value of an inbound lead when a few enterprise deals dwarf the rest: which scale do you fit on?",
+  "Estimating how many minutes a support ticket will take, when most are short and a few run for days.",
+  "Forecasting revenue per publisher and adding it up for finance: typical value or average?"
+ ],
+ "other_ways": [
+  {
+   "approach": "A more flexible model fitted in dollars",
+   "when": "When effects bend or depend on each other and you have plenty of rows; here, fitted in dollars, it missed by $1,500 against the log regression's $1,428."
+  },
+  {
+   "approach": "Predict the ratio of next period's spend to the last period's",
+   "when": "When account sizes differ enormously and the real question is growth or decline, not the level."
+  },
+  {
+   "approach": "Keep the run-rate rule",
+   "when": "When a rough forecast is enough and nobody will maintain or monitor a model."
+  }
+ ],
+ "glossary": [
+  {
+   "term": "linear regression",
+   "def": "A model that predicts a number as a base amount plus each column multiplied by a learned weight."
+  },
+  {
+   "term": "weight",
+   "def": "How much the prediction changes per unit of a column, with the other columns held fixed; also called a coefficient."
+  },
+  {
+   "term": "log scale",
+   "def": "A scale on which equal steps are equal percentage changes, so a few very large values no longer dominate."
+  },
+  {
+   "term": "typical versus average",
+   "def": "The typical value is the middle one, half above and half below; with a few very large values, the average sits above it."
+  },
+  {
+   "term": "extrapolation",
+   "def": "Predicting for a case outside the range the model was trained on, where it simply extends its line."
+  }
+ ]
+}

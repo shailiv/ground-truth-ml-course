@@ -1,0 +1,56 @@
+{
+  "lesson": "3-2",
+  "decisions": [
+    {
+      "n": 0,
+      "reviewer": "learner-1",
+      "finding": "Seg 3 gives four new things in twenty seconds, and 'one typical step' is not explained until the next segment.",
+      "decision": "accepted",
+      "reason": "True: the size of a step (logreg.coefs[0].one_sd_is = 0.41) was first given in seg 4. The reviewer's cheaper option fixes it without swapping two segments.",
+      "change": "Seg 3 now says: 'So one typical step up in spend trend, about 0.4 and explained in a moment, cuts the odds of churn by more than half.' Segments 3 and 4 were not swapped (two re-recordings for the same gain)."
+    },
+    {
+      "n": 1,
+      "reviewer": "learner-1",
+      "finding": "Third time I am told weights cannot answer 'what separates happy advertisers', with the answer two modules away; give me the sentence I may write today and pull the observed / adjusted / tested wording forward.",
+      "decision": "partly",
+      "reason": "The interim sentence is required by the lesson-specific ruling and uses a real figure: logreg.coefs has_conversion_tracking avg_probability_shift_pts = -4.4 (also tracking_story.model_weight_for_tracking). Moving the three evidence tiers from 5-2 into module 3 is a re-ordering of the course: out of scope here, noted for the owner.",
+      "change": "Seg 7 now gives the sentence: 'Advertisers with conversion tracking churned about 4 points less than otherwise similar advertisers without it. We have not tested whether switching it on helps.' The recap ties the lesson to the stakeholder question."
+    },
+    {
+      "n": 2,
+      "reviewer": "learner-1",
+      "finding": "The guess question cannot be reasoned about without knowing what odds are; 'odds and probability are unrelated' is a throwaway.",
+      "decision": "accepted",
+      "reason": "Fair. With the base rate stated (data.churn_rate = 0.1183) two options can be ruled out by reasoning. The keyed answer stays 'about 5 points' (logreg.coefs[0].avg_probability_shift_pts = -5.1); the reviewer's 'where does 13 percent go' would need a figure that is not in facts.",
+      "change": "Question now opens 'About 12 percent of advertisers churn.' The throwaway option is replaced by 'Less than 1 percentage point', and the reveal says why 25 or 50 points were never possible."
+    },
+    {
+      "n": 3,
+      "reviewer": "learner-1",
+      "finding": "An unexplained 'e' on screen in seg 2, and no picture of the S-curve anywhere.",
+      "decision": "partly",
+      "reason": "The 'e' is unexplained and the voice never mentions it. A drawn curve is not available: the only curve-capable visual, 'line', pads its y-axis past the data (site/public/js/visuals.js, lineChart), so a 0 to 100 percent curve would sit on an axis running from -20 to 120 percent, which contradicts the point of the slide.",
+      "change": "Formula line 2 is now 'probability of churn = the points, squeezed through an S-shaped curve into 0-100%'. Line 3 (-3, 0, +3 points to 5%, 50%, 95%) is unchanged. Narration untouched."
+    }
+  ],
+  "rulings": {
+    "R1": "Seg 1 adds one sentence: 'The same learned scorecard works for any yes or no question, such as which clicks are invalid traffic.' It comes before 'the churn model you were judging'.",
+    "R2": "Not applicable.",
+    "R3": "ask_assistant is a template (105 words) with slots [yes/no outcome], [training period], [test period], [positives], [my current rule or baseline], [outcome]. Evidence demands kept: units, odds ratio and probability points per weight, AUC on training and test rows with row counts, the baseline at the same list size, association wording.",
+    "R4": "Recap is 48 spoken words in two sentences and no longer reads the take-aways. The 'Keep this' bullets stay; the cue markers went with the sentences that walked through them.",
+    "R5": "Keyed answer longest in 3 of 10 before and after (within the limit). Three 'nothing is wrong' style distractors replaced with specific mistakes (quiz q2, review 1 variant 3, review 2 variant 1), plus the throwaway in the guess question.",
+    "R6": "Judged not applicable. The usable move (ask for a logistic regression first, weights in probability points) is the spoken brief, and the hand scorecard from other_ways is where seg 1 starts. Seg 8 is left byte-identical.",
+    "R7": "Checklist was already evidence-based. Items 1 and 2 merged; added 'The current rule or baseline is scored on the same test rows at the same list size, beside the model' (the narration asked for it, the checklist did not) and row counts beside the two AUCs.",
+    "R8": "Segments 2, 4, 5, 6 and 8 are byte-identical. Drill, recall and take-aways untouched.",
+    "R9": "55 course figures checked against facts.json (logreg.*, baseline.*, tracking_story.truth, data.churn_rate, data.n_train). The changed facts: the lesson quotes one_sd_is for spend trend (0.41), active days (5.3) and tenure (34), all of which match the new values; cpa_vs_goal is not quoted.",
+    "specific": "The sentence the learner may write today is in seg 7, with -4.4 points from logreg.coefs (has_conversion_tracking), worded as an association among otherwise similar advertisers and followed by 'We have not tested whether switching it on helps.' 900 spoken words."
+  },
+  "segments_changed": [1, 3, 7, 9],
+  "numbers_verified": 55,
+  "open_questions": [
+    "A real picture of the S-curve needs either a new visual type or a 'line' option that pins the y-axis to 0-100; with the current renderer the axis would run from -20% to 120%.",
+    "Seg 7's sentence uses the model's own figure (about 4 points, logreg weight for tracking). Lesson 5-1 uses 6.5 points for 'adjusted for what the table can see' (tracking_story.adjusted_diff_pts, a smaller set of columns). Both are correct for what they adjust for; decide whether the two lessons should say so or share one figure.",
+    "The reviewer asked for the observed / adjusted / tested wording to be pulled forward from 5-2. Not done (re-ordering); this lesson now gives one worked sentence instead."
+  ]
+}

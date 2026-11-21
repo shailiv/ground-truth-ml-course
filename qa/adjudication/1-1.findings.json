@@ -1,0 +1,78 @@
+[
+ {
+  "reviewer": "learner-1",
+  "lesson": "1-1",
+  "where": "quiz and guess answer keys (pattern across all 16 lessons)",
+  "quote": "answer keys: 1-1 [1,3,0,2], 1-3 [1,3,0,2], 2-1 [1,3,0,2], 2-3 [1,3,0,2], 2-5 [1,3,0,2], 2-6 [1,3,0,2]",
+  "kind": "question",
+  "severity": "medium",
+  "problem": "Every one of the 16 quizzes uses each of A to D exactly once, so the fourth answer is known by elimination, and Q1 is never A. The guess-first answer is never the first option in any of the 16 lessons (it is B in 8). I noticed during module 2.",
+  "fix": "Shuffle option order at render time, or re-key so the positions are not balanced inside each quiz."
+ },
+ {
+  "reviewer": "gemini",
+  "lesson": "1-1",
+  "where": "seg3 narration and visual",
+  "quote": "Each row has 17 columns describing eight weeks of that advertiser's history",
+  "kind": "number_mismatch",
+  "severity": "low",
+  "explanation": "Both the narration and the table note ('Features: 17 columns from 8 weeks of history') state that all 17 feature columns come from an 8-week history window. In facts.json, only some features cover 8 weeks (such as spend_8w, spend_trend, cpa_vs_goal, support_tickets_8w and payment_failures_8w), while others span much longer histories (tenure_weeks has a training mean of 39.2 weeks and 90th percentile of 84 weeks; creative_refresh_days is 120 days for advertiser 111754 shown in the same table), cover 28 days (active_days_28), or record static/current account profile and setup (vertical, managed, has_conversion_tracking, uses_auto_bidding).",
+  "evidence": "facts.json -> data.feature_columns; data.feature_stats_train.tenure_weeks (mean: 39.152, p90: 84); explain_examples.examples[0].row.creative_refresh_days (120); feature_groups.cumulative (profile, setup and practices, performance vs goal, recent behaviour)",
+  "fix": "Change the narration to 'Each row has 17 columns describing the advertiser up to that point: profile, setup, and recent activity over the last four to eight weeks' and the visual note to 'Features: 17 columns known at the snapshot. Label: what happened in the 60 days after. Simulated data.'",
+  "problem": "Both the narration and the table note ('Features: 17 columns from 8 weeks of history') state that all 17 feature columns come from an 8-week history window. In facts.json, only some features cover 8 weeks (such as spend_8w, spend_trend, cpa_vs_goal, support_tickets_8w and payment_failures_8w), while others span much longer histories (tenure_weeks has a training mean of 39.2 weeks and 90th percentile of 84 weeks; creative_refresh_days is 120 days for advertiser 111754 shown in the same table), cover 28 days (active_days_28), or record static/current account profile and setup (vertical, managed, has_conversion_tracking, uses_auto_bidding)."
+ },
+ {
+  "reviewer": "gemini",
+  "lesson": "1-1",
+  "where": "review 1 variant 2",
+  "quote": "A traffic-quality model, trained on sources that were later confirmed valid or invalid, returns 0.83 for a new source.",
+  "kind": "bad_question",
+  "severity": "low",
+  "explanation": "The stem never specifies whether 'valid' or 'invalid' is coded as the positive label (1), and calling it a 'traffic-quality model' naturally implies higher scores mean higher quality (valid traffic). Yet the keyed answer (option 0) states that 0.83 means 'it resembles past invalid sources', which is only true if invalid traffic was defined as the positive class.",
+  "evidence": "Direction of a [0, 1] classification score depends on which outcome is defined as the positive label; Lesson glossary defines score as 'higher means more like past positive cases'.",
+  "fix": "Change the stem to: 'An invalid-traffic model, trained to flag sources that were later confirmed invalid, returns 0.83 for a new source. What is that number?'",
+  "problem": "The stem never specifies whether 'valid' or 'invalid' is coded as the positive label (1), and calling it a 'traffic-quality model' naturally implies higher scores mean higher quality (valid traffic). Yet the keyed answer (option 0) states that 0.83 means 'it resembles past invalid sources', which is only true if invalid traffic was defined as the positive class."
+ },
+ {
+  "reviewer": "gemini",
+  "lesson": "1-1",
+  "where": "review 2 variant 1",
+  "quote": "An assistant says its lead-scoring model 'correctly reproduces the outcome of 98 percent of last year's leads'.",
+  "kind": "bad_question",
+  "severity": "low",
+  "explanation": "Unlike quiz 1-1-q2 and the other two review variants for this concept, the question stem omits that the model was trained on last year's leads. Without that premise in the stem, the keyed answer ('Very little: last year's leads are the cases it was adjusted to match') asserts a fact about the training set that the question never gave.",
+  "evidence": "Evaluation principle: outcomes on historical rows are training-set performance only if those rows were used to fit/tune the model.",
+  "fix": "Clarify in the stem that those were the training rows: 'An assistant trains a lead-scoring model on last year's leads and says it \"correctly reproduces the outcome of 98 percent of them\". What does that tell you about next month's leads?'",
+  "problem": "Unlike quiz 1-1-q2 and the other two review variants for this concept, the question stem omits that the model was trained on last year's leads. Without that premise in the stem, the keyed answer ('Very little: last year's leads are the cases it was adjusted to match') asserts a fact about the training set that the question never gave."
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "1-1",
+  "where": "guess + quiz 1-1-q1 + drill 1 + recall",
+  "quote": "Your rule is already a small model.",
+  "kind": "question",
+  "severity": "low",
+  "problem": "The same question (how is a model different from my rule) is asked four times. Once the guess reveal has said 'the same kind of thing', q1 is answerable without hearing the lesson.",
+  "fix": "Keep the guess. Make q1 test a consequence instead: show two hand rules and one fitted model and ask which choices were made by a person and which by data."
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "1-1",
+  "where": "seg5 narration",
+  "quote": "adjusted until the outputs line up with what really happened",
+  "kind": "lost",
+  "severity": "low",
+  "problem": "'Each candidate' of what, adjusted how? I pictured the computer trying every possible rule, which sounds impossible, and the mechanism stays magic until 3-1.",
+  "fix": "One concrete sentence: start with any weights, measure how far off the outputs are, nudge the weights to shrink that, repeat."
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "1-1",
+  "where": "seg6 narration",
+  "quote": "Higher means this advertiser looks more like the ones who left.",
+  "kind": "lost",
+  "severity": "low",
+  "problem": "I immediately read a score of 0.3 as a 30 percent chance, and nothing says whether that is allowed. The answer arrives eight lessons later in 2-4.",
+  "fix": "Add one clause: 'not yet a percentage; lesson 2-4 checks whether it can be read as one'."
+ }
+]

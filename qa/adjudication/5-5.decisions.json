@@ -1,0 +1,51 @@
+{
+ "lesson": "5-5",
+ "decisions": [
+  {
+   "n": 0,
+   "reviewer": "expert-3",
+   "finding": "The holdout comparison has no interval and no size; a 10 percent slice of the rule's list gives a margin of about 8 points against an assumed effect of about 6.",
+   "decision": "accepted",
+   "reason": "Checked: economics.list_from_the_rule 1,311 contacted, 413 churners (31.5 percent); 0.2 saved gives a 6.3-point gap; 131 against 1,180 gives +/- 8.3 points. experiment.examples needs 1,468 per group for a 5-point lift. The derived figures are not in facts, so the narration makes the point without a number.",
+   "change": "Seg 7: 'That gap, with its interval, is the only honest measure of whether the calls work. A small slice gives a wide interval, so size it like an experiment, or pool several months, before it replaces the guessed one in five.' Seg 8 and its card: the gap comes with its interval. Brief: the size needed to detect [smallest gap worth acting on]. Audit item 4: the gap with its interval."
+  },
+  {
+   "n": 1,
+   "reviewer": "learner-2",
+   "finding": "'Chance of staying times spend if they stay ties the best spend model from the regression lesson' cannot be heard, and the two-stage model was never explained.",
+   "decision": "accepted",
+   "reason": "The claim is true (regression.models.two_stage_chance_of_staying_x_average MAE 1416 against log_model_typical_value 1428; paired difference -13, interval -27 to 2, a tie) and OUTLINE 5-5 gives it one sentence, so it is rewritten rather than cut or grown to three.",
+   "change": "Seg 6: 'For spend, the chance an advertiser stays times their spend if they stay matches the best model from the regression lesson.' Card bullet 3 shows the formula in words; glossary gains 'two-stage prediction'."
+  },
+  {
+   "n": 2,
+   "reviewer": "learner-2",
+   "finding": "One in five is rosier than the last lesson's simulation (32 churns prevented on the same 400, where one in five would credit 44) and nothing says so.",
+   "decision": "accepted",
+   "reason": "True for the risk list: uplift.policies_call_400.highest_churn_risk prevents 32 where top_k[400].churners = 220 times 0.2 would be 44. The ratio itself is not a figure in facts, so the clause carries no number.",
+   "change": "Seg 6: 'One in five is a guess, and a kind one: on the risk list, the last lesson's calls saved fewer than that, and not equally everywhere.'"
+  }
+ ],
+ "rulings": {
+  "R1": "Seg 1 ends: 'The same arithmetic draws the line under any score that triggers an action, such as which advertisers likely to miss their CPA goal get a review.'",
+  "R2": "Not applicable.",
+  "R3": "ask_assistant rewritten as a template ([outcome], [evaluation period], [units], [cost per action], [value of a success], [share of cases where the action works], [capacity], holdout [size], [smallest gap worth acting on]); 118 words.",
+  "R4": "Seg 9 cut from 61 to 43 words; quote visual kept.",
+  "R5": "Keyed answer longest in 3 of 10 (was 4). 'None: ...' in quiz 1 replaced by a specific half-truth (only capacity is wrong), with a line added to its 'why'; 'Nothing: ...' in quiz 2 reworded as the specific wrong belief it was.",
+  "R6": "Nothing sat only in other_ways: taking the top names the team can handle is spoken in the widget segment (seg 5), the random holdout in segs 7 and 8. No sentence added for R6.",
+  "R7": "Item 4 said the holdout was 'chosen at random', a claim; it now asks for how it was drawn and its average score beside the called names, and later the gap with its interval. Seg 8 narration and card match.",
+  "specific": "None for this lesson. Seg 5 (the ranklist widget) is byte-identical; I checked its statements against the widget code and economics: slider by list size, 'rank by chance x spend', net value peaking near 1,300 (best_list_in_hindsight 1,271), default 141 worth $26,970, the rule's list $84,570."
+ },
+ "segments_changed": [
+  1,
+  6,
+  7,
+  8,
+  9
+ ],
+ "numbers_verified": 195,
+ "open_questions": [
+  "Narration is 929 words (target 900, hard cap 950); all segments at or under 128.",
+  "Seg 5 says 'switch the ranking to expected dollars and see who moves up'. The widget's control is labelled 'chance x spend' and it shows the median spend of listed accounts and the share of lost spend, not names. True enough to leave, but 'see how the list changes' would be exact if that segment is ever re-recorded."
+ ]
+}

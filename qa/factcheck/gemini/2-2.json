@@ -1,0 +1,44 @@
+{
+ "issues": [
+  {
+   "where": "seg3 narration",
+   "quote": "Of those, 134 really churned.",
+   "kind": "number_mismatch",
+   "severity": "high",
+   "explanation": "At the 0.5 cut-off, 104 of the 141 flagged test advertisers churned, not 134. Stating 134 contradicts facts.json, disagrees with the segment's own confusion-matrix visual (tp = 104), and fails to add up with the 37 false alarms (134 + 37 = 171, not 141).",
+   "evidence": "facts.json -> logreg.test: flagged = 141, tp = 104, fp = 37 (also thresholds[7] at threshold = 0.5: tp = 104).",
+   "fix": "Change 'Of those, 134 really churned.' to 'Of those, 104 really churned.'"
+  },
+  {
+   "where": "seg5 narration",
+   "quote": "Recall, remember, is the share of your flags that turn out to be right, so a model with high recall rarely wastes a call.",
+   "kind": "wrong_concept",
+   "severity": "high",
+   "explanation": "This sentence defines precision rather than recall and directly contradicts both standard ML definitions and earlier narration in segments 4 and 5. The share of flags that turn out to be right is precision; recall is the share of actual churners that were flagged. A model with high recall can still waste many calls on false alarms (for example, flagging everyone gives 100% recall).",
+   "evidence": "Recall = TP / (TP + FN) (share of actual positives caught), whereas precision = TP / (TP + FP) (share of flags that are truly positive); see also facts.json -> uncertainty.recall_at_half_95 = [0.165, 0.235].",
+   "fix": "Remove this sentence or replace it with the bootstrap uncertainty interval for recall from facts.json: 'And recall could land anywhere from about 17 to 24 percent.'"
+  },
+  {
+   "where": "seg5 visual",
+   "quote": "= 104 ÷ 257",
+   "kind": "number_mismatch",
+   "severity": "high",
+   "explanation": "The recall formula visual transposes the digits of the test-set churner total, dividing 104 by 257 instead of 527. Dividing 104 by 257 gives 40.5%, contradicting the 19.7% result on the next line, the narration ('104 out of 527'), and facts.json.",
+   "evidence": "facts.json -> data.churners_test = 527; logreg.test: tp = 104, fn = 423 (104 + 423 = 527), recall = 0.197 (104 / 527 = 0.1973).",
+   "fix": "Change '= 104 ÷ 257' to '= 104 ÷ 527'."
+  },
+  {
+   "where": "seg6 narration",
+   "quote": "and its recall about 41, far above",
+   "kind": "number_mismatch",
+   "severity": "high",
+   "explanation": "The hand rule 'spend_trend < 0.7' catches 246 of the 527 test churners, giving a recall of 46.7% (about 47 percent), not about 41 percent. Stating 41 contradicts facts.json as well as the segment's own visual table ('46.7%') and later narration ('nearly half the churners').",
+   "evidence": "facts.json -> baseline: rule = 'spend_trend < 0.7', rule_tp = 246, rule_recall = 0.467 (246 / 527 = 0.4668).",
+   "fix": "Change 'and its recall about 41, far above.' to 'and its recall about 47 percent, far above.'"
+  }
+ ],
+ "numbers_checked": 118,
+ "verdict": "Fail: four high-severity errors must be fixed before publication—three numeric mismatches against facts.json (134 vs 104 true positives in seg3 narration, 257 vs 527 churners in seg5 visual, and 41% vs 46.7% rule recall in seg6 narration) and a false conceptual statement at the end of seg5 narration that defines recall as precision.",
+ "_hash": "87130afae0c1c9ef",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_ChdXczhCYTU2V0hOejV2ZElQb192cHFBTRIXV3M4QmE1NldITno1dmRJUG9fdnBxQU0 | tokens in=67433 out=990 thought=27078]"
+}

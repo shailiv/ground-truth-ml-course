@@ -1,0 +1,35 @@
+{
+ "issues": [
+  {
+   "where": "seg2 narration",
+   "quote": "14 or fewer against 95 or more",
+   "kind": "number_mismatch",
+   "severity": "high",
+   "explanation": "The root split on active_days_28 uses a threshold of 14.5, which separates integer active days over a 28-day window into 14 or fewer versus 15 or more (as shown later in seg5 visual). Saying '95 or more' is impossible in a 28-day window and omits 15 through 94.",
+   "evidence": "facts.json -> tree.root: feature = 'active_days_28', threshold = 14.5 (and data.columns: 'active_days_28' has a maximum of 28 days).",
+   "fix": "Here that was active days: 14 or fewer against 15 or more."
+  },
+  {
+   "where": "seg5 narration",
+   "quote": "it takes churn from 5 percent to 12",
+   "kind": "number_mismatch",
+   "severity": "high",
+   "explanation": "Among active training advertisers (active_days_28 > 14.5), shrinking spend (spend_trend <= 0.69) raises the churn rate from 5.3% to 21.1% (about 21 percent), not 12 percent. This also contradicts seg5 visual, which correctly displays 5.3% and 21.1%.",
+   "evidence": "facts.json -> tree.root.no: no.churn = 0.053 (spend_trend > 0.69) and yes.churn = 0.211 (spend_trend <= 0.69).",
+   "fix": "Among active ones, it takes churn from 5 percent to 21."
+  },
+  {
+   "where": "seg5 visual",
+   "quote": "below 7.04 in the first row",
+   "kind": "number_mismatch",
+   "severity": "high",
+   "explanation": "In the table note, the spend_trend cut-off for the first row (few active days, active_days_28 <= 14.5) is stated as 7.04 instead of 0.74. This contradicts both facts.json and earlier parts of the lesson (predict.reveal, seg1 narration, seg3 narration, and seg4 visual).",
+   "evidence": "facts.json -> tree.root.yes: feature = 'spend_trend', threshold = 0.74.",
+   "fix": "Shrinking means a spend trend below 0.74 in the first row and below 0.69 in the second: the tree picked each cut-off separately."
+  }
+ ],
+ "numbers_checked": 76,
+ "verdict": "Conceptually strong and well-aligned with the brief, with sound quiz and review items, but blocked by three high-severity numeric errors in segments 2 and 5 ('95 or more' instead of '15 or more', '12' percent instead of '21' percent, and '7.04' instead of '0.74').",
+ "_hash": "f10d47e66340f29a",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_ChdaTlFCYThhSUFkNjl2ZElQckxUMXlBTRIXWk5RQmE4YUlBZDY5dmRJUHJMVDF5QU0 | tokens in=67229 out=702 thought=23885]"
+}

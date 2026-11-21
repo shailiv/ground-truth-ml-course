@@ -1,0 +1,52 @@
+[
+ {
+  "reviewer": "learner-1",
+  "lesson": "2-6",
+  "where": "seg4 narration",
+  "quote": "The cleaner check puts an interval on the gap itself",
+  "kind": "ear",
+  "severity": "medium",
+  "problem": "The longest segment of the module, about a dozen numbers and two different methods (overlapping ranges, then an interval on the gap). I got the first and lost the second, whose only visual is the small note under the table.",
+  "fix": "Split the segment at this sentence and give the gap its own card: '+4.9 points, interval −1.7 to +11.4, zero is inside'."
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "2-6",
+  "where": "seg5 narration + table",
+  "quote": "Gaming churn reached about 30 percent, against 16 percent across January to April.",
+  "kind": "doubt",
+  "severity": "low",
+  "problem": "What happened in May? The table stops at April and jumps to June, and comparing the most extreme month against a pooled baseline is the 'biggest mover out of many cuts' that seg7 warns me about.",
+  "fix": "Show May with its interval and say why June against January to April was the comparison chosen."
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "2-6",
+  "where": "quiz 2-6-q2",
+  "quote": "The gap's interval runs from about −1.7 to +2.9 points: nothing is shown",
+  "kind": "question",
+  "severity": "low",
+  "problem": "The right option contains two numbers I cannot derive and must recall from a table, and it is the only option with specific numbers in it.",
+  "fix": "'A 0.6-point gap between groups this size is inside the wobble: ask for the interval before recommending anything.'"
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "2-6",
+  "where": "brief (ask_assistant) vs seg7 narration",
+  "quote": "bootstrap the difference on the same test rows",
+  "kind": "lost",
+  "severity": "low",
+  "problem": "The word 'bootstrap' is in the text I am meant to paste but is never spoken; the narration describes redrawing rows a thousand times without naming it.",
+  "fix": "Name it once aloud in seg7: 'the assistant will call this a bootstrap'."
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "2-6",
+  "where": "seg3 narration + stat 4",
+  "quote": "a gap above 2 points never showed up",
+  "kind": "doubt",
+  "severity": "low",
+  "problem": "By the lesson's own margins (about ±1 point at 4,000) a 2-point gap between two such groups should be rare but not impossible, a handful in 2,000 tries. 'Never' and '0%' sound like a rounded figure stated as an absolute.",
+  "fix": "Re-check the simulated count and say 'almost never (under 1 time in 100)' if that is what it shows."
+ }
+]

@@ -1,0 +1,208 @@
+{
+  "reviewer": "expert-1",
+  "lessons": ["1-1", "1-2", "1-3", "1-4", "1-5", "2-1", "2-2", "2-3", "2-4"],
+  "findings": [
+    {
+      "lesson": "1-4",
+      "where": "seg3 narration",
+      "quote": "For advertisers who churned, the typical value is 68 days.",
+      "kind": "number_mismatch",
+      "severity": "high",
+      "problem": "The typical (median) days since last spend for churners is 86, not 68. The narration also disagrees with its own visual, which shows a third value (66).",
+      "evidence": "facts.leakage.median_value_churned = 86 (mean_value_churned = 75.8; neither is 68). OUTLINE 1-4: 'typical value 86 days for churners, 3 for the rest'.",
+      "fix": "For advertisers who churned, the typical value is 86 days."
+    },
+    {
+      "lesson": "1-4",
+      "where": "seg3 visual (stat 1)",
+      "quote": "66 days",
+      "kind": "number_mismatch",
+      "severity": "high",
+      "problem": "The stat for churners shows 66 days; the fact is 86. It matches neither facts.json nor the narration of the same segment (68).",
+      "evidence": "facts.leakage.median_value_churned = 86; median_value_stayed = 3 (the second stat, '3 days', is correct).",
+      "fix": "\"value\": \"86 days\""
+    },
+    {
+      "lesson": "1-4",
+      "where": "seg4 narration",
+      "quote": "The label describes the 90 days after it.",
+      "kind": "number_mismatch",
+      "severity": "high",
+      "problem": "The outcome window is 60 days. The narration contradicts the label definition spoken one segment earlier ('no spend at all in the 60 days after the snapshot') and the timeline on screen at that moment ('Outcome: 60 days', 56 to 116).",
+      "evidence": "facts.data.outcome_columns.churned_next_60d = 'no spend at all in the 60 days after the snapshot'; facts.data.why_a_gap.",
+      "fix": "The label describes the 60 days after it."
+    },
+    {
+      "lesson": "2-1",
+      "where": "seg2 visual (flow step 1)",
+      "quote": "82,000 advertisers",
+      "kind": "number_mismatch",
+      "severity": "medium",
+      "problem": "The table of rows with known outcomes has 12,000 advertisers, not 82,000. Nothing in facts.json is 82,000.",
+      "evidence": "facts.data.n = 12000 (n_train 6000 + n_gap 2000 + n_test 4000).",
+      "fix": "\"sub\": \"12,000 advertisers\""
+    },
+    {
+      "lesson": "2-1",
+      "where": "seg3 narration",
+      "quote": "Test on May and June, 8,000 advertisers from a later period.",
+      "kind": "number_mismatch",
+      "severity": "high",
+      "problem": "The test set is 4,000 advertisers (two months of 2,000). The narration contradicts the timeline shown with it ('Test: May-Jun · 4,000') and every later use of the test set in this module (527 churners out of 4,000).",
+      "evidence": "facts.data.n_test = 4000; data.per_month = 2000.",
+      "fix": "Test on May and June, 4,000 advertisers from a later period."
+    },
+    {
+      "lesson": "2-1",
+      "where": "seg6 narration",
+      "quote": "On the test months it is right about 78 percent of the time",
+      "kind": "number_mismatch",
+      "severity": "high",
+      "problem": "Predicting that everyone stays is 86.8 percent accurate, not 78. As spoken the segment is self-contradictory: 'only about 13 percent churn' implies 87, the visual shows 86.8%, and the next line ('the 88 percent ... is less than two points better than doing nothing') is false against 78. This is the lesson's central baseline number.",
+      "evidence": "facts.baseline.always_no_accuracy = 0.868; data.churn_rate_test = 0.1318. Take-away 3 and quiz 2-1-q1 both say 'about 87 percent'.",
+      "fix": "On the test months it is right about 87 percent of the time, because only about 13 percent of advertisers churn."
+    },
+    {
+      "lesson": "2-1",
+      "where": "ask_assistant; audit_checklist item 4; seg8 narration",
+      "quote": "how many each one flagged, and of those flagged, how many really churned",
+      "kind": "brief",
+      "severity": "low",
+      "problem": "The lesson's stated bar is beating the rule 'with the same number of flags', but neither the brief nor the checklist asks for the model at the rule's list size. Followed literally, the assistant returns the model at its default cut-off (141 flagged, 104 churners) beside the rule (711 flagged, 246 churners): two different list sizes, the comparison the course later calls unfair, and nothing in the checklist rejects it.",
+      "evidence": "facts.baseline.rule_flagged = 711, rule_tp = 246; logreg.test.flagged = 141, tp = 104; baseline.model_same_count = {flagged 711, churners 321} is the figure the lesson itself uses in seg7.",
+      "fix": "Brief: add 'and show the model for the same number of flags as the rule: its top 711 by score'. Checklist item 4: '... both baselines beside the model on the same test rows, the model shown at the same number flagged as the rule'."
+    },
+    {
+      "lesson": "2-2",
+      "where": "seg3 narration",
+      "quote": "The model flagged 141 advertisers. Of those, 134 really churned. The other 37 stayed",
+      "kind": "number_mismatch",
+      "severity": "high",
+      "problem": "104 of the 141 flagged churned, not 134. The spoken counts do not add up (134 + 37 = 171, not 141) and contradict the matrix on screen (tp 104) and the precision and recall computed from 104 in the next two segments.",
+      "evidence": "facts.logreg.test = {flagged 141, tp 104, fp 37, fn 423, tn 3436}; same in thresholds[threshold 0.5].",
+      "fix": "Of those, 104 really churned."
+    },
+    {
+      "lesson": "2-2",
+      "where": "seg5 narration (last sentence)",
+      "quote": "Recall, remember, is the share of your flags that turn out to be right, so a model with high recall rarely wastes a call.",
+      "kind": "wrong_concept",
+      "severity": "high",
+      "problem": "This is the definition of precision, stated as recall, in the segment that has just defined recall correctly. Recall is the share of real churners that got a flag; it says nothing about wasted calls. A high-recall setting can waste most of them: on this model the cut-off that reaches 90 percent recall has 24 percent precision, so three calls in four are false alarms.",
+      "evidence": "Principle (recall = TP / (TP + FN); precision = TP / (TP + FP)). facts.thresholds[threshold 0.05]: recall 0.903, precision 0.243. Contradicts the same segment's formula visual, the glossary and take-away 2.",
+      "fix": "Delete the sentence. If a reminder is wanted: 'Recall, remember, starts from the churners: how many of them got a flag. It says nothing about how many flags were wasted.'"
+    },
+    {
+      "lesson": "2-2",
+      "where": "seg5 visual (formula line 2)",
+      "quote": "= 104 ÷ 257",
+      "kind": "number_mismatch",
+      "severity": "high",
+      "problem": "The denominator of recall is the 527 churners in the test months, not 257. As printed the arithmetic is wrong on screen: 104 ÷ 257 is 40.5 percent, not the 19.7% on the next line. The narration says '104 out of 527'.",
+      "evidence": "facts.data.churners_test = 527; logreg.test.recall = 0.197 (104 / 527).",
+      "fix": "\"= 104 ÷ 527\""
+    },
+    {
+      "lesson": "2-2",
+      "where": "seg6 narration",
+      "quote": "its recall about 41, far above",
+      "kind": "number_mismatch",
+      "severity": "medium",
+      "problem": "The hand rule's recall is 46.7 percent (246 of 527), about 47, not 41. The table in the same segment shows 46.7%, and the segment's own closing line says the rule 'finds nearly half the churners'.",
+      "evidence": "facts.baseline.rule_recall = 0.467 (rule_tp 246 / churners_test 527).",
+      "fix": "Its precision is about 35 percent, far below the model's, and its recall about 47, far above."
+    },
+    {
+      "lesson": "2-2",
+      "where": "quiz 2-2-q1 to q4; review 1 variants 1-3; review 2 variant 2",
+      "quote": "They differ where it counts: the second's flags are right more often, but it catches 77 churners, not 104.",
+      "kind": "bad_question",
+      "severity": "medium",
+      "problem": "The keyed option is the single longest option in 8 of the 10 questions (all four quiz questions). 'Pick the longest answer' scores 80 percent with no understanding. Examples: 2-2-q1 keyed 106 characters against 74/67/55; review 1 variant 3 keyed 84 against 38/63/58; review 1 variant 2 keyed 87 against 53/53/62. In lessons 1-1 to 2-1 the same count is 0 or 1 of 10.",
+      "evidence": "Option lengths in the file; principle: option length must carry no signal about the key.",
+      "fix": "Shorten the keyed options and give the distractors the same level of specific detail, so that the key is the longest in roughly a quarter of the questions."
+    },
+    {
+      "lesson": "2-3",
+      "where": "seg5 narration (last sentence)",
+      "quote": "An AUC of 0.85 simply means the model's yes-or-no answer is correct for 85 percent of advertisers.",
+      "kind": "wrong_concept",
+      "severity": "high",
+      "problem": "That is accuracy at a cut-off, not AUC. AUC has no cut-off and no yes-or-no: it is how often a randomly chosen churner scores above a randomly chosen stayer. The sentence contradicts seg7, the glossary, take-away 3 and quiz 2-3-q3 (which keys exactly this reading as wrong), and the two numbers are not even close in meaning here: accuracy is 88.5 percent, and doing nothing already scores 86.8. It also uses AUC two segments before the lesson introduces it.",
+      "evidence": "facts.logreg.test.auc = 0.845 versus logreg.test.accuracy = 0.885; baseline.always_no_accuracy = 0.868 (always-stay has accuracy 0.868 and AUC 0.5, model_table row 1).",
+      "fix": "Delete the sentence; end the segment at 'the only fair comparison is at the same list size.' AUC is introduced, correctly, in seg7."
+    },
+    {
+      "lesson": "2-3",
+      "where": "quiz 2-3-q1, q3, q4; review 1 variants 2-3; review 2 variants 1 and 3",
+      "quote": "A comparison at one size: the model's top 1,200 against the rule's 1,200.",
+      "kind": "bad_question",
+      "severity": "low",
+      "problem": "The keyed option is the single longest option in 7 of the 10 questions (three of the four quiz questions). Examples: review 1 variant 2 keyed 73 characters against 37/26/53; 2-3-q3 keyed 90 against 61/64/68; review 2 variant 1 keyed 80 against 63/59/56.",
+      "evidence": "Option lengths in the file; principle: option length must carry no signal about the key.",
+      "fix": "Balance option lengths; in particular lengthen the short distractors in review 1 variant 2 ('Nothing: 40 percent beats 25 percent.', 'The accuracy of each list.')."
+    },
+    {
+      "lesson": "2-4",
+      "where": "seg2 visual (row 1, column 'Churned')",
+      "quote": "[\"20–30%\", \"291\", \"24.6%\", \"23.6%\"]",
+      "kind": "number_mismatch",
+      "severity": "high",
+      "problem": "The actual churn rate in the 20-30% bucket is 32.6 percent, not 23.6. As printed the table says the opposite of the lesson: the model said 24.6 and 23.6 churned, i.e. slightly HIGH, while the narration over it says 'about 33 percent left' and seg4's table shows 32.6% for the same bucket.",
+      "evidence": "facts.calibration.logreg[bin '20-30%'] = {n 291, predicted 0.246, actual 0.326}.",
+      "fix": "[\"20–30%\", \"291\", \"24.6%\", \"32.6%\"]"
+    },
+    {
+      "lesson": "2-4",
+      "where": "seg4 visual (row 7, column 'Model said')",
+      "quote": "[\"50–70%\", \"98\", \"50.6%\", \"66.3%\"]",
+      "kind": "number_mismatch",
+      "severity": "medium",
+      "problem": "The average prediction in the 50-70% bucket is 57.6 percent, not 50.6. The wrong figure nearly doubles the apparent gap in that bucket (15.7 points instead of 8.7), and with it the bucket table no longer reproduces the overall 10.9% in its own note.",
+      "evidence": "facts.calibration.logreg[bin '50-70%'] = {n 98, predicted 0.576, actual 0.663}. Check: the bin-weighted average prediction is 0.1096 only with 0.576.",
+      "fix": "[\"50–70%\", \"98\", \"57.6%\", \"66.3%\"]"
+    },
+    {
+      "lesson": "2-4",
+      "where": "seg5 narration",
+      "quote": "Then it was tested on May and June, when about 93 percent churned.",
+      "kind": "number_mismatch",
+      "severity": "high",
+      "problem": "Churn in the test months is about 13 percent, not 93. The visual shown with the sentence says 13.2%, and the whole explanation (learned at 11, tested at 13) depends on the figure.",
+      "evidence": "facts.data.churn_rate_test = 0.1318; calibration.overall.actual = 0.132; OUTLINE 2-4: 'tested when churn is 13 percent'.",
+      "fix": "Then it was tested on May and June, when about 13 percent churned."
+    },
+    {
+      "lesson": "2-4",
+      "where": "quiz 2-4-q1 to q4; review 1 variants 1-3; review 2 variants 2-3",
+      "quote": "A predicted-versus-actual table by score bucket, on rows the model did not train on.",
+      "kind": "bad_question",
+      "severity": "medium",
+      "problem": "The keyed option is the single longest option in 9 of the 10 questions (all four quiz questions). 'Pick the longest answer' scores 90 percent. Examples: review 2 variant 2 keyed 84 characters against 33/38/62; 2-4-q2 keyed 99 against 58/79/65; review 1 variant 1 keyed 92 against 54/68/59.",
+      "evidence": "Option lengths in the file; principle: option length must carry no signal about the key.",
+      "fix": "Rewrite the distractors to the same length and specificity as the key (or trim the keys); recheck that the key is longest in about a quarter of the questions."
+    },
+    {
+      "lesson": "1-3",
+      "where": "seg4 narration; quiz 1-3-q1; drill 2",
+      "quote": "Label them as stayed, and you have filed some future churners under loyal.",
+      "kind": "misleading",
+      "severity": "medium",
+      "problem": "The lesson treats the churn label as an event that accrues over the window ('has not survived 60 days', 'some of them will still churn'), but the course's label is an absence: churned = no spend at all in the 60 days, and one spend anywhere in the window settles the row as stayed (the lesson's own guess-first answer). For that label an open window errs the other way when computed literally (SUM of spend in the window = 0): everyone who has not spent yet is counted as churned, so recent months come out too HIGH, and an advertiser who has already spent is a confirmed stayer who cannot 'still churn'. The 6 and 2 percent collapse in 1-3-q1 arises only for an event-type label or an 'inactive for 60 days so far' implementation, which the question does not state. A learner taught 'open window = suspiciously low' will read an inflated recent churn rate as a real rise.",
+      "evidence": "facts.data.outcome_columns.churned_next_60d = 'no spend at all in the 60 days after the snapshot'; predict reveal: 'Stayed: they spent again inside the 60 days'. The lesson's own review 1 variant 3 handles the same structure correctly (an absence label, 'CTR holds for 30 days', cannot be awarded early).",
+      "fix": "seg4: 'An advertiser whose snapshot was 20 days ago has no label yet. If they have not spent since, you cannot call them churned: they have had 20 of their 60 days. Depending on how the flag is computed, a month whose window is still open comes out too high or too low. Either way it is not a real rate.' 1-3-q1: state how churn was flagged ('marked churned once 60 days without spend have been seen') or switch the scenario to an event label such as video adoption. Drill 2: ask why an advertiser with no spend since a snapshot three weeks ago cannot be labelled yet."
+    },
+    {
+      "lesson": "1-2",
+      "where": "quiz 1-2-q4 (keyed option and explanation)",
+      "quote": "Start with a report: churn rate by vertical, with group sizes, already answers this decision",
+      "kind": "misleading",
+      "severity": "low",
+      "problem": "The report answers the question asked (which vertical loses the most advertisers) and is the right first rung, but it does not answer the decision. Where an extra account manager should go depends on where a manager would change the outcome, which is the 'predict it or change it' distinction this lesson's own fourth triage question and quiz 1-2-q1 teach. The explanation tells the learner a descriptive cut settles an intervention decision.",
+      "evidence": "Principle (association versus effect of an action); the lesson's seg3 ('a model that predicts does not answer it') and seg5 ('Are the calls worth making at all? Who changes because of the call'). The key is still the best of the four options.",
+      "fix": "Option: 'Start with a report: churn rate by vertical, with group sizes, answers the question asked'. Why: '... the bottom rung already answers which vertical loses most. Whether an account manager would reduce churn there is a separate question, about changing something.'"
+    }
+  ],
+  "clean": ["1-1", "1-5"],
+  "notes": "facts.json, apparent internal inconsistencies (none changes a figure used in lessons 1-1 to 2-4, except possibly item 4): (1) The depth-3 tree has two sets of scores: tree.test.auc 0.761 / tree.train_auc 0.786 (also model_table) versus depth_sweep[depth 3] test_auc 0.767 / train_auc 0.787. (2) noise.margin_of_error_for_a_churn_rate.what says the margins are 'around an observed churn rate of about 12.6%', but the rows (9, 6.3, 4, 2.8, 2, 1.4, 1, 0.6) are what p = 11.83% (data.churn_rate) gives; 12.6% would give 9.2, 6.5, 4.1, 2.9, 2.1, 1.5. (3) tickets: n_test = 450 and every method reports n = 450, but paired.method says 'same 300 tickets' and learning_curve.how says 'the 300 test tickets'; learning_curve at 600 labels gives bag-of-words 0.542 while methods.bag_of_words_model.accuracy is 0.531 (embeddings agree at 0.749); tickets.what says 'a third are deliberately hard' while honest_limits implies 150 of 600 training plus 300 of 450 test = 43%. (4) leakage.why says the column was read 'on the day of the export, 60-120 days AFTER the snapshot'; with six monthly snapshots one export day cannot be within 60-120 days of all of them (if June is 60 days back, January to March are about 150-210), so the range may describe the test months only. Lesson 1-4 quotes '60-120 days' on screen. Review notes: the keyed answer was checked for all 90 questions and predict items in the nine lessons and is correct in every one; apart from the findings above, every figure in narration, visuals, quizzes, take-aways, explain-backs, checklists and glossaries was matched to facts.json individually (calibration bins re-added to 4,000 rows and 527 churners; confusion counts, precision, recall and accuracy recomputed from the four boxes)."
+}

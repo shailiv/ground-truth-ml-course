@@ -1,0 +1,79 @@
+{
+  "lesson": "3-5",
+  "decisions": [
+    {
+      "n": 0,
+      "reviewer": "learner-1",
+      "finding": "Lesson 1-5 said to check evidence in the output, not Python; now the learner reads Python and nobody says what changed.",
+      "decision": "accepted",
+      "reason": "A real contradiction in the learner's eyes, and one bridging thought resolves it without weakening 1-5: output first, and a short search of the script only when the output cannot settle the question.",
+      "change": "Segment 1 narration: 'You still check the output first. But one score, with no rows named, is something the output cannot settle, and a handful of lines can. ... you do not need to read them. You search them.'"
+    },
+    {
+      "n": 1,
+      "reviewer": "learner-1",
+      "finding": "The clean-script card uses SimpleImputer, OneHotEncoder, [:, 1], roc_auc_score and the voice explains three words.",
+      "decision": "accepted",
+      "reason": "The learner reads simple pandas (SPEC); the names on the card must map to words already taught (fill, common scale, AUC from 2-3).",
+      "change": "Segment 3 card: comments '# 4 fill, scale' and '# encode'; the note glosses SimpleImputer, StandardScaler, OneHotEncoder and roc_auc_score in plain words. Narration ends 'The scoring call, roc AUC score, is the AUC you already know.'"
+    },
+    {
+      "n": 2,
+      "reviewer": "learner-1",
+      "finding": "The 'clean' script prints one unlabelled number, no row counts, no baseline, and fills blanks with no flag: it fails the audits the course teaches.",
+      "decision": "accepted",
+      "reason": "Correct, and it is the lesson-specific ruling. The model answer has to pass the course's own checklist (3-4 row counts, 2-1 baseline, this lesson's 'two scores, each labelled with its rows').",
+      "change": "Segment 3 script rewritten to fourteen lines: a loop scores training and test rows and prints each with its name, its row count and its AUC; a last pair of lines prints the baseline (spend trend alone) on the same test rows. The note states that the was-empty flag is already a named feature (has_conversion_tracking, as lesson 3-4 said). Narration and title say fourteen lines and describe what is printed."
+    },
+    {
+      "n": 3,
+      "reviewer": "learner-1",
+      "finding": "On a 300-line script the learner needs one search list; it is scattered over three cards, and the mapping request is hidden in other_ways.",
+      "decision": "accepted",
+      "reason": "Usability point, and the lesson-specific ruling ('End on one card').",
+      "change": "The last segment's visual is now a table, 'Seven strings to search a long script for' (.drop(columns=, train_test_split, fit_transform(, .fit(, predict_proba(, .predict(, except), each with its part and what it should look like. The mapping request is in the brief ('list which line numbers belong to each of the six parts') and spoken in segment 7."
+    },
+    {
+      "n": 4,
+      "reviewer": "gemini",
+      "finding": "min_samples_leaf=5 on the 0.98 card is not in facts.json; and the snippet would fail on the string column without the preparation pipeline.",
+      "decision": "partly",
+      "reason": "Second half accepted: the snippet reused X[train] without preparation. First half rejected on the evidence: the setting is real, build/analysis.py line 330 fits RandomForestClassifier(n_estimators=300, min_samples_leaf=5) and that is the model behind forest.train_auc 0.982 and forest.test.auc 0.831. Deleting it would make the card's 'prints 0.98' false, since a default forest scores about 1.0 on its own training rows. facts.json simply does not record it (see open questions).",
+      "change": "Segment 4 card now reads 'forest = RandomForestClassifier(n_estimators=300, min_samples_leaf=5)' then 'model = make_pipeline(prep, forest)  # same preparation'. Narration unchanged."
+    },
+    {
+      "n": 5,
+      "reviewer": "learner-1",
+      "finding": "The guess has three options, two of them extremes, so the middle one is the only sensible pick.",
+      "decision": "accepted",
+      "reason": "A guess that can be answered by shape teaches nothing.",
+      "change": "Four closer options, each with a short reason: 0.95, 0.90, 0.83 (keyed, forest.test.auc 0.831), 0.70."
+    },
+    {
+      "n": 6,
+      "reviewer": "learner-1",
+      "finding": "Preparation fitted before the split is the one bug with no number, so it reads as a purity rule and cannot be ranked against the others.",
+      "decision": "partly",
+      "reason": "facts.json has no figure for preparation fitted on the whole table, so none can be quoted (SPEC rule 5). The ranking the learner wants can still be given from facts that exist: leakage.top_200_churners_with_leak 200 against top_200_churners_honest 136, and split.random_split_auc 0.851 against split.time_split_auc 0.845.",
+      "change": "Segment 5 table note now gives those two sizes 'on this table' and says plainly that no figure was computed for the preparation row. Segment 5 narration is byte-identical ('how much each of these flatters the score varies' remains true)."
+    }
+  ],
+  "rulings": {
+    "R1": "Segment 1: 'Every modelling script has the same six parts in the same order, whether it predicts churn or flags invalid traffic.' (other question: invalid traffic).",
+    "R2": "Not applicable.",
+    "R3": "ask_assistant rewritten as a template with slots [outcome], [prediction date], [periods], [baseline]; no months or column names; it keeps every demand for evidence (header, row counts for training and test, a labelled predict_proba score on each, the baseline on the same test rows, no try/except) and adds the mapping request. 111 words.",
+    "R4": "Segment 8 is 47 words: what the learner does with a long script (search, not read) and the pointer to module 4. Its visual was replaced on purpose: the lesson-specific ruling 'End on one card' takes precedence over 'keep its visual', and the take-aways shown afterwards carry what the old 'Keep this' bullets said.",
+    "R5": "Keyed answer is the longest option in 2 of 10. Six 'nothing is wrong' style options replaced by specific wrong diagnoses: quiz 1 A, quiz 2 A, quiz 3 C, review 2 variant 1 A, review 2 variant 3 A and B (the two 'Yes:' options). Four 'why' texts extended to cover the new distractors.",
+    "R6": "The mapping request sat only in other_ways. Segment 7 now says: 'When a script is long, also ask it to say which lines belong to which of the six parts.'",
+    "R7": "Checklist rewritten as evidence: printed row counts and two labelled scores beside a baseline on the same test rows; named periods in the split line; many distinct score values; a header AND a line in the script that matches each of its statements (a header alone is a claim).",
+    "specific": "Both done. (1) The clean script prints row counts, both scores each labelled, and the baseline. (2) The lesson ends on one card: seven strings to search for and what each should look like."
+  },
+  "segments_changed": [1, 3, 7, 8],
+  "numbers_verified": 92,
+  "open_questions": [
+    "facts.json does not record the forest's settings beyond n_trees. Suggest adding forest.min_rows_per_leaf = 5 (build/analysis.py line 330), as was done for tree.min_rows_per_leaf, so the 0.98 card is fully traceable.",
+    "No fact exists for (a) AUC when preparation is fitted on the whole table instead of inside the pipeline, or (b) the test AUC of 'spend trend alone', the baseline the clean script prints. The lesson quotes neither value. If the owner wants the learner to see the clean script's actual output, both need computing.",
+    "The clean-script card is 14 lines with a longest line of 72 characters: inside the validator's limit (14 lines, 74 characters), above SPEC's '12 short lines under 70'. The learner reviewer asked for exactly this trade.",
+    "Segment 5 (133 words) and segment 7 (135 words) are above SPEC's 130 but inside the validator's 140. Lesson total 897."
+  ]
+}

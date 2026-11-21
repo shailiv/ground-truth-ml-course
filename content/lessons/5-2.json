@@ -1,0 +1,288 @@
+{
+  "id": "5-2",
+  "module": 5,
+  "title": "Experiments",
+  "subtitle": "How do you find out what a practice really does?",
+  "goal": "After this lesson you can specify a randomised test of a practice, and read its result as an estimate with an interval.",
+  "predict": {
+    "q": "Today 60 percent of advertisers hit their CPA goal. You want an experiment that can reliably detect a lift to 62 percent. Roughly how many advertisers do you need in each group?",
+    "options": ["About 350", "About 1,500", "Over 9,000", "Any size works if the split is random"],
+    "answer": 2,
+    "reveal": "Over 9,000 in each group. The lesson shows why small effects need big groups, and what a too-small experiment looks like."
+  },
+  "segments": [
+    {
+      "narration": "The playbook is due on Friday, and three practices are up for a place in it: automated bidding, more creatives per campaign, fresher creatives. What you hold is three gaps, raw and adjusted. Each could be too big, empty, or backwards, and the table cannot say which. So what can you responsibly write? Today, only that these practices are associated with hitting the goal. To write that one of them works, you need a comparison where the hidden trait is the same on both sides. There is one dependable way to get that, for a playbook practice or a new rule for routing support tickets alike: let chance decide who gets the change.",
+      "visual": {"type": "title", "kicker": "Module 5 · Lesson 2", "title": "Experiments", "sub": "Let a coin decide who gets the change"}
+    },
+    {
+      "narration": "[[1]] Flip a coin for each advertiser. [[2]] Heads get the change. Tails carry on as before: the control group. [[3]] Then compare the same outcome in both groups. The coin knows nothing about the advertisers. So the sophisticated ones land on both sides in about equal numbers. So does every other trait, including the ones nobody thought to record. You have not measured the common cause. You have made it irrelevant. The two groups now differ in one systematic way only: the change itself. So the gap in the outcome is the effect of the change, give or take noise. That is a randomised experiment.",
+      "visual": {
+        "type": "flow",
+        "title": "A randomised experiment",
+        "steps": [
+          {"label": "Randomise", "sub": "a coin flip for each advertiser"},
+          {"label": "Treat", "sub": "heads get the change; tails are the control group"},
+          {"label": "Compare", "sub": "same outcome, same window, both groups"}
+        ]
+      }
+    },
+    {
+      "narration": "You cannot force an advertiser onto automated bidding. [[1]] What you can randomise is the encouragement: the coin decides who gets the prompt, the email or the call. [[2]] Then compare everyone who was encouraged with everyone who was not, whatever they went on to do. [[3]] Do not compare only the ones who took it up. They chose to: the trap from the last lesson. What you measure is the effect of the nudge, not of the practice itself. [[4]] So word it that way. With made-up numbers: advertisers prompted to switch hit their goal 3 points more often, give or take 2. About 40 percent of them switched. It is still the right number for your decision: the nudge is what you control.",
+      "visual": {
+        "type": "bullets",
+        "title": "When you cannot force a practice",
+        "items": [
+          "Randomise the encouragement: a prompt, an email, a call",
+          "Compare everyone encouraged with everyone not",
+          "Never compare only those who took it up",
+          "Write: \"prompted advertisers hit goal X pts more often (interval); N% switched\""
+        ]
+      }
+    },
+    {
+      "narration": "Two decisions belong before launch. First, write down the outcome and its window: share hitting their CPA goal over the next 8 weeks, say. Choose after looking, and you will pick whichever cut looks best. Second, size. Margins of error shrink slowly as groups grow, so small effects need big groups. Suppose 60 percent hit their goal today. [[1]] To reliably detect a lift of 10 points, you need about 350 advertisers in each group. [[2]] For a 5 point lift, about 1,470 in each. [[3]] For a 2 point lift, over 9,000. Count advertisers, not impressions: the coin is flipped once per advertiser. Reliably means four times in five. If you cannot reach the size, the test cannot answer the question.",
+      "visual": {
+        "type": "table",
+        "title": "Advertisers needed in each group, starting from 60% hitting goal",
+        "columns": ["Lift to detect", "Per group"],
+        "rows": [
+          ["10 points (60% → 70%)", "354"],
+          ["5 points (60% → 65%)", "1,468"],
+          ["2 points (60% → 62%)", "9,333"]
+        ],
+        "highlight": [2],
+        "note": "Sized to detect the lift 4 times in 5, with a 5% false-alarm rate. The unit is the advertiser, not the impression."
+      }
+    },
+    {
+      "narration": "In a side simulation of this world, half of the 12,000 advertisers, chosen by coin flip, get a call from the success team, and we count who churns. [[1]] Being simulated, it comes with the truth: the call cuts churn by about 3 points. It also allows something impossible at work: the same experiment run 200 times, with fresh coin flips. [[2]] The measured effect ranged from just over 1 point to nearly four and a half. [[3]] Each run also reports an interval, and in 95 percent of runs it contained the truth. One experiment is one draw. The interval says how far that draw may sit from the truth.",
+      "visual": {
+        "type": "stat",
+        "title": "The same experiment, run 200 times",
+        "stats": [
+          {"value": "2.9 pts", "label": "true effect of the call on churn"},
+          {"value": "1.2 to 4.4 pts", "label": "range of the measured effect over 200 runs"},
+          {"value": "95%", "label": "of runs whose interval contained the truth"}
+        ]
+      }
+    },
+    {
+      "narration": "Now read a single run as you would at work, with no truth column. [[1]] Take the run on all 12,000 advertisers. The measured effect is about 3 points. Its interval runs from about 2 points to about 4. [[2]] Now one month of advertisers, 2,000 of them. The estimate is almost the same, but the interval runs from almost nothing to over 5 points. The call probably helps. Whether it pays for a team, that run cannot say. Early on, every test is a small one, and small groups swing. Peek every morning and stop when the number looks good, and you have chosen your result. Fix the size first. Read it once.",
+      "visual": {
+        "type": "compare",
+        "title": "Same call, two sizes of experiment",
+        "left": {"label": "All 12,000 advertisers", "value": "2.9 pts", "sub": "95% interval 1.8 to 3.9"},
+        "right": {"label": "One month: 2,000 advertisers", "value": "2.8 pts", "sub": "95% interval 0.2 to 5.4"}
+      }
+    },
+    {
+      "narration": "Back to the playbook. For each claim, say which tier of evidence stands behind it. [[1]] Observed: advertisers who do this hit their goal more often. [[2]] Adjusted: the gap holds up when you compare like with like. Better, and still an association. [[3]] Tested: we randomised the encouragement and measured the lift, with its interval. Only the third earns the words works, lifts or causes. All three can appear in a playbook, as long as the wording matches the tier. Your three practices sit at tier two. Write them that way, and propose a test for the one that matters most.",
+      "visual": {
+        "type": "bullets",
+        "title": "Evidence tiers: match the wording to the tier",
+        "items": [
+          "Observed: \"advertisers who do this hit goal more often\"",
+          "Adjusted: \"and the gap holds comparing like with like\"",
+          "Tested: \"randomised; the lift was X, interval Y to Z\""
+        ]
+      }
+    },
+    {
+      "narration": "Brief and audit. Ask the assistant for the design before any analysis. [[1]] The plan, written before the results: outcome, window, group size, and the smallest lift that size can detect. [[2]] The counts assigned to each group, with a table showing the groups looked alike before the change: same typical spend, same share with tracking. If not, ask how they were really assigned. [[3]] The comparison is by assignment: everyone encouraged against everyone not. [[4]] And one estimate with its interval, read at the planned size. If the change cannot be withheld, propose a random holdout, or a rollout in random order: accounts still waiting are the control group.",
+      "visual": {
+        "type": "bullets",
+        "title": "Brief and audit: an experiment must show",
+        "items": [
+          "The plan, written first: outcome, window, group size",
+          "Counts per group, and that the groups were alike beforehand",
+          "Compared by assignment, not by who took it up",
+          "One estimate with its interval, at the planned size"
+        ]
+      }
+    },
+    {
+      "narration": "So when the playbook needs the word works, you know which design earns it, sized before it starts. Sometimes the coin is not on offer: the change has already launched, to a whole group at once. What you can honestly say then is the next lesson.",
+      "visual": {"type": "quote", "text": "Randomise who gets the change, and the hidden common cause lands equally on both sides.", "sub": "Next: when the change has already launched"}
+    }
+  ],
+  "takeaways": [
+    "A coin flip spreads every trait, recorded or not, across both groups, so the remaining gap is the effect of the change.",
+    "Decide the outcome, the window and the group size before launch; small effects need big groups.",
+    "Read one estimate with its interval at the planned size, and word the claim by its tier: observed, adjusted or tested."
+  ],
+  "quiz": [
+    {
+      "id": "5-2-q1",
+      "concept": "compare by assignment",
+      "domain": "course",
+      "q": "You randomise an in-product prompt recommending automated bidding: 3,000 advertisers see it, 3,000 do not. About 40 percent of those who saw it switched automated bidding on. The assistant reports: 'Advertisers who switched on had a goal-hit rate 14 points above the control group.' What is wrong with that comparison?",
+      "options": [
+        "It is right for switchers; multiply the 14 points by the 40 percent uptake for the prompt's effect.",
+        "Switchers chose to switch, so they differ; compare everyone shown the prompt with everyone not.",
+        "With 3,000 per group and only 40 percent uptake, the test is too small to conclude anything.",
+        "The control group should be advertisers already on automated bidding, to isolate the practice."
+      ],
+      "answer": 1,
+      "why": "The coin decided who saw the prompt, not who acted on it. The 40 percent who switched are the keen ones, so comparing them with the control group brings the hidden trait straight back and undoes the randomisation. The clean comparison is by assignment: all 3,000 shown against all 3,000 not shown, which measures the effect of the prompt. Scaling the 14 points by the uptake does not rescue it, because the 14 already contains the difference between keen advertisers and the rest."
+    },
+    {
+      "id": "5-2-q2",
+      "concept": "an estimate comes with an interval",
+      "domain": "course",
+      "q": "An outreach experiment on one month of advertisers finds that the call cuts churn by 2.8 points, with an interval from 0.2 to 5.4. The success lead wants to hire four callers 'because calls cut churn by 2.8 points'. What is the best read?",
+      "options": [
+        "The call probably helps, but by anywhere from near zero to over 5 points; plan for the low end.",
+        "The interval excludes zero, so 2.8 points is established and can go into the business case.",
+        "An interval this wide means the randomisation failed, so throw the result out and rerun.",
+        "An interval this wide means the experiment found nothing, so treat the call as having no effect."
+      ],
+      "answer": 0,
+      "why": "An interval that only just clears zero tells you the direction, not the size. Hiring on 2.8 points treats one noisy draw as the truth, when the same call could be worth almost nothing or nearly twice as much. A wide interval is what a small experiment honestly looks like; it does not mean the randomisation failed or that nothing was found."
+    },
+    {
+      "id": "5-2-q3",
+      "concept": "fix the size, read once",
+      "domain": "other",
+      "q": "A team tests two ad headlines in an experiment planned to run three weeks. They check the dashboard every morning. On day four, headline B is ahead by 3 points and flagged as significant, so they stop the test and ship B. What is the problem?",
+      "options": [
+        "Four days is fine; they only needed to confirm the gap on a second metric before shipping.",
+        "They should also have reported the segments where B won by most, to make the result more useful.",
+        "They needed a third headline in the test to act as a control for the other two.",
+        "Early gaps on small groups swing widely; stopping on the first good day picks a lucky moment."
+      ],
+      "answer": 3,
+      "why": "Check every day and noise will sooner or later produce a 'significant' gap; stopping right then turns that luck into your result. The size and the stopping date are fixed in advance and the result is read once. Hunting for the segments where B won by most is the same mistake in another form: choosing what to report after looking. A second metric read at the same lucky moment inherits the same luck."
+    },
+    {
+      "id": "5-2-q4",
+      "concept": "why randomise",
+      "domain": "other",
+      "q": "A support team wants to know whether a new onboarding call reduces tickets. A colleague suggests letting account managers pick which new customers get the call, 'because they know who needs it', and then comparing ticket counts. Which design tells you what the call does?",
+      "options": [
+        "The managers' picks: aiming the call at customers who need it most gives the clearest effect.",
+        "The managers' picks, with the comparison adjusted for customer size and plan afterwards.",
+        "A coin flip: only chance makes the two groups alike in the traits nobody recorded.",
+        "Either one: with enough new customers, the question of who gets the call washes out."
+      ],
+      "answer": 2,
+      "why": "Managers pick on judgement, which is exactly the kind of reason that never becomes a column, so their picks differ from the rest before any call is made. Adjusting handles only recorded differences, and more customers just makes a biased gap more precise. A coin cannot know who needs the call, which is why its two groups are comparable."
+    }
+  ],
+  "review": [
+    {
+      "concept": "randomising balances what you cannot see",
+      "variants": [
+        {
+          "q": "A new bid-recommendation panel is offered to all advertisers. Those who opt in spend 20 percent more afterwards than those who do not. Why would a randomised rollout have told you more?",
+          "options": [
+            "Opt-in groups are usually too small for a stable estimate; a random rollout fixes the sizes.",
+            "Chance makes the two groups alike in every trait, ambition included; the gap is then the panel.",
+            "Randomly assigned groups have less noise, so the same effect shows up larger and clearer.",
+            "Opt-in data cannot be given a margin of error, so nobody could say if 20 percent is real."
+          ],
+          "answer": 1,
+          "why": "Advertisers who opt in are likely the ambitious, growing ones, so they would have spent more anyway. Random assignment does not make effects bigger or samples larger; it makes the groups comparable, which is exactly what letting advertisers choose destroys."
+        },
+        {
+          "q": "Marketing emails a discount to its 'most engaged' customers and compares their purchases with everyone else's. To measure what the email itself does, what should change?",
+          "options": [
+            "Send the email to many more customers, so the comparison rests on a bigger, steadier sample.",
+            "Compare the emailed customers with last year's most engaged customers over the same weeks.",
+            "Keep the comparison, but adjust it for customers' age, region and number of past purchases.",
+            "Hold back a random share of the engaged customers, and compare the emailed ones with them."
+          ],
+          "answer": 3,
+          "why": "Engaged customers buy more whether or not they are emailed, so comparing them with everyone else measures engagement. A random holdout inside the same group differs from the emailed customers only by the email. A bigger send, or a few adjustments, leaves the real problem, who was picked for the email, exactly where it was."
+        },
+        {
+          "q": "A pricing team lets sales reps decide which prospects are offered a 10 percent discount, then finds that discounted prospects close less often. With 20,000 prospects, a colleague says the sample is big enough to trust the result. What is the right response?",
+          "options": [
+            "Size does not fix who was chosen: reps may discount the very deals they already fear losing.",
+            "Agreed: with 20,000 prospects the margin of error is tiny, so 'discounts hurt sales' is safe.",
+            "The result must be a data error, because a discount cannot reduce the chance of closing a sale.",
+            "Split the 20,000 by region and deal size, and report the segments where the discount works."
+          ],
+          "answer": 0,
+          "why": "A large sample shrinks noise, not bias. If reps offer discounts on shaky deals, the discounted group was weaker from the start, and 20,000 rows only make that built-in gap more precise. Randomising who is offered the discount is what would make the two groups comparable."
+        }
+      ]
+    },
+    {
+      "concept": "one experiment is an estimate with an interval: size it first, read it once",
+      "variants": [
+        {
+          "q": "A feature test with 150 users per group shows conversion of 10 percent in the control group and 12 percent with the feature; the difference is 'not significant'. The product manager concludes that the feature does nothing. What is the right read?",
+          "options": [
+            "Correct: a randomised test found no significant difference, so the feature has no effect.",
+            "The feature works: 12 beats 10 percent, and a randomised test has no hidden causes to fear.",
+            "Too small a test to detect a lift that size: it neither confirms the feature nor rules it out.",
+            "The randomisation must have failed: a real 2-point lift would have come out as significant."
+          ],
+          "answer": 2,
+          "why": "With 150 users per group the margin of error is several points wide, so a real 2-point lift and no lift at all look the same. 'Not significant' in a small test means 'could not tell', not 'no effect'. Reading 12 against 10 as a win ignores the same noise."
+        },
+        {
+          "q": "You want to test whether a prompt lifts goal attainment from 60 to 62 percent, and you can get 1,500 advertisers per group. The planning table says a 2-point lift needs over 9,000 per group. What should you do?",
+          "options": [
+            "Run it anyway and report whatever comes out: any randomised test beats no test at all.",
+            "Run it, watch the gap daily, and stop as soon as the groups are 2 points apart.",
+            "Use the 1,500 advertisers who already adopted the practice in place of a random group.",
+            "Run longer to reach the size, or say up front it can only detect a much larger lift."
+          ],
+          "answer": 3,
+          "why": "At about 1,500 per group a test can reliably see a lift of around 5 points, not 2, so 'no difference' would mean nothing. Stopping when the gap first reaches 2 points picks a lucky moment, and using the advertisers who already adopted throws the randomisation away."
+        },
+        {
+          "q": "An analyst checks a pricing experiment daily. After six days the new price is ahead, with an interval that just excludes zero; the plan said four weeks. A director asks to ship now. What is the best answer?",
+          "options": [
+            "Ship now: the interval excludes zero, which was the test's criterion, and waiting only costs revenue.",
+            "Keep to the plan: a result picked on the first good-looking day is more likely to be luck.",
+            "Ship now, but only to the segments where the new price is clearly winning after six days.",
+            "Restart the test with a different outcome, one that shows a clearer gap between the two prices."
+          ],
+          "answer": 1,
+          "why": "An interval keeps its promise for one planned look, not for the best of many looks; peek daily and noise alone will produce 'significant' moments. Shipping to the winning segments, or switching the outcome after looking, is the same error: choosing the result."
+        }
+      ]
+    }
+  ],
+  "drill": [
+    {
+      "q": "Why does flipping a coin for who gets a change let you read the difference in outcomes as the effect of that change?",
+      "a": "Because the coin knows nothing about the advertisers, every trait, recorded or not, ends up spread about equally over both groups. The only systematic difference left is the change itself, so the gap is its effect, give or take noise."
+    },
+    {
+      "q": "You randomised an offer, and only some of the people who got the offer took it up. Which two groups do you compare?",
+      "a": "Everyone who was offered against everyone who was not, whatever they did next. Comparing only those who took it up brings back the problem of people choosing for themselves."
+    }
+  ],
+  "recall": {
+    "prompt": "A stakeholder asks why you cannot just compare advertisers who use a practice with those who do not, instead of running an experiment. Explain in 30 seconds.",
+    "model_answer": "Advertisers who adopt a practice chose to, so they differ from the rest in ways nobody recorded, and the gap mixes the practice with those differences. A coin knows nothing about the advertisers, so every trait lands about equally on both sides and the only systematic difference left is the change. The remaining gap is its effect, give or take noise, which is why you size the test in advance, compare by assignment, and report the estimate with its interval."
+  },
+  "ask_assistant": "Design first; do not analyse anything yet. We want to test whether [change or encouragement] raises [outcome] over [window]. Propose the unit to randomise ([advertiser / account / user]), the group size needed to detect a lift of [smallest lift worth acting on] from today's [baseline rate], and your assumptions. If the change cannot be withheld, propose a random holdout or a rollout in random order instead. When results arrive, compare by assignment (everyone assigned against everyone not, whatever they did next) and report: counts per group, a table showing the groups were alike beforehand, the share who took the change up, the estimate with its 95 percent interval, and every date on which results were computed.",
+  "audit_checklist": [
+    "A plan dated before launch: outcome, window, group size, and the smallest lift that size can detect",
+    "Counts assigned to each group, and a before-the-change table showing the two groups were alike",
+    "The result table compares everyone assigned with everyone not assigned, its counts match the assigned counts, and the share who took the practice up is a separate line",
+    "One estimate with its interval, on the planned group sizes, beside a list of every date the results were computed: one date, no early stop"
+  ],
+  "transfer": [
+    "Does a new bid-recommendation prompt raise spend, or do growing advertisers simply click it more?",
+    "Does a reminder email before renewal reduce cancellations?",
+    "Does a warning notice sent to publishers reduce invalid traffic?"
+  ],
+  "other_ways": [
+    {"approach": "A random holdout: everyone gets the change except a small random group", "when": "When the change is expected to help and nobody wants to withhold it widely; the comparison stays clean, with a wider interval."},
+    {"approach": "A rollout in random order: every account gets the change eventually, and the order is drawn by lot", "when": "When the change must reach everyone and has to be staged anyway; accounts still waiting act as the control group."},
+    {"approach": "Compare the launch group with a similar untreated group over time", "when": "When the change already launched without a coin flip; weaker evidence, and the subject of the next lesson."}
+  ],
+  "glossary": [
+    {"term": "randomised experiment", "def": "A comparison in which chance alone decides who gets the change, so the groups are alike in everything else on average."},
+    {"term": "control group", "def": "The randomly chosen advertisers who do not get the change, kept as the yardstick."},
+    {"term": "randomised encouragement", "def": "Randomising who is nudged towards a practice when the practice itself cannot be forced; everyone nudged is compared with everyone not."},
+    {"term": "group size (sample size)", "def": "The number of randomised units in each group (here advertisers, not impressions); the smaller the lift you need to detect, the larger it must be."},
+    {"term": "evidence tier", "def": "How strong the support for a claim is: observed (a gap), adjusted (a gap comparing like with like) or tested (a randomised experiment)."}
+  ]
+}

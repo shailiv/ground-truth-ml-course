@@ -1,0 +1,32 @@
+[
+ {
+  "reviewer": "learner-2",
+  "lesson": "5-4",
+  "where": "seg5 narration, seg8 brief",
+  "quote": "counted as only a simulation allows",
+  "kind": "not_usable",
+  "severity": "medium",
+  "problem": "Every result in the lesson (13, 32, 44, 136 churns prevented) uses knowledge I will never have. The one check I can run at work, called against not-called inside the top of each list, is one hard-to-follow sentence in the brief segment and is never shown with numbers.",
+  "fix": "Add one exhibit computed the real-world way: churn among called and not-called in the top 400 by uplift, by risk and at random, each with its interval."
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "5-4",
+  "where": "seg8 narration",
+  "quote": "These are small groups, so every gap needs its interval.",
+  "kind": "doubt",
+  "severity": "medium",
+  "problem": "Module 2 gave me about 6 points of margin per 100 advertisers. A top-400 list split into called and not-called has a margin several times the three-point difference between the uplift list and the risk list (44 against 32 churns in 400). I doubt my audit could ever tell them apart, and the lesson does not say how much randomised data it takes.",
+  "fix": "Say it honestly: how many randomised advertisers this took, and how wide the real-world interval on each list's gap was."
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "5-4",
+  "where": "seg2 narration",
+  "quote": "The last kind is under 1 percent.",
+  "kind": "ear",
+  "severity": "low",
+  "problem": "The voice names only 'persuadable'; 'lost cause', 'sure thing' and 'sleeping dog' are on screen and in the glossary but never spoken, so later references to them are new to a listener.",
+  "fix": "Speak all four names once as the rows appear."
+ }
+]

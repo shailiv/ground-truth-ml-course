@@ -1,0 +1,435 @@
+{
+ "id": "7-3",
+ "module": 7,
+ "title": "Language models as classifiers",
+ "subtitle": "If a model can label text from instructions alone, how do you find out how good it is?",
+ "goal": "After this lesson you can put a language model on the same scoreboard as any other classifier and say which differences on that scoreboard are real.",
+ "predict": {
+  "q": "450 unseen support tickets, six categories. A simple model trained on 600 labelled tickets, using embeddings, sorts them. So does a cheap language model given only the category names and a line about each. Which scores higher?",
+  "options": [
+   "The trained model, clearly: it has learned from 600 examples",
+   "The cheap language model, by about 6 points",
+   "The cheap language model, by more than 20 points",
+   "Neither: the two finish level"
+  ],
+  "answer": 1,
+  "reveal": "The cheap language model: 81 percent against 75. The lesson shows why that 6-point gap is real, why it could be as small as 1 point, and why it comes with an asterisk."
+ },
+ "segments": [
+  {
+   "narration": "The head of support has a few hundred tickets and one question: what are advertisers writing in about? Six categories: billing, tracking setup, ad review, performance, account access, feature requests. There are at least five ways to sort them. At one end, an afternoon spent writing keyword rules. At the other, a paragraph of instructions handed to a language model that has never seen a labelled ticket. The assistant will build any of them in minutes. Your job is to make all five sit the same exam.",
+   "visual": {
+    "type": "title",
+    "kicker": "Module 7 · Lesson 3",
+    "title": "Language models as classifiers",
+    "sub": "Five ways to sort 450 tickets, one exam"
+   }
+  },
+  {
+   "narration": "Here is the ladder. [[1]] Rung one: keyword rules. If the ticket says invoice, call it billing. [[2]] Rung two: a bag-of-words model. Count the words and short phrases in each ticket, one column each, and let logistic regression learn the weights from 600 labelled tickets. [[3]] Rung three: last lesson's embeddings, with the same logistic regression and the same 600 tickets. [[4]] Rung four: a cheap language model, given only the six category names and a line describing each. No examples, no training. [[5]] Rung five: a stronger language model, same instructions. All five face the same 490 unseen test tickets, where blind guessing scores about 17 percent.",
+   "visual": {
+    "type": "flow",
+    "title": "Five rungs, one exam: 450 unseen tickets",
+    "steps": [
+     {
+      "label": "Keyword rules",
+      "sub": "written by hand, no training"
+     },
+     {
+      "label": "Bag-of-words model",
+      "sub": "word counts + logistic regression, 600 labelled tickets"
+     },
+     {
+      "label": "Embeddings + simple model",
+      "sub": "the same 600 labelled tickets"
+     },
+     {
+      "label": "Cheap language model",
+      "sub": "instructions only, no examples"
+     },
+     {
+      "label": "Stronger language model",
+      "sub": "the same instructions"
+     }
+    ]
+   }
+  },
+  {
+   "narration": "The marks, from the bottom rung up. [[1]] Keyword rules: 92 percent. On 103 tickets no keyword matched, so they gave no answer at all. [[2]] The bag-of-words model: 53. [[3]] Embeddings with a simple model: 75. [[4]] The cheap language model, with no training: 81. [[5]] The stronger one: 96. Each mark comes from a sample of tickets, so each carries an interval. The cheap language model could plausibly sit anywhere from 77 to 84 percent. The embedding model, from 71 to 79. Those ranges overlap. So is the cheap language model really ahead, or just lucky with these tickets?",
+   "visual": {
+    "type": "bar",
+    "title": "Accuracy on the same 450 unseen tickets",
+    "unit": "%",
+    "data": [
+     {
+      "label": "Keyword rules (25.1 to 33.5)",
+      "value": 29.1
+     },
+     {
+      "label": "Bag-of-words model (48.5 to 57.7)",
+      "value": 53.1
+     },
+     {
+      "label": "Embeddings + simple model (70.7 to 78.7)",
+      "value": 74.9
+     },
+     {
+      "label": "Cheap language model (77.0 to 84.3)",
+      "value": 80.9
+     },
+     {
+      "label": "Stronger language model (93.8 to 97.5)",
+      "value": 96.0
+     }
+    ],
+    "note": "In brackets: the 95% interval. Blind guessing among six equal categories scores 16.7%."
+   }
+  },
+  {
+   "narration": "Overlap alone does not settle it, because both models sat the same exam. The sharper test compares them ticket by ticket and puts an interval on the gap itself. [[1]] Bag-of-words over keyword rules: 24 points, clearly real. [[2]] Embeddings over bag-of-words: 22 points, clearly real. [[3]] The cheap language model over embeddings: 6 points. Its interval runs from about 1 point to 11, so real, and possibly small. [[4]] The stronger model over the cheap one: 15 points, clearly real. Every rung is a genuine step. The narrow one is the step from training on labels to using none.",
+   "visual": {
+    "type": "table",
+    "title": "Is each step real? Gaps measured on the same 450 tickets",
+    "columns": [
+     "Step up the ladder",
+     "Gap in points",
+     "95% interval",
+     "Verdict"
+    ],
+    "rows": [
+     [
+      "Bag-of-words over keyword rules",
+      "+24.0",
+      "18.9 to 29.6",
+      "real"
+     ],
+     [
+      "Embeddings over bag-of-words",
+      "+21.8",
+      "16.4 to 26.9",
+      "real"
+     ],
+     [
+      "Cheap language model over embeddings",
+      "+6.0",
+      "1.1 to 10.9",
+      "real, maybe small"
+     ],
+     [
+      "Stronger over cheap language model",
+      "+15.1",
+      "11.6 to 18.9",
+      "real"
+     ]
+    ],
+    "highlight": [
+     2
+    ],
+    "note": "An interval that included 0 would be a tie. None does."
+   }
+  },
+  {
+   "narration": "Now cut the result by difficulty. A third of the test tickets are ordinary: one clear problem. The rest are deliberately tangled: two issues in one message, or vague about what is wrong. On ordinary tickets the embedding model scores 94 percent and the cheap language model 92. Level, near enough. On tangled tickets the trained models fall hard: embeddings to 65 percent, bag-of-words to 41. The cheap language model holds at 75, and the stronger one barely notices. The cheap model's whole lead comes from the tangled tickets. A headline says which method wins. The cut says where.",
+   "visual": {
+    "type": "table",
+    "title": "Accuracy on ordinary and on tangled tickets",
+    "columns": [
+     "Method",
+     "Ordinary tickets",
+     "Tangled tickets"
+    ],
+    "rows": [
+     [
+      "Keyword rules",
+      "43.3%",
+      "22.0%"
+     ],
+     [
+      "Bag-of-words model",
+      "76.7%",
+      "41.3%"
+     ],
+     [
+      "Embeddings + simple model",
+      "94.0%",
+      "65.3%"
+     ],
+     [
+      "Cheap language model",
+      "92.0%",
+      "75.3%"
+     ],
+     [
+      "Stronger language model",
+      "97.3%",
+      "95.3%"
+     ]
+    ],
+    "highlight": [
+     2,
+     3
+    ],
+    "note": "300 of the 450 test tickets are deliberately tangled: two issues in one message, or vague wording."
+   }
+  },
+  {
+   "narration": "Four limits before anyone quotes 96 percent. [[1]] The tickets are synthetic, written to order by language models, so the answer key is simply what was requested. Real labels are disputed: two people often disagree about the main issue, and no method can score above their agreement. [[2]] The sorting models come from the same family as the writing models, so their scores flatter them. [[3]] The trained methods carry a handicap: they learned from one writer's tickets, a quarter of them tangled, and were tested on another's, two thirds tangled. That is realistic, since what arrives later rarely matches what you trained on, but it puts an asterisk on that narrow step. [[4]] And the keyword rules were written once and never tuned. Expect lower scores on a real inbox.",
+   "visual": {
+    "type": "bullets",
+    "title": "Four honest limits",
+    "items": [
+     "Synthetic tickets with a known answer key; real labels are disputed",
+     "Writers and sorters are one model family: language-model scores are optimistic",
+     "Trained methods: one writer's tickets to learn from, another's in the test, with more tangled ones",
+     "The keyword rules were written once and never tuned"
+    ]
+   }
+  },
+  {
+   "narration": "So which rung? That is a trade, not a ranking. The trained rungs cost labelled examples and effort up front. The language models need no labels, but you pay for every ticket, wait longer for each answer, and the text leaves the building. One cheap safeguard: run two models and compare. [[1]] Here they give the same label on about four tickets in five, [[2]] and those agreed labels are right 97 percent of the time. [[3]] They disagree on 82 tickets, nearly nine in ten of them tangled. That is a ready-made queue for a person. A flag, not a guarantee: two models can be wrong together.",
+   "visual": {
+    "type": "stat",
+    "title": "Two language models, the same 450 tickets",
+    "stats": [
+     {
+      "value": "81.8%",
+      "label": "of tickets: both give the same label"
+     },
+     {
+      "value": "97.0%",
+      "label": "of those agreed labels are right"
+     },
+     {
+      "value": "82",
+      "label": "tickets where they disagree; 87.8% of them tangled"
+     }
+    ]
+   }
+  },
+  {
+   "narration": "Brief and audit. [[1]] Ask for a labelled test set that no method has seen and no instructions were tuned on. [[2]] Ask for every method on those same tickets, with blind guessing beside them and an interval on each score. [[3]] Ask for precision and recall per category. The cheap model's 18 percent hides that it catches only 60 percent of feature requests. [[4]] Ask for ordinary and tangled tickets separately. [[5]] And ask for the exact instructions, the model's name and version, and where the text was sent. One accuracy figure and a few impressive examples is a demo, not a score.",
+   "visual": {
+    "type": "bullets",
+    "title": "Brief and audit",
+    "items": [
+     "Show: a labelled test set nothing saw, and no instructions tuned on it",
+     "Show: every method on the same tickets, with guessing and intervals",
+     "Show: precision and recall for each category",
+     "Show: ordinary and tangled tickets separately",
+     "Show: the exact instructions, the model and version, where text was sent"
+    ]
+   }
+  },
+  {
+   "narration": "To recap. [[1]] A language model can label text from instructions alone, with no training data, and here it did well. [[2]] It still sits the same exam as everything else: unseen labelled tickets, a baseline, intervals, and a cut by difficulty. [[3]] On this synthetic data the scores flatter it, so measure on your own tickets before you believe them. One skill remains. Next, how to write the numbers up so the report survives a hard question.",
+   "visual": {
+    "type": "bullets",
+    "title": "Keep this",
+    "items": [
+     "A language model can classify from instructions alone",
+     "Same exam as any model: unseen labels, baseline, intervals, hard cases",
+     "Synthetic data flatters it: measure on your own text"
+    ]
+   }
+  }
+ ],
+ "takeaways": [
+  "A language model can label text from instructions alone, with no training examples, and on these tickets it beat every trained method.",
+  "It is scored like any other model: labelled examples it has not seen, a baseline, an interval, results per category and on the hard cases.",
+  "These tickets are synthetic and were written by the same family of models that sorted them, so expect lower scores on a real inbox and measure before you believe."
+ ],
+ "quiz": [
+  {
+   "id": "7-3-q1",
+   "concept": "which gaps are real",
+   "domain": "course",
+   "q": "On the 450 test tickets the embedding model scores 74.9 percent, interval 70.7 to 78.7, and the cheap language model 80.9, interval 77.0 to 84.3. A colleague says: 'The intervals overlap, so it is a tie.' The comparison on the same tickets gives a gap of 6.0 points with an interval of 1.1 to 10.9. What is the right read?",
+   "options": [
+    "A tie: whenever two intervals overlap, there is no difference between the methods.",
+    "The language model really is ahead, though perhaps by as little as one point.",
+    "The language model is six points better, and the interval adds nothing to that.",
+    "No conclusion is possible until the test set is several times larger than 450."
+   ],
+   "answer": 1,
+   "why": "Both methods answered the same tickets, so the right test is the interval on the difference, and it excludes zero: the step is real. Overlap between two separate intervals is too blunt a test, which is why the tie is tempting. But the low end is about one point, so 'six points better' claims more than the data shows."
+  },
+  {
+   "id": "7-3-q2",
+   "concept": "instructions tuned on the test tickets",
+   "domain": "course",
+   "q": "The assistant reports: 'Classification by a language model from instructions alone: 94 percent accuracy. Method: I wrote the instructions, checked the output on 50 labelled tickets, reworded the instructions where it went wrong, and repeated until those 50 tickets scored 94 percent.' What is the flaw?",
+   "options": [
+    "Fifty tickets are too few for an accuracy figure to be calculated at all.",
+    "A language model cannot be scored with accuracy, only by reading its answers.",
+    "The instructions were tuned on the same 50 tickets used to score them.",
+    "Instructions should never be reworded once a language model has started on a task."
+   ],
+   "answer": 2,
+   "why": "Rewording instructions until a set of tickets scores well is choosing settings on the test set: those tickets have now trained the instructions, and the 94 percent is flattering. Rewording is fine, but the final score must come from labelled tickets that were kept aside. Fifty is a small sample with a wide interval, which is a real weakness but not the one that pushes the number up."
+  },
+  {
+   "id": "7-3-q3",
+   "concept": "a demo is not a score",
+   "domain": "other",
+   "q": "Marketing wants the free-text message on every inbound lead tagged 'ready to buy', 'researching' or 'not a fit'. In a vendor demo a language model tags eight of eight sample messages correctly. Past data says about 70 percent of leads are 'researching'. What do you ask for before agreeing?",
+   "options": [
+    "Results on a few hundred hand-tagged leads, per tag, beside that 70 percent.",
+    "Eight more sample messages, so that the demo covers sixteen leads instead of eight.",
+    "The model's own stated confidence in each of the eight answers it gave.",
+    "Nothing more: a model that was never trained has nothing it could have memorised."
+   ],
+   "answer": 0,
+   "why": "Eight examples picked by the seller are a demo; a score needs labelled leads the model has not seen, and since tagging everything 'researching' is already 70 percent accurate, it needs precision and recall per tag as well. The last option is the tempting one: nothing was trained, so nothing can be overfitted. But untested is untested, whether or not there was training."
+  },
+  {
+   "id": "7-3-q4",
+   "concept": "disputed labels set a ceiling",
+   "domain": "course",
+   "q": "One of the stronger model's 'misses': a customer writes that their ad was rejected, and that the appeal link then reports a problem with their profile. The answer key says account access; the model said ad review. You show the ticket to two support leads and they split. What does that tell you about the 96 percent?",
+   "options": [
+    "The true figure is lower than 96 percent, because the model failed on a simple ticket.",
+    "The answer key should be changed to the model's label wherever the two differ.",
+    "Tangled tickets should be taken out of the test set so that the score is cleaner.",
+    "Some remaining 'errors' are disputes: where people split on a label, no model can score higher."
+   ],
+   "answer": 3,
+   "why": "When careful people file the same ticket two ways, the label itself is uncertain, and that caps what any method can score against it. Rewriting the key to match the model makes the score circular, and removing the tangled tickets makes the test stop resembling the inbox. Both are tempting ways to tidy a number that is honestly untidy."
+  }
+ ],
+ "review": [
+  {
+   "concept": "a model that needed no training still needs a test",
+   "variants": [
+    {
+     "q": "A language model flags ad headlines that break policy. On 200 hand-checked headlines, 20 of which really broke policy, it is reported as 91 percent accurate. What should you ask next?",
+     "options": [
+      "Nothing: 91 percent on headlines that were checked by hand is a strong result.",
+      "For a larger sample, because 200 headlines cannot give a reliable accuracy.",
+      "How many of the 20 it caught and how many flags were right: flagging nothing scores 90 percent.",
+      "For the model's instructions, because the wording matters more than the score."
+     ],
+     "answer": 2,
+     "why": "Only 20 of 200 headlines break policy, so a model that flags nothing is already 90 percent accurate and 91 says almost nothing. Recall on the 20 and precision of the flags are the numbers that describe it. A language model is not exempt from the baseline just because nobody trained it."
+    },
+    {
+     "q": "Finance uses a language model to sort 5,000 invoice dispute notes into four reasons. The analyst reads ten of the results, finds them all sensible, and proposes publishing the breakdown. What is the better plan?",
+     "options": [
+      "Publish: ten out of ten is good evidence for a model that needed no training.",
+      "Label a few hundred random notes by hand, blind to the model, then score it.",
+      "Ask the model to sort the notes a second time and publish if the two runs agree.",
+      "Read another ten results, and publish if those also look sensible."
+     ],
+     "answer": 1,
+     "why": "Ten results that look sensible to someone who has already seen the model's answer are not a test. A random sample labelled blind gives an accuracy with an interval, and shows which reasons get confused. Running the same model twice checks that it is consistent, not that it is right."
+    },
+    {
+     "q": "The team's ticket classifier, a language model with fixed instructions, was scored on a labelled test set last quarter. The vendor now offers a newer version of the model and says it is better. What should happen before the switch?",
+     "options": [
+      "Switch now: a newer version of the same model can only be an improvement.",
+      "Switch, then compare this month's category shares with last month's to check for a change.",
+      "Keep the old version permanently, since it is the one that was tested.",
+      "Run the same labelled test set through the new version and compare the two."
+     ],
+     "answer": 3,
+     "why": "A different model is a different classifier, and the old score does not carry over. The same labelled tickets, compared with the old version one by one, show whether the change is real and where it differs. Category shares can move because the inbox changed, so they cannot tell you whether the model got better."
+    }
+   ]
+  },
+  {
+   "concept": "disagreement shows where the label is uncertain",
+   "variants": [
+    {
+     "q": "Two reviewers independently label 500 ad creatives as compliant or not, and agree on 88 percent of them. A model agrees with the first reviewer on 86 percent. The product lead will not launch until the model reaches 95 percent. What is the right response?",
+     "options": [
+      "The reviewers only agree 88 percent of the time, so settle the label first.",
+      "Keep improving the model: 95 percent is a reasonable bar for a compliance task.",
+      "Score the model against the second reviewer instead, and use whichever figure is higher.",
+      "Drop the 12 percent of creatives where the reviewers disagree, then measure again."
+     ],
+     "answer": 0,
+     "why": "If two trained people agree only 88 percent of the time, a model at 86 percent is about as consistent with a reviewer as another reviewer is, and 95 is beyond what the labels can support. The useful work is sharpening the definition and settling the disputed cases. Dropping them would produce a clean score on a test that no longer looks like the real queue."
+    },
+    {
+     "q": "You run two different language models over the messages on 10,000 leads, and they give the same tag on 85 percent. The team can afford to check 1,500 leads by hand. Which ones?",
+     "options": [
+      "A random 1,500 from the 10,000, so that the check is unbiased.",
+      "The 1,500 longest messages, since long messages are harder to tag.",
+      "Mostly the leads where the two disagree, plus a small random sample of the rest.",
+      "None of them: where two models agree the tag is right, and the rest can be dropped."
+     ],
+     "answer": 2,
+     "why": "The 1,500 disagreements are where the tag is most likely to be wrong or genuinely ambiguous, so that is where a person adds most. A small random sample of the agreed tags tells you how often the two are wrong together. A purely random check would spend most of the effort on leads where both models were already right."
+    },
+    {
+     "q": "On the course's support tickets the two language models gave the same label about four times in five, and the agreed label was right 97 percent of the time. A teammate concludes that agreed labels never need checking. Is that right?",
+     "options": [
+      "Yes: two separate models cannot both make the same mistake on a ticket.",
+      "No: three in a hundred agreed labels were still wrong, so sample them now and then.",
+      "Yes, as long as the two models come from two different vendors.",
+      "No: agreement between two models carries no information at all."
+     ],
+     "answer": 1,
+     "why": "Agreement raises confidence without making it certainty: 97 percent right means 3 percent wrong together, and here both models came from one family, so shared mistakes should not surprise anyone. Agreement is still informative, since most of the disagreements were tangled tickets, so the sensible routine is a person on the disagreements and an occasional sample of the rest."
+    }
+   ]
+  }
+ ],
+ "drill": [
+  {
+   "q": "A language model sorts support tickets from instructions alone, with no training. How do you find out how good it is?",
+   "a": "The same way as for any model. Score it on labelled tickets it has not seen, next to a baseline such as guessing, with an interval, and broken down by category and by easy versus hard tickets."
+  },
+  {
+   "q": "Two models label the same tickets and disagree on some of them. What is that disagreement good for?",
+   "a": "It is a cheap flag for human review. The tickets where two models disagree tend to be the hard, ambiguous ones, so send those to a person. Agreement is not proof, though: two models can be wrong together."
+  }
+ ],
+ "recall": {
+  "prompt": "A vendor says their language model classifies your tickets at 96 percent with no training needed. What do you ask before you believe it?",
+  "model_answer": "I ask what it was scored on: labelled tickets it had not seen, how many, and who decided the right answers. I want a baseline and an interval beside the score, precision and recall per category, and the result on messy multi-issue tickets shown separately. I also ask whether the test tickets resemble my inbox, because scores on tidy or synthetic text run high, and whether the instructions were tuned on the same tickets that were used for scoring."
+ },
+ "ask_assistant": "Classify the support tickets into our six categories with a language model given instructions only. Show me the exact instructions, the model name and version, and where the text is sent. Score it on the labelled test tickets that no method has seen, beside keyword rules, the embedding model and blind guessing, each with a 95 percent interval, and add an interval on the gap between neighbouring methods measured on the same tickets. Report precision and recall per category, and accuracy for ordinary and multi-issue tickets separately. Do not adjust the instructions after looking at test tickets; if you did, say so.",
+ "audit_checklist": [
+  "The test set is described: how many labelled tickets, that no method saw them, and that the instructions were not tuned on them.",
+  "Every method is scored on the same tickets, with a baseline beside it and an interval on each score.",
+  "Precision and recall are shown per category, and accuracy for ordinary and tangled tickets separately.",
+  "The exact instructions, the model name and version, and where the text was sent are stated."
+ ],
+ "transfer": [
+  "Does this ad headline make a claim our policy forbids?",
+  "Which inbound leads sound ready to buy, judging by the message they typed?",
+  "What reason does each answer to the cancellation survey give?"
+ ],
+ "other_ways": [
+  {
+   "approach": "Put a few labelled examples inside the language model's instructions",
+   "when": "When instructions alone confuse two categories; score it again on tickets that were not used as examples."
+  },
+  {
+   "approach": "Embeddings with a simple trained model",
+   "when": "When you have labelled examples and a high volume of text, or the text must not leave the building."
+  },
+  {
+   "approach": "A language model for the bulk, and people for the tickets where two models disagree",
+   "when": "When mistakes are costly and a human review queue already exists."
+  }
+ ],
+ "glossary": [
+  {
+   "term": "bag-of-words model",
+   "def": "A model fed counts of the words and short phrases in each text, ignoring their order."
+  },
+  {
+   "term": "zero-shot classification",
+   "def": "Asking a language model to label text from instructions alone, with no training examples."
+  },
+  {
+   "term": "paired comparison",
+   "def": "Comparing two methods on the same test items, with an interval on the gap between them."
+  },
+  {
+   "term": "label agreement",
+   "def": "How often two people give the same item the same label; no model can be meaningfully scored above it."
+  }
+ ]
+}

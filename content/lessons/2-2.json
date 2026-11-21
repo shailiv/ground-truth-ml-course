@@ -1,0 +1,363 @@
+{
+  "id": "2-2",
+  "module": 2,
+  "title": "Accuracy lies: precision and recall",
+  "subtitle": "If predicting 'nobody churns' is 87 percent accurate, what should you ask of a model instead?",
+  "goal": "After this lesson you can read a classifier's four counts and say in plain words how often its flags are right and how many of the real cases it catches.",
+  "predict": {
+    "q": "A churn model is 88.5 percent accurate on 4,000 test advertisers, of whom 527 churned. Roughly how many of those churners did it catch?",
+    "options": [
+      "Nearly nine in ten",
+      "About two in three",
+      "About half",
+      "About one in five"
+    ],
+    "answer": 3,
+    "reveal": "About one in five: 104 of 527. The lesson shows how a model can be 88.5 percent accurate and still miss four churners in five."
+  },
+  "segments": [
+    {
+      "narration": "The churn report from the stand-up has reached the account team, and one lead has already replied: 88 and a half percent accurate, great, ship it. You know the catch from last lesson. Predict that every advertiser stays, and you are right about 87 percent of the time, having found nobody. So a working model and a useless one sit less than two points apart. Either this model is nearly worthless, or accuracy is the wrong ruler. It is the ruler.",
+      "visual": {
+        "type": "title",
+        "kicker": "Module 2 · Lesson 2",
+        "title": "Accuracy lies",
+        "sub": "88.5% accurate, and four churners in five get no call"
+      }
+    },
+    {
+      "narration": "Here is why. The test months hold 4,000 advertisers, and 527 of them churned, about one in eight. Accuracy is the share of rows you got right, and every row counts the same. In SQL terms it is an average over a table that is mostly stayers. [[1]] Call every advertiser a stayer, and the stayers alone hand you 87 percent. [[2]] The model's edge of under two points is all that its work on churners added. The rarer the outcome, the better doing nothing scores. If only five advertisers in a hundred churned, predicting that nobody churns would be 95 percent accurate, and just as useless. That holds for any yes-or-no model: when almost every click is valid, last lesson's invalid-traffic filter could flag nothing and score almost perfectly.",
+      "visual": {
+        "type": "compare",
+        "title": "Accuracy on the 4,000 test advertisers",
+        "left": {
+          "label": "Predict everyone stays",
+          "value": "86.8%",
+          "sub": "0 of 527 churners found"
+        },
+        "right": {
+          "label": "The model, cut-off 0.5",
+          "value": "88.5%",
+          "sub": "104 of 527 churners found"
+        }
+      }
+    },
+    {
+      "narration": "So open the result up. The model gives every advertiser a score between zero and one, and in this report anyone above 0.5 is flagged. Flagged or not, churned or not: four boxes. The model flagged 141 advertisers. Of those, 104 really churned: those it caught. The rest stayed: those are false alarms. Among the advertisers it did not flag, 423 churned anyway: those are the misses. Everyone else was left alone and stayed. The assistant will call these four boxes a confusion matrix. Accuracy counts the two correct boxes, and almost all of that count is the last one: stayers nobody was worried about.",
+      "visual": {
+        "type": "matrix",
+        "title": "The model at cut-off 0.5: four boxes",
+        "tp": 104,
+        "fp": 37,
+        "fn": 423,
+        "tn": 3436,
+        "positive": "churned",
+        "negative": "stayed"
+      }
+    },
+    {
+      "narration": "Two questions do the work that accuracy cannot. The first: of the advertisers the model flagged, how many really churned? [[1]] That is precision. [[2]] Here it is 104 out of 141. [[3]] About 74 percent, so roughly three flags in four are right. Precision tells you the cost of acting. Every false alarm is a call to someone who was never leaving, or a retention offer handed to an advertiser who would have stayed. When the action is expensive, this is the number to watch.",
+      "visual": {
+        "type": "formula",
+        "title": "Question one: precision",
+        "lines": [
+          "precision = flagged who churned ÷ everyone flagged",
+          "= 104 ÷ 141",
+          "= 73.8%"
+        ],
+        "note": "What false alarms cost: wasted calls, wasted offers"
+      }
+    },
+    {
+      "narration": "The second question starts from the other side. Of all the advertisers who really churned, how many did the model catch? [[1]] That is recall. [[2]] Here it is 104 out of 527. [[3]] About 20 percent: one churner in five. Recall tells you the cost of silence: 423 advertisers left and nobody picked up the phone. Same numerator as precision, different denominator. So here is the 88 and a half percent model in plain words. When it speaks, it is right three times in four. And it says nothing about four churners in five. Neither figure is exact: with a different set of test advertisers, precision could land anywhere from about 67 to 81 percent. A later lesson shows how we know.",
+      "visual": {
+        "type": "formula",
+        "title": "Question two: recall",
+        "lines": [
+          "recall = flagged who churned ÷ everyone who churned",
+          "= 104 ÷ 527",
+          "= 19.7%"
+        ],
+        "note": "What misses cost: 423 churners nobody called"
+      }
+    },
+    {
+      "narration": "[[1]] Now put last lesson's hand rule beside it: spend trend below 0.7. [[2]] It flags 711 advertisers, and 246 of them churn. Its precision is about 35 percent, far below the model's, and its recall about 47, far above. At this cut-off the model is a cautious caller, the rule a loud one. Flag more, catch more, raise more false alarms: precision and recall pull against each other. Which matters more is a business call. A cheap check-in forgives false alarms, so favour recall. An expensive credit does not, so favour precision. [[3]] And notice the rule's accuracy: about 81 percent, below doing nothing. Accuracy puts a rule that finds nearly half the churners behind one that finds none.",
+      "visual": {
+        "type": "table",
+        "title": "Same 4,000 advertisers, three ways to flag",
+        "columns": [
+          "Method",
+          "Flagged",
+          "Precision",
+          "Recall",
+          "Accuracy"
+        ],
+        "rows": [
+          [
+            "Model, cut-off 0.5",
+            "141",
+            "73.8%",
+            "19.7%",
+            "88.5%"
+          ],
+          [
+            "Hand rule: spend trend < 0.7",
+            "711",
+            "34.6%",
+            "46.7%",
+            "81.4%"
+          ],
+          [
+            "Everyone stays",
+            "0",
+            "—",
+            "0%",
+            "86.8%"
+          ]
+        ],
+        "highlight": [
+          1
+        ],
+        "note": "By accuracy, the rule ranks below doing nothing"
+      }
+    },
+    {
+      "narration": "One more thing the assistant may offer. Churn is rare, so it proposes to rebalance: copy churners, or drop stayers, until the table is half and half. Your default answer is no. Rarity is a fact about your business, not a defect in your data. A model trained on a half and half table learns that churn is common, and its scores come out too high. On the test rows, never: a rebalanced test set no longer looks like the advertisers you will score, so its precision is inflated. On the training rows it is a last resort for very rare outcomes, and the scores must then be corrected and checked against what happened. Keep the data. Change the measures.",
+      "visual": {
+        "type": "quote",
+        "text": "Rarity is a fact about the business, not a defect in the table.",
+        "sub": "Keep the data. Change the measures."
+      }
+    },
+    {
+      "narration": "Brief and audit. [[1]] Ask the assistant for the four counts on the test months, at a cut-off it states. [[2]] Ask for precision and recall, with the same numbers for both baselines beside them: everyone stays, and your hand rule. Then the evidence. [[3]] The four counts must add up to the test row count, 4,000 here. [[4]] Churners caught plus churners missed must equal the churner total in your audit block, 527. [[5]] And the test rows should still churn at about 13 percent, which shows nothing was rebalanced. If the output leads with accuracy alone, send it back.",
+      "visual": {
+        "type": "bullets",
+        "title": "Brief and audit",
+        "items": [
+          "Ask: the four counts on the test months, cut-off stated",
+          "Ask: precision and recall, beside both baselines",
+          "Check: the four counts add up to 4,000",
+          "Check: caught + missed = 527 churners",
+          "Check: test churn rate still about 13% (nothing rebalanced)"
+        ]
+      }
+    },
+    {
+      "narration": "From now on, when a report or a vendor leads with accuracy on a rare outcome, ask for the four counts and read precision and recall yourself. This model only looked timid because of where the line was drawn. Next lesson: nobody said it had to be 0.5.",
+      "visual": {
+        "type": "bullets",
+        "title": "Keep this",
+        "items": [
+          "Rare outcome: accuracy mostly counts the easy majority",
+          "Precision: of those flagged, how many were right",
+          "Recall: of those who churned, how many were caught"
+        ]
+      }
+    }
+  ],
+  "takeaways": [
+    "When the outcome is rare, accuracy mostly measures the easy majority: compare it with 'predict nobody' before reacting.",
+    "Precision: of those flagged, how many were right. Recall: of the real cases, how many were caught.",
+    "The two trade off, and which matters more is a business decision about the cost of a false alarm against the cost of a miss."
+  ],
+  "quiz": [
+    {
+      "id": "2-2-q1",
+      "concept": "accuracy hides the trade-off",
+      "domain": "course",
+      "q": "The assistant tries a second churn model on the same 4,000 test advertisers. Its accuracy is 88.2 percent against the first model's 88.5, and the note says the two are 'effectively identical'. The second model flagged 99 advertisers, of whom 77 churned; the first flagged 141, of whom 104 churned. What is the right read?",
+      "options": [
+        "They are interchangeable: a 0.3-point accuracy gap on 4,000 advertisers is too small to matter.",
+        "The second is the better model: 77 of its 99 flags were right, against 104 of the first's 141.",
+        "They differ: the second's flags are right more often, but it catches 77 churners, not 104.",
+        "The first is the better model: 88.5 beats 88.2 on exactly the same 4,000 rows."
+      ],
+      "answer": 2,
+      "why": "Accuracy barely moves because both models agree on thousands of easy stayers. The counts show a real difference: precision 77.8 against 73.8 percent, but recall 14.6 against 19.7 percent, and which is preferable depends on what a miss and a false alarm cost. Calling them identical, or crowning one on accuracy or on precision alone, ignores half the picture."
+    },
+    {
+      "id": "2-2-q2",
+      "concept": "recall is not accuracy",
+      "domain": "course",
+      "q": "The assistant's summary reads: 'Test months: 104 flagged and churned, 37 flagged and stayed, 423 churned but not flagged, 3,436 not flagged and stayed. Accuracy 88.5 percent: the model correctly identifies 88.5 percent of churners.' What is wrong with it?",
+      "options": [
+        "The four counts are inconsistent: they do not add up to the 4,000 advertisers in the test months.",
+        "The sentence confuses accuracy with recall: by its own counts it caught 104 of 527 churners.",
+        "Only a baseline is missing: beside 'everyone stays' at 86.8 percent, the sentence would be fine.",
+        "The accuracy is miscalculated: 104 right out of 141 flagged gives about 74 percent, not 88.5."
+      ],
+      "answer": 1,
+      "why": "Accuracy is the share of all 4,000 rows that were right, and most of those are stayers. The share of churners caught is recall: 104 of the 527 who churned, about 20 percent. The counts do add up, and 74 percent is the precision, not the accuracy. A baseline beside it would be welcome, but it would not make the sentence true."
+    },
+    {
+      "id": "2-2-q3",
+      "concept": "accuracy with a rare outcome",
+      "domain": "other",
+      "q": "A vendor pitches an invalid-traffic filter as '99 percent accurate'. Suppose about 1 click in 100 on your platform is invalid. What is the most useful reply?",
+      "options": [
+        "Of the clicks it flags, how many are truly invalid, and of the invalid clicks, how many does it flag?",
+        "Run it on our own clicks first: if it is still 99 percent accurate there, we can trust the claim.",
+        "Was the test data rebalanced to half invalid clicks, so that the accuracy really means something?",
+        "Can you repeat the test on ten times as many clicks, to make the 99 percent more certain?"
+      ],
+      "answer": 0,
+      "why": "With 1 invalid click in 100, a filter that flags nothing at all is already 99 percent accurate, so the figure says nothing about the filter. Precision and recall are the questions that look at the rare group directly. Testing on your own clicks is the right instinct, but 99 percent accuracy there is still what flagging nothing scores. More clicks only make a meaningless number more exact, and a rebalanced test set would no longer resemble your traffic."
+    },
+    {
+      "id": "2-2-q4",
+      "concept": "precision versus recall",
+      "domain": "course",
+      "q": "Finance will approve a costly retention credit for every advertiser the model flags at the 0.5 cut-off. The finance lead asks: 'How much of that credit goes to advertisers who were never going to leave?' Which figure answers her?",
+      "options": [
+        "Recall: 104 of the 527 churners were flagged, so one credit in five is well spent.",
+        "Accuracy: 88.5 percent were classified correctly, so about 11.5 percent of the credit is wasted.",
+        "The misses: 423 of the 527 churners were not flagged, so four fifths of the credit is wasted.",
+        "Precision: 104 of the 141 flagged really churned, so the other 37 credits are wasted."
+      ],
+      "answer": 3,
+      "why": "Her question is about the flagged group, so the denominator is everyone flagged: that is precision, and what is left over is the false alarms, 37 of 141. Recall and the 423 misses answer a different question, how many churners got no credit, and accuracy mixes in thousands of stayers nobody flagged. None of those three is a share of the credit."
+    }
+  ],
+  "review": [
+    {
+      "concept": "accuracy with a rare outcome",
+      "variants": [
+        {
+          "q": "A lead-scoring model is reported as 96 percent accurate. In the test data, 40 of 1,000 leads converted. What does the 96 percent tell you?",
+          "options": [
+            "That it finds 96 percent of the leads that convert: about 38 of the 40.",
+            "Very little yet: predicting 'no lead converts' would also score 96 percent.",
+            "That 96 percent of the leads it flags will convert, so sales can trust the list.",
+            "That it is strong: rare outcomes are hard to predict, so 96 percent is impressive."
+          ],
+          "answer": 1,
+          "why": "960 of the 1,000 leads do not convert, so the do-nothing guess is already 96 percent accurate. Accuracy is neither the share of converters found, which is recall, nor the share of flags that are right, which is precision. Ask for those two."
+        },
+        {
+          "q": "A model that marks support tickets as urgent is 93 percent accurate on 2,000 test tickets, 100 of which were urgent. Its four counts: 10 urgent tickets flagged, 50 non-urgent flagged, 90 urgent missed, 1,850 correctly left alone. What is the right read?",
+          "options": [
+            "Good: 93 percent is high, and 50 false alarms are few next to 2,000 tickets.",
+            "Usable: it is right about 1,860 of the 2,000 tickets and rarely raises a false alarm.",
+            "Poor: it catches 10 of 100 urgent tickets, and flagging nothing would score 95 percent.",
+            "Unclear: with only 100 urgent tickets in the test set, nothing can be concluded yet."
+          ],
+          "answer": 2,
+          "why": "Only 100 of 2,000 tickets are urgent, so flagging nothing scores 95 percent: the model is below the do-nothing baseline. Its recall is 10 of 100 and its precision 10 of 60. Being right about 1,860 tickets sounds solid only because 1,850 of them were never in question, and a hundred urgent tickets is plenty to see that nine in ten are missed."
+        },
+        {
+          "q": "A colleague reports two churn models. On product line A, 8 percent of advertisers churn and the model is 92 percent accurate. On line B, 30 percent churn and the model is 80 percent accurate. Which model adds more over doing nothing?",
+          "options": [
+            "Line B's: it beats 'everyone stays' by ten points, while line A's only matches it.",
+            "Line A's: 92 percent against 80 means twelve more advertisers in a hundred are right.",
+            "Line A's: churn is rarer there and harder to predict, so 92 percent is worth more.",
+            "It cannot be said: with different churn rates, the two accuracies are not comparable."
+          ],
+          "answer": 0,
+          "why": "Accuracy only means something next to the do-nothing rate: 'everyone stays' scores 92 percent on line A and 70 percent on line B. So A's model adds nothing and B's adds ten points. The higher headline is the tempting answer, and it belongs to the model that may be finding no churners at all. Different churn rates do not block the comparison: they are the reason to make it against each line's own baseline."
+        }
+      ]
+    },
+    {
+      "concept": "precision versus recall",
+      "variants": [
+        {
+          "q": "A model flags creatives that are about to fatigue. Last month it flagged 200, and 150 of those did fatigue. In total 600 creatives fatigued. The design lead asks: 'What share of the creatives that fatigued were we warned about?'",
+          "options": [
+            "75 percent: 150 of the 200 flagged.",
+            "25 percent: 150 of the 600 that fatigued.",
+            "33 percent: 200 flagged against 600 fatigued.",
+            "It cannot be answered without the model's accuracy."
+          ],
+          "answer": 1,
+          "why": "She is asking about all the creatives that fatigued, so they are the denominator: that is recall, 150 of 600. The 75 percent is precision, the share of warnings that were right. It is a true number that answers a different question."
+        },
+        {
+          "q": "An upsell model picks accounts for a half-day workshop with a solutions engineer, and engineers are scarce. An account that is missed simply gets the usual sales email. Which measure should the team push up first?",
+          "options": [
+            "Recall, so that no interested account is missed.",
+            "Accuracy, because it balances both kinds of error.",
+            "Precision, because each false alarm burns a scarce half-day.",
+            "Neither: with a rare outcome both are unreliable."
+          ],
+          "answer": 2,
+          "why": "The action is expensive and a miss is cheap, so the cost sits in the false alarms: that is precision. Recall would come first if the action were cheap and a miss costly. Accuracy does not balance the two errors, it hides which one you are making."
+        },
+        {
+          "q": "Account managers can send a two-line check-in email to any flagged advertiser at almost no cost, while a churned advertiser is a lost account. The current setting has precision of about 74 percent and recall of about 20 percent. What is its main weakness for this use?",
+          "options": [
+            "Precision: one flag in four is a false alarm, and every one of them wastes an email.",
+            "Neither figure: both must pass 50 percent before the setting is usable.",
+            "Its balance: precision and recall should be about equal, and here they are far apart.",
+            "Recall: four churners in five never get the email, and each is a lost account."
+          ],
+          "answer": 3,
+          "why": "When acting is cheap and missing is costly, the misses are what hurt, and this setting misses about four churners in five. One false alarm in four costs only a few unneeded emails. The high precision is the tempting number, but here it prices the wrong mistake. Nothing says the two must be equal or pass a fixed mark: the costs decide."
+        }
+      ]
+    }
+  ],
+  "drill": [
+    {
+      "q": "Why can a model that is ninety-five percent accurate be useless?",
+      "a": "Because accuracy counts every row the same. If only five cases in a hundred are positive, answering no to everything is already ninety-five percent accurate and finds nothing. Always compare accuracy with the do-nothing guess."
+    },
+    {
+      "q": "What is the difference between precision and recall?",
+      "a": "Precision starts from the flagged list: of those flagged, how many were right. Recall starts from the real cases: of all the real ones, how many were flagged. Same numerator, different denominator."
+    }
+  ],
+  "recall": {
+    "prompt": "A stakeholder says: 'The model is 88.5 percent accurate, so it must be catching most churners.' Explain why that does not follow, and what you would report instead.",
+    "model_answer": "About 87 percent of advertisers stay, so predicting that everyone stays is already about 87 percent accurate while finding no churners: accuracy is dominated by the easy stayers. The useful numbers are precision, the share of flagged advertisers who really churned, about 74 percent, and recall, the share of churners who were flagged, about 20 percent. So this model is usually right when it flags and misses four churners in five. Which of the two matters more depends on what a false alarm costs against what a miss costs."
+  },
+  "ask_assistant": "For [model], report results on [the test period] only, at a stated cut-off of [cut-off]. Show the four counts (flagged and had [outcome], flagged and did not, had [outcome] but not flagged, neither) with precision and recall, and put the same figures for 'predict [the common outcome] for everyone' and for my rule [rule] in the same table. Print the test row count and the [outcome] rate beside them, so I can check that the counts add up. Do not rebalance or resample the test rows. If you reweighted or resampled the training rows, say so and show the average predicted rate beside the actual rate. Do not lead with accuracy.",
+  "audit_checklist": [
+    "The four counts are shown and add up to the test row count (4,000 here).",
+    "Churners caught plus churners missed equals the churner total from the audit block (527 here).",
+    "Precision and recall are stated with their cut-off, beside the same figures for both baselines.",
+    "The churn rate in the test rows matches the real rate (about 13 percent): nothing was rebalanced."
+  ],
+  "transfer": [
+    "Which clicks are invalid traffic? Almost every click is valid, so 'flag nothing' is almost perfectly accurate.",
+    "Which leads will convert? Ask what share of flagged leads convert, and what share of converters were flagged.",
+    "Which support tickets are urgent? A missed urgent ticket and a false alarm cost very different amounts."
+  ],
+  "other_ways": [
+    {
+      "approach": "Put a cost on each of the four boxes and compare models by total cost",
+      "when": "When you can price a false alarm and a miss in dollars; a later lesson does exactly this."
+    },
+    {
+      "approach": "One blended number from precision and recall (the F1 score)",
+      "when": "When you must screen many candidate models quickly and have no costs; it hides which of the two is weak."
+    },
+    {
+      "approach": "Class weights or resampling applied to the training rows only",
+      "when": "When positives are so few the model learns nothing from them; the scores then need correcting, and the test rows stay untouched."
+    }
+  ],
+  "glossary": [
+    {
+      "term": "confusion matrix",
+      "def": "The four counts behind any yes-or-no prediction: flagged and real, flagged and not real, missed, and correctly left alone."
+    },
+    {
+      "term": "false alarm (false positive)",
+      "def": "A row the model flagged that did not have the outcome."
+    },
+    {
+      "term": "miss (false negative)",
+      "def": "A row that had the outcome and was not flagged."
+    },
+    {
+      "term": "precision",
+      "def": "Of the rows the model flagged, the share that really had the outcome."
+    },
+    {
+      "term": "recall",
+      "def": "Of the rows that really had the outcome, the share the model flagged."
+    }
+  ]
+}

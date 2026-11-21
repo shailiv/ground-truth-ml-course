@@ -1,0 +1,70 @@
+{
+  "lesson": "4-1",
+  "decisions": [
+    {
+      "n": 0,
+      "reviewer": "learner-2",
+      "finding": "The brief asks for test AUC at seven depths; pasting it opens the sealed envelope that lesson 4-2 then scolds the learner for opening.",
+      "decision": "accepted",
+      "reason": "Correct, and it is the lesson-specific ruling. depth_sweep_note: 'test_auc is shown to demonstrate over-fitting; it must not be used to CHOOSE the depth'; cv_auc_on_training_months is the honest column.",
+      "change": "ask_assistant now asks for a table of the training score beside the cross-validated score (folds inside the training rows only, or a validation period the learner names) at several values of the setting, and says the test rows stay out of that table. Segment 8 narration says the same without the term ('the held-out rows come from inside the training months, and the test months stay closed. Next lesson shows how'). Segment 2 narration and the widget note say the test months are shown to demonstrate the effect, not to choose a depth."
+    },
+    {
+      "n": 1,
+      "reviewer": "expert-2",
+      "finding": "The table note explains the two depth-3 results (0.767 and 0.761) by a minimum leaf size that facts.json did not record.",
+      "decision": "accepted",
+      "reason": "It was unsupported when reviewed; facts now record it: tree.min_rows_per_leaf = 100 and tree.note ('depth_sweep grows trees with no minimum leaf size, so its depth-3 row scores slightly differently').",
+      "change": "Segment 5 table note now cites the recorded settings: 'Depth 3 scores 0.767 here, with no minimum leaf size; lesson 3-3's tree required at least 100 training advertisers in every leaf and scored 0.761.' The guess option that named 'the 3-level tree' was also corrected from 0.77 to 0.76 (tree.test.auc 0.761)."
+    },
+    {
+      "n": 2,
+      "reviewer": "expert-2",
+      "finding": "'Every depth from 1 to 25' is wrong: the sweep has twelve depths, and 4-2 counts twelve.",
+      "decision": "accepted",
+      "reason": "depth_sweep has 12 rows (1, 2, 3, 4, 5, 6, 8, 10, 12, 15, 20, 25) and the depth widget's slider steps through exactly those rows.",
+      "change": "Segment 2 narration: 'Take that tree at twelve depths between 1 and 25'. Widget note: 'Twelve depths, from 1 to 25.' Lesson 4-2 uses twelve throughout."
+    },
+    {
+      "n": 3,
+      "reviewer": "learner-2",
+      "finding": "A 300-tree model is used as evidence two lessons before forests are explained.",
+      "decision": "rejected",
+      "reason": "The pointers the fix asks for are already there: the narration calls it 'the model from last lesson's script, an average of 300 trees', the table row is labelled 'lesson 4-3', lesson 3-5 introduced it with 'A later lesson covers how it works', and the same segment says why its gap is forgivable (its test score beats every single tree). Not worth re-recording segment 6 for a spoken copy of an on-screen pointer (R8).",
+      "change": ""
+    },
+    {
+      "n": 4,
+      "reviewer": "learner-2",
+      "finding": "That the deep tree is less accurate than predicting 'nobody churns' is only on screen.",
+      "decision": "rejected",
+      "reason": "SPEC rule 3 is screen-first: the card carries the exact pair (82.4% against 86.8%), and the listener already hears the same verdict in the lesson's own measure ('about 0.61, lower than the single question', 'it answers a flat yes or no'). Segment 3 is at 128 words and the lesson is over the 900-word target after the required additions, so a second damning fact in the ear does not earn a re-record.",
+      "change": ""
+    },
+    {
+      "n": 5,
+      "reviewer": "learner-2",
+      "finding": "The checklist asks for the smallest leaf but gives no value that should worry the learner.",
+      "decision": "accepted",
+      "reason": "A check without a threshold cannot be used. The course has one: noise.margin_of_error_for_a_churn_rate gives plus or minus 6.3 points for 100 advertisers (taught in 2-6), and the course's own tree used tree.min_rows_per_leaf = 100.",
+      "change": "audit_checklist item 3: '... a churn rate from about 100 advertisers is only good to about 6 points either way'. The segment 8 bullet carries the same rule of thumb. Kept out of the narration for length."
+    }
+  ],
+  "rulings": {
+    "R1": "Segment 1, one added sentence: 'The same is true of any flexible model, whether it predicts churn or creative fatigue: a perfect score on rows it has seen proves nothing.' (other question: creative fatigue).",
+    "R2": "Not applicable.",
+    "R3": "ask_assistant rewritten as a template with slots [measure], [model], [several values of its complexity setting ...], [a validation period I name], [a size check ...]; no depth list, no course names. Keeps every demand for evidence (both scores side by side, each labelled with rows and row count, the by-setting table, the size check). 117 words.",
+    "R4": "Segment 9 is 45 words: what the learner now does ('a score with no rows named gets one reply from you: show me the other number') and the pointer to 4-2. The quote visual is kept unchanged.",
+    "R5": "Keyed answer is the longest option in 2 of 10. Replaced the 'nothing is wrong' style options: quiz 2 A, review 1 variant 3 C, review 2 variant 2 B and D (the two 'Sound:' options). Quiz 2 now quotes the facts exactly (0.787, 0.767, 0.955, 0.582) instead of two-decimal roundings, because 0.955 does not round unambiguously.",
+    "R6": "Nothing usable sat only in other_ways: the cures (cap the depth, minimum leaf size, fewer columns) are spoken in segment 7 and the comparison with the simpler model in segment 6. No sentence added.",
+    "R7": "Checklist reworded so each item is visible in the output: both scores side by side with rows and row counts; the by-setting table shows training beside cross-validated or validation-period scores and has no test-row column; leaves and smallest leaf with a threshold; the headline number is a held-out score, named as such, and matches the table.",
+    "specific": "Done. The brief no longer sets the trap (training beside cross-validated or validation-period score by setting; test rows kept out). One sentence in segment 2 says the chart uses the test months to demonstrate the effect, not to choose. The two depth-3 trees are stated per tree.note. The depth widget segment is kept; what the narration says about it was checked against site/public/js/widgets.js and depth_sweep: twelve depths, training and test AUC, both near 0.66 at depth 1, test peak 0.769 at depth 4, 0.607 at depth 25."
+  },
+  "segments_changed": [1, 2, 8, 9],
+  "numbers_verified": 167,
+  "open_questions": [
+    "The lesson is 919 spoken words: under the 950 cap, above the 650-900 target. The additions are all required by rulings (R1 sentence, the chart caution, the brief change); findings 3 and 4 were rejected partly to hold the length.",
+    "The depth widget plots training and test AUC only. If the owner adds cv_auc_on_training_months as a third line (widgets.js and widgets.json are outside this brief), the learner would see that a score from inside the training months tracks the sealed one, and segment 2's caution could point at it.",
+    "The words 'cross-validated score' appear in this lesson's brief and audit list (as the ruling requires) one lesson before 4-2 teaches the term. The narration avoids the term and says 'held-out rows from inside the training months'."
+  ]
+}

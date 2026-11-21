@@ -1,0 +1,33 @@
+[
+ {
+  "reviewer": "expert-3",
+  "lesson": "5-5",
+  "where": "seg7 narration; ask_assistant (last sentence); audit_checklist item 4",
+  "quote": "it replaces the guessed one in five with a number you measured",
+  "kind": "brief",
+  "severity": "medium",
+  "problem": "The holdout comparison is given no interval and no size, in a course that sized experiments two lessons earlier. With the brief's own 10 percent holdout of the rule's list (131 names against 1,180 called), the churn gap has a margin of about ± 8 points, while the effect the toy numbers assume is about 6 points. One month's 'measured number' cannot tell a working call from a useless one, and a learner following the checklist would replace the guess with noise.",
+  "evidence": "economics.list_from_the_rule: contacted 1311, churners_reached 413 (31.5%); assumptions.share_of_contacted_churners_saved 0.2 -> expected gap about 6.3 pts; 1.96 x sqrt(0.315 x 0.685 / 131 + 0.252 x 0.748 / 1180) = about 8.3 pts. experiment.examples show a 5-point lift needing about 1,470 per group.",
+  "fix": "Narration: 'That gap, with its interval, is the only honest measure. A small slice gives a wide interval, so size it, or pool several months, before you replace the one in five.' Brief: 'report the called-versus-holdout gap with a 95 percent interval and say how large the holdout must be to detect a 5-point gap.' Checklist: add 'and the gap is reported with its interval'."
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "5-5",
+  "where": "seg6 narration (last sentence)",
+  "quote": "Chance of staying times spend if they stay ties the best spend model from the regression lesson.",
+  "kind": "lost",
+  "severity": "medium",
+  "problem": "I read it twice and still cannot hear it: 'ties' is the verb, and the two-stage spend model it points to was never explained (the outline says 3-1 left it for this lesson).",
+  "fix": "Give it three sentences (predict the chance they stay, predict spend if they stay, multiply; it matched the best spend model's typical miss) or cut it."
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "5-5",
+  "where": "seg2 narration",
+  "quote": "And say a call saves one churner in five.",
+  "kind": "doubt",
+  "severity": "low",
+  "problem": "One lesson ago, calling the top 400 by risk prevented 32 churns. Here the same 400 are credited with 220 times 0.2, which is 44. The toy number is rosier than the simulation I was just shown, and nothing says so.",
+  "fix": "Use the rate measured in the outreach simulation for that list, or point out the difference in one clause."
+ }
+]

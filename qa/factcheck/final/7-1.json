@@ -1,0 +1,7 @@
+{
+ "issues": [],
+ "numbers_checked": 83,
+ "verdict": "Pass. Every numeric claim about the simulated data (segment counts, shares, feature profiles, churn rates with and without the two binary flags, plain GROUP BY churn range, k-means inertia across k = 2 to 8, Adjusted Rand Index stability and overlap scores, and nearest-neighbour AUCs on raw versus standardised columns) matches facts.json, and all ML concepts, caveats, and quiz/review items are sound.",
+ "_hash": "eb165169b360d29c",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_ChdRUllDYTRuRU1MM1l4czBQc3MydzhRSRIXUVJZQ2E0bkVNTDNZeHMwUHNzMnc4UUk | tokens in=68103 out=116 thought=29525]"
+}

@@ -1,0 +1,70 @@
+{
+ "lesson": "2-6",
+ "decisions": [
+  {
+   "n": 0,
+   "reviewer": "learner-1",
+   "finding": "Seg4 is the longest segment, with a dozen numbers and two methods; the interval on the gap gets lost.",
+   "decision": "accepted",
+   "reason": "Two ideas in one 126-word segment, and the second had only a table footnote as its visual.",
+   "change": "Split at 'The cleaner check...': seg4 keeps the monthly table (54 words), new seg5 gives the gap its own card (+4.9 pts, 95% interval -1.7 to +11.4, zero is inside; 72 words). The spoken words are the old ones, only cue markers were added. The lesson now has 9 segments."
+  },
+  {
+   "n": 1,
+   "reviewer": "learner-1",
+   "finding": "Seg5: what happened in May, and why June against January to April?",
+   "decision": "partly",
+   "reason": "May belongs in the story (noise.gaming_monthly: 22.6% on 217 advertisers, margin 5.6 pts). Facts hold no interval for May against January to April, so no fourth row with an interval could be added. The 'biggest mover out of many cuts' worry is real but cannot be settled from facts.",
+   "change": "Seg6 (was seg5) now says 'May was already up, at about 23 percent on about 220 advertisers: a warning, no more', and the table note gives May's rate, group size and margin and says June is set against the four months before the rise, pooled. Row 1's sentence was shortened to make room."
+  },
+  {
+   "n": 2,
+   "reviewer": "learner-1",
+   "finding": "Quiz q2: the key holds two numbers that must be recalled, and is the only option with specific numbers.",
+   "decision": "accepted",
+   "reason": "The key should test the read (a 0.6-point gap is inside the wobble), not memory of an interval.",
+   "change": "Key is now 'A 0.6-point gap between groups this size is inside the wobble: ask for the interval first'; the interval (-1.7 to +2.9, noise.comparisons) moved to the explanation. The 'Nothing: ...' option was replaced by a specific wrong reading (sizes belong in the main text, the gap itself is reliable)."
+  },
+  {
+   "n": 3,
+   "reviewer": "learner-1",
+   "finding": "'Bootstrap' is in the brief but never spoken.",
+   "decision": "accepted",
+   "reason": "SPEC: explain each term the first time, then use it; the learner pastes this word.",
+   "change": "Brief and audit segment adds: 'The assistant will call that a bootstrap.'"
+  },
+  {
+   "n": 4,
+   "reviewer": "learner-1",
+   "finding": "Seg3: 'a gap above 2 points never showed up' and '0%' read like a rounded figure stated as an absolute.",
+   "decision": "accepted",
+   "reason": "The reviewer was right, and facts changed: noise.aa_test.by_group_size.4000.share_of_gaps_over_2_pts is now 0.005 (was 0), about 10 of 2,000 draws.",
+   "change": "Seg3 now ends 'Now make each group 4,000 advertisers. A gap above 2 points turns up about once in 200 draws.' Stat card: '0.5% of draws: gap over 2 points, groups of 4,000'."
+  }
+ ],
+ "rulings": {
+  "R1": "Seg1 ends: 'That question comes first for any gap between two measured numbers, whether churn in two months or the click rates of two creatives: how big would it be by chance?'",
+  "R2": "Not applicable.",
+  "R3": "Brief rewritten as a template: slots for what is compared, the unit, the test rows and the number of past periods; it keeps the group size, the 95% interval, the method line and the wording rule, and adds a list of every cut examined and the metric's own history. 110 words.",
+  "R4": "Recap cut from 79 to 49 words: one sentence (when a tile jumps, ask how many advertisers and for the interval on the gap), one pointing to module three. The quote visual is kept.",
+  "R5": "Key longest in 3 of 10 (was 7), shortest in 2. Review 1 variant 1 now states the multiplier in each option (twice, two and a half, four, sixteen times as many) instead of four bare numbers of equal length; variant 3 swaps one tile for 0.5 points in a group of 12,000 so a tiny move in a huge group is also tested. The two 'Nothing: ...' options are gone.",
+  "R6": "The usable fallback sat only in other_ways. Brief and audit now ends: 'No interval to hand? Look at the metric's own history: has it moved this much before with no cause?'",
+  "R7": "Item 4 was a promise ('how many cuts were examined'); it is now evidence: every cut examined is listed with its group size and interval. Items 1 to 3 were already visible in the output.",
+  "specific": "A/A figures updated from facts_changes. Groups of 4,000: narration and stat card now say about once in 200 draws (0.5%), not never (0%). Groups of 1,000 are not quoted in narration or visuals; the guess question's distractor 'About 1 time in 7' matched the old 1,000-group share (0.143) and is now 'About 1 time in 6' (0.165). Stat labels say 'draws', matching the reworded noise.aa_test.what. The 250-group figures (2 pts, 50%, 5.6 pts) are unchanged in facts."
+ },
+ "segments_changed": [
+  1,
+  3,
+  4,
+  5,
+  6,
+  8,
+  9
+ ],
+ "numbers_verified": 164,
+ "open_questions": [
+  "June against January to April is the largest of six monthly figures, the pattern the brief warns about. Facts have no interval for May against January to April and no multiple-comparison note; adding either to facts.noise.comparisons would let the lesson answer the learner's doubt with a number.",
+  "Segment numbering shifted: new seg7 (model scores) is byte-identical to the old seg6, and seg2 is untouched, so their clips should be reused by the text-hash cache; seg4 and seg5 are the two halves of the old seg4 and both need recording.",
+  "Narration is 906 words in 9 segments (the maximum): over the 900 target, under the 950 cap."
+ ]
+}

@@ -1,0 +1,64 @@
+[
+ {
+  "reviewer": "learner-2",
+  "lesson": "4-1",
+  "where": "brief",
+  "quote": "That table is a diagnostic only: do not choose a depth from it",
+  "kind": "not_usable",
+  "severity": "medium",
+  "problem": "I paste this, get test AUC at seven depths, see that depth 4 wins, and 4-2 opens by telling me that looking at that table has already opened the sealed envelope. The brief sets the trap the next lesson scolds me for.",
+  "fix": "Have the depth table report training AUC and cross-validated (or validation-month) AUC. Keep the test months for one final score."
+ },
+ {
+  "reviewer": "expert-2",
+  "lesson": "4-1",
+  "where": "seg5 visual (table note)",
+  "quote": "lesson 3-3's tree was grown with a minimum leaf size and scored 0.761",
+  "kind": "unsupported_number",
+  "severity": "low",
+  "problem": "The explanation given for the two different depth-3 results (0.767 here, 0.761 in 3-3) is not recorded anywhere in facts.json; the facts simply hold two different depth-3 trees with no stated reason.",
+  "evidence": "tree: depth 3, leaves 8, test.auc 0.761, train_auc 0.786 (no leaf-size setting recorded); depth_sweep[2]: test_auc 0.767, train_auc 0.787.",
+  "fix": "Record the tree's settings in facts.json and cite them, or reword to what is known: \"Depth 3 scores 0.767 in this sweep; the tree of lesson 3-3 was fitted with slightly different settings and scored 0.761.\""
+ },
+ {
+  "reviewer": "expert-2",
+  "lesson": "4-1",
+  "where": "seg2 narration and widget note",
+  "quote": "Take that tree at every depth from 1 to 25",
+  "kind": "number_mismatch",
+  "severity": "low",
+  "problem": "The sweep has 12 depths (1, 2, 3, 4, 5, 6, 8, 10, 12, 15, 20, 25), not every depth from 1 to 25. Lesson 4-2 then counts 'Twelve depths' and 'the best of twelve looks', so the two lessons disagree on how many trees were scored.",
+  "evidence": "depth_sweep has 12 entries; no depth 7, 9, 11, 13-14, 16-19, 21-24.",
+  "fix": "\"Take that tree at twelve depths between 1 and 25, and score it twice.\""
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "4-1",
+  "where": "seg6 narration",
+  "quote": "Then the model from last lesson's script, an average of 300 trees.",
+  "kind": "lost",
+  "severity": "low",
+  "problem": "A many-tree model is used as evidence two lessons before forests are explained (the table even labels it 'lesson 4-3'). I had to take on trust what it is and why its gap is forgivable.",
+  "fix": "Add one clause ('a forest, which 4-3 explains: 300 deep trees whose scores are averaged') or make the point with a tuned and an untuned single tree."
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "4-1",
+  "where": "seg3 visual",
+  "quote": "predicting 'nobody churns' gets 86.8%",
+  "kind": "ear",
+  "severity": "low",
+  "problem": "The most damning fact about the deep tree, that it is less accurate than predicting nobody churns, is only on screen. A listener never hears it.",
+  "fix": "Say it in the narration: 'On new advertisers it is less accurate than predicting that nobody churns.'"
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "4-1",
+  "where": "audit checklist",
+  "quote": "For a tree: the number of leaves and the size of the smallest leaf",
+  "kind": "not_usable",
+  "severity": "low",
+  "problem": "I can find the number in the output but have no idea what value should worry me. The lesson only says three accounts is too few.",
+  "fix": "Give a rule of thumb tied to module 2's margin of error, for example: a leaf under about 100 advertisers has a rate that wobbles by 6 points or more."
+ }
+]

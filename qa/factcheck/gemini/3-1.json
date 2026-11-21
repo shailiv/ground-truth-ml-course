@@ -1,0 +1,53 @@
+{
+ "issues": [
+  {
+   "where": "seg3 visual",
+   "quote": "2202",
+   "kind": "number_mismatch",
+   "severity": "high",
+   "explanation": "The bar chart plots the run-rate baseline MAE as $2,202 instead of $2,022 (a digit transposition). This contradicts facts.json, seg3 narration ('about 2,000 dollars'), the visual's own footnote (+$339 gap from $2,361 requires $2,022, not $2,202), seg5 visual, seg9 visual, and quiz 3-1-q4.",
+   "evidence": "facts.json -> regression.models.run_rate.mae = 2022",
+   "fix": "Change the 'Run-rate baseline' bar value in segments[2].visual.data[0] from 2202 to 2022."
+  },
+  {
+   "where": "seg4 narration",
+   "quote": "The advertiser in the middle of the test set spends about 7,100 dollars.",
+   "kind": "number_mismatch",
+   "severity": "high",
+   "explanation": "The median next-8-week spend across the 4,000 test advertisers is $1,694 (about $1,700), not $7,100 (a transposition of 1,700). Saying 7,100 contradicts facts.json, contradicts seg4 visual ('$1,694'), and makes the following sentence ('The average is about 5,300, three times as much') mathematically false since 5,300 is less than 7,100.",
+   "evidence": "facts.json -> regression.target_median = 1694; regression.target_mean = 5257",
+   "fix": "Change 'about 7,100 dollars' to 'about 1,700 dollars'."
+  },
+  {
+   "where": "seg4 visual",
+   "quote": "miss for the advertiser in the middle: raw-dollar regression vs run-rate",
+   "kind": "number_mismatch",
+   "severity": "medium",
+   "explanation": "The numbers $904 and $490 are the median absolute errors across all 4,000 test advertisers (the middle miss when errors are ranked by size), not the prediction error on 'the advertiser in the middle' of spend (which the first card in the same visual defines as the median-spend advertiser at $1,694).",
+   "evidence": "facts.json -> regression.models.linear_regression_dollars.median_abs_error = 904; regression.models.run_rate.median_abs_error = 490",
+   "fix": "Change the stat label to 'middle (median) miss across advertisers: raw-dollar regression vs run-rate' or 'typical miss (median absolute error): raw-dollar regression vs run-rate'."
+  },
+  {
+   "where": "seg9 visual",
+   "quote": "plus run-rate column $3,733",
+   "kind": "number_mismatch",
+   "severity": "high",
+   "explanation": "The recap subtitle gives the MAE of linear regression with the run-rate column as $3,733 instead of $1,733. This contradicts facts.json, seg3, seg5, and quiz 3-1-q4, and makes adding the run-rate column appear far worse than raw dollars ($2,361) instead of better.",
+   "evidence": "facts.json -> regression.models.linear_regression_dollars_plus_run_rate.mae = 1733",
+   "fix": "Change 'plus run-rate column $3,733' to 'plus run-rate column $1,733'."
+  },
+  {
+   "where": "quiz 3-1-q2",
+   "quote": "Whether the converted predictions are typical values, which sum below the real total",
+   "kind": "bad_question",
+   "severity": "medium",
+   "explanation": "Set in the course domain, this question refers to the log model with the lowest MAE ($1,428, scored on all 4,000 test advertisers) whose per-advertiser forecasts are summed into a revenue total for finance. Across all 4,000 test advertisers—the only group that can be summed at forecast time before future churners are known—the uncorrected typical-value predictions actually sum 2.1% ABOVE the real total (+0.021) because the model predicts positive spend for churners, and applying the 1.039 average-value correction alone worsens the finance total to +6.1% (+0.061), as seg8 just taught. Typical values sum below the real total (-3.6%) only on the subset of 3,473 advertisers who kept spending.",
+   "evidence": "facts.json -> regression.models.log_model_typical_value.total_error = 0.021; regression.models.log_model_average_value.total_error = 0.061; regression.typical_vs_average.total_error_using_typical_values = -0.036; LESSON seg8",
+   "fix": "Reword option 0 to 'How predictions were converted back to dollars (typical vs average) and how zero-spend churners were handled—check predicted total against actual total', and update 'why' to note both the -3.6% underprediction on stayers and the +2.1% (+6.1% corrected) overprediction when churners are scored without a churn model."
+  }
+ ],
+ "numbers_checked": 80,
+ "verdict": "Needs revision before publication: three high-severity number typos/transpositions (2,202 for 2,022 in seg3 visual; 7,100 for 1,700 in seg4 narration; $3,733 for $1,733 in seg9 visual), one mislabelled metric in seg4 visual, and one quiz question (3-1-q2) whose keyed claim conflicts with seg8 and facts.json on the all-advertiser revenue total.",
+ "_hash": "5db2d5f1b3e85a3c",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_ChdpdElCYTZXTEtMYU4yOG9QM3FyVzhBYxIXaXRJQmE2V0xLTGFOMjhvUDNxclc4QWM | tokens in=67500 out=1296 thought=25377]"
+}

@@ -1,0 +1,47 @@
+{
+ "lesson": "7-4",
+ "decisions": [
+  {
+   "n": 0,
+   "reviewer": "learner-2",
+   "finding": "Lesson 5-3 gave a fourth kind of evidence (the change minus the change); the tier table has no row and no verb for it, so the ecommerce launch cannot be worded.",
+   "decision": "accepted",
+   "reason": "Real, and the lesson-specific ruling. before_after.three_answers: difference_in_differences_pts 4.7, difference_in_differences_ci95_pts [3.2, 6.2]; lesson 5-3 places it 'stronger than an adjusted gap, and weaker than an experiment'.",
+   "change": "Segment 4 narration now has four tiers; the new one: 'Compared: the change in a group that got something, minus the change in a similar group without it. Module five's launch earns rose about 5 points more than the comparison group, assuming the two would have moved together.' Table gains the row 'Compared | +4.7 pts, interval 3.2 to 6.2 | rose 4.7 points more than the comparison group; assumes the two would have moved together'. The four tiers are carried through segment 7, take-away 2, drill 1, the explain-back answer, the brief, audit item 3 and the glossary, and review 1 variant 1 now practises the new tier."
+  },
+  {
+   "n": 1,
+   "reviewer": "learner-2",
+   "finding": "This lesson is about the weekly deliverable and arrives as lesson 36 of 37; move the bound-numbers and read-the-prose checks into module 1.",
+   "decision": "out_of_scope",
+   "reason": "A re-ordering across lessons. The 1-5 ruling in this adjudication already adds the 'read the prose against the numbers' habit to module 1; 7-4 stays the full checklist.",
+   "change": ""
+  },
+  {
+   "n": 2,
+   "reviewer": "learner-2",
+   "finding": "Third outing for the tracking example and its three numbers; segments 4 and 6 restate what was already quizzed. Use a claim not seen before.",
+   "decision": "partly",
+   "reason": "The lesson's evidence brief is 'reuse earlier facts only as examples, no new numbers', and facts.json holds no creative-fatigue or forecast claim with tiered evidence to swap in. But the retelling was longer than it needed to be. Segment 6 is not a retelling: first-page limits are this lesson's own content, shown on figures the learner knows.",
+   "change": "Segment 4 no longer reads out 7 against 18 percent and six and a half points (they stay in the table). The words go to the new tier, whose example is the module 5 launch, and review 1 variant 1 is a claim the learner has not seen (a bid-setup panel launched to one vertical). Segment 6 unchanged."
+  }
+ ],
+ "rulings": {
+  "R1": "Segment 1: 'Two reports on one yes-or-no model, the churn model you know', and the closing sentence now reads 'It is a short list of things you can check, and the same list fits any report: a spend forecast for finance, an invalid-traffic review.'",
+  "R2": "Not applicable.",
+  "R3": "Brief rewritten as a standing instruction (118 words): 'For every report you draft for me: ...' with slots for the results file, the baseline, the segments and the provenance fields. No size tier, vertical or account manager. Every demand for evidence kept (numbers inserted by code plus a source table, group sizes and intervals, baseline on the same unseen rows at the same list size, results by segment, a tier tag per finding with causal verbs only for tested ones, provenance line and what the report does not show).",
+  "R4": "Recap is 44 spoken words, two sentences, cue markers removed, card kept.",
+  "R5": "Keyed answer is the longest option in 0 of 10. Replaced: 'Nothing: ...' (quiz 4, now an interval-on-each-score misreading); 'Leave it: ...' (review 1 variant 2); and quiz 1, where three of four options approved the draft in some degree ('Better', 'Fine', 'Acceptable') so the keyed one stood out as the only objection: all four are now diagnoses (too coarse, stale, not a test result, too uncertain). Whys extended. Keyed positions unchanged.",
+  "R6": "Segment 7, one added sentence for the move that sat only in other_ways: 'A fresh assistant session, handed only the draft and told to list every unsupported sentence, makes a cheap second reader.'",
+  "R7": "The four audit items are each something on the page: a source table with no number missing; group sizes, interval and baseline on the same unseen rows at the same list size; a tier tag on every finding, with the assumption stated on a compared one; a first page that opens with the provenance fields and what not to conclude, with results by segment.",
+  "specific": "Fourth tier added with its verb, as ruled (see finding 0). One-word tag in the list is 'compared' ('observed, adjusted, compared or tested'); in full, 'compared with an untreated group'. Review 1 variant 1 (webinar attendance, observed tier) was replaced by a comparison-group case so that spaced review practises the new tier; the observed tier is still tested in quiz 2, adjusted and tested in variants 3 and 2. Standing-instruction request: the brief can be pasted as it stands, and the four audit lines are general noun phrases that read correctly under a heading such as 'Every report must contain'."
+ },
+ "segments_changed": [1, 4, 7, 8],
+ "numbers_verified": 93,
+ "open_questions": [
+  "Review 1 variant 1 was replaced, not edited (webinar item out, bid-setup panel in). Its numbers (7 points, 3 points, 4 points) are an invented scenario in another setting, like the item it replaces. Restore the old item from qa/lessons_before_fix if you prefer to keep it.",
+  "Lessons 5-2 and 5-3 still present three tiers (5-2 bullets and glossary: observed, adjusted, tested). If you want the same four tags course-wide, 5-2's glossary entry and 5-3's closing line should use 'compared with an untreated group' as well.",
+  "The outline's Evidence line for 7-4 lists only baseline, uncertainty and slices, so build/lint_numbers.py matches the before_after and tracking_story figures (4.7, 6.2, 7.2) by coincidental arithmetic, not directly. All were checked by hand against before_after.three_answers and tracking_story; adding those keys (and noise, leakage, calibration) to the outline line would make the linter check them properly.",
+  "Narration is 906 words (SPEC aims at 900, hard cap 950)."
+ ]
+}

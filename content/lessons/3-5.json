@@ -1,0 +1,386 @@
+{
+  "id": "3-5",
+  "module": 3,
+  "title": "Reading the assistant's script",
+  "subtitle": "How do you audit eighty lines of Python you could not have written?",
+  "goal": "After this lesson you can find the six parts of a modelling script and check, in each, the one line where a classic bug lives.",
+  "predict": {
+    "q": "The assistant's script reports an AUC of 0.98 for a churn model. It turns out the score was computed on the same rows the model learned from. Scored on advertisers it has never seen, what does the same model get?",
+    "options": [
+      "About 0.95: a strong model stays strong",
+      "About 0.90: a little is always lost on new rows",
+      "About 0.83: useful, but a long way from 0.98",
+      "About 0.70: most of the 0.98 was memory"
+    ],
+    "answer": 2,
+    "reveal": "About 0.83: still useful, and nowhere near 0.98. The lesson shows the one line in a script that tells you which rows were scored."
+  },
+  "segments": [
+    {
+      "narration": "The assistant hands back eighty lines of Python and one proud sentence: AUC 0.98. You still check the output first. But one score, with no rows named, is something the output cannot settle, and a handful of lines can. You could not have written those eighty lines, and you do not need to read them. You search them. Every modelling script has the same six parts in the same order, whether it predicts churn or flags invalid traffic. Each classic bug lives in one of those parts and shows up as one recognisable line. By the end of this lesson you will know which line produced that 0.98, and what the honest number was.",
+      "visual": {
+        "type": "title",
+        "kicker": "Module 3 · Lesson 5",
+        "title": "Reading the assistant's script",
+        "sub": "Six parts, and the line to check in each"
+      }
+    },
+    {
+      "narration": "Here are the six. [[1]] Load: read the table. [[2]] Choose: say which columns are features and which one is the label. [[3]] Split: decide which rows the model learns from and which are held back to test it. [[4]] Prepare: fill empty cells, put columns on a common scale, turn categories such as vertical into numbers. [[5]] Fit: the model learns, from the training rows only. [[6]] Score: predictions for the test rows, compared with what really happened. None of this is new to you. Choosing the label was module one, the split was the hold-out lesson, and loading and filling was last lesson. A script just writes those decisions down in order.",
+      "visual": {
+        "type": "flow",
+        "title": "Every modelling script has six parts",
+        "steps": [
+          {
+            "label": "1 Load",
+            "sub": "read the table"
+          },
+          {
+            "label": "2 Choose",
+            "sub": "features and label"
+          },
+          {
+            "label": "3 Split",
+            "sub": "training rows, test rows"
+          },
+          {
+            "label": "4 Prepare",
+            "sub": "fill, scale, encode"
+          },
+          {
+            "label": "5 Fit",
+            "sub": "on training rows only"
+          },
+          {
+            "label": "6 Score",
+            "sub": "on test rows"
+          }
+        ]
+      }
+    },
+    {
+      "narration": "Here is a clean one, cut down to fourteen lines, each part numbered. Fit is where learning happens, so what is handed to fit should be the training rows and nothing else. Predict proba, short for predict probability, returns scores between zero and one. And pipeline: a wrapper that ties the preparation steps to the model. Fit the pipeline, and the values used to fill gaps and to rescale are learned from the training rows too. The split names its months, with April left out. Now look at what it prints. Two scores, training and test, each labelled with its rows and how many. Beside them the baseline: spend trend alone, on the same test rows. The scoring call, roc AUC score, is the AUC you already know.",
+      "visual": {
+        "type": "code",
+        "title": "A clean script: the six parts in fourteen lines",
+        "lang": "python",
+        "code": "df = pd.read_csv(\"advertisers.csv\")                      # 1 load\nX, y = df[FEATURES], df[\"churned_next_60d\"]              # 2 choose\ntrain = df[\"snapshot_month\"].isin([\"Jan\", \"Feb\", \"Mar\"]) # 3 split\ntest = df[\"snapshot_month\"].isin([\"May\", \"Jun\"])\nnum = make_pipeline(SimpleImputer(), StandardScaler())   # 4 fill, scale\nprep = make_column_transformer((num, NUMERIC),           #   encode\n    (OneHotEncoder(), [\"vertical\"]), remainder=\"passthrough\")\nmodel = make_pipeline(prep, LogisticRegression())\nmodel.fit(X[train], y[train])                            # 5 fit\nfor name, rows in [(\"train\", train), (\"test\", test)]:    # 6 score\n    scores = model.predict_proba(X[rows])[:, 1]\n    print(name, rows.sum(), \"rows, AUC\", roc_auc_score(y[rows], scores))\nrule = -X[test][\"spend_trend\"]                           # baseline\nprint(\"baseline, test rows, AUC\", roc_auc_score(y[test], rule))",
+        "note": "Imports and the two column lists sit above. SimpleImputer fills empty cells, StandardScaler puts columns on one scale, OneHotEncoder turns vertical into yes/no columns, roc_auc_score is AUC. The baseline ranks by spend trend alone, falling spend first. The was-empty flag is already a named feature: has_conversion_tracking."
+      }
+    },
+    {
+      "narration": "Now the 0.98. That script used a more flexible model, built from 300 trees instead of one. A later lesson covers how it works. To audit it, you go to part six and read which rows were scored. The script fitted on the training rows, and then asked for scores on those same rows. A flexible model can score almost perfectly on rows it has already seen, and that says nothing about new advertisers. Scored on the test months, the very same model gets 0.83. Still useful, and nowhere near 0.98. The output gave it away too: one score, with no word on which rows it came from.",
+      "visual": {
+        "type": "code",
+        "title": "The line behind 0.98",
+        "lang": "python",
+        "code": "forest = RandomForestClassifier(n_estimators=300, min_samples_leaf=5)\nmodel = make_pipeline(prep, forest)            # same preparation\nmodel.fit(X[train], y[train])\n\nscores = model.predict_proba(X[train])[:, 1]   # the SAME rows\nprint(roc_auc_score(y[train], scores))         # prints 0.98\n\nscores = model.predict_proba(X[test])[:, 1]    # unseen rows\nprint(roc_auc_score(y[test], scores))          # prints 0.83",
+        "note": "Same model, two sets of rows. Only the second number is about advertisers it has not seen."
+      }
+    },
+    {
+      "narration": "Three more places, same idea. [[1]] Part two, choose. If the features are every column except the label, nobody chose them. The advertiser ID is in there. So is spend in the next eight weeks, which is zero for every churner: the label in disguise. A sound script names its features one by one. [[2]] Part three, split. A call to train test split deals the rows out at random. For a question about the future you want to see months named, as in the clean script. [[3]] Part four, prepare. If a fill or a rescale is fitted on the whole table, above the split, the test rows have already shaped those values. They are no longer unseen. How much each of these flatters the score varies, and the score itself will not tell you.",
+      "visual": {
+        "type": "table",
+        "title": "Three more lines to find",
+        "columns": [
+          "Part",
+          "The line",
+          "What it means"
+        ],
+        "rows": [
+          [
+            "2 Choose",
+            "X = df.drop(columns=[label])",
+            "every other column is a feature: the ID, and next period's spend"
+          ],
+          [
+            "3 Split",
+            "train_test_split(X, y)",
+            "rows dealt out at random, no months named"
+          ],
+          [
+            "4 Prepare",
+            "scaler.fit_transform(X), above the split",
+            "preparation has already seen the test rows"
+          ]
+        ],
+        "note": "None of these raises an error. Sizes on this table: a column that knew the outcome put 200 churners in the top 200 instead of 136 (lesson 1-4); a random split scored 0.851 against the time split's 0.845. No figure was computed for row 3."
+      }
+    },
+    {
+      "narration": "And two quiet ones, which flatter nothing but still wreck the result. [[1]] The first is a try and except block. It says: attempt this step, and if it fails, carry on anyway. It is there so that the script always finishes. So a join can fail, a column can come back empty, and the report still renders. Ran without errors is not evidence. [[2]] The second is predict without the proba. Plain predict returns hard yes or no answers, cut at one half, and you saw in module two how few advertisers that default flags. Feed yes or no answers into a ranking score, or build a top 200 list from them, and the scores have been thrown away.",
+      "visual": {
+        "type": "bullets",
+        "title": "Two quiet ones",
+        "items": [
+          "try: … except: pass  →  a failed step is skipped in silence",
+          "model.predict(…) where predict_proba was needed  →  yes/no answers, not scores"
+        ]
+      }
+    },
+    {
+      "narration": "Brief and audit. Ask the assistant to open every script with a header comment that states, in plain words, what each part does. What one row is, and how many rows there are. What the label is. The named features, each known on the snapshot date. Which months train and which test. That preparation sits inside the pipeline. That scores are probabilities, reported on training and test rows, beside the baseline. When a script is long, also ask it to say which lines belong to which of the six parts. Then you audit in two passes. First the header: is this the analysis you asked for? Then the six lines: does the code do what the header says? A header that promises a time split, above a line that shuffles, is a finding in itself.",
+      "visual": {
+        "type": "code",
+        "title": "The header to ask for",
+        "lang": "python",
+        "code": "# ONE ROW:  one advertiser at one snapshot (12,000 rows)\n# LABEL:    churned_next_60d = no spend in the next 60 days\n# FEATURES: 17 named columns, each known at the snapshot; no IDs\n# SPLIT:    train Jan-Mar (6,000), Apr left out, test May-Jun (4,000)\n# PREPARE:  inside the pipeline, fitted on training rows only\n# SCORES:   predict_proba; AUC on train AND test; baseline beside\n# ERRORS:   no try/except around data steps",
+        "note": "Read the header first, then check that the six lines agree with it."
+      }
+    },
+    {
+      "narration": "So when the script runs to three hundred lines, you do not read it. You search it for a handful of strings, and check each against what it should look like. Next, module four: what happens when a model is flexible enough to memorise its training rows.",
+      "visual": {
+        "type": "table",
+        "title": "Seven strings to search a long script for",
+        "columns": [
+          "Search for",
+          "Part",
+          "What it should look like"
+        ],
+        "rows": [
+          [
+            ".drop(columns=",
+            "2 Choose",
+            "not how features are picked: they are named one by one, no ID"
+          ],
+          [
+            "train_test_split",
+            "3 Split",
+            "absent when the question is about the future: periods are named"
+          ],
+          [
+            "fit_transform(",
+            "4 Prepare",
+            "on training rows only, never on the whole table above the split"
+          ],
+          [
+            ".fit(",
+            "5 Fit",
+            "handed the training rows and nothing else"
+          ],
+          [
+            "predict_proba(",
+            "6 Score",
+            "the score you rely on comes from the test rows, and its printout says so"
+          ],
+          [
+            ".predict(",
+            "6 Score",
+            "only where a hard yes or no is wanted, never for a ranking score"
+          ],
+          [
+            "except",
+            "anywhere",
+            "not around a data step: an error should stop the script"
+          ]
+        ],
+        "note": "A string that is missing is a finding too: with no predict_proba, ask where the scores come from."
+      }
+    }
+  ],
+  "takeaways": [
+    "Every modelling script has six parts: load, choose features and label, split, prepare, fit on training rows, score on test rows.",
+    "Each classic bug lives in one part and shows as one line: unchosen features, a shuffled split, preparation before the split, scoring on training rows.",
+    "A script that ran without errors proves nothing; ask for a header that states the six parts, then check the code agrees."
+  ],
+  "quiz": [
+    {
+      "id": "3-5-q1",
+      "concept": "which rows were scored",
+      "domain": "course",
+      "q": "The assistant's summary reads: 'Trained a new model on 6,000 advertisers. AUC: 0.98.' One score, and no mention of test rows. The simpler model scored about 0.85 last week. What do you ask first?",
+      "options": [
+        "Which settings produced it, so that the same model can be rebuilt next month.",
+        "For the cut-off to be lowered, so that the model catches more churners.",
+        "Which rows that score was computed on, with the training-row and test-row scores side by side.",
+        "For a larger version of the model, to see whether the score can go higher still."
+      ],
+      "answer": 2,
+      "why": "A single score with no rows named is the tell. A flexible model can score 0.98 on the rows it trained on and 0.83 on new ones, so the number may say nothing about new advertisers. Until both scores are on the page, 0.98 cannot be compared with 0.85, which was measured on test rows."
+    },
+    {
+      "id": "3-5-q2",
+      "concept": "preparation fitted before the split",
+      "domain": "course",
+      "q": "In a script, the lines that fill empty cells with column averages and rescale the columns sit above the line that separates training rows from test rows. Why does that matter?",
+      "options": [
+        "In that order the test rows never get filled or rescaled, so scoring them will fail.",
+        "The averages and scales were computed with the test rows included, so those rows are no longer unseen.",
+        "Rescaling must always be done after the model has been fitted, never before, or the weights come out wrong.",
+        "Empty cells must be filled with zero, because filling with an average distorts the whole column."
+      ],
+      "answer": 1,
+      "why": "An average or a scale is learned from data just as a weight is. Computed on the whole table, it carries information from the test rows into training. Inside a pipeline, the same steps are fitted on the training rows only and then applied to the test rows. Nothing fails as written, which is why it goes unnoticed: every row was filled and rescaled. Filling with zero would be a different mistake, not a fix."
+    },
+    {
+      "id": "3-5-q3",
+      "concept": "a shuffled split for a question about the future",
+      "domain": "other",
+      "q": "A script that predicts which leads will convert next quarter calls train_test_split with its default settings on three years of leads. Its header says: 'validated on 25 percent held-out leads'. What is the flaw?",
+      "options": [
+        "The held-out leads are a random mix of all three years; test on the most recent period instead.",
+        "A quarter of the leads is too small a share to hold out; a fair test needs at least half of them.",
+        "The split was not stratified, so the held-out leads may convert at a different rate.",
+        "Leads should never be held out at all, since a model always improves with more training data."
+      ],
+      "answer": 0,
+      "why": "The default split shuffles rows, so the model is tested on leads from the same period it learned from. The real use runs from past to future, and only a later period can show whether the pattern still holds. Neither the size of the hold-out nor its conversion rate is the issue; which period its rows come from is."
+    },
+    {
+      "id": "3-5-q4",
+      "concept": "hard answers where scores were needed",
+      "domain": "other",
+      "q": "An invalid-traffic report shows an AUC of 0.61, and its 'score' column contains only 0 and 1. The script has the line: scores = model.predict(X_test). What is the right read?",
+      "options": [
+        "The model is weak at ranking, so the next step is to ask for a more complex one.",
+        "Scores of exactly 0 and 1 show that the model is completely sure of itself on every single click.",
+        "AUC is the wrong kind of measure to use for an invalid-traffic problem like this one.",
+        "predict returns yes/no answers, so the ranking was never measured; ask for predict_proba scores."
+      ],
+      "answer": 3,
+      "why": "AUC judges a ranking, and a column of zeros and ones has almost no ranking in it. The model may rank well; this number cannot say. The one-word fix is predict_proba, which returns a score for every row. A score column with only two values is the visible sign, with no need to read the code."
+    }
+  ],
+  "review": [
+    {
+      "concept": "a score means nothing until you know which rows it was computed on",
+      "variants": [
+        {
+          "q": "An upsell model's report says: 'accuracy 97 percent on 40,000 accounts'. Elsewhere it says the model was trained on 40,000 accounts. What is the first question?",
+          "options": [
+            "Whether 97 percent is high enough to justify launching the campaign this quarter.",
+            "Whether those are the same 40,000 accounts; if so, it says nothing about accounts the model has not seen.",
+            "Whether the cut-off behind the 97 percent could be raised to make the list shorter.",
+            "Whether more accounts could be added to the table to push the figure higher still."
+          ],
+          "answer": 1,
+          "why": "A model graded on the rows it learned from is marking its own exam with the answers open. The figure that counts is measured on held-out accounts, ideally from a later period. Nothing else in the report can be judged until that is known."
+        },
+        {
+          "q": "A ticket classifier is reported as 'right on 99 percent of tickets'. The last two lines of the script are: model.fit(X, y) and then model.score(X, y). What does the 99 percent measure?",
+          "options": [
+            "How well the classifier will sort next month's tickets, since 99 percent leaves little room for error.",
+            "How many tickets were labelled correctly by the support agents.",
+            "How well the model reproduces the tickets it was fitted on, and nothing about new tickets.",
+            "How confident the model is in its own answers."
+          ],
+          "answer": 2,
+          "why": "The same X and y go into fit and into score, so the model is scored on its own training rows. A flexible model can reproduce those almost perfectly. The honest figure needs tickets held out before fitting, and here there are none."
+        },
+        {
+          "q": "A spend forecast is described as 'matching history within 1 percent'. The model was fitted on three years of daily spend, and the chart compares it with those same three years. What is that 1 percent worth?",
+          "options": [
+            "It shows how closely the model traces data it has already seen; ask for a test on an unseen period.",
+            "It shows that the forecast for next month will also land within about 1 percent of the actual figure.",
+            "It shows the model is too simple for the job and should be replaced by a richer one.",
+            "It shows that the last three years happened to be unusually easy to predict."
+          ],
+          "answer": 0,
+          "why": "Matching the past the model was fitted on is easy and proves little. A forecast is judged by standing at a past date, predicting forward, and comparing with what then happened. Until that exists, 1 percent describes the fit, not the forecast."
+        }
+      ]
+    },
+    {
+      "concept": "anything fitted before the split has seen the test rows",
+      "variants": [
+        {
+          "q": "A churn script fills every empty cell with its column's average, computed over all 12,000 rows, and only afterwards separates training months from test months. What has gone wrong?",
+          "options": [
+            "Rows with empty cells should have been dropped, so that no value needed filling in at all.",
+            "The fill should have used the largest value in each column, which is safer than using the average.",
+            "Empty cells should have been left empty until after the model was fitted.",
+            "The averages include the test months, so the test rows helped shape the training data."
+          ],
+          "answer": 3,
+          "why": "A fill value is learned from data. Learned from every row, it lets the test months leak into what the model trains on. The amount of damage varies and cannot be read from the score, which is why the rule is structural: preparation goes inside the pipeline and is fitted on training rows. Dropping the rows instead would lose every advertiser with an empty cell, as the dirty-tables lesson showed."
+        },
+        {
+          "q": "A ticket-classification script picks the 20 columns most strongly related to the label, using all tickets, and then splits into training and test tickets. The test accuracy looks excellent. Why should you doubt it?",
+          "options": [
+            "Twenty columns is far too few for any problem that involves free text.",
+            "The columns were chosen with the test tickets' labels in view, so the test is no longer unseen.",
+            "Choosing columns is a manual job for the analyst and is never allowed inside a modelling script.",
+            "Accuracy cannot be used as a measure when there are more than two categories."
+          ],
+          "answer": 1,
+          "why": "Choosing columns by their relation to the label is learning, and here it was done on every ticket, test tickets included. The chosen columns are already tuned to the test labels. The selection has to happen after the split, on training tickets only, like any other fitted step."
+        },
+        {
+          "q": "A lead-scoring script splits correctly by date, with the last quarter as the test set. But one line above the split reads: X = scaler.fit_transform(X). The header says 'time split, test = last quarter'. Is the header's promise kept?",
+          "options": [
+            "Not at all: with a scaler above it, the date split no longer keeps the quarters apart.",
+            "Only partly: the scaler is fine where it is, but a single quarter is too short a test period to trust.",
+            "Only partly: the split is right, but the scaler was fitted on all quarters, test quarter included.",
+            "No: a time split and a scaler cannot be combined in the same script at all."
+          ],
+          "answer": 2,
+          "why": "The split itself is sound, but fit_transform on the whole table learned its averages and spreads from the test quarter as well. The fix is to put the scaler inside the pipeline, so it is fitted on the training quarters and only applied to the last one. The scaler moves no lead from one quarter to another, so the split still holds; but a correct split does not excuse a fitted step above it."
+        }
+      ]
+    }
+  ],
+  "drill": [
+    {
+      "q": "Name the six parts of a modelling script, in order.",
+      "a": "Load the table, choose the features and the label, split into training and test rows, prepare the columns, fit on the training rows, and score on the test rows."
+    },
+    {
+      "q": "A script reports a single, very high score. What is the first thing you check, and where?",
+      "a": "Which rows the score was computed on. Go to the scoring line near the end and see whether it uses the test rows or the same rows the model was fitted on."
+    }
+  ],
+  "recall": {
+    "prompt": "Without looking, explain where in a modelling script the four classic bugs live, and how you would spot each one.",
+    "model_answer": "In the choose part: features defined as everything except the label, which lets IDs and columns recorded after the snapshot in. In the split: a shuffled split, with no months named, for a question about the future. In prepare: a fill or a rescale fitted on the whole table above the split, so the test rows are no longer unseen. In score: predictions made on the training rows, which is how a flexible model shows 0.98 when it gets 0.83 on new advertisers. A header comment that states each part makes all four quick to check."
+  },
+  "ask_assistant": "Write the modelling script in six labelled parts: load, choose, split, prepare, fit, score. Open it with a header comment stating what one row is and the row count, the definition of [outcome], the named feature list with confirmation that each column is known at [prediction date], which [periods] train and which test, and that all preparation is inside the pipeline. Print the row counts for training and test, then the score from predict_proba on each, labelled with its rows, beside [baseline] on the same test rows. Do not wrap data steps in try/except: let errors stop the script. Finally, list which line numbers belong to each of the six parts.",
+  "audit_checklist": [
+    "Printed row counts for training and test, and two scores, each labelled with its rows, beside a baseline on the same test rows.",
+    "Training and test rows defined by named periods in the split line, not by a random split.",
+    "Scores with many distinct values between 0 and 1, not a column of zeros and ones.",
+    "A header that states one row, the label, the named features, the split and where preparation happens, and a line in the script that matches each statement."
+  ],
+  "transfer": [
+    "A lead-scoring script that reports one accuracy figure: which leads was it measured on?",
+    "A spend forecast that 'fits history': was it tested on days it had not seen?",
+    "A ticket classifier whose preparation step read every ticket before the split."
+  ],
+  "other_ways": [
+    {
+      "approach": "Ask the assistant to map the script to the six parts",
+      "when": "When a block is unfamiliar: have it say which part each block belongs to, then check that map against the code."
+    },
+    {
+      "approach": "Ask for a rerun with one change",
+      "when": "When a number looks too good: score on the test months, remove a suspect column, or switch to a time split, and compare."
+    },
+    {
+      "approach": "A second reviewer, human or model",
+      "when": "When the decision is expensive: hand over the script and its header, not your own conclusion."
+    }
+  ],
+  "glossary": [
+    {
+      "term": "fit",
+      "def": "The call where a model, or a preparation step, learns from the rows it is given."
+    },
+    {
+      "term": "predict_proba",
+      "def": "The call that returns a probability score for each row; plain predict returns only yes or no."
+    },
+    {
+      "term": "pipeline",
+      "def": "A wrapper that chains preparation steps and a model so they are all fitted on the same training rows."
+    },
+    {
+      "term": "train_test_split",
+      "def": "A scikit-learn helper that divides rows into training and test sets, at random unless told otherwise."
+    },
+    {
+      "term": "try/except",
+      "def": "A Python block that catches an error and lets the script carry on, which can hide a failed step."
+    }
+  ]
+}

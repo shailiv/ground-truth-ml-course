@@ -1,0 +1,35 @@
+{
+ "issues": [
+  {
+   "where": "seg3 visual",
+   "quote": "\"label\": \"Same as last 8 weeks\", \"value\": 2704",
+   "kind": "number_mismatch",
+   "severity": "high",
+   "explanation": "The bar chart plots the MAE of the same-as-last-8-weeks baseline as $2,704, whereas its test MAE is $2,404. This also contradicts seg2 narration ('about 2,400 dollars'), seg2 visual ('$2,404'), seg6 visual ('$2,404') and quiz 2-5-q2 ('$2,404').",
+   "evidence": "facts.json -> regression.models.same_as_last_8_weeks.mae = 2404",
+   "fix": "Change the bar value for 'Same as last 8 weeks' from 2704 to 2404."
+  },
+  {
+   "where": "seg5 narration",
+   "quote": "Model B, about 7,800.",
+   "kind": "number_mismatch",
+   "severity": "high",
+   "explanation": "The narration states Model B's RMSE is about $7,800, but Model B (gradient_boosting_squared_loss) has a test RMSE of $5,824 (about $5,800). This also directly contradicts seg5 visual ('RMSE $5,824'), seg6 visual ('$5,824') and quiz 2-5-q1 ('$5,824'), and would falsely place Model B worse than both baselines on RMSE.",
+   "evidence": "facts.json -> regression.models.gradient_boosting_squared_loss.rmse = 5824",
+   "fix": "Change 'Model B, about 7,800.' to 'Model B, about 5,800.'"
+  },
+  {
+   "where": "seg6 visual",
+   "quote": "Actual total: $21.0M across 6,000 test advertisers",
+   "kind": "number_mismatch",
+   "severity": "high",
+   "explanation": "The table note states the $21.0M actual total is across 6,000 test advertisers, but the test set has 4,000 advertisers (6,000 is the training set count). This also contradicts predict, seg2 visual, seg3 visual and quiz 2-5-q1, which all state 4,000 test advertisers.",
+   "evidence": "facts.json -> regression.test_rows = 4000, data.n_test = 4000, regression.total_actual = 21026436 (data.n_train = 6000)",
+   "fix": "Change the note to 'Actual total: $21.0M across 4,000 test advertisers'."
+  }
+ ],
+ "numbers_checked": 60,
+ "verdict": "Conceptually sound and well-aligned with the brief, with all quiz and review items valid, but three high-severity numeric typos must be fixed before publication: $2,704 instead of $2,404 in seg3 visual, 'about 7,800' instead of 'about 5,800' in seg5 narration, and '6,000 test advertisers' instead of '4,000 test advertisers' in seg6 visual.",
+ "_hash": "c7562145b767f26b",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_ChdGTklCYV9pRUtienhuc0VQdi1laGtBWRIXRk5JQmFfaUVLYnp4bnNFUHYtZWhrQVk | tokens in=67578 out=760 thought=24151]"
+}

@@ -1,0 +1,421 @@
+{
+  "id": "5-4",
+  "module": 5,
+  "title": "Uplift: who changes because you acted",
+  "subtitle": "Are the accounts most likely to leave the ones most worth calling?",
+  "goal": "After this lesson you can explain why a risk list is not a call list, and say what data and what evidence an uplift ranking needs before you trust it.",
+  "predict": {
+    "q": "A success team calls the 400 advertisers with the highest churn risk. Roughly what share of those 400 would have left whether or not anyone called?",
+    "options": [
+      "About 5 percent",
+      "About 20 percent",
+      "About 45 percent",
+      "About 90 percent"
+    ],
+    "answer": 2,
+    "reveal": "About 45 percent: nearly half the list was beyond saving, and the lesson shows why most likely to leave and most worth calling are different rankings."
+  },
+  "segments": [
+    {
+      "narration": "The success team has time for 400 calls this month, so they do the obvious thing. They sort advertisers by churn risk and call the top 400. Two months later plenty of those accounts are still spending, and the slide says the calls worked. In the simulated outreach programme from the experiments lesson, nearly half of that list was going to leave whatever anyone said. About as many again were going to stay without any call. So which accounts did the calls actually change? Ask that of any list built from a score. The leads most likely to convert are not necessarily the ones a sales call tips.",
+      "visual": {
+        "type": "title",
+        "kicker": "Module 5 · Lesson 4",
+        "title": "Uplift: who changes because you acted",
+        "sub": "Most likely to leave is not the same as most worth calling"
+      }
+    },
+    {
+      "narration": "Take one account and one call. Only four things can be true. [[1]] It leaves unless you call. That is the persuadable account, the only kind where a call earns anything. [[2]] It leaves either way: a lost cause. [[3]] It stays either way: a sure thing. [[4]] Or it leaves because you called, a sleeping dog: here, a small healthy self-serve account that did not want the interruption. Only about 3 percent of advertisers here are persuadable. About 10 percent are lost causes, and about 87 percent are sure things. Sleeping dogs are under 1 percent. We can sort advertisers this way only because the programme is simulated: for every advertiser we know what happens with the call and without it. Real life shows you one of the two, never both.",
+      "visual": {
+        "type": "table",
+        "title": "One account, one call: four kinds",
+        "columns": [
+          "Without a call",
+          "With a call",
+          "Known as",
+          "Share here"
+        ],
+        "rows": [
+          [
+            "leaves",
+            "stays",
+            "persuadable",
+            "3.4%"
+          ],
+          [
+            "leaves",
+            "leaves",
+            "lost cause",
+            "9.8%"
+          ],
+          [
+            "stays",
+            "stays",
+            "sure thing",
+            "86.6%"
+          ],
+          [
+            "stays",
+            "leaves",
+            "sleeping dog",
+            "0.3%"
+          ]
+        ],
+        "highlight": [
+          0
+        ],
+        "note": "Knowable only in a simulation: both outcomes are known for every advertiser."
+      }
+    },
+    {
+      "narration": "Now ask who the risk list actually calls. [[1]] About 45 percent of the 400 leave either way. Many of them top a risk list because they have already gone quiet. [[2]] Another 47 percent would have stayed with no call at all. [[3]] That leaves about 8 percent the call could save. And this is why the sentence, we called them and many stayed, proves nothing. Many stay on any list. You met the cure in the experiments lesson: a control group, comparable advertisers who were not called.",
+      "visual": {
+        "type": "stat",
+        "title": "The top 400 by churn risk",
+        "stats": [
+          {
+            "value": "44.8%",
+            "label": "leave either way"
+          },
+          {
+            "value": "47%",
+            "label": "would stay with no call"
+          },
+          {
+            "value": "8.3%",
+            "label": "persuadable"
+          }
+        ]
+      }
+    },
+    {
+      "narration": "So change the question. Risk asks who is likely to leave. Uplift asks whose chance of leaving drops if we call. That is a difference between two futures, and no advertiser ever shows you both. A randomised outreach gets round that. [[1]] A coin flip decides who is called, so the two groups are alike, on average, in everything else. [[2]] Fit one churn model on the called group. [[3]] Fit a second on the not called group. [[4]] Then score every advertiser with both. The gap between the two predictions is the predicted uplift, and you sort by that.",
+      "visual": {
+        "type": "flow",
+        "title": "Uplift from a randomised outreach",
+        "steps": [
+          {
+            "label": "Coin flip",
+            "sub": "decides who gets the call (here: all 12,000 advertisers)"
+          },
+          {
+            "label": "Model A",
+            "sub": "churn risk, learned from the called"
+          },
+          {
+            "label": "Model B",
+            "sub": "churn risk, learned from the not-called"
+          },
+          {
+            "label": "Uplift = B − A",
+            "sub": "score everyone with both, sort by the gap"
+          }
+        ]
+      }
+    },
+    {
+      "narration": "Here is what each way of picking 400 buys. Only a simulation can count this: it needs both futures for every advertiser. The counts are net, the accounts a call saves minus the few it pushes out. [[1]] Pick 400 at random and the calls prevent about 13 churns. [[2]] Call the 400 highest risks and they prevent 32. [[3]] Call the 400 with the highest predicted uplift and they prevent 44. [[4]] Someone who knew every advertiser's true kind would prevent 136. So uplift beats risk here, and it is still far from perfect. How big the gain is will differ from one business to the next. You measure it, with the check in the brief.",
+      "visual": {
+        "type": "bar",
+        "title": "Churns prevented by 400 calls",
+        "data": [
+          {
+            "label": "400 at random (expected)",
+            "value": 12.6
+          },
+          {
+            "label": "Top 400 by churn risk",
+            "value": 32
+          },
+          {
+            "label": "Top 400 by predicted uplift",
+            "value": 44
+          },
+          {
+            "label": "Perfect knowledge",
+            "value": 136
+          }
+        ],
+        "highlight": [
+          2
+        ],
+        "note": "Net of the accounts a call pushes out. Countable only because both outcomes are known for every simulated advertiser."
+      }
+    },
+    {
+      "narration": "Why does it do better? Because of who each list reaches. [[1]] On the risk list, 45 percent leave either way and 8 percent are persuadable. [[2]] On the uplift list, 19 percent leave either way and 11 percent are persuadable. Its accounts are also busier: about 18 active days against 13. The two models learned to walk past accounts that have gone quiet. Still, 11 percent is modest. Uplift is a difference between two predictions, so it carries the error of both and is noisier than risk. And it can only be learned where the action was assigned at random. If account managers chose whom to call, the gap mixes the call's effect with their choice.",
+      "visual": {
+        "type": "compare",
+        "title": "Who each list of 400 calls",
+        "left": {
+          "label": "Top 400 by risk",
+          "value": "8.3% persuadable",
+          "sub": "44.8% leave either way · 12.9 active days of 28"
+        },
+        "right": {
+          "label": "Top 400 by uplift",
+          "value": "11% persuadable",
+          "sub": "19% leave either way · 17.9 active days of 28"
+        }
+      }
+    },
+    {
+      "narration": "One more contender, with a caveat. [[4]] Take a hand rule: call accounts that are still active and have a fixable problem, such as stale creatives or CPA somewhat over goal, highest risk first. That prevents 73, more than either list. Do not read that as rules beating models. The rule matches how this simulation was written: the call was programmed to help exactly those accounts. So 73 is a best case. In real life you would not know your rule was right. What carries over: a rule that encodes how you think the action works is a fair candidate, and it is tested the way a model is, on randomised data.",
+      "visual": {
+        "type": "bar",
+        "title": "Churns prevented by 400 calls, with a hand rule",
+        "data": [
+          {
+            "label": "400 at random (expected)",
+            "value": 12.6
+          },
+          {
+            "label": "Top 400 by churn risk",
+            "value": 32
+          },
+          {
+            "label": "Top 400 by predicted uplift",
+            "value": 44
+          },
+          {
+            "label": "Rule: still active, fixable problem",
+            "value": 73
+          },
+          {
+            "label": "Perfect knowledge",
+            "value": 136
+          }
+        ],
+        "highlight": [
+          3
+        ],
+        "note": "The rule matches how the simulation was written: a best case for a hand rule, not proof that rules beat models."
+      }
+    },
+    {
+      "narration": "Brief and audit. First ask whether the outreach was assigned at random. If not, the stop-gap is the risk list minus accounts already gone quiet, with a random slice left uncalled for next time. If it was, ask for the two models and check four things. [[1]] How many were called and not called, and a table showing the groups looked alike beforehand. [[2]] The overall effect of the call, with its interval. [[3]] The check you can run at work, on held-out advertisers: inside the top of each list, churn among the called against the not called. [[4]] And an interval on every gap. Split 400 names in two and it is several points wide, enough to swallow the whole effect, so pool several rounds before ranking one list above another.",
+      "visual": {
+        "type": "bullets",
+        "title": "What the output must show",
+        "items": [
+          "Called and not-called: how many, and a table showing the groups were alike beforehand",
+          "The overall effect of the call, with its interval (here 2.9 pts, 1.8 to 3.9)",
+          "Held-out rows: called vs not-called churn inside each list's top (uplift, risk, random)",
+          "Group sizes and an interval on every gap: expect several points either way"
+        ]
+      }
+    },
+    {
+      "narration": "So before the next call list goes out, you will ask which accounts a call can still change, and for the randomised comparison that shows it. Next: how far down a list to go, which turns out to be a question about money.",
+      "visual": {
+        "type": "quote",
+        "text": "Most likely to leave is not most worth calling.",
+        "sub": "Risk ranks who leaves. Uplift ranks who changes because you acted."
+      }
+    }
+  ],
+  "takeaways": [
+    "A risk list is mostly accounts that leave either way and accounts that stay either way; a call pays only on the few it changes.",
+    "Uplift ranks by the predicted change from acting, and can only be learned where the action was assigned at random.",
+    "Rule or model, a targeting policy is judged the same way: called against not-called inside its own list."
+  ],
+  "quiz": [
+    {
+      "id": "5-4-q1",
+      "concept": "risk is not uplift",
+      "domain": "course",
+      "q": "The success team called the 400 highest-risk advertisers. Sixty days on, about half are still spending, and the team lead reports that the calls saved roughly 200 accounts. What is the right read?",
+      "options": [
+        "Fair: the model said they would churn, so every account still spending was saved by a call",
+        "The model is broken: half of its highest risks did not churn, which a good model would not allow",
+        "Unknown: many on a risk list stay with no call, so it takes a comparable group that was not called",
+        "Fair, but only for accounts scored above 0.5; the lower scores should not be counted as saves"
+      ],
+      "answer": 2,
+      "why": "On a risk list a large share would have stayed anyway, so still spending is not the same as saved; only a comparable not-called group shows what the calls changed. Half of a high-risk list staying does not mean a broken model either: a score is a probability, not a promise."
+    },
+    {
+      "id": "5-4-q2",
+      "concept": "uplift needs randomised data",
+      "domain": "course",
+      "q": "You ask the assistant for an uplift list. Its output says: 'Trained on last quarter's outreach log: the advertisers the account managers chose to call, about a quarter of the log, against the rest. Two models fitted; top 400 by predicted uplift attached.' What is the flaw?",
+      "options": [
+        "Managers chose whom to call, so the gap between the models mixes the call with their choice",
+        "The two groups are very different sizes, so models fitted on them cannot be compared fairly",
+        "It fitted two simple models, and uplift only shows up with a flexible model such as boosting",
+        "One quarter of outreach is too little to rank 400 advertisers; the log needs another quarter"
+      ],
+      "answer": 0,
+      "why": "Uplift can only be learned where the action was assigned at random; if managers picked, called and not-called accounts differ in ways the table cannot see, and the gap between the models inherits that. Unequal group sizes are fine as long as the assignment was random."
+    },
+    {
+      "id": "5-4-q3",
+      "concept": "judging an uplift list",
+      "domain": "course",
+      "q": "The assistant compares two lists of 400 on held-out advertisers and writes: 'The uplift list contains far fewer eventual churners than the risk list, so the risk list is the better call list.' What is the right read?",
+      "options": [
+        "Agreed: a list with more churners on it gives the success team more accounts it could rescue",
+        "Agreed, provided the difference in churners between the two lists is outside its interval",
+        "Neither list can be judged until the team has actually called both and waited 60 days",
+        "Wrong yardstick: the test is churn among called against not-called inside each list"
+      ],
+      "answer": 3,
+      "why": "Counting churners on a list measures risk, and the risk list wins that by construction, yet much of what it catches leaves either way; an uplift list is meant to skip churners nobody can save. The fair test is the churn gap between called and not-called advertisers inside the top of each list, and the randomised data already contains it, so no new calls are needed."
+    },
+    {
+      "id": "5-4-q4",
+      "concept": "risk is not uplift",
+      "domain": "other",
+      "q": "A product team emails an upgrade offer to the 5,000 users a model scores as most likely to upgrade. 30 percent of them upgrade, against 4 percent across all users. What does that show?",
+      "options": [
+        "That the email lifts upgrades by 26 points for the users who receive it",
+        "That the model ranks well; the email's effect needs a random un-emailed slice",
+        "That the offer should go to the lowest-scoring users instead, who have the most room to move",
+        "That the model is leaking: an upgrade rate of 30 percent is too high to be real"
+      ],
+      "answer": 1,
+      "why": "High scorers were likely to upgrade anyway, so 30 against 4 mostly reflects who was chosen, not what the email did; a held-back random slice of the same users separates the two. Switching to the lowest scorers is a guess as well: who responds is something you measure."
+    }
+  ],
+  "review": [
+    {
+      "concept": "most likely is not most changeable",
+      "variants": [
+        {
+          "q": "A retention team can make 150 calls. The 150 highest churn scores are mostly accounts with no activity for three weeks. What is the strongest argument against simply calling those 150?",
+          "options": [
+            "The model must be overfitted if its top scores all turn out to be inactive accounts",
+            "Many have in effect already left, so calls earn more where the outcome can still move",
+            "Inactive accounts are cheap to lose, so they can be left out of retention work altogether",
+            "150 is too short a list for any model to rank reliably, so the order means little"
+          ],
+          "answer": 1,
+          "why": "Risk ranks who is likely to leave, not whom a call can still change, and accounts already gone quiet are often beyond saving. That is not a fault in the model, which answered the question it was asked, and it is not a reason to write those accounts off without measuring."
+        },
+        {
+          "q": "A retailer sends a 15 percent discount code to the customers a model scores as most likely to buy this month. Sales to that group are high, but margin falls. What most likely happened?",
+          "options": [
+            "Most would have bought at full price, so the discount changed few decisions",
+            "The model's scores were too low, so the code went to the wrong customers",
+            "Discounts never change the behaviour of customers who are already likely to buy",
+            "The group was too small for the discount to show any effect on sales"
+          ],
+          "answer": 0,
+          "why": "The likeliest buyers are mostly people who buy either way, so the discount paid for purchases that were coming anyway and gave margin away. That is not a law that discounts never work on them: whether it changes behaviour is something only a random hold-back can show."
+        },
+        {
+          "q": "Sales reps call the leads with the highest conversion scores. A random hold-back shows those leads convert at about 60 percent whether called or not, while mid-scoring leads convert at 25 percent when called and 12 percent when not. Where should the calls go?",
+          "options": [
+            "To the highest scorers: 60 percent is the best conversion rate on offer",
+            "To nobody: the hold-back shows that calls do not work",
+            "To the lowest scorers, who have the most room to improve",
+            "To the mid-scoring leads, where calling changes the outcome most"
+          ],
+          "answer": 3,
+          "why": "The call adds nothing at the top and about 13 points in the middle, and it is the change that pays for a call, not the conversion rate. The lowest scorers were not measured here, so sending calls there would be a guess."
+        }
+      ]
+    },
+    {
+      "concept": "uplift needs a randomised comparison",
+      "variants": [
+        {
+          "q": "A slide says: 'We called 300 at-risk advertisers and 70 percent of them are still active. Outreach works.' What one thing would make that claim checkable?",
+          "options": [
+            "The churn scores of the 300, to confirm that they really were at high risk",
+            "The same figure for last quarter's at-risk advertisers, as a point of comparison",
+            "The rate for similar at-risk advertisers, chosen at random, who were not called",
+            "A longer list, so that the 70 percent comes with a narrower interval"
+          ],
+          "answer": 2,
+          "why": "Without a comparable not-called group nobody can say how many of the 70 percent would have stayed anyway. Last quarter's accounts differ in season and mix, and a tighter interval around 70 percent still does not say what the calls changed."
+        },
+        {
+          "q": "An assistant builds an uplift model for 'refresh your creatives' nudges from a campaign in which marketing hand-picked the recipients it thought were most engaged. What is the problem?",
+          "options": [
+            "A nudge is too small an action for an uplift model to detect reliably",
+            "The nudged and un-nudged groups differed before any nudge was sent",
+            "Uplift models need at least a year of history before they can be fitted",
+            "The outcome should have been churn rather than creative refreshes"
+          ],
+          "answer": 1,
+          "why": "Uplift is the gap between what happens with and without the action for comparable accounts; when marketing picks the recipients, the gap reflects their choice as much as the nudge. The cure is to assign the nudge at random, not to collect more history."
+        },
+        {
+          "q": "A subscription app uses a past randomised campaign to compare two ways of picking 500 users for a win-back offer. In the top 500 by predicted uplift, cancellation was 12 percent with the offer and 22 percent without. In the top 500 by cancellation risk it was 51 percent with and 55 percent without. Which list should get the offer?",
+          "options": [
+            "The uplift list: the offer moves cancellation by about 10 points there, against about 4",
+            "The risk list: it contains far more users who cancel, so there is more to win back",
+            "The risk list: at 51 percent there is far more room for improvement than at 12 percent",
+            "Neither: both lists still show cancellations with the offer, so it does not work"
+          ],
+          "answer": 0,
+          "why": "The offer is paid back by the gap between with and without, and that gap is larger on the uplift list. The risk list holds more cancellers, but most of them cancel either way. With groups this size both gaps still need an interval before anyone commits."
+        }
+      ]
+    }
+  ],
+  "drill": [
+    {
+      "q": "Why is the list of accounts most likely to churn not automatically the best list to call?",
+      "a": "Because many of them will leave whatever you do, and many others would have stayed anyway. A call only pays where it changes the outcome, and that is a different ranking."
+    },
+    {
+      "q": "What kind of data do you need before you can estimate who is changed by an action, and why?",
+      "a": "Data where the action was assigned at random, so the people who got it and the people who did not are alike. Otherwise the difference between them mixes the action's effect with whoever was chosen."
+    }
+  ],
+  "recall": {
+    "prompt": "Your manager asks why the success team should not simply call the highest-risk accounts. Explain it back in 30 seconds.",
+    "model_answer": "High risk means likely to leave, not likely to be changed by a call: in the simulated outreach nearly half of the top 400 by risk left whatever happened and nearly half would have stayed anyway. What we want is the accounts whose outcome moves if we call, which is uplift. We can only estimate that from a randomised outreach, by comparing called with not-called accounts, and any list, from a model or a rule, should be tested the same way."
+  },
+  "ask_assistant": "We ran [action] with [units] assigned to it at random; the assignment is in [assignment column]. Fit one [outcome] model on the treated group and one on the untreated group, using only features known at [decision date], and rank held-out [units] by predicted [outcome] without the action minus predicted [outcome] with it. For the top [list size] by that uplift, the top [list size] by plain risk and a random [list size], show [outcome] among treated versus untreated inside each list, with group sizes and 95 percent intervals. Start the output with the size of each group, a table showing the two groups were alike before the action, and the overall effect with its interval.",
+  "audit_checklist": [
+    "The size of the called and not-called groups, with a table showing they were alike before the calls: a coin flip leaves them alike, hand-picking does not",
+    "The overall effect of the call, with its interval",
+    "On held-out advertisers: called versus not-called churn inside the top of the uplift list, the risk list and a random list",
+    "The group size and an interval beside every one of those gaps"
+  ],
+  "transfer": [
+    "Which customers should get a discount code: the likeliest buyers, or the ones a discount would tip?",
+    "Which leads should sales call first, when the hottest leads often buy without a call?",
+    "Which advertisers should get a 'refresh your creatives' nudge, when the most engaged would refresh anyway?"
+  ],
+  "other_ways": [
+    {
+      "approach": "A hand rule that encodes how you believe the action works (still active, with a fixable problem), tested on the same randomised data",
+      "when": "You have a clear view of the mechanism and too little randomised data to fit two models"
+    },
+    {
+      "approach": "Read the experiment by a few segments chosen in advance and send the action where the measured effect is largest",
+      "when": "The segments are few and large, and you want something simpler and less noisy than a score per advertiser"
+    },
+    {
+      "approach": "Keep the risk list but leave out accounts that have already gone quiet",
+      "when": "No randomised data exists yet; treat it as a stop-gap and randomise the next round of outreach"
+    }
+  ],
+  "glossary": [
+    {
+      "term": "uplift",
+      "def": "The change in an advertiser's chance of an outcome caused by acting on them: the chance without the action minus the chance with it."
+    },
+    {
+      "term": "persuadable",
+      "def": "An account that leaves if you do nothing and stays if you act: the only kind where the action earns its cost."
+    },
+    {
+      "term": "lost cause",
+      "def": "An account that leaves whether or not you act."
+    },
+    {
+      "term": "sleeping dog",
+      "def": "An account that would have stayed but leaves because you acted."
+    },
+    {
+      "term": "two-model approach",
+      "def": "Fit one model on those who got the action and one on those who did not, then rank by the gap between the two predictions."
+    }
+  ]
+}

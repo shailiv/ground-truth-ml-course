@@ -1,0 +1,13 @@
+4-3: 0 issues  [[gemini-4-carbon | status=completed | id=v1_ChdHeFVDYTl1X0Zfci12ZElQMU1mUXNBbxIXR3hVQ2E5dV9GX3ItdmRJUDFNZlFzQW8 | tokens in=68476 out=105 thought=27245]]
+4-4: -1 issues  [JSONDecodeError: [gemini-4-carbon | status=requires_continuation | id=v1_Chd4eFlDYTlmVkNfZk1uc0VQci1TN2tBcxIXeHhZQ2E5ZlZDX2ZNbnNFUHItUzdrQXM | tokens in=69088 out=3 thought=32765]
+WARNING: status is 'requires_continuation' - the output above may be partial. Use --raw to inspect.
+]
+4-5: -1 issues  [JSONDecodeError: [gemini-4-carbon | status=requires_continuation | id=v1_Chd4aFlDYV9LWUNzNm92ZElQMzV2VC1BZxIXeGhZQ2FfS1lDczZvdmRJUDM1dlQtQWc | tokens in=68606 out=3 thought=32765]
+WARNING: status is 'requires_continuation' - the output above may be partial. Use --raw to inspect.
+]
+4-6: -1 issues  [JSONDecodeError: [gemini-4-carbon | status=requires_continuation | id=v1_Chc0aFlDYTdQeEU1cXlrZFVQcE92cGdBYxIXNGhZQ2E3UHhFNXF5a2RVUHBPdnBnQWM | tokens in=68069 out=3 thought=32765]
+WARNING: status is 'requires_continuation' - the output above may be partial. Use --raw to inspect.
+]
+5-1: 2 issues  [[gemini-4-carbon | status=completed | id=v1_ChdWeFlDYTVUT01meWt2ZElQdnMtb3FBSRIXVnhZQ2E1VE9NZnlrdmRJUHZzLW9xQUk | tokens in=67873 out=664 thought=31070]]
+5-2: 0 issues  [[gemini-4-carbon | status=completed | id=v1_Chc3UmNDYV9IaE5aeW8yOG9QcllDUW9BYxIXN1JjQ2FfSGhOWnlvMjhvUHJZQ1FvQWM | tokens in=67924 out=123 thought=17944]]
+5-3: 1 issues  [[gemini-4-carbon | status=completed | id=v1_ChdVaGdDYTZydU8teUF4czBQdXBEZi1RZxIXVWhnQ2E2cnVPLXlBeHMwUHVwRGYtUWc | tokens in=68330 out=473 thought=25111]]

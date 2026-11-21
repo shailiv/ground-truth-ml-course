@@ -1,0 +1,17 @@
+{
+ "issues": [
+  {
+   "where": "seg5 narration",
+   "quote": "That is about a fifth too few, and a fifth of a high score is more points than a fifth of a low one.",
+   "kind": "wrong_concept",
+   "severity": "medium",
+   "explanation": "A shift in the overall base rate does not scale predicted probabilities by a constant relative fraction across all buckets. Because probabilities are bounded at 100%, adding a fifth to high scores (above 83%) would exceed 100%. Under a base-rate shift (a constant shift in log-odds, multiplying odds by a constant factor), the percentage-point gap is largest near 50% and shrinks back toward zero near both 0% and 100% (for a shift from 10.9% to 13.2%, a score of 79.8% would move by only about 3 points, not a fifth of 80%). On this test set, the 8 to 11 point gaps in the upper buckets also reflect concentrated June drift and small-bucket noise (n=43 at the top). Implying that probabilities scale proportionally with the base rate can mislead practitioners into multiplying scores by actual/predicted to recalibrate.",
+   "evidence": "Under a prior odds shift k = (0.132/0.868)/(0.109/0.891) = 1.243, p = 0.50 moves by +5.4 points while p = 0.798 moves by only +3.2 points (to 0.830), shrinking further as p approaches 1. Also see facts.json calibration.logreg[7] (n=43, predicted=0.798, actual=0.907) and drift.gaming_jun (predicted=0.135, actual=0.305).",
+   "fix": "Replace with: 'That is about two points too low overall, and once scores move away from near-zero risk the gap opens up into several percentage points per bucket.'"
+  }
+ ],
+ "numbers_checked": 72,
+ "verdict": "All 72 data figures match facts.json accurately and all quiz, review, and predict items are well-keyed; the only flaw is one false statistical explanation in seg5 narration claiming that a 20% higher base rate scales high probability scores by more percentage points than mid/low scores via proportional multiplication.",
+ "_hash": "2ce749c8733dc8ea",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_ChdPaFFDYV9YNkhiT3FrZFVQanBMcG1BTRIXT2hRQ2FfWDZIYk9xa2RVUGpwTHBtQU0 | tokens in=67878 out=548 thought=29987]"
+}

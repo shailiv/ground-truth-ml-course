@@ -1,0 +1,376 @@
+{
+  "id": "4-4",
+  "module": 4,
+  "title": "Features: where your knowledge goes in",
+  "subtitle": "What moves a model more: the algorithm, or the columns you give it?",
+  "goal": "After this lesson you can brief a feature table built from dated events, put every column through the snapshot-date test, and measure what a group of columns is worth before paying for a fancier algorithm.",
+  "predict": {
+    "q": "You may change one thing about the churn model. On this data, which change moves its score more?",
+    "options": [
+      "Which of the two best algorithms it uses",
+      "Which columns it is given",
+      "Both move it about equally",
+      "Neither: the score is set by the number of rows"
+    ],
+    "answer": 1,
+    "reveal": "The columns: about 0.18 of AUC between the thinnest list and the full one, against about 0.01 between the two best algorithms. The lesson shows where that comes from, and why it is a result about this data rather than a law."
+  },
+  "segments": [
+    {
+      "narration": "Your assistant has spent two days on algorithms. Forests, boosting, a tuning grid. This morning's message says the two best are about 0.01 apart on churn, and it offers to try a few more. Before you say yes, run a different experiment. Keep the algorithm fixed, the plain weighted sum, and change only what it is allowed to look at. Same advertisers, same training months, same test months. The only thing that moves is the list of columns, which is also the part of this work where you know more than the assistant does.",
+      "visual": {
+        "type": "title",
+        "kicker": "Module 4 · Lesson 4",
+        "title": "Features: where your knowledge goes in",
+        "sub": "Same model, same advertisers. Only the list of columns changes."
+      }
+    },
+    {
+      "narration": "[[1]] Start with what any account record holds: tenure, total spend, number of campaigns, vertical, whether there is an account manager. Who they are. On those five columns the model scores about 0.66. [[2]] Add how they are set up: creatives per campaign, how fresh the creatives are, conversion tracking, automated bidding, optimisation reviews. About 0.76. [[3]] Add performance against their own goal: CPA versus goal, and click-through rate. About 0.79. [[4]] Then add what they have been doing lately: spend trend, active days, days since login, support tickets, payment failures. About 0.85, the number you have been looking at since module two.",
+      "visual": {
+        "type": "bar",
+        "title": "Same model, more columns: test AUC",
+        "data": [
+          {
+            "label": "Who they are (5 columns)",
+            "value": 0.661
+          },
+          {
+            "label": "+ how they are set up (10)",
+            "value": 0.761
+          },
+          {
+            "label": "+ performance vs goal (12)",
+            "value": 0.79
+          },
+          {
+            "label": "+ recent behaviour (all 17)",
+            "value": 0.845
+          }
+        ],
+        "note": "Logistic regression each time. Train Jan–Mar, test May–Jun."
+      }
+    },
+    {
+      "narration": "[[1]] From the thinnest list of columns to the full one, the score moved by about 0.18. [[2]] Between the two best algorithms, it moved by about 0.01. Even the weakest of the four algorithms, the single small tree, was only about 0.08 behind the best. Be careful how far you carry that. It is a result about this simulated data, not a law. On the video question, the better algorithm was worth about 0.04, and even there a few hand-built columns closed about half of the gap. So the habit is to measure both. And before you pay for a fancier algorithm, ask what the model is not being shown.",
+      "visual": {
+        "type": "compare",
+        "title": "What moved the churn score (test AUC)",
+        "left": {
+          "label": "Changing the columns",
+          "value": "0.184",
+          "sub": "thinnest list 0.661 → all 17 columns 0.845"
+        },
+        "right": {
+          "label": "Changing the algorithm",
+          "value": "0.009",
+          "sub": "between the two best · 0.084 from weakest to best"
+        }
+      }
+    },
+    {
+      "narration": "There is a second way to run the experiment: give the model one group at a time. [[1]] Who they are, about 0.66. [[2]] Setup, about 0.73. [[3]] Performance against goal, about 0.7. [[4]] Recent behaviour, about 0.82. Five columns, and nearly the whole result. Now think back to the first experiment. Recent behaviour went in last, so it only got credit for the final step, from 0.79 to 0.85. The groups overlap, and whichever goes in first collects the shared credit. So ask for both views before anyone calls a group of columns unimportant.",
+      "visual": {
+        "type": "bar",
+        "title": "Each group on its own: test AUC",
+        "data": [
+          {
+            "label": "Who they are",
+            "value": 0.661
+          },
+          {
+            "label": "Setup and practices",
+            "value": 0.732
+          },
+          {
+            "label": "Performance vs goal",
+            "value": 0.699
+          },
+          {
+            "label": "Recent behaviour",
+            "value": 0.822
+          }
+        ],
+        "highlight": [
+          3
+        ],
+        "note": "All 17 columns together: 0.845"
+      }
+    },
+    {
+      "narration": "Most of those seventeen columns come from a handful of recipes you already use on dashboards, and they travel to almost any table about customers. [[1]] How recent: days since the last login. [[2]] How often: active days in the last 28. [[3]] How much: spend over the window, on a log scale so a few giant accounts do not dominate. [[4]] The trend: the last four weeks divided by the four before. [[5]] The ratio to a goal: CPA divided by the advertiser's own target. Say a CPA is 40 dollars. Good or bad? You cannot tell until you divide by the goal. [[6]] The breadth: how many campaigns, how many creatives. A weighted sum only adds up what it is handed. Building these columns is your job, and it has a name: feature engineering.",
+      "visual": {
+        "type": "table",
+        "title": "Recipes that travel",
+        "columns": [
+          "Recipe",
+          "The question",
+          "Column here"
+        ],
+        "rows": [
+          [
+            "How recent",
+            "When did they last…?",
+            "days_since_login"
+          ],
+          [
+            "How often",
+            "On how many days…?",
+            "active_days_28"
+          ],
+          [
+            "How much",
+            "What does it add up to?",
+            "spend_8w (log scale)"
+          ],
+          [
+            "The trend",
+            "Rising or falling?",
+            "spend_trend = last 4 wks ÷ first 4"
+          ],
+          [
+            "Ratio to a goal",
+            "Against their own target?",
+            "cpa_vs_goal (above 1 = missing)"
+          ],
+          [
+            "Breadth",
+            "Across how many things?",
+            "campaigns_active, creatives_per_campaign"
+          ]
+        ]
+      }
+    },
+    {
+      "narration": "This is your home turf, and it is where the danger gets in. Features are built in SQL from dated events, and the pattern never changes. Start from the snapshot table, one row per advertiser per snapshot date. Join the events to it with the date window inside the join condition: from 56 days before the snapshot up to, but not including, the snapshot day. Group back to one row per advertiser per snapshot. Every recipe is an aggregate inside that window: a SUM, a COUNT, a latest date, a ratio. The line that matters most is the upper bound on the date. Leave it off, or pull a column from a table that only holds today's state, and you have rebuilt the leak from module one.",
+      "visual": {
+        "type": "code",
+        "title": "A point-in-time feature query",
+        "lang": "sql",
+        "code": "SELECT s.advertiser_id, s.snapshot_date,\n  COALESCE(SUM(e.spend), 0) AS spend_8w,\n  COUNT(DISTINCT CASE WHEN e.event_date >= s.snapshot_date - 28\n                      THEN e.event_date END) AS active_days_28,\n  SUM(CASE WHEN e.event_date >= s.snapshot_date - 28\n           THEN e.spend ELSE 0 END) AS spend_last_4w\nFROM snapshots s\nLEFT JOIN spend_events e\n  ON  e.advertiser_id = s.advertiser_id\n  AND e.event_date >= s.snapshot_date - 56   -- window opens\n  AND e.event_date <  s.snapshot_date        -- closes: no future\nGROUP BY s.advertiser_id, s.snapshot_date;",
+        "note": "Window in ON, not WHERE: an advertiser with no events keeps a row of zeros. spend_trend = spend_last_4w ÷ (spend_8w − spend_last_4w). Date arithmetic varies by warehouse."
+      }
+    },
+    {
+      "narration": "So, the brief and the audit. [[1]] Ask the assistant to build the feature table from dated events, one row per advertiser per snapshot, with the window written down. Then its output must show two things. [[2]] First, a feature list: every column, its source table and its date window. [[3]] Put each column through two questions. When is it known? And will it exist on the day we score? [[4]] Second, the score with column groups added one at a time, and each group on its own, on the same test months. [[5]] And when one new column moves the score a lot, treat it as either your best idea this quarter or a leak. The feature list tells you which.",
+      "visual": {
+        "type": "bullets",
+        "title": "Brief and audit",
+        "items": [
+          "Features from dated events; one row per advertiser per snapshot",
+          "Feature list: column · source table · date window",
+          "Each column: known when? There on scoring day?",
+          "AUC by column group: added one by one, and alone",
+          "A big jump from one column: best idea, or leak?"
+        ]
+      }
+    },
+    {
+      "narration": "To recap. Here, changing the columns moved the score by about 0.18, and choosing between the two best algorithms by about 0.01. The columns that earned it came from a few recipes: how recent, how often, how much, the trend, the ratio to a goal, the breadth. Every one of them has to be computable on the snapshot date and present on scoring day. That leaves the question an account manager asks the moment she sees a list. Which of these columns is the model leaning on, and why is this advertiser at the top? That is the next lesson.",
+      "visual": {
+        "type": "quote",
+        "text": "Before paying for a fancier algorithm, ask what the model is not being shown.",
+        "sub": "On this data: columns 0.18 · the two best algorithms 0.01"
+      }
+    }
+  ],
+  "takeaways": [
+    "On this data, changing the columns moved the score by about 0.18; choosing between the two best algorithms, about 0.01.",
+    "Useful columns come from a few recipes: how recent, how often, how much, the trend, the ratio to a goal, the breadth.",
+    "Every feature must be computable on the snapshot date and exist on the day you score."
+  ],
+  "quiz": [
+    {
+      "id": "4-4-q1",
+      "concept": "information before algorithms",
+      "domain": "course",
+      "q": "The churn model sits at an AUC of about 0.85. Your assistant proposes two more days tuning the boosted model. On this data the two best algorithms were about 0.01 apart. What do you ask for instead?",
+      "options": [
+        "A deeper boosted model with more rounds, since extra depth is where the hidden signal usually sits",
+        "A larger test set, so that the small gap between the two algorithms becomes statistically clear",
+        "A list of what account managers watch that is not yet a column, and a test of adding it",
+        "The same two models on a shuffled split, to confirm which one is really ahead"
+      ],
+      "answer": 2,
+      "why": "Changing the columns moved this score by about 0.18 and switching between the best algorithms by about 0.01, so the cheaper experiment is new information, measured the same way. More depth is the tempting move, but it only re-cuts the columns the model already has, and tuning here preferred shallow trees."
+    },
+    {
+      "id": "4-4-q2",
+      "concept": "point-in-time features",
+      "domain": "course",
+      "q": "The assistant adds one column, account tier, joined from the accounts table, and the test AUC jumps from 0.85 to 0.93. Its feature list reads: source accounts table, value as of the export date. What is the right read?",
+      "options": [
+        "Tier is a strong feature that the earlier columns missed; keep it and report the higher score to the team",
+        "A jump that large means the model is overfitting; ask for shallower trees and run it again",
+        "Tier has only a few categories, so the jump must be noise; rerun it with a different random seed",
+        "Tier was read after the outcome window and may encode who left; rebuild it as of the snapshot"
+      ],
+      "answer": 3,
+      "why": "A value read on the export date fails the time-travel test: if tiers are changed once an account goes quiet, the column carries the outcome. Calling it a great feature is the tempting read, but one column that moves the score this much is a leak until the feature list proves otherwise."
+    },
+    {
+      "id": "4-4-q3",
+      "concept": "feature recipes",
+      "domain": "other",
+      "q": "A model predicts which creatives will fatigue next week, meaning their click rate will fall. Its columns are format, image size and advertiser vertical, and it barely beats a coin. Which additions follow the recipes from this lesson?",
+      "options": [
+        "Days since launch, impressions in the last 7 days, click rate now over click rate at launch",
+        "The creative's ID as a number, so that the model can learn the history of each creative separately",
+        "Next week's actual impressions for each creative, since heavy delivery is what produces fatigue",
+        "The same three columns again, fed to a boosted model in place of the weighted sum"
+      ],
+      "answer": 0,
+      "why": "How recent, how much and a ratio to the creative's own starting point are the recipes, and all three can be computed on the scoring date. Next week's impressions would predict best of all, which is the problem: the number does not exist when you score. An ID is never a feature."
+    },
+    {
+      "id": "4-4-q4",
+      "concept": "overlapping column groups",
+      "domain": "course",
+      "q": "A colleague reads the cumulative results: setup lifted the score from 0.66 to 0.76, recent behaviour only from 0.79 to 0.85. He concludes that setup is the more valuable group of columns. What do you tell him?",
+      "options": [
+        "Agreed: the size of each step is the value of the group that was added at that step",
+        "Not from those steps: they depend on the order; alone, recent behaviour scores 0.82 and setup 0.73",
+        "Not from those steps: a group's value should be read from training scores, not test scores",
+        "Agreed, and by the same logic performance against goal is worth the least of the four groups"
+      ],
+      "answer": 1,
+      "why": "A cumulative step measures what a group adds to whatever went in before it, so when groups overlap the early ones collect the shared credit. On their own the order reverses: recent behaviour about 0.82, setup about 0.73. Reading step size as value is natural and wrong."
+    }
+  ],
+  "review": [
+    {
+      "concept": "before changing the algorithm, ask what the model is not being shown",
+      "variants": [
+        {
+          "q": "A lead-scoring model uses company size, industry and country. Logistic regression scores 0.62 and a tuned boosted model 0.63. Sales reps say the hot leads are the ones who came back to the pricing page this week. What is the most promising next step?",
+          "options": [
+            "Tune the boosted model further, since it is already slightly ahead of the simpler one",
+            "Collect several thousand more leads described by the same three columns",
+            "Build visit columns, such as pricing-page visits in the last 7 days, and re-score",
+            "Lower the cut-off so that more leads are flagged as hot and passed to the sales reps"
+          ],
+          "answer": 2,
+          "why": "Two algorithms 0.01 apart on the same thin columns says the limit is the information, and the reps have just named information the model lacks. More tuning re-cuts the same three columns; a lower cut-off changes who is flagged, not how well the model ranks."
+        },
+        {
+          "q": "An upsell model predicting who will upgrade their plan has been tried with four algorithms; all land between 0.70 and 0.72. The assistant concludes that 0.72 is the ceiling for this problem. What is the better conclusion?",
+          "options": [
+            "It is the ceiling for these columns; test new ones, such as usage against the plan limit",
+            "Correct: when four different algorithms agree this closely, the data has nothing more to give",
+            "Wrong: a fifth, more powerful algorithm such as a neural network is needed to break through",
+            "Wrong: score the models on their training rows to see where the true ceiling is"
+          ],
+          "answer": 0,
+          "why": "Agreement between algorithms tells you about the columns they share, not about the problem. The ceiling moves when the model is shown something new, and usage as a ratio to the customer's own limit is a natural candidate to test."
+        },
+        {
+          "q": "An invalid-traffic model receives each publisher's daily clicks and daily impressions as two raw columns and uses logistic regression. A fraud analyst says suspicious publishers show a click rate far above their category's norm. Why might the model be missing that?",
+          "options": [
+            "It is not missing it: both raw columns are present, so the ratio is already available to the model",
+            "Logistic regression cannot use more than one column describing the same publisher",
+            "Click counts leak the outcome, so the model was right to give them very little weight",
+            "A weighted sum cannot divide one column by another; the ratio must be built and handed to it"
+          ],
+          "answer": 3,
+          "why": "A weighted sum adds columns; it cannot form a click rate, let alone a click rate relative to a category norm, unless someone builds that column. Assuming the raw ingredients are enough is the natural mistake, and it is why your knowledge of what suspicious looks like has to go in as a feature."
+        }
+      ]
+    },
+    {
+      "concept": "a feature must be computable on the snapshot date and exist on scoring day",
+      "variants": [
+        {
+          "q": "The assistant's feature query sums spend from the events table, joined on advertiser, with one date condition: event date on or after 56 days before the snapshot. Row counts match the snapshot table. What is wrong?",
+          "options": [
+            "Nothing: the 8-week window is stated in the query and the row counts match the snapshot table",
+            "There is no upper bound, so spend after the snapshot flows into the feature",
+            "The sum should be an average, so that a few very large accounts do not dominate the column",
+            "The join should also match on vertical, or rows will be duplicated"
+          ],
+          "answer": 1,
+          "why": "Without a condition that the event date is before the snapshot, the sum runs on into the outcome window, so churners show low spend because they churned. Matching row counts only proves the grain is right; it says nothing about which dates were read."
+        },
+        {
+          "q": "A model predicts each advertiser's spend for next month and is run on the 1st. One feature is last month's invoiced total, which billing finalises around the 10th. In the historical training table the column is complete for every month. What is the problem?",
+          "options": [
+            "None: the column is complete for every month in the training table, so the model can rely on it",
+            "Invoiced totals are in dollars and must be put on a log scale before the model can use them",
+            "On scoring day the column does not exist yet: the model learned from something it will not be given",
+            "The feature repeats information already carried by last month's spend"
+          ],
+          "answer": 2,
+          "why": "A feature has to pass two tests: computable from data up to the snapshot, and actually available when you score. History looks complete only because you are reading it later; on the 1st the invoice is still ten days away."
+        },
+        {
+          "q": "A lead-scoring model's strongest feature is the number of sales calls logged against the lead. Scores are produced the moment a lead arrives. Its test score is excellent. What is the right read?",
+          "options": [
+            "Calls happen after scoring, and mostly to promising leads: the column knows the future",
+            "Calls are a sign of interest: exactly the kind of how-often behaviour feature the model should keep",
+            "The feature is fine, but should be divided by the lead's age in days to turn it into a rate",
+            "The score is excellent because the model has at last been given enough rows"
+          ],
+          "answer": 0,
+          "why": "At the moment a lead arrives there are no calls, and the calls that follow go to leads already judged promising, so the count carries the outcome. It looks like a how-often feature, which is what makes it tempting, but it fails the question of when it is known."
+        }
+      ]
+    }
+  ],
+  "drill": [
+    {
+      "q": "Your model's score has stalled, and someone suggests switching to a more powerful algorithm. What question should come first?",
+      "a": "Ask what the model is not being shown. In this course's churn data, changing the columns moved the score far more than changing the algorithm did. New information is often the cheaper experiment, and you measure both rather than assume."
+    },
+    {
+      "q": "What two things must be true of a column before it can be used as a feature?",
+      "a": "It must be computable on the snapshot date, using only data up to then. And it must actually exist on the day you score. If either fails, it is a leak, or a column the live model will never receive."
+    }
+  ],
+  "recall": {
+    "prompt": "A colleague wants to try a more complex algorithm on a model whose score has stalled. Explain what you would look at first, and what any new column has to pass.",
+    "model_answer": "I would look at the feature list before the algorithm: on the churn data, changing the columns moved AUC by about 0.18 while the two best algorithms were about 0.01 apart, so the likelier gain is information the model has not been shown. I would build candidates from the standard recipes — how recent, how often, how much, the trend, the ratio to a goal, the breadth — and measure each group added to the model and on its own. Every new column must be computable from events dated before the snapshot and must exist on the day we score; a column that moves the score a lot is a leak until the feature list shows otherwise."
+  },
+  "ask_assistant": "Build the feature table in SQL from dated event tables: one row per advertiser per snapshot date, every aggregate limited to the 56 days before the snapshot and strictly before it. Output a feature list giving each column's source table, date window, and whether it will exist on scoring day. Then fit the same logistic regression with the column groups added one at a time, and with each group alone, and report test AUC for each on the same test months next to the full model.",
+  "audit_checklist": [
+    "A feature list: every column with its source table, its date window and when its value is known",
+    "Row count and distinct advertisers equal to the snapshot table, before and after the feature joins",
+    "Test AUC with column groups added cumulatively and each group alone, on the same test months",
+    "Any column that moves the score sharply is traced to dated events, not to a current-state table"
+  ],
+  "transfer": [
+    "Lead scoring: which leads will convert — days since the last visit, visits this week, pricing-page views as a share of all views.",
+    "Creative fatigue: which creatives will fade — days live, impressions per day, click rate now against click rate at launch.",
+    "Invalid traffic: which publishers look suspicious — click rate against the category norm, share of clicks at night, change against their own last month."
+  ],
+  "other_ways": [
+    {
+      "approach": "Let a flexible model find combinations of the raw columns on its own",
+      "when": "When you have plenty of rows and no clear idea which combinations matter. It still cannot use information that is not in the table."
+    },
+    {
+      "approach": "Have the assistant generate many candidate aggregates and keep the ones that hold up in cross-validation",
+      "when": "When the event data is rich and you want breadth quickly. Every survivor still has to pass the time-travel test, and more candidates means more chance of a lucky one."
+    },
+    {
+      "approach": "Bring in a new data source instead of re-cutting the same events",
+      "when": "When the recipes have been tried on the events you have and the score has stopped moving."
+    }
+  ],
+  "glossary": [
+    {
+      "term": "feature engineering",
+      "def": "Building new columns from raw data so that the model is shown what you know matters."
+    },
+    {
+      "term": "point-in-time feature",
+      "def": "A column computed only from events dated before the snapshot, so it could have existed on that day."
+    },
+    {
+      "term": "ratio to a goal",
+      "def": "A quantity divided by the customer's own target, such as CPA over goal, which puts every customer on the same ruler."
+    },
+    {
+      "term": "feature list",
+      "def": "The audit exhibit that names every column, its source table and its date window."
+    }
+  ]
+}

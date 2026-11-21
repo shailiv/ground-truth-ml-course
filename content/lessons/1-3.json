@@ -1,0 +1,374 @@
+{
+  "id": "1-3",
+  "module": 1,
+  "title": "Framing: target, unit and time",
+  "subtitle": "What exactly are you predicting, for whom, and by when?",
+  "goal": "After this lesson you can pin a label to a timeline (what counts, for which unit, in which window) and spot the rows that are not eligible, not yet observed, or invisible to a proxy.",
+  "predict": {
+    "q": "Churn is defined as 'no spend at all in the 60 days after the snapshot date'. A table is built from a snapshot taken 20 days ago. Which of its advertisers already have a definite label?",
+    "options": [
+      "Only those who have spent since the snapshot: they stayed",
+      "Only those who have not spent since the snapshot: they churned",
+      "All of them: 20 days is long enough to see who has gone quiet",
+      "No row yet: every label needs the full 60 days"
+    ],
+    "answer": 0,
+    "reveal": "Only the ones who have spent: a single day of spend inside the window makes them stayers. Everyone else could be pausing or gone, and the lesson shows how that quietly bends a churn rate in either direction."
+  },
+  "segments": [
+    {
+      "narration": "Picture the meeting. Someone asks for a churn model, and you ask the obvious question back: what counts as churned? Take an advertiser who stopped spending for three weeks and then came back. One account manager says yes, churned, they went dark. Another says no, that client always pauses in spring. Finance says churn is when the contract ends. Nobody in the room agrees. A model will not settle it. It learns whatever definition you write down, faithfully, including a bad one. So the label, which you will also hear called the target, is a business decision. The same goes for any outcome a model predicts: whether an advertiser adopted the video format is just as arguable. Every label needs three things pinned down: what, who and when.",
+      "visual": {
+        "type": "title",
+        "kicker": "Module 1 · Lesson 3",
+        "title": "Framing: target, unit and time",
+        "sub": "Is a three-week pause churn?"
+      }
+    },
+    {
+      "narration": "[[1]] Start with what. In the practice table, churned means no spend at all in the 60 days after a snapshot date. Not paused, not slowing down: nothing. Under that definition the three-week pauser stayed: they spent again inside the window. Shorten the window to two weeks and the same advertiser could count as churned, and you would be training a different model. [[2]] Then who. What is one row, the grain of the table? Here it is one advertiser at one snapshot date. Not one campaign, and not one advertiser per day. Settle that early, because every count and every rate that follows depends on it. [[3]] Then when, which is the part that goes wrong quietly.",
+      "visual": {
+        "type": "bullets",
+        "title": "A label needs three things pinned down",
+        "items": [
+          "What: no spend at all in the 60 days after the snapshot",
+          "Who: one row is one advertiser at one snapshot date",
+          "When: a timeline, with the snapshot date in the middle"
+        ]
+      }
+    },
+    {
+      "narration": "Put it on a timeline. The snapshot date is the day you would actually make the prediction. [[1]] Everything the model is allowed to know comes from before it. In the practice table that is the eight weeks leading up to the snapshot, called the observation window. The features are built from it. [[2]] Everything you are trying to predict happens after it: the 60 days that follow, called the outcome window. The label is read from there. Features on one side, label on the other, and the snapshot date standing between them like a wall. If you cannot draw that picture for a table, you do not yet know what it predicts.",
+      "visual": {
+        "type": "timeline",
+        "title": "Features before the snapshot, label after it",
+        "spans": [
+          {
+            "label": "Observation window: 8 weeks (features)",
+            "from": 0,
+            "to": 56,
+            "kind": "obs"
+          },
+          {
+            "label": "Outcome window: 60 days (label)",
+            "from": 56,
+            "to": 116,
+            "kind": "out"
+          }
+        ],
+        "marks": [
+          {
+            "at": 56,
+            "label": "Snapshot date"
+          }
+        ],
+        "note": "The snapshot date is the day the prediction would be made."
+      }
+    },
+    {
+      "narration": "Two groups of rows distort a label without any error message. [[1]] The first is the not eligible. An account that had already stopped spending before the snapshot is not a prediction. It is history. Leave those rows in, and any model looks clever for spotting advertisers who were already gone. So write down who is in. [[2]] The second is the not yet observed. Take a snapshot from 20 days ago. Anyone who has spent since is settled: they stayed. Anyone who has not is undecided. They may be gone for good, or three weeks into a pause. Count them as churned and the rate is too high. Default them to stayed and it is too low. So a snapshot enters the table only when its whole outcome window has passed.",
+      "visual": {
+        "type": "table",
+        "title": "Two kinds of row that quietly distort a label",
+        "columns": [
+          "Row",
+          "Why it distorts",
+          "What to do"
+        ],
+        "rows": [
+          [
+            "Not eligible",
+            "Stopped before the snapshot: history, not a prediction",
+            "Write down who is in"
+          ],
+          [
+            "Not yet observed",
+            "Snapshot 20 days ago: no spend yet may be a pause or a churn",
+            "No snapshot in the table until its window closes"
+          ]
+        ]
+      }
+    },
+    {
+      "narration": "Sometimes the thing you care about has no column at all. Take the other question you keep getting: which advertisers are happy? There is no happiness column, so you reach for a proxy, a measurable stand-in. Say happy means the advertiser hit their own CPA goal. Reasonable. [[1]] But a CPA exists only for advertisers with conversion tracking, about 58 percent of the total. [[2]] The rest drop out silently, and they are not a random sample. Advertisers with tracking churn at about 7 percent. Those without, about 18. So anything you conclude about happy advertisers is really about tracked advertisers. The size of that gap belongs to this simulated data. The habit of asking who a proxy cannot see belongs everywhere.",
+      "visual": {
+        "type": "compare",
+        "title": "\"Happy\" = hit their CPA goal. Who can that see?",
+        "left": {
+          "label": "With conversion tracking",
+          "value": "7.2% churn",
+          "sub": "7,016 advertisers · 65.7% hit their CPA goal"
+        },
+        "right": {
+          "label": "Without tracking",
+          "value": "18.4% churn",
+          "sub": "4,984 advertisers · goal cannot be measured"
+        }
+      }
+    },
+    {
+      "narration": "Before a model ever sees a label, check it. First, the rate by month. Here, churn sits near 11 percent from January through April. Then it is about 13 in May and 14 in June. A drift like that deserves a question, and a later lesson comes back to it. A sudden jump or a sudden drop in the newest months means asking whether the definition changed, or whether those months' outcome windows have closed. Second, read examples. Pull twenty advertisers labelled churned and twenty labelled stayed, and look at them as accounts you know. If several of the churned ones turn out to be seasonal clients who always pause, the definition is wrong, and you found out before any model was built.",
+      "visual": {
+        "type": "bar",
+        "title": "Churn rate by snapshot month",
+        "unit": "%",
+        "data": [
+          {
+            "label": "Jan",
+            "value": 11.25
+          },
+          {
+            "label": "Feb",
+            "value": 10.9
+          },
+          {
+            "label": "Mar",
+            "value": 11.25
+          },
+          {
+            "label": "Apr",
+            "value": 11.25
+          },
+          {
+            "label": "May",
+            "value": 12.65
+          },
+          {
+            "label": "Jun",
+            "value": 13.7
+          }
+        ],
+        "note": "2,000 advertisers in each month. Simulated data."
+      }
+    },
+    {
+      "narration": "So, the brief. Before any modelling, ask your assistant to write the definition down and then prove it with output. [[1]] The label in one sentence, including the number of days. [[2]] What one row is, who is eligible, and how many rows were left out. [[3]] The snapshot dates, and the most recent one whose outcome window has fully closed. [[4]] The label rate and row count by month. [[5]] And twenty example rows, churned and stayed. What you are checking is dates and counts, not code. If the newest snapshot is less than 60 days old, its labels are not finished. And if the room still cannot agree on a definition, have two built side by side, and read the accounts that change sides.",
+      "visual": {
+        "type": "bullets",
+        "title": "Brief and audit: define it, then prove it",
+        "items": [
+          "The label in one sentence, with its days",
+          "One row is…; who is eligible; rows left out",
+          "Snapshot dates; the latest with a closed window",
+          "Label rate and row count by month",
+          "Twenty example rows: churned and stayed"
+        ]
+      }
+    },
+    {
+      "narration": "So before anyone models a label, you can make it prove itself: one sentence, a timeline, and a count of who was left out. Next: what happens when a feature slips onto the wrong side of the snapshot date, and already knows the answer.",
+      "visual": {
+        "type": "bullets",
+        "title": "Framing: target, unit and time",
+        "items": [
+          "A label is a business decision: what, who, when",
+          "Features before the snapshot, outcome after; label only when the window has closed",
+          "Ask who is missing: not eligible, not yet observed, not measurable"
+        ]
+      }
+    }
+  ],
+  "takeaways": [
+    "A label is a business decision: what counts, for which unit, and in which window.",
+    "Features come from before the snapshot, the outcome from after it, and only a closed window gives a real label.",
+    "Ask who is missing: rows that are not eligible, not yet observed, or invisible to your proxy."
+  ],
+  "quiz": [
+    {
+      "id": "1-3-q1",
+      "concept": "the outcome window must have closed",
+      "domain": "course",
+      "q": "Today, on your own platform's data, the assistant builds a churn table with one snapshot per month for the last six months. Churn means no spend in the 60 days after the snapshot, and the flag is computed as 'no spend since the snapshot'. It reports: 'Churn by snapshot month: 11, 12, 11, 12, 19 and 38 percent. Churn is accelerating.' What is the right read?",
+      "options": [
+        "Churn really is accelerating, and the account teams should be warned about it this week",
+        "The newest snapshots' 60 days are not over, so advertisers on a pause count as churned",
+        "The recent months contain fewer advertisers, so their rates are simply noisier",
+        "The definition is too strict and should be loosened until recent months look normal"
+      ],
+      "answer": 1,
+      "why": "A snapshot from this month or last has not had its 60 days, so everyone with no spend yet is counted as churned, including advertisers who are only pausing and will spend again inside the window. Had unfinished rows been defaulted to stayed, the same months would have come out too low instead. Noise would scatter the rates up and down, not push exactly the two open months the same way."
+    },
+    {
+      "id": "1-3-q2",
+      "concept": "eligibility",
+      "domain": "course",
+      "q": "A churn table includes every account that has ever existed. Many rows show no spend at all during the 8-week observation window, and the model gives nearly all of those rows a very high score. What is the problem?",
+      "options": [
+        "The scores are too confident and should be scaled down before the list is shared",
+        "Those rows should have their missing spend filled in with the average before training",
+        "The model leans too heavily on spend and should be given some other columns to use",
+        "Those accounts had already stopped before the snapshot, so they are not predictions"
+      ],
+      "answer": 3,
+      "why": "An account with no spend before the snapshot has already left: flagging it is history, not prediction, and it flatters any model. The fix is an eligibility rule that states who is in, such as advertisers with spend during the observation window, not patching the rows or the feature list."
+    },
+    {
+      "id": "1-3-q3",
+      "concept": "a proxy has a blind spot",
+      "domain": "other",
+      "q": "To study 'satisfied customers', an analyst uses the rating from the survey sent after each support ticket. About a quarter of customers ever answer it. The report concludes that satisfied customers use the reporting API more. What should the report say up front?",
+      "options": [
+        "That the finding describes survey responders, who may differ from everyone else",
+        "That a quarter of all customers answered, which is a large enough sample to rely on",
+        "That missing ratings were filled in with the average, so every customer is covered",
+        "That ratings are subjective, so no conclusion at all can be drawn from them"
+      ],
+      "answer": 0,
+      "why": "The proxy can only see customers who answered, and they may differ from those who did not, so the conclusion is about responders. Sample size is not the issue: a large group that selected itself is still not everyone. Filling the gaps with an average hides the blind spot instead of stating it."
+    },
+    {
+      "id": "1-3-q4",
+      "concept": "unit and grain",
+      "domain": "course",
+      "q": "Stakeholders want to know which advertisers will leave. The assistant's training table has one row per campaign, each labelled with whether its advertiser churned. What is the issue?",
+      "options": [
+        "The label: churn should be redefined for each campaign on its own",
+        "A campaign-level table is simply not able to carry an advertiser-level label",
+        "The unit is wrong: an advertiser with ten campaigns is counted ten times",
+        "It should go finer still, with one row per advertiser for every day"
+      ],
+      "answer": 2,
+      "why": "The decision is about advertisers, so one row should be one advertiser at one snapshot. At campaign grain, advertisers with many campaigns dominate every count and rate, and the extra rows repeat the same outcome instead of adding evidence. Going finer still makes that worse, and a campaign-level label would answer a question nobody asked."
+    }
+  ],
+  "review": [
+    {
+      "concept": "a label needs a closed outcome window",
+      "variants": [
+        {
+          "q": "A lead counts as 'converted' if it becomes a paying customer within 90 days of sign-up. A table built today labels every lead from the last 30 days that has not paid yet as 'not converted'. What is wrong?",
+          "options": [
+            "Those rows are right but uncertain, so they should get a lower weight",
+            "Recent leads behave differently, so they need a separate model",
+            "Those leads have had 30 days at most, not 90: they have no label yet",
+            "The 90-day window is too long and should be cut to 30 days for all leads"
+          ],
+          "answer": 2,
+          "why": "The definition gives every lead 90 days and these have had 30 at most, so some will still convert; calling them 'not converted' writes in an answer that does not exist yet, at any weight. Shortening the window for everyone would be a different label: a business decision to make on purpose, not to fit this month's table."
+        },
+        {
+          "q": "Video adoption is defined as starting video ads within 60 days of a snapshot. The adoption rate is steady at about 20 percent for older snapshots, but 7 percent for the snapshot taken three weeks ago. What should you check before explaining the drop?",
+          "options": [
+            "Whether the newest snapshot has had its 60 days: it has had three weeks",
+            "Whether interest in video ads is fading among the newest advertisers",
+            "Whether the newest snapshot is smaller, which would make its rate noisier",
+            "Whether the newest advertisers were offered video ads at all by sales"
+          ],
+          "answer": 0,
+          "why": "Adoption is counted over 60 days and the newest snapshot has had three weeks, so many of its eventual adopters have not been counted yet. Fading interest is a story the data cannot support until the window has closed: check the dates before explaining a drop."
+        },
+        {
+          "q": "A creative is called 'durable' if its CTR holds for 30 days after launch. An analyst labels a creative launched 10 days ago, with CTR still holding, as durable. What is the right label?",
+          "options": [
+            "Durable: its CTR has held on every day observed so far",
+            "Not durable: it has not yet reached the 30 days required",
+            "Durable, but with a lower weight than the older creatives",
+            "None yet: it has been observed for 10 of the 30 days"
+          ],
+          "answer": 3,
+          "why": "The label is defined over 30 days and only 10 have been seen, so neither answer exists yet. Calling it durable assumes the next 20 days; calling it not durable punishes it for being new. It gets a label when its window closes."
+        }
+      ]
+    },
+    {
+      "concept": "who the label cannot see",
+      "variants": [
+        {
+          "q": "The 'invalid' label for traffic sources comes from manual reviews, and a source is reviewed only after an advertiser complains about it. A model trained on the reviewed sources is then used to score every source. What should you say about it?",
+          "options": [
+            "It can be trusted everywhere, because the reviewed labels are accurate",
+            "It learned from sources that drew complaints; the rest are a blind spot",
+            "It cannot be used at all, because the labels were assigned by people",
+            "It will work once the unreviewed sources have been labelled as valid"
+          ],
+          "answer": 1,
+          "why": "Labels exist only for sources that drew a complaint, and those may differ from sources nobody complained about, so the model's behaviour on the rest is unknown. Accurate labels do not fix who was left out, and assuming every unreviewed source is valid writes in answers nobody checked."
+        },
+        {
+          "q": "An analyst defines 'price-sensitive' advertisers as those who redeemed a discount code. The codes were emailed only to self-serve accounts. The report says managed accounts are almost never price-sensitive. What is the right read?",
+          "options": [
+            "Managed accounts are less price-sensitive, as you would expect",
+            "The sample of managed accounts is too small to be sure of it",
+            "The discount-code data is unreliable and should be discarded",
+            "Managed accounts could not qualify: the proxy cannot see them"
+          ],
+          "answer": 3,
+          "why": "An advertiser who was never sent a code cannot redeem one, so for managed accounts the proxy measures who got the email, not price sensitivity. The finding sounds plausible, which is exactly why it slips through. The data is fine for self-serve accounts; it is silent on the rest."
+        },
+        {
+          "q": "A slide says: 'Happy advertisers, the ones who hit their CPA goal, refresh creatives more often.' A CPA exists only for advertisers with conversion tracking. What belongs in the first line of that slide?",
+          "options": [
+            "That it covers tracked advertisers only, and how the untracked differ",
+            "That untracked advertisers were counted as unhappy, to keep every row",
+            "That it holds for all advertisers, since most of them have tracking",
+            "That CPA goals are set by advertisers, so the proxy is too subjective"
+          ],
+          "answer": 0,
+          "why": "The proxy is blind to every advertiser without tracking, and that group differs from the tracked one, so the claim has to be scoped to tracked advertisers. 'Most have tracking' does not make the rest similar, and counting the invisible ones as unhappy invents an answer."
+        }
+      ]
+    }
+  ],
+  "drill": [
+    {
+      "q": "What three things does a label definition have to pin down before anyone builds a model?",
+      "a": "What exactly counts as the outcome. Who, meaning what one row is and which rows are eligible. And when, meaning a snapshot date, with features from before it and the outcome from a fixed window after it."
+    },
+    {
+      "q": "Churn means no spend at all in the sixty days after a snapshot. An advertiser has not spent in the three weeks since theirs. Why can you not label them yet?",
+      "a": "Because their outcome window has not closed. They may be gone for good or only pausing, and nobody can tell which until the sixty days are up. Call them churned and the rate runs too high. Call them stayed and it runs too low."
+    }
+  ],
+  "recall": {
+    "prompt": "Someone hands you a table and says the churned column is the label. What do you ask before you trust it?",
+    "model_answer": "I would ask for the definition in one sentence, with its window in days, and what one row is. Then where the snapshot date sits, so that features come from before it and the outcome from after. Then who was left out: rows that were not eligible, rows whose outcome window had not closed, and anyone a proxy cannot see. Finally I would look at the label rate by month and read twenty examples of each class."
+  },
+  "ask_assistant": "Before any modelling, write the label definition in one sentence: [outcome] within [number of days] of [reference date]. Say what one row is, [unit] at [snapshot date], and which rows are eligible. List the snapshot dates beside the date the data was pulled, and keep only snapshots whose [outcome window] had fully closed by then; say which you dropped. Show the row count and [outcome] rate by snapshot [period], how many rows were excluded and why, and how you treated rows whose outcome was not yet decided. Then show twenty example rows with the outcome and twenty without.",
+  "audit_checklist": [
+    "The label in one sentence, with its window in days",
+    "Snapshot dates beside the data pull date: every snapshot kept is at least one full outcome window older than the pull",
+    "Label rate and row count by month, with no unexplained jump or drop in the newest months",
+    "Rows excluded as not eligible or not measurable: how many, and how they differ"
+  ],
+  "transfer": [
+    "Lead scoring: 'converted' within how many days of which date, and are last month's leads old enough to judge?",
+    "Creative fatigue: 'fatigued' against which baseline, counted from launch, and for creatives that have run how long?",
+    "Invalid traffic: 'confirmed invalid' exists only for the sources somebody reviewed."
+  ],
+  "other_ways": [
+    {
+      "approach": "Ask how long advertisers last, instead of yes or no in a fixed window",
+      "when": "When timing matters and many accounts are too recent to judge; a later module covers it."
+    },
+    {
+      "approach": "Predict a number instead: spend in the next 8 weeks",
+      "when": "When nobody can agree on one definition of churned and the decision is about revenue anyway."
+    },
+    {
+      "approach": "Build two label definitions side by side",
+      "when": "When stakeholders disagree: count how many advertisers change class, and read those cases together."
+    }
+  ],
+  "glossary": [
+    {
+      "term": "snapshot date",
+      "def": "The day the prediction would be made: features come from before it, the outcome from after it."
+    },
+    {
+      "term": "observation window",
+      "def": "The period before the snapshot that the features describe: here, 8 weeks."
+    },
+    {
+      "term": "outcome window",
+      "def": "The period after the snapshot in which the label is decided: here, 60 days."
+    },
+    {
+      "term": "eligibility",
+      "def": "The rule for which rows belong in the table at all, such as advertisers still spending at the snapshot."
+    },
+    {
+      "term": "proxy",
+      "def": "A measurable stand-in for something that has no column, blind wherever it cannot be measured."
+    }
+  ]
+}

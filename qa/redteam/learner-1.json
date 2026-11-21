@@ -1,0 +1,880 @@
+{
+ "reviewer": "learner-1",
+ "lessons": ["1-1", "1-2", "1-3", "1-4", "1-5", "2-1", "2-2", "2-3", "2-4", "2-5", "2-6", "3-1", "3-2", "3-3", "3-4", "3-5"],
+ "findings": [
+  {
+   "lesson": "1-1",
+   "where": "guess + quiz 1-1-q1 + drill 1 + recall",
+   "quote": "Your rule is already a small model.",
+   "kind": "question",
+   "severity": "low",
+   "problem": "The same question (how is a model different from my rule) is asked four times. Once the guess reveal has said 'the same kind of thing', q1 is answerable without hearing the lesson.",
+   "fix": "Keep the guess. Make q1 test a consequence instead: show two hand rules and one fitted model and ask which choices were made by a person and which by data."
+  },
+  {
+   "lesson": "1-1",
+   "where": "seg5 narration",
+   "quote": "adjusted until the outputs line up with what really happened",
+   "kind": "lost",
+   "severity": "low",
+   "problem": "'Each candidate' of what, adjusted how? I pictured the computer trying every possible rule, which sounds impossible, and the mechanism stays magic until 3-1.",
+   "fix": "One concrete sentence: start with any weights, measure how far off the outputs are, nudge the weights to shrink that, repeat."
+  },
+  {
+   "lesson": "1-1",
+   "where": "seg6 narration",
+   "quote": "Higher means this advertiser looks more like the ones who left.",
+   "kind": "lost",
+   "severity": "low",
+   "problem": "I immediately read a score of 0.3 as a 30 percent chance, and nothing says whether that is allowed. The answer arrives eight lessons later in 2-4.",
+   "fix": "Add one clause: 'not yet a percentage; lesson 2-4 checks whether it can be read as one'."
+  },
+  {
+   "lesson": "1-1",
+   "where": "quiz and guess answer keys (pattern across all 16 lessons)",
+   "quote": "answer keys: 1-1 [1,3,0,2], 1-3 [1,3,0,2], 2-1 [1,3,0,2], 2-3 [1,3,0,2], 2-5 [1,3,0,2], 2-6 [1,3,0,2]",
+   "kind": "question",
+   "severity": "medium",
+   "problem": "Every one of the 16 quizzes uses each of A to D exactly once, so the fourth answer is known by elimination, and Q1 is never A. The guess-first answer is never the first option in any of the 16 lessons (it is B in 8). I noticed during module 2.",
+   "fix": "Shuffle option order at render time, or re-key so the positions are not balanced inside each quiz."
+  },
+  {
+   "lesson": "1-2",
+   "where": "guess",
+   "quote": "None of these: it asks what would happen if something changed",
+   "kind": "question",
+   "severity": "medium",
+   "problem": "The three wrong options lead with words I have not been taught yet (classification, regression, clustering). The right one is the only one in plain words and the only 'None of these', so I picked it by its shape, not by thinking.",
+   "fix": "Write all four in plain words: predict who hits goal / predict each CPA / group advertisers by how they bid / find out what changes if we switch it on."
+  },
+  {
+   "lesson": "1-2",
+   "where": "seg2 narration",
+   "quote": "Two more finish the map.",
+   "kind": "ear",
+   "severity": "low",
+   "problem": "Seven names in about 45 seconds; by the sixth I had lost the third. The very next segment says I do not need to memorise seven names, so why were all seven read aloud?",
+   "fix": "Narrate only the five from the week. Let the table show forecasting and language models silently, or give them one clause."
+  },
+  {
+   "lesson": "1-2",
+   "where": "seg3 + seg8 narration",
+   "quote": "Four questions do it",
+   "kind": "doubt",
+   "severity": "medium",
+   "problem": "I tried the four questions on Thursday's request (spend dropped yesterday, is that unusual). Question 1 says 'groups, or the unusual' without telling me which, question 3 sends it to forecasting because time is the axis, and nothing routes anything to language models. Four questions do not sort the seven kinds.",
+   "fix": "Add the tie-breaker ('no answer column: do you want groups, or outliers?') and say plainly that a time axis can still be an anomaly question, as the review question on last night's conversions already admits."
+  },
+  {
+   "lesson": "1-2",
+   "where": "seg4 narration + table",
+   "quote": "Frame it as a length of time: how long do advertisers last?",
+   "kind": "lost",
+   "severity": "low",
+   "problem": "The third framing has a kind ('A length of time') that is not on the map of seven I was shown two segments earlier. I looked for it in the table and it is not there.",
+   "fix": "Add a row to the map, or label it on the card: 'time-to-event, module 6'."
+  },
+  {
+   "lesson": "1-2",
+   "where": "seg8 narration (recap), same pattern in every lesson",
+   "quote": "Four questions do it: is there an answer column, is it a category or a number, is time the main axis, and do I want to predict or to change.",
+   "kind": "boring",
+   "severity": "medium",
+   "problem": "Third full recitation of the four questions in six minutes, and takeaways, drill and recall then say them again. Every one of my 16 lessons ends the same way: a 'Brief and audit' segment, then a recap that re-reads the bullets. The last 40 seconds of each lesson is skippable.",
+   "fix": "Cut the recap narration to one sentence plus the 'next' hook, and let the takeaways card carry the summary. Spend the saved time on a second worked example."
+  },
+  {
+   "lesson": "1-3",
+   "where": "guess",
+   "quote": "comes back three weeks later. How is that row labelled?",
+   "kind": "question",
+   "severity": "low",
+   "problem": "Not a guess: the 60-day definition is in the question, and three weeks is less than 60 days. I answered by arithmetic and the reveal taught me nothing.",
+   "fix": "Ask something I have to commit to: 'The same table is labelled with a 14-day and a 60-day definition. Does the churn rate go up, down or stay the same?' or 'Which of these four rows cannot be labelled yet?'"
+  },
+  {
+   "lesson": "1-3",
+   "where": "seg4 narration",
+   "quote": "The same goes for whole months: on the day you score May's advertisers, April's 60 days are still running.",
+   "kind": "lost",
+   "severity": "medium",
+   "problem": "A jump from one advertiser who is 20 days old to scoring May while April is 'still running'. At this point I did not know months were scored in sequence, so I had to replay it.",
+   "fix": "Either drop it here (2-1 does it properly with a timeline) or say it in the same picture: 'Same for a whole batch: last month's advertisers have had 30 of their 60 days.'"
+  },
+  {
+   "lesson": "1-3",
+   "where": "seg7 narration + audit checklist item 2",
+   "quote": "If the newest snapshot is more recent than the outcome window is long, some of those labels are not real yet.",
+   "kind": "ear",
+   "severity": "medium",
+   "problem": "Could not parse it by ear: it compares a date with a length. The checklist repeats the same twist ('the newest one older than the outcome window is long').",
+   "fix": "'If the newest snapshot is less than 60 days old, its labels are not finished.'"
+  },
+  {
+   "lesson": "1-3",
+   "where": "seg7 narration",
+   "quote": "twenty example rows of each class",
+   "kind": "lost",
+   "severity": "low",
+   "problem": "'Class' has never been introduced; the segment before said 'labelled churned' and 'labelled stayed'.",
+   "fix": "Say 'twenty churned and twenty stayed', or define class once."
+  },
+  {
+   "lesson": "1-4",
+   "where": "seg4 narration (timeline on screen says 60 days)",
+   "quote": "The label describes the 90 days after it.",
+   "kind": "doubt",
+   "severity": "high",
+   "problem": "Every other lesson, the previous segment and the timeline on screen at that moment say 60 days. I went back to check whether the definition of churn had changed.",
+   "fix": "'The label describes the 60 days after it.'"
+  },
+  {
+   "lesson": "1-4",
+   "where": "seg3 narration vs stat card",
+   "quote": "For advertisers who churned, the typical value is 68 days.",
+   "kind": "doubt",
+   "severity": "medium",
+   "problem": "The voice says 68, the card says '66 days', and the course outline says 86. With the column read 60 to 120 days after the snapshot (the third stat on the same card), a churner's value should sit near 90, so neither spoken nor shown number is believable.",
+   "fix": "One number on voice and screen (86 per the outline), plus a clause that it is at least 60 by definition."
+  },
+  {
+   "lesson": "1-4",
+   "where": "guess",
+   "quote": "A column recorded after the outcome had already happened",
+   "kind": "question",
+   "severity": "low",
+   "problem": "The lesson title printed above the question is 'features that know the future', which answers it.",
+   "fix": "Name four real columns (days since last spend, support tickets, tenure, vertical) and ask which one did it, or ask how many of the 200 churn once it is added."
+  },
+  {
+   "lesson": "1-4",
+   "where": "seg5 narration",
+   "quote": "Lifetime spend sounds harmless, but for a churner it stopped growing, and a model will notice.",
+   "kind": "lost",
+   "severity": "low",
+   "problem": "I had to think twice about why 'stopped growing' is a leak. The missing step is that a lifetime total read today includes the weeks after the snapshot.",
+   "fix": "'Lifetime spend read today includes the weeks after the snapshot, when churners added nothing.'"
+  },
+  {
+   "lesson": "1-4",
+   "where": "seg7 narration + brief",
+   "quote": "if a field exists only in a current-state table with no dated history, it stays out",
+   "kind": "not_usable",
+   "severity": "medium",
+   "problem": "Taken literally this bans vertical, managed and account manager, which at my company live only in the accounts table, and which the course's own model uses (managed gets a weight in 3-1 and 3-2). I would paste the brief and lose half my columns, with no rule for which ones are actually dangerous.",
+   "fix": "Give the working rule: fields that do not change because of the outcome (vertical, sign-up date) are allowed with a note; fields that do (status, tier, has a manager) need a dated copy. Promote 'start snapshotting the accounts table' from 'other ways' into the narration."
+  },
+  {
+   "lesson": "1-5",
+   "where": "guess",
+   "quote": "Four short requests, checking each output before the next",
+   "kind": "question",
+   "severity": "low",
+   "problem": "The title is 'Brief in stages' and the right option is the only one that is not 'one prompt'. No guessing involved.",
+   "fix": "Show the one-shot report's headline (churn 7.2 percent, top 200 all churned) and ask which of four numbers on the page I could verify from the page alone."
+  },
+  {
+   "lesson": "1-5",
+   "where": "seg4 narration (audit block item 4)",
+   "quote": "The list of features, each with the table it came from.",
+   "kind": "doubt",
+   "severity": "medium",
+   "problem": "The lesson before taught that the source table is not enough: I need 'the latest date of data it used'. The standing audit block drops the date, so the leak I just learned to catch would pass this block.",
+   "fix": "'Each feature, its source table and the latest date it used.' Same change in the brief and checklist."
+  },
+  {
+   "lesson": "1-5",
+   "where": "seg5 visual vs seg4",
+   "quote": "AUDIT BLOCK - stage 2",
+   "kind": "doubt",
+   "severity": "low",
+   "problem": "Seg4 says every output ends with the same five lines, but the example has no feature list and adds lines that are not among the five (missing, left out). I do not know which one is the template to paste.",
+   "fix": "Make the example carry exactly the five lines (features: 'none yet, stage 3'), or define the block per stage."
+  },
+  {
+   "lesson": "1-5",
+   "where": "seg5, seg6, seg8 narration",
+   "quote": "None of it required reading Python.",
+   "kind": "boring",
+   "severity": "low",
+   "problem": "Told four times in one lesson that I will not read code ('None of it required reading Python', 'You do not open the script', 'not Python' twice in seg8), after 'You are not reading code' in 1-4. I believed it the first time.",
+   "fix": "Say it once, in seg4."
+  },
+  {
+   "lesson": "1-5",
+   "where": "seg8 narration",
+   "quote": "The list of checks will grow, because each later lesson adds a line to it.",
+   "kind": "not_usable",
+   "severity": "medium",
+   "problem": "By the end of module 3 it has grown into 16 separate briefs and about 60 checklist lines spread over 16 lessons. I am never shown the grown block, and I forget fast.",
+   "fix": "End each module with the cumulative audit block on one card and one pasteable standing instruction (after 1-5, 2-6 and 3-5)."
+  },
+  {
+   "lesson": "2-1",
+   "where": "seg6 narration (card says 86.8%)",
+   "quote": "On the test months it is right about 78 percent of the time, because only about 13 percent of advertisers churn.",
+   "kind": "doubt",
+   "severity": "high",
+   "problem": "100 minus 13 is 87, the card says 86.8, and the next sentence ('less than two points better than doing nothing') is false against 78. This is the one number the lesson exists to teach, and the gap my baseline quiz exposed.",
+   "fix": "'about 87 percent'."
+  },
+  {
+   "lesson": "2-1",
+   "where": "seg3 narration (timeline says 4,000)",
+   "quote": "Test on May and June, 8,000 advertisers from a later period.",
+   "kind": "doubt",
+   "severity": "medium",
+   "problem": "The timeline on screen says 'Test: May–Jun · 4,000' at 2,000 a month, and every later lesson uses 4,000 as the check that the test rows were used.",
+   "fix": "'4,000 advertisers'."
+  },
+  {
+   "lesson": "2-1",
+   "where": "seg2 visual (flow step 1)",
+   "quote": "82,000 advertisers",
+   "kind": "doubt",
+   "severity": "medium",
+   "problem": "The first card says there are 82,000 rows with known outcomes. The table has 12,000, and the next segment splits it 6,000 / 2,000 / 4,000.",
+   "fix": "'12,000 advertisers'."
+  },
+  {
+   "lesson": "2-1",
+   "where": "guess",
+   "quote": "January to March: April's outcomes are not known yet",
+   "kind": "question",
+   "severity": "low",
+   "problem": "1-3 already told me April's 60 days are still running when May is scored, and 1-5 showed April 'left out'. It is a recall check with the reason printed in the option, not a guess.",
+   "fix": "Guess the baseline instead: 'A model that says nobody churns: how accurate is it on the test months? 13 / 50 / 87 / 99 percent.'"
+  },
+  {
+   "lesson": "2-1",
+   "where": "seg5 narration",
+   "quote": "Open it for the final answer, not for every experiment.",
+   "kind": "doubt",
+   "severity": "medium",
+   "problem": "The course then opens the envelope in every lesson: 2-3 has me drag the cut-off over the real test scores and pick one, 2-4 says recalibrate and 'ask for the same table again', 3-1 crowns 'the best so far' from five models on the same 4,000 rows. I cannot tell whether I am allowed to look, and the reason given is one sentence.",
+   "fix": "Say here that choices need a third slice (validation, lesson 4-2) and that the course peeks only to teach. Add 'make every choice on the training months' to the brief."
+  },
+  {
+   "lesson": "2-1",
+   "where": "seg5 narration",
+   "quote": "Here a shuffled split and a time split give almost the same result",
+   "kind": "boring",
+   "severity": "low",
+   "problem": "Two segments argue for the time split, then I am told it makes no difference here. Deflating, and the sealed envelope, which matters more, is buried behind it in the same segment.",
+   "fix": "Move the caveat to the on-screen note and give the envelope its own beat."
+  },
+  {
+   "lesson": "2-1",
+   "where": "brief (ask_assistant), same from 2-1 through 3-3",
+   "quote": "train on January to March, leave April out because its 60-day labels would not exist when May is scored",
+   "kind": "not_usable",
+   "severity": "medium",
+   "problem": "From here on the briefs are written for the practice table: its months, 'spend trend below 0.7', churned_next_60d, the bucket edges in 2-4. I cannot paste them at work; I would have to rewrite each one and would drop the part that matters.",
+   "fix": "Ship a template with slots: 'Split by <date column>. Train only on periods whose <N>-day outcome window closed before the first test date, say which period you left out, test on the latest <k> periods. Baselines: do-nothing and my rule <rule>.'"
+  },
+  {
+   "lesson": "2-2",
+   "where": "seg5 narration, last sentence",
+   "quote": "Recall, remember, is the share of your flags that turn out to be right, so a model with high recall rarely wastes a call.",
+   "kind": "doubt",
+   "severity": "high",
+   "problem": "That is the definition of precision, spoken twenty seconds after the correct definition of recall and contradicting the card on screen. It is the last thing said in the segment, so it is the version I would remember.",
+   "fix": "Delete the sentence, or replace with 'Precision is about your flags; recall is about the churners.'"
+  },
+  {
+   "lesson": "2-2",
+   "where": "seg3 narration (matrix shows 104)",
+   "quote": "Of those, 134 really churned. The other 37 stayed: those are false alarms.",
+   "kind": "doubt",
+   "severity": "high",
+   "problem": "134 plus 37 is 171, not the 141 flagged a sentence earlier, and the matrix says 104. The lesson's own audit rule is that the four counts must add up.",
+   "fix": "'104 really churned'."
+  },
+  {
+   "lesson": "2-2",
+   "where": "seg5 visual (formula line 2)",
+   "quote": "= 104 ÷ 257",
+   "kind": "doubt",
+   "severity": "medium",
+   "problem": "104 divided by 257 is 40 percent, but the next line says 19.7 percent. There were 527 churners.",
+   "fix": "'= 104 ÷ 527'."
+  },
+  {
+   "lesson": "2-2",
+   "where": "seg6 narration (table says 46.7%)",
+   "quote": "and its recall about 41, far above",
+   "kind": "doubt",
+   "severity": "medium",
+   "problem": "The table on screen says 46.7 percent, and the same segment goes on to call it 'a rule that finds nearly half the churners'.",
+   "fix": "'about 47'."
+  },
+  {
+   "lesson": "2-2",
+   "where": "seg3 narration + matrix",
+   "quote": "Of the advertisers it did not flag, 423 churned anyway: those are the misses. The remaining 3,436 were left alone and stayed.",
+   "kind": "ear",
+   "severity": "medium",
+   "problem": "Five counts in four sentences while all four boxes sit on screen at once (this segment has no reveal markers). I was still finding 37 when 3,436 arrived.",
+   "fix": "Reveal one box per sentence. Speak three numbers (flagged 141, right 104, missed 423) and let the screen carry the rest."
+  },
+  {
+   "lesson": "2-2",
+   "where": "quiz 2-2-q1 to q4 (same in 2-3, 2-4, 2-5, 2-6, 3-1)",
+   "quote": "They differ where it counts: the second's flags are right more often, but it catches 77 churners, not 104.",
+   "kind": "question",
+   "severity": "high",
+   "problem": "From 2-2 to 3-1 the longest option is the right one in 23 of 24 quiz questions (4 of 4 in 2-2, 2-4, 2-5, 2-6 and 3-1; 3 of 4 in 2-3). By 2-4 I was choosing by length and getting it right.",
+   "fix": "Give distractors a (wrong) reason of the same length, or trim the correct option. Add an automatic length check to the build."
+  },
+  {
+   "lesson": "2-2",
+   "where": "seg5 narration (same phrase in 2-3 seg4 and 2-5 seg3)",
+   "quote": "on another draw of test advertisers, precision could land anywhere from about 67 to 81 percent",
+   "kind": "lost",
+   "severity": "low",
+   "problem": "'Another draw'? There is one test set. The idea that a result wobbles with who happened to be in the sample is not introduced until 2-6.",
+   "fix": "'With a different 4,000 advertisers this could be anywhere from 67 to 81; lesson 2-6 shows how we know.'"
+  },
+  {
+   "lesson": "2-2",
+   "where": "seg7 narration vs other_ways",
+   "quote": "Say no.",
+   "kind": "doubt",
+   "severity": "low",
+   "problem": "The narration says to refuse rebalancing outright. The 'other ways' card says resampling the training rows is acceptable when positives are very few. I do not know which to tell the assistant.",
+   "fix": "'Never on the test rows. On training rows only if it then shows the predicted-versus-actual table.'"
+  },
+  {
+   "lesson": "2-2",
+   "where": "worked example (pattern across modules 1 to 3)",
+   "quote": "The churn report from the stand-up has reached the account team",
+   "kind": "not_for_me",
+   "severity": "medium",
+   "problem": "13 of my 16 lessons open on churn (two on spend, one mixed). adopted_video and hit_cpa_goal sit unused in the table. I asked for general fundamentals; the narration is a churn course with general quiz questions attached at the end.",
+   "fix": "Rotate the spoken example: run 2-2 and 2-3 on invalid traffic or video adoption, and 3-3 on hit-CPA-goal, which is my 'happy advertisers' question and suits a tree. Keep churn as the thread for about half."
+  },
+  {
+   "lesson": "2-2",
+   "where": "seg2 and seg6 reveal markers (also 2-5 seg3, 2-6 seg4, 3-1 seg5)",
+   "quote": "[[2]] The model's edge of under two points",
+   "kind": "lost",
+   "severity": "low",
+   "problem": "Marker numbering starts at 2, 3 or 4 in these segments. If parts stay hidden until their marker, the 'everyone stays' card is never revealed while the voice is talking about it. I could not verify the rendering from the file.",
+   "fix": "Check these in the player; add the missing [[1]] where the first part is meant to appear on cue."
+  },
+  {
+   "lesson": "2-3",
+   "where": "seg5 narration, last sentence",
+   "quote": "An AUC of 0.85 simply means the model's yes-or-no answer is correct for 85 percent of advertisers.",
+   "kind": "doubt",
+   "severity": "high",
+   "problem": "AUC has not been introduced yet (it arrives two segments later), and this is exactly the wrong reading that seg7 and quiz 2-3-q3 teach against, where 'classifies 80 percent of leads correctly' is a wrong option. I heard the wrong definition first.",
+   "fix": "Delete the sentence. Seg5 should end on 'the only fair comparison is at the same list size'."
+  },
+  {
+   "lesson": "2-3",
+   "where": "seg3 narration (widget)",
+   "quote": "At 0.05 the model catches nine churners in ten",
+   "kind": "boring",
+   "severity": "low",
+   "problem": "The voice tells me what I will find at 0.05 and 0.7 before I touch the slider, and then never gives the answer to the one task it sets (which cut-off flags about 711).",
+   "fix": "Set the task first, stay quiet, and open the next segment with the answer."
+  },
+  {
+   "lesson": "2-3",
+   "where": "seg7 narration",
+   "quote": "Forget the curve.",
+   "kind": "not_usable",
+   "severity": "low",
+   "problem": "Good for understanding, but the assistant's HTML report will put a ROC curve chart in front of me and I have been told to forget it. I will not know what I am looking at.",
+   "fix": "One sentence and a thumbnail: 'If the report draws the curve, a line hugging the top-left is good and the diagonal is a coin.'"
+  },
+  {
+   "lesson": "2-4",
+   "where": "seg2 visual (first row of the table)",
+   "quote": "23.6%",
+   "kind": "doubt",
+   "severity": "high",
+   "problem": "The voice says 'about 33 percent left', the guess reveal says 33, and the full table two segments later says 32.6. But the card on screen shows 24.6 against 23.6, a perfectly calibrated bucket, for the very row the lesson is built on.",
+   "fix": "'32.6%' in the Churned column."
+  },
+  {
+   "lesson": "2-4",
+   "where": "seg5 narration (card says 13.2%)",
+   "quote": "Then it was tested on May and June, when about 93 percent churned.",
+   "kind": "doubt",
+   "severity": "high",
+   "problem": "Heard aloud, nearly everyone left. The card and every other lesson say about 13 percent, and the whole explanation is the step from 11 to 13.",
+   "fix": "'about 13 percent'."
+  },
+  {
+   "lesson": "2-4",
+   "where": "seg4 visual (50–70% row)",
+   "quote": "50.6%",
+   "kind": "doubt",
+   "severity": "low",
+   "problem": "A bucket of scores between 50 and 70 with an average of 50.6 would need almost everyone sitting exactly on 50. Adding up the rows, the stated overall 10.9 percent only works if this value is in the mid-fifties. It looks like a typo.",
+   "fix": "Re-check the value against the source numbers."
+  },
+  {
+   "lesson": "2-4",
+   "where": "seg5 narration",
+   "quote": "It still expects about 11.",
+   "kind": "doubt",
+   "severity": "low",
+   "problem": "Churn rose two points overall, yet the 25 percent bucket is 8 points low and the top buckets more. 'It carries the training rate forward' explains two points, not eight, so I only half believed it.",
+   "fix": "Say what the table actually shows: 'in every bucket about a fifth more advertisers left than promised', so the miss is proportional, not a flat two points."
+  },
+  {
+   "lesson": "2-4",
+   "where": "seg7 narration",
+   "quote": "Ask for it, then ask for the same table again.",
+   "kind": "doubt",
+   "severity": "medium",
+   "problem": "If the assistant adjusts the scores to fit May and June and then shows the May and June table, it will 'match beautifully and prove nothing', which is the trap this same segment describes for the training months. Only the 'other ways' card says to check on rows not used for the adjustment.",
+   "fix": "'Ask which rows the adjustment was fitted on, and for the table on rows it did not use.'"
+  },
+  {
+   "lesson": "2-4",
+   "where": "brief (ask_assistant)",
+   "quote": "Repeat the table by size tier and by vertical.",
+   "kind": "lost",
+   "severity": "low",
+   "problem": "'Size tier' is not defined until the next lesson.",
+   "fix": "'Repeat it for the two or three segments the business cares about, for example account size and vertical.'"
+  },
+  {
+   "lesson": "2-4",
+   "where": "quiz 2-4-q2",
+   "quote": "6,000 rows is the training months, where a match is automatic: show the 4,000 test rows, by bucket.",
+   "kind": "question",
+   "severity": "low",
+   "problem": "The catch depends on remembering that 6,000 is the practice table's training count. On my data there is no such cue; the reusable move is to ask which rows.",
+   "fix": "Have the assistant's text say 'on the rows the model was fitted on' in passing, so the question tests noticing the rows, not recalling a number."
+  },
+  {
+   "lesson": "2-4",
+   "where": "seg2, seg3, seg4",
+   "quote": "Now every bucket at once.",
+   "kind": "boring",
+   "severity": "low",
+   "problem": "The same buckets are shown three times in a row: two rows as a table, all eight in the widget, then all eight again as a static table.",
+   "fix": "Let the widget be the reveal and drop the second table, or make seg4 the 'read it two ways' overlay on the widget."
+  },
+  {
+   "lesson": "2-5",
+   "where": "seg5 narration (card says $5,824)",
+   "quote": "Model B, about 7,800.",
+   "kind": "doubt",
+   "severity": "medium",
+   "problem": "The card, the scoreboard and quiz 2-5-q1 all say 5,824. Heard as 7,800, B's big misses sound 60 percent worse than A's when the real gap is about 20 percent.",
+   "fix": "'about 5,800'."
+  },
+  {
+   "lesson": "2-5",
+   "where": "seg3 visual (first bar)",
+   "quote": "2704",
+   "kind": "doubt",
+   "severity": "medium",
+   "problem": "The 'Same as last 8 weeks' bar shows 2,704. The card before it and the scoreboard after it say $2,404, and the voice says about 2,400.",
+   "fix": "2404."
+  },
+  {
+   "lesson": "2-5",
+   "where": "seg6 visual note",
+   "quote": "Actual total: $21.0M across 6,000 test advertisers",
+   "kind": "doubt",
+   "severity": "medium",
+   "problem": "The test set is 4,000. One lesson earlier (2-4-q2) I was taught that seeing 6,000 is the tell that someone used the training rows, so this note made me distrust the whole scoreboard.",
+   "fix": "'across 4,000 test advertisers'."
+  },
+  {
+   "lesson": "2-5",
+   "where": "guess",
+   "quote": "Can one of them still be the worse choice for finance?",
+   "kind": "question",
+   "severity": "medium",
+   "problem": "'Can ... still' invites yes, and the two 'Only if' options (trained on fewer advertisers, takes longer to produce) are things nobody believes.",
+   "fix": "Use the toy from seg4 as the guess: 'Model 1 is off by $1,000 on all 100 advertisers. Model 2 is exact on 99 and off by $100,000 on one. Which has the larger average miss?' The surprise (equal) sets up RMSE."
+  },
+  {
+   "lesson": "2-5",
+   "where": "seg7 narration",
+   "quote": "Take a stronger spend model from later in this course, with an MAE of about 1,400 dollars, and cut it by account size.",
+   "kind": "lost",
+   "severity": "medium",
+   "problem": "A third, unnamed model appears for one segment just after I had A and B straight, and the tier table is about neither. It never resolves: the best model in 3-1 has an MAE of 1,428, not 1,416.",
+   "fix": "Show the tier table for model A, or name the model and the lesson where it is built."
+  },
+  {
+   "lesson": "2-5",
+   "where": "seg7 narration",
+   "quote": "For large accounts, over 3,300.",
+   "kind": "ear",
+   "severity": "medium",
+   "problem": "Seven figures in thirty seconds (1,400, 170, 600, 3,300, half, five percent, 133,000) in a lesson that speaks about thirty dollar amounts. I kept the 133,000 account; the tiers blurred.",
+   "fix": "Speak the two ends (170 on small accounts, over 3,300 on large) and the 133,000 story. Leave the middle tier and the percentages to the table."
+  },
+  {
+   "lesson": "2-5",
+   "where": "seg1 narration (pattern across modules 1 to 3)",
+   "quote": "How they work inside comes later.",
+   "kind": "boring",
+   "severity": "low",
+   "problem": "Seven 'a later lesson' promises in 16 lessons (1-3, 2-1, 2-5 twice, 3-1, 3-2, 3-5) and none says which lesson. I forget fast, so by the time the payoff comes I have lost the question.",
+   "fix": "Put the lesson number on screen each time, for example '→ 3-1'."
+  },
+  {
+   "lesson": "2-6",
+   "where": "seg4 narration, last sentence",
+   "quote": "A 95 percent interval tells you that 95 percent of the advertisers in the test set fall inside that range.",
+   "kind": "doubt",
+   "severity": "high",
+   "problem": "It contradicts seg2 ('nineteen draws in twenty land within it') and the glossary, it is about advertisers when the interval is about the gap, and there is no test set in a dashboard example. It is the classic wrong reading and the last line of the key segment.",
+   "fix": "Delete it, or: 'Redo this with a different draw of advertisers, and 19 times in 20 a range built this way catches the true gap.'"
+  },
+  {
+   "lesson": "2-6",
+   "where": "seg4 narration",
+   "quote": "The cleaner check puts an interval on the gap itself",
+   "kind": "ear",
+   "severity": "medium",
+   "problem": "The longest segment of the module, about a dozen numbers and two different methods (overlapping ranges, then an interval on the gap). I got the first and lost the second, whose only visual is the small note under the table.",
+   "fix": "Split the segment at this sentence and give the gap its own card: '+4.9 points, interval −1.7 to +11.4, zero is inside'."
+  },
+  {
+   "lesson": "2-6",
+   "where": "seg5 narration + table",
+   "quote": "Gaming churn reached about 30 percent, against 16 percent across January to April.",
+   "kind": "doubt",
+   "severity": "low",
+   "problem": "What happened in May? The table stops at April and jumps to June, and comparing the most extreme month against a pooled baseline is the 'biggest mover out of many cuts' that seg7 warns me about.",
+   "fix": "Show May with its interval and say why June against January to April was the comparison chosen."
+  },
+  {
+   "lesson": "2-6",
+   "where": "quiz 2-6-q2",
+   "quote": "The gap's interval runs from about −1.7 to +2.9 points: nothing is shown",
+   "kind": "question",
+   "severity": "low",
+   "problem": "The right option contains two numbers I cannot derive and must recall from a table, and it is the only option with specific numbers in it.",
+   "fix": "'A 0.6-point gap between groups this size is inside the wobble: ask for the interval before recommending anything.'"
+  },
+  {
+   "lesson": "2-6",
+   "where": "brief (ask_assistant) vs seg7 narration",
+   "quote": "bootstrap the difference on the same test rows",
+   "kind": "lost",
+   "severity": "low",
+   "problem": "The word 'bootstrap' is in the text I am meant to paste but is never spoken; the narration describes redrawing rows a thousand times without naming it.",
+   "fix": "Name it once aloud in seg7: 'the assistant will call this a bootstrap'."
+  },
+  {
+   "lesson": "2-6",
+   "where": "seg3 narration + stat 4",
+   "quote": "a gap above 2 points never showed up",
+   "kind": "doubt",
+   "severity": "low",
+   "problem": "By the lesson's own margins (about ±1 point at 4,000) a 2-point gap between two such groups should be rare but not impossible, a handful in 2,000 tries. 'Never' and '0%' sound like a rounded figure stated as an absolute.",
+   "fix": "Re-check the simulated count and say 'almost never (under 1 time in 100)' if that is what it shows."
+  },
+  {
+   "lesson": "3-1",
+   "where": "seg4 narration (card says $1,694)",
+   "quote": "The advertiser in the middle of the test set spends about 7,100 dollars.",
+   "kind": "doubt",
+   "severity": "high",
+   "problem": "The next sentence says the average, about 5,300, is 'three times as much', which is not three times 7,100, and the card says the median is $1,694. The whole argument about skewed money rests on this pair of numbers.",
+   "fix": "'about 1,700 dollars'."
+  },
+  {
+   "lesson": "3-1",
+   "where": "seg3 visual (first bar)",
+   "quote": "2202",
+   "kind": "doubt",
+   "severity": "medium",
+   "problem": "The run-rate bar shows 2,202. The voice says about 2,000, the ladder two segments later says 2,022, and the note's own gap of +$339 only works with 2,022.",
+   "fix": "2022."
+  },
+  {
+   "lesson": "3-1",
+   "where": "seg9 visual (quote sub-line)",
+   "quote": "plus run-rate column $3,733",
+   "kind": "doubt",
+   "severity": "medium",
+   "problem": "It is 1,733 everywhere else. As printed on the summary card, the fix made the model 60 percent worse than the baseline.",
+   "fix": "'$1,733'."
+  },
+  {
+   "lesson": "3-1",
+   "where": "seg8 narration (the brief)",
+   "quote": "The uncorrected one looks better, about 2 percent high, but only because its two errors pull in opposite directions.",
+   "kind": "lost",
+   "severity": "high",
+   "problem": "The brief is the part I am supposed to take to work, and here it introduces three new things at once: the model was fitted only on advertisers who kept spending, it predicts spend for churners anyway, and the correction that fixed the total a minute ago now makes it worse (6 percent high against 2). I could not tell which total to trust. This is where I would quit.",
+   "fix": "Move the zero-spend filter into the story as its own short segment before the ladder. Keep the brief to four plain asks, and leave 'two errors cancel' to the lesson on churners."
+  },
+  {
+   "lesson": "3-1",
+   "where": "seg5 narration vs seg8",
+   "quote": "this model was fitted only on advertisers who kept spending",
+   "kind": "doubt",
+   "severity": "medium",
+   "problem": "Since 1-5 every lesson has said to compare on the same rows. The log model is declared 'the best so far' in seg5, and three segments later I learn it was fitted on a different set of rows and that seg7's totals cover 3,473 advertisers, not 4,000. Was its 1,428 scored on the same 4,000 as the baseline? The ladder card does not say.",
+   "fix": "State on the ladder card that every bar is scored on the same 4,000 test advertisers (if true), and mention the fitting filter at the moment the log model is introduced."
+  },
+  {
+   "lesson": "3-1",
+   "where": "seg3 narration",
+   "quote": "The run-rate combines two of them, spend and spend trend, by multiplying and dividing.",
+   "kind": "lost",
+   "severity": "medium",
+   "problem": "I stopped here: how is 'twice the last four weeks' made out of 8-week spend and the trend ratio? The step is skipped, so by ear it sounded like a trick.",
+   "fix": "'The table has 8-week spend and the trend ratio, but not the last four weeks by themselves. Getting them back takes a multiply and a divide, and a weighted sum can only add.'"
+  },
+  {
+   "lesson": "3-1",
+   "where": "seg3 + seg5 visuals vs 2-5",
+   "quote": "A more flexible model, in dollars",
+   "kind": "lost",
+   "severity": "medium",
+   "problem": "2-5 promised that how models A and B work 'comes later'. Here A is identified only in a bar label that is never spoken, and B is never identified: the 'more flexible model' misses by 1,500 while B missed by 1,675, so I cannot tell whether they are the same thing.",
+   "fix": "Say it aloud: 'This is model A from the last module. Model B was a more flexible model; it comes back in module 4.' And explain the 1,675 versus 1,500 difference or use one model."
+  },
+  {
+   "lesson": "3-1",
+   "where": "seg7 narration, last sentence",
+   "quote": "On average miss the two versions are close, and nothing here shows that gap is more than noise.",
+   "kind": "ear",
+   "severity": "low",
+   "problem": "Two versions of what, and which gap? I needed a second listen to work out it meant typical against corrected.",
+   "fix": "'Corrected or not, the miss per advertiser is about the same. The correction only matters when you add predictions up.'"
+  },
+  {
+   "lesson": "3-1",
+   "where": "seg9 narration (recap)",
+   "quote": "for an account bigger than any it has seen, it just extends the same line",
+   "kind": "lost",
+   "severity": "low",
+   "problem": "Two new ideas (one steady rate, extrapolation) appear for the first time in the recap, with no example.",
+   "fix": "Give one example in seg6 (an account larger than any in training gets the same 13 percent rule extended), or leave them out of the recap."
+  },
+  {
+   "lesson": "3-1",
+   "where": "brief (ask_assistant)",
+   "quote": "on log spend with the past-spend columns logged too",
+   "kind": "lost",
+   "severity": "low",
+   "problem": "The narration never says the input columns are put on a log scale as well; it appears only in a bullet and in the text I am meant to paste.",
+   "fix": "One sentence in seg5: 'and the past-spend columns go on the same scale'."
+  },
+  {
+   "lesson": "3-1",
+   "where": "quiz 3-1-q1 to q4 + review (all 6 variants)",
+   "quote": "Add the run-rate as a column: a weighted sum cannot multiply columns itself",
+   "kind": "question",
+   "severity": "medium",
+   "problem": "The longest option is correct in 4 of 4 quiz questions and in 6 of 6 review variants, so the review that comes back days later can be passed without remembering anything.",
+   "fix": "Equalise option lengths; this lesson's review set is the worst case of the pattern flagged at 2-2."
+  },
+  {
+   "lesson": "3-2",
+   "where": "seg4 narration, last sentence",
+   "quote": "And because the weights come from the data, a large positive weight proves that the column causes the outcome.",
+   "kind": "doubt",
+   "severity": "high",
+   "problem": "It flatly contradicts the lesson's main point three segments later ('a weight is an association. Say goes with, never drives'), quiz 3-2-q3 and the audit checklist. Had I stopped here I would have left with the opposite lesson.",
+   "fix": "Delete the sentence. Seg4 should end on 'So a weight always comes with a unit.'"
+  },
+  {
+   "lesson": "3-2",
+   "where": "seg3 narration",
+   "quote": "So one typical step up in spend trend cuts the odds of churn by more than half.",
+   "kind": "lost",
+   "severity": "medium",
+   "problem": "Four new things in about twenty seconds: odds, odds ratio, 'the ratio is a multiplier', and 'one typical step', which is not explained until the next segment. I did not know whether a step was 0.1 or a doubling.",
+   "fix": "Swap seg3 and seg4, or say 'one typical step, about 0.4 on spend trend; more on that in a moment'."
+  },
+  {
+   "lesson": "3-2",
+   "where": "guess",
+   "quote": "cuts the odds of churn by more than half",
+   "kind": "question",
+   "severity": "low",
+   "problem": "I do not know what odds are yet, so I could not reason and picked between 25 and 50 at random; 'odds and probability are unrelated' is a throwaway.",
+   "fix": "Give me something to reason from: 'Churn is about 13 percent. A report says a column cuts the odds by more than half. Roughly where does a typical advertiser's 13 percent go?'"
+  },
+  {
+   "lesson": "3-2",
+   "where": "seg2 visual (formula line 2)",
+   "quote": "probability of churn = 1 ÷ (1 + e^−points)",
+   "kind": "lost",
+   "severity": "low",
+   "problem": "An unexplained 'e' on screen while the voice, sensibly, only says 'S-shaped curve'. I prefer watching, and there is no picture of the curve anywhere in the lesson.",
+   "fix": "Replace that line with a small S-curve drawing with −3, 0 and +3 marked at 5, 50 and 95 percent."
+  },
+  {
+   "lesson": "3-2",
+   "where": "seg7 narration",
+   "quote": "A later lesson takes that apart.",
+   "kind": "not_for_me",
+   "severity": "medium",
+   "problem": "Third time (1-2, 3-1, 3-2) I am told that my stakeholders' favourite question, what separates happy advertisers and can we write best practices, cannot be answered from weights, with the answer two modules away. At the end of module 3 I still have nothing to say to them on Monday.",
+   "fix": "Give an interim move here: the sentence I may write today ('advertisers with X churned N points less than otherwise similar ones; we have not tested whether changing X helps'), and pull the observed / adjusted / tested wording forward from module 5."
+  },
+  {
+   "lesson": "3-3",
+   "where": "seg2 narration",
+   "quote": "Here that was active days: 14 or fewer against 95 or more.",
+   "kind": "doubt",
+   "severity": "medium",
+   "problem": "Active days are counted out of 28, so 95 is impossible. The table and the SQL card say 15 or more.",
+   "fix": "'14 or fewer against 15 or more'."
+  },
+  {
+   "lesson": "3-3",
+   "where": "seg5 narration (table says 21.1%)",
+   "quote": "Among active ones, it takes churn from 5 percent to 12.",
+   "kind": "doubt",
+   "severity": "medium",
+   "problem": "The voice says 12, the table on screen says 21.1. The segment's whole point is comparing the two jumps, so it matters which it is.",
+   "fix": "Make voice and table agree ('from 5 percent to 21')."
+  },
+  {
+   "lesson": "3-3",
+   "where": "seg5 visual note",
+   "quote": "a spend trend below 7.04 in the first row",
+   "kind": "doubt",
+   "severity": "low",
+   "problem": "The cut-off is 0.74 in seg3 and on the SQL card; a spend trend of 7.04 would mean spend grew sevenfold.",
+   "fix": "'below 0.74'."
+  },
+  {
+   "lesson": "3-3",
+   "where": "seg5 narration",
+   "quote": "It depends comes free, because every branch chooses its own next question.",
+   "kind": "ear",
+   "severity": "low",
+   "problem": "Read aloud without quotation marks this is not a sentence; I heard 'It depends' as the start of a clause and lost the rest.",
+   "fix": "'The tree handles it-depends patterns with no extra work, because every branch chooses its own next question.'"
+  },
+  {
+   "lesson": "3-3",
+   "where": "seg3 narration (widget)",
+   "quote": "Spend trend above 0.69, and then above 0.9 as well.",
+   "kind": "ear",
+   "severity": "low",
+   "problem": "Two full paths, six cut-offs and two counts by voice, with no reveal markers in the segment. Fine if the widget lights up each box as it is named; otherwise I am lost by the second path.",
+   "fix": "Highlight each box in sync with the voice and round the counts ('about 200', 'about 3,400')."
+  },
+  {
+   "lesson": "3-3",
+   "where": "seg5 narration",
+   "quote": "So low activity matters far more when spend is also falling.",
+   "kind": "doubt",
+   "severity": "low",
+   "problem": "With the table's numbers, quiet against active is 18 against 5 when spend holds (over three times) and 54 against 21 when it shrinks (under three times). It is 'far more' in points and less in ratio; a stakeholder would challenge me on it.",
+   "fix": "Say which reading: 'in points, 13 more when spend holds, 33 more when it is falling'."
+  },
+  {
+   "lesson": "3-3",
+   "where": "quiz 3-3-q3 + brief + checklist",
+   "quote": "Adding the creative ID as a column would fix it",
+   "kind": "lost",
+   "severity": "low",
+   "problem": "ID columns as a trap have not been taught yet; here they appear as a distractor, a line in the brief and a checklist item with nothing in the narration.",
+   "fix": "One sentence in seg7: 'if the first question is about an ID, the tree is memorising rows'."
+  },
+  {
+   "lesson": "3-4",
+   "where": "seg7 narration",
+   "quote": "because an ID names a row and describes nothing",
+   "kind": "lost",
+   "severity": "low",
+   "problem": "If it describes nothing, I would expect a model to ignore it. There is no example of the damage, so the rule feels arbitrary.",
+   "fix": "'A flexible model can use an ID to memorise individual rows, so the score looks great on rows it has seen.' One number if the course has it."
+  },
+  {
+   "lesson": "3-4",
+   "where": "seg4 narration",
+   "quote": "about 0.845 with the flag against 0.84 without. Keep it anyway.",
+   "kind": "doubt",
+   "severity": "low",
+   "problem": "The only evidence shown says the flag makes no difference, and in this table the flag already existed. I am asked to enforce a rule on the strength of 'you cannot know in advance'.",
+   "fix": "Show where it does bite: predicted against actual churn for the untracked with a silent fill versus with the flag, or the zero-fill case with a number."
+  },
+  {
+   "lesson": "3-5",
+   "where": "seg7 narration vs module 1",
+   "quote": "Then the six lines: does the code do what the header says?",
+   "kind": "doubt",
+   "severity": "medium",
+   "problem": "1-5 told me four times to check 'evidence in the output, not Python', and its quiz marks 'Read through the Python script it wrote, line by line' as wrong. Now I am reading Python and nobody says what changed.",
+   "fix": "One bridging sentence in seg1: 'Output first. When the output cannot settle it, one score with no rows named, a handful of lines can. You are searching the script, not reading it.'"
+  },
+  {
+   "lesson": "3-5",
+   "where": "seg3 visual + narration",
+   "quote": "print(roc_auc_score(y[test], scores))",
+   "kind": "lost",
+   "severity": "medium",
+   "problem": "I read simple pandas. This card has make_column_transformer, SimpleImputer, OneHotEncoder, remainder=\"passthrough\", [:, 1] and roc_auc_score, and the voice explains three words. Nobody says roc_auc_score is the AUC from 2-3, or that SimpleImputer is 'fill' and StandardScaler is 'common scale'.",
+   "fix": "Add a plain-word comment per line on the card (# fill empty cells, # same scale, # AUC) and say 'roc auc score is the AUC you already know'."
+  },
+  {
+   "lesson": "3-5",
+   "where": "seg3 visual vs seg4 + audit checklist",
+   "quote": "A clean script: the six parts in twelve lines",
+   "kind": "doubt",
+   "severity": "medium",
+   "problem": "The 'clean' script prints one unlabelled number, which seg4 calls the giveaway ('one score, with no word on which rows it came from') and the checklist forbids ('Two scores, each labelled with its rows'). It also prints no row counts (3-4: 'keep it in every output'), shows no baseline, and fills blanks with no flag. The model answer fails the audits I have been taught.",
+   "fix": "Make the clean script print train and test AUC with labels, the rows in each part and the baseline. Fourteen lines instead of twelve is a fair price."
+  },
+  {
+   "lesson": "3-5",
+   "where": "seg1 narration + other_ways",
+   "quote": "each of the classic bugs lives in one particular part and shows up as one recognisable line",
+   "kind": "not_usable",
+   "severity": "medium",
+   "problem": "On Monday the script is 80 to 300 lines. What I need is the search list (.fit(, predict_proba( versus .predict(, train_test_split, fit_transform, .drop(columns=, except), and it is scattered over three cards. The most practical move, asking the assistant to map the script to the six parts, is hidden in 'other ways'.",
+   "fix": "End on one card: 'seven strings to search for, and what each should look like'. Put the mapping request into the main brief."
+  },
+  {
+   "lesson": "3-5",
+   "where": "guess",
+   "quote": "About 0.83",
+   "kind": "question",
+   "severity": "low",
+   "problem": "Only three options (every other lesson has four) and two are extremes, so the middle one is the only sensible pick.",
+   "fix": "Four closer options: 0.95 / 0.90 / 0.83 / 0.70."
+  },
+  {
+   "lesson": "3-5",
+   "where": "seg5 narration",
+   "quote": "How much each of these flatters the score varies, and the score itself will not tell you.",
+   "kind": "lost",
+   "severity": "low",
+   "problem": "Every other bug in the lesson has a number (0.98 against 0.83). For preparation fitted before the split I get none, so it feels like a purity rule and I cannot rank what to chase first.",
+   "fix": "Give this table's number even if it is tiny ('here it moves the score in the third decimal; it is a habit, not a disaster') so I know its size next to the others."
+  }
+ ],
+ "arc": "Module 1 is the smoothest stretch: one idea per lesson, each hung on SQL I already write (a CASE WHEN, a date filter in a join), and 1-4 ends with a check I could run the same afternoon. Module 2 is in the right order and its hand-offs are good (2-2 leaves a loose end that 2-3 picks up, and 2-3 leaves one for 2-4), but it is where the voice and the screen start to disagree: I logged 24 contradictions in 10 of my 16 lessons, including the do-nothing baseline spoken as 78 percent instead of 87 (2-1), recall defined as precision (2-2), AUC defined as accuracy (2-3), a 95 percent interval defined as 95 percent of advertisers (2-6) and 'a large positive weight proves that the column causes the outcome' (3-2). In a course that teaches me to distrust a report whose numbers do not add up, that is the flaw that would make me stop trusting the narrator, and because I listen first and forget fast I cannot tell which version to keep. The first difficulty bump is 2-5 (about thirty dollar figures spoken aloud and three unnamed models); the real cliff is 3-1, which packs five new ideas into six minutes (a squared-error fit, a built column, the log scale, typical versus average with a correction factor, and a row filter for zero spend) after fifteen lessons of one idea each, and its brief segment is the single place I would quit. 3-2 segment 3 (odds, odds ratio and an undefined 'typical step' in twenty seconds) is a smaller bump, and 3-5 is a wall of scikit-learn names for someone who reads only simple pandas, rescued by a good idea (six parts, one line to find in each). Attention also leaks at the end of every lesson: the 'Brief and audit' segment is followed by a recap that re-reads the same bullets, and then takeaways, drill and recall say them again. From 2-2 to 3-1 the quizzes stop being tests, because the longest option is correct in 23 of 24 questions, and in all 16 lessons the guess-first answer is never the first option. What I expected and did not get by the end of module 3: a worked example that is not churn (13 of 16 lessons open on it, while video adoption and hit-CPA-goal sit unused), anything I can tell stakeholders today about 'what separates happy advertisers' beyond 'a later lesson takes that apart', one cumulative audit block I can paste (1-5 promises the list will grow, and it grows into sixteen separate lists written for the practice table's months and column names), and a look at a real HTML report, good next to bad, since that is the thing I actually audit. I would also move 3-4 forward to sit right after 1-5: it is my home turf and the row-count habit is needed from the first gate. Best lesson: 3-4. It opens on a discrepancy I live with (the report says 7, my dashboard says 12), shows three failures in SQL I can read, gives each one a number, ends in one table I can demand and check without opening the script, and nothing in it contradicts itself; 1-4 and 2-6 are close behind for the same reasons, and 2-6 has the only brief I could paste unchanged. Worst for me as a learner is 3-1; most damaged is 2-2, where four numbers or definitions are wrong in the lesson that was meant to close my '95 percent accurate' gap.",
+ "scores": {
+  "1-1": {"clear": 5, "engaging": 4, "useful": 4},
+  "1-2": {"clear": 4, "engaging": 4, "useful": 4},
+  "1-3": {"clear": 4, "engaging": 4, "useful": 5},
+  "1-4": {"clear": 3, "engaging": 5, "useful": 5},
+  "1-5": {"clear": 4, "engaging": 3, "useful": 5},
+  "2-1": {"clear": 2, "engaging": 4, "useful": 4},
+  "2-2": {"clear": 2, "engaging": 4, "useful": 4},
+  "2-3": {"clear": 3, "engaging": 5, "useful": 5},
+  "2-4": {"clear": 3, "engaging": 4, "useful": 4},
+  "2-5": {"clear": 3, "engaging": 3, "useful": 4},
+  "2-6": {"clear": 3, "engaging": 5, "useful": 5},
+  "3-1": {"clear": 2, "engaging": 3, "useful": 3},
+  "3-2": {"clear": 3, "engaging": 4, "useful": 4},
+  "3-3": {"clear": 3, "engaging": 5, "useful": 4},
+  "3-4": {"clear": 5, "engaging": 5, "useful": 5},
+  "3-5": {"clear": 3, "engaging": 4, "useful": 4}
+ }
+}

@@ -1,0 +1,26 @@
+{
+ "issues": [
+  {
+   "where": "seg5 narration and visual",
+   "quote": "Whom should the success team call? ... Yes or no, with a score: a ranked list",
+   "kind": "misleading",
+   "severity": "medium",
+   "explanation": "Segment 4 just introduced 'Who would stay because we called?' as a distinct causal framing, and Segment 3 warned that a predictive model does not answer what would make advertisers stay. Segment 5 then states without qualification that for 'Whom should the success team call?', a yes/no churn score ('likely leavers') is 'the framing that fits', while narrowing the causal framing to whether calls are worth making overall. Without the caveat that a churn score only ranks risk of leaving (useful as a starting proxy before you have randomised call data, and ignoring spend unless weighted), practitioners confuse churn risk with persuadability and waste outreach on lost causes or tiny accounts.",
+   "evidence": "facts.json economics.caveat ('the model predicts who will leave, not who can be persuaded'); uplift.policies_call_400 (calling the 400 highest-risk accounts prevents 32 churns with 44.8% lost causes, vs 44 for uplift models and 73 for active accounts with a fixable problem); slices.rank_by_what (ranking top 400 by churn probability alone covers 25.3% of lost spend vs 57.0% for probability times spend).",
+   "fix": "Qualify Segment 5 narration and table: when no call experiment exists yet, a churn score (ideally weighted by spend) gives a starting list of who is at risk of leaving, whereas deciding whom a call will actually save—and whether calls pay off overall—requires the causal framing from Segment 4."
+  },
+  {
+   "where": "seg6 narration and visual",
+   "quote": "where the data picks the columns and the weights",
+   "kind": "misleading",
+   "severity": "low",
+   "explanation": "Standard simple models do not have 'the data pick the columns and the weights': logistic regression fits a weight for every column you supply rather than selecting columns, while a shallow decision tree picks split columns and cut-offs rather than weights. More importantly for practitioners directing an assistant, the algorithm never distinguishes valid features from leaks or IDs—if you pass raw table columns expecting the data to pick the right ones, it will happily weight post-snapshot leaks or ID columns.",
+   "evidence": "facts.json logreg (n_feature_columns = 17, all 17 features receive non-zero weights across 21 coefficients; model_table note: 'one weight per feature'); leakage (days_since_last_spend yields 0.97 AUC leak); panel_leak ('never feed an ID column to a model'); feature_groups (human choice of feature sets shifts test AUC by 0.184).",
+   "fix": "Change narration to 'Then a simple model, where you supply candidate columns and the data fits how much each one counts' and the visual sub-label to 'data fits weights across columns'."
+  }
+ ],
+ "numbers_checked": 13,
+ "verdict": "All 13 dataset figures (60-day churn and video windows, 8-week spend window, 17 feature columns, spend_trend < 0.7 baseline rule, and 200-account call list) match facts.json; no high-severity errors, with one medium caveat needed where Segment 5 conflates churn risk with outreach targeting right after Segment 4 separated them, and one minor conceptual phrasing fix on simple models in Segment 6.",
+ "_hash": "2a9757ed8dc7b8dd",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_ChdNUkVDYTRxYUFabjh2ZElQOXNUUTZRURIXTVJFQ2E0cWFBWm44dmRJUDlzVFE2UVE | tokens in=67543 out=754 thought=26455]"
+}

@@ -1,0 +1,15 @@
+tickets 1050: train 600, test 450 (300 hard); writers {"training_tickets":["gemini-3.8-flash"],"test_tickets":["gemini-4-neon"]}
+keyword_rules                          0.291 [0.251,0.335] f1 0.307 ordinary 0.433 hard 0.22 no answer 103
+bag_of_words_model                     0.542 [0.496,0.588] f1 0.539 ordinary 0.827 hard 0.4 no answer 0
+embeddings_plus_logistic_regression    0.749 [0.707,0.787] f1 0.746 ordinary 0.94 hard 0.653 no answer 0
+llm_zero_shot_cheap                    0.809 [0.77,0.843] f1 0.806 ordinary 0.92 hard 0.753 no answer 0
+llm_zero_shot_stronger                 0.96 [0.938,0.975] f1 0.96 ordinary 0.973 hard 0.953 no answer 0
+PAIR bag_of_words_model - keyword_rules 25.1 [20,30.7] -> bag_of_words_model
+PAIR embeddings_plus_logistic_regression - bag_of_words_model 20.7 [15.6,26] -> embeddings_plus_logistic_regression
+PAIR llm_zero_shot_cheap - embeddings_plus_logistic_regression 6 [1.1,10.9] -> llm_zero_shot_cheap
+PAIR llm_zero_shot_stronger - llm_zero_shot_cheap 15.1 [11.6,18.9] -> llm_zero_shot_stronger
+PAIR llm_zero_shot_stronger - embeddings_plus_logistic_regression 21.1 [17.1,25.1] -> llm_zero_shot_stronger
+two llms {"what":"where the two LLMs give the same label vs where they differ - disagreement as a cheap flag for human review","share_agreeing":0.818,"accuracy_when_they_agree":0.97,"tickets_where_they_disagree":82,"stronger_model_accuracy_when_they_disagree":0.915,"share_of_disagreements_that_are_hard_tickets":0.878}
+curve 12: emb 0.543 bow 0.285 | 30: emb 0.635 bow 0.348 | 60: emb 0.67 bow 0.408 | 120: emb 0.698 bow 0.454 | 300: emb 0.723 bow 0.509 | 600: emb 0.749 bow 0.542
+clustering 0.763 6 billing:0.753 tracking_setup:0.727 ad_review:0.742 performance:0.768 feature_request:0.783 account_access:0.83
+nearest 0.809 0.716

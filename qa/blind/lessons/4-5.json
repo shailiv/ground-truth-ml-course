@@ -1,0 +1,447 @@
+{
+ "id": "4-5",
+ "module": 4,
+ "title": "Opening the black box",
+ "subtitle": "What can you ask a model about its own answers, and what can it not tell you?",
+ "goal": "After this lesson you can ask for the three standard explanations of a model — what it leans on, how its answer moves, why this case — and state the limit of each in the same breath.",
+ "predict": {
+  "q": "You shuffle one column in the test data and the model's score barely moves. What have you learned?",
+  "options": [
+   "The column has nothing to do with churn, so it can be dropped from every report",
+   "This model barely relies on it; another column may carry the same signal",
+   "The column is leaking the outcome, which is why shuffling it changes nothing",
+   "The model has overfitted to that column and no longer responds to it"
+  ],
+  "answer": 1,
+  "reveal": "Only that this model barely relies on it. Overlapping columns cover for each other, and the lesson shows how shuffling a whole group exposes that."
+ },
+ "segments": [
+  {
+   "narration": "Monday morning the risk list goes out. By ten, an account manager is at your desk about one name on it. The advertiser's ID ends in 754, and the list says 73 percent. Her question is fair: why? Because the model said so is not something she can take into a call. There are three questions you can put to any model. What does it lean on overall? How does its answer move when one column changes? And why this advertiser? Each has a standard tool, and each tool has a limit that belongs in the same breath as the answer.",
+   "visual": {
+    "type": "title",
+    "kicker": "Module 4 · Lesson 5",
+    "title": "Opening the black box",
+    "sub": "Advertiser 111754 is on the list at 73%. Why?"
+   }
+  },
+  {
+   "narration": "Question one: what does the model lean on? Take the test months, shuffle one column so that its values land on the wrong advertisers, and score again. If the score drops, the model was relying on that column. [[1]] Shuffle spend trend, and AUC falls by about 7.07. [[2]] Shuffle active days, about 0.03. [[3]] [[4]] [[5]] [[6]] [[7]] Then come five columns at about 0.01 each. The other ten cost almost nothing. This is called permutation importance, and it works on any model, because it never looks inside. But what it measures is narrow: how much this model's ranking depends on a column. Not how much that column matters to an advertiser.",
+   "visual": {
+    "type": "bar",
+    "title": "Shuffle one column: how far does AUC fall?",
+    "data": [
+     {
+      "label": "Spend trend",
+      "value": 0.0749
+     },
+     {
+      "label": "Active days, last 28",
+      "value": 0.0316
+     },
+     {
+      "label": "Tenure",
+      "value": 0.0107
+     },
+     {
+      "label": "CPA vs goal",
+      "value": 0.0102
+     },
+     {
+      "label": "Conversion tracking",
+      "value": 0.0091
+     },
+     {
+      "label": "Payment failures",
+      "value": 0.0086
+     },
+     {
+      "label": "Vertical",
+      "value": 0.0083
+     }
+    ],
+    "note": "Logistic regression, test months. The other 10 columns: 0.004 or less."
+   }
+  },
+  {
+   "narration": "Now the catch. [[1]] Shuffle the five recent-behaviour columns together, as a group, and the score falls by about 0.18. [[2]] [[3]] [[4]] Every other group costs under 0.03. Why bother with groups? Because columns that carry overlapping information cover for each other. Shuffle one of a pair, and its neighbour is still there with much of the same signal, so the drop understates what the pair is worth. Which group wins here is a property of this simulated data. The catch is general. A bar near zero has two readings: the column may be useless, or it may be redundant, and the single-column test cannot tell you which.",
+   "visual": {
+    "type": "bar",
+    "title": "Shuffle a whole group together",
+    "data": [
+     {
+      "label": "Recent behaviour (5 columns)",
+      "value": 0.1799
+     },
+     {
+      "label": "Profile (5)",
+      "value": 0.0246
+     },
+     {
+      "label": "Setup and practices (5)",
+      "value": 0.0183
+     },
+     {
+      "label": "Performance vs goal (2)",
+      "value": 0.0108
+     }
+    ],
+    "highlight": [
+     0
+    ],
+    "note": "Logistic regression, test months. Columns shuffled together cannot cover for each other."
+   }
+  },
+  {
+   "narration": "Question two: how does the answer move? Take CPA versus goal. For every advertiser who has one, set it to the same value, and average the model's predictions. Then raise the value and repeat. I am using the boosted model here, since it is free to bend. With CPA right at goal, the average predicted risk is about 5 percent. At one and a half times goal, about 11 percent. Most of that rise arrives between about 1.2 and 1.4 times goal. Read the curve as the model's behaviour, not as a promise about any advertiser. Nothing in it says that if her CPA came down, her risk would follow the curve back. And it averages over combinations that never occur in a real account.",
+   "visual": {
+    "type": "line",
+    "title": "As CPA vs goal rises, what does the model predict?",
+    "xlabel": "CPA vs goal (1 = exactly on goal)",
+    "ylabel": "Average predicted churn, %",
+    "x": [
+     0.43,
+     0.54,
+     0.65,
+     0.76,
+     0.87,
+     0.98,
+     1.09,
+     1.2,
+     1.31,
+     1.42,
+     1.53,
+     1.64
+    ],
+    "series": [
+     {
+      "name": "Tuned boosting model",
+      "values": [
+       2.36,
+       2.36,
+       3.15,
+       3.68,
+       4.75,
+       4.91,
+       5.61,
+       5.88,
+       8.73,
+       10.49,
+       10.69,
+       10.69
+      ]
+     }
+    ],
+    "note": "The model's behaviour, not a promise. Each point: set CPA vs goal to that value for every advertiser who has one, then average the predictions."
+   }
+  },
+  {
+   "narration": "Question three is hers: why this advertiser? Start from an advertiser who is average on every column. The model gives that one about 5 percent. Then measure how far she sits from average, column by column. [[1]] She was active on 5 of the last 28 days. [[2]] Her CPA is more than two and a half times her goal. [[3]] Her newest creative is 120 days old. [[4]] [[5]] A slightly falling spend trend and a low click rate add two smaller pushes. Each push is the column's weight times her distance from average, in the scorecard's points. Add the points, pass them through the S-curve, and 5 percent becomes 73. For more complex models the same idea goes by the name SHAP. Either way it is arithmetic, not a cause.",
+   "visual": {
+    "type": "table",
+    "title": "Advertiser 111754: why 73%?",
+    "columns": [
+     "Column",
+     "Her value",
+     "Average",
+     "Push (points)"
+    ],
+    "rows": [
+     [
+      "Active days, last 28",
+      "5",
+      "24.5",
+      "+1.33"
+     ],
+     [
+      "CPA vs goal",
+      "2.62",
+      "0.93",
+      "+1.29"
+     ],
+     [
+      "Age of newest creative, days",
+      "120",
+      "23.8",
+      "+0.57"
+     ],
+     [
+      "Spend trend",
+      "0.89",
+      "1.07",
+      "+0.38"
+     ],
+     [
+      "CTR, %",
+      "0.116",
+      "0.27",
+      "+0.30"
+     ]
+    ],
+    "note": "An advertiser average on every column: 4.7%. All her pushes, through the S-curve: 72.7%. Top five shown; averages are from the training months."
+   }
+  },
+  {
+   "narration": "[[1]] First, the useful half. A push tells you why the score is high, and that is what makes a list usable. A name and a percentage gets a shrug. A name with three reasons gets a call with a purpose. And the reasons are hers. Spend trend is the model's favourite column overall, yet it is only her fourth push, and your old rule of spend trend below 0.4 would have missed her. [[2]] Now the limit. A push says stale creatives raised her score. It does not say that fresh creatives would have kept her. She did leave, for the record. What would have changed that is a different question, and it belongs to the next module.",
+   "visual": {
+    "type": "compare",
+    "title": "What a push is, and is not",
+    "left": {
+     "label": "It tells you",
+     "value": "Why the score is high",
+     "sub": "Stale creatives pushed her score up"
+    },
+    "right": {
+     "label": "It does not tell you",
+     "value": "What would change it",
+     "sub": "Whether fresh creatives would have kept her"
+    }
+   }
+  },
+  {
+   "narration": "So, the brief and the audit. Ask the assistant for three exhibits, each computed on the test months. [[1]] Importance by shuffling, for single columns and for groups of related columns, with the size of each drop. [[2]] A dependence curve for the two or three columns the business asks about, captioned as the model's behaviour. [[3]] For every name on the list, the top three pushes in plain words, with the advertiser's value next to the average. [[4]] Then check the verbs. If the output says a column drives churn, or that fixing it will save the account, send it back. The honest verbs are relies on, moves with, and pushed up.",
+   "visual": {
+    "type": "bullets",
+    "title": "Brief and audit",
+    "items": [
+     "Importance by shuffling: single columns and groups, test months",
+     "Dependence curves, captioned as the model's behaviour",
+     "Top three pushes per name: their value next to the average",
+     "Check the verbs: relies on · moves with · pushed up — never drives"
+    ]
+   }
+  },
+  {
+   "narration": "To recap. [[1]] Shuffle a column, or better a group, to see what the model leans on. Overlapping columns hide each other. [[2]] Trace a curve to see how its answer moves. The curve is the model's behaviour, not a promise. [[3]] Break one prediction into pushes to see why this advertiser. Each push is arithmetic, not a cause. All three explain the model. None of them explains the advertiser. Next comes one more check before the list leaves your hands: a single overall score can hide the customers the model gets wrong.",
+   "visual": {
+    "type": "table",
+    "title": "Three questions, three limits",
+    "columns": [
+     "Question",
+     "Tool",
+     "Limit"
+    ],
+    "rows": [
+     [
+      "What does it lean on?",
+      "Shuffle a column, or a group",
+      "Overlapping columns hide each other"
+     ],
+     [
+      "How does its answer move?",
+      "Dependence curve",
+      "The model's behaviour, not a promise"
+     ],
+     [
+      "Why this advertiser?",
+      "Pushes: weight × distance from average",
+      "Arithmetic, not a cause"
+     ]
+    ]
+   }
+  }
+ ],
+ "takeaways": [
+  "Shuffling shows what the model relies on; overlapping columns hide each other, so shuffle groups too.",
+  "A dependence curve is the model's behaviour, not a promise about any advertiser.",
+  "A push explains one score as arithmetic; it is not a cause."
+ ],
+ "quiz": [
+  {
+   "id": "4-5-q1",
+   "concept": "importance is reliance, and overlap hides columns",
+   "domain": "course",
+   "q": "The importance chart for the churn model puts days since login at almost zero. A product manager concludes that login activity has nothing to do with churn and wants it off the account-health dashboard. What is the best reply?",
+   "options": [
+    "Agreed: a bar near zero means the column carries no signal about churn, so the dashboard can lose it",
+    "Disagree: a bar near zero is the classic sign that the column is leaking the outcome",
+    "Agreed, provided the bar is also near zero when it is recomputed on the training months",
+    "Not yet: another column may carry the same signal; shuffle the related ones as a group"
+   ],
+   "answer": 3,
+   "why": "Importance measures how much this model relies on a column, and overlapping columns cover for each other, so a bar near zero can mean redundant rather than irrelevant. Reading it as no relationship with churn is the tempting step from the model to the world, and the chart cannot support it."
+  },
+  {
+   "id": "4-5-q2",
+   "concept": "a dependence curve is the model's behaviour",
+   "domain": "course",
+   "q": "The assistant's report says: predicted churn rises from 5 percent to 11 percent as CPA versus goal goes from 1.0 to 1.5, so bringing advertisers back to goal will roughly halve their churn. Where is the flaw?",
+   "options": [
+    "The curve came from the boosted model and should have been drawn from the weighted sum instead",
+    "The curve shows how the model's prediction moves, not what happens if an advertiser's CPA changes",
+    "A rise of six points between those values is inside the noise, so there is no pattern to act on",
+    "Dependence curves are only valid when they are computed on the training months"
+   ],
+   "answer": 1,
+   "why": "A dependence curve re-labels advertisers and averages the model's predictions. The model learned from advertisers who differ in many ways besides CPA, so the curve cannot promise what changing CPA would do. Which model drew it is a detail; the leap from moves with to will halve is the error."
+  },
+  {
+   "id": "4-5-q3",
+   "concept": "a push is arithmetic, not a cause",
+   "domain": "other",
+   "q": "A lead-scoring model puts one lead at 81 percent. Its top pushes: six visits to the pricing page, a company of over 500 people, three opened emails. The sales director says: so if we get every lead to visit pricing six times, they will convert. What is the right read?",
+   "options": [
+    "The pushes explain this lead's score; whether driving visits changes outcomes needs a test",
+    "He is right: the largest push identifies the lever with the largest effect on conversion",
+    "He is wrong, because pushes only mean something for a lead that is average on every column",
+    "He is right, but only for leads at companies of over 500 people, as the second push makes clear"
+   ],
+   "answer": 0,
+   "why": "A push is the model's arithmetic: weight times distance from average. Leads who visit pricing six times were already interested; steering uninterested leads there does not turn them into the same people. Treating the biggest push as the biggest lever is the mistake this tool invites."
+  },
+  {
+   "id": "4-5-q4",
+   "concept": "overall importance versus one case's reasons",
+   "domain": "course",
+   "q": "Spend trend is the model's top column overall. An account manager gets an advertiser at 64 percent whose three reasons are payment failures, support tickets and low activity; spend trend is not among them. She suspects the reasons are broken. What do you tell her?",
+   "options": [
+    "She is right: the model's top column overall should appear among every advertiser's reasons",
+    "She is right: reasons should be computed on the training months, where they are more stable",
+    "They are fine: they show where this advertiser is unusual, not what matters overall",
+    "The reasons are fine, but a score that lacks the top column behind it should not be acted on"
+   ],
+   "answer": 2,
+   "why": "Overall importance summarises the whole test set; one advertiser's pushes depend on her own values. If her spend trend is ordinary it contributes little, however heavily the model weighs that column in general. In the lesson's example, spend trend was only the fourth push for an advertiser at 73 percent."
+  }
+ ],
+ "review": [
+  {
+   "concept": "importance means reliance, and overlapping columns hide each other",
+   "variants": [
+    {
+     "q": "A model predicts creative fatigue. Two of its columns, days live and total impressions served, rise together. Shuffling days live costs 0.06 of AUC; shuffling total impressions costs 0.004. An analyst says impressions do not matter for fatigue. What is the right read?",
+     "options": [
+      "Unproven: the two overlap, so shuffle them together before judging either",
+      "Correct: a drop of 0.004 is far too small for the column to matter to the model or to fatigue",
+      "Wrong: the much smaller drop shows that impressions is the column leaking the outcome",
+      "Correct, as long as the drop comes out the same on a second shuffle"
+     ],
+     "answer": 0,
+     "why": "When two columns carry the same signal, the model can lean on one while the other looks idle. A single-column drop shows reliance, not relevance; shuffling the pair together, or testing the column on its own, tells you what the information is worth."
+    },
+    {
+     "q": "In an invalid-traffic model, clicks per device is the top column by shuffling, at 0.05 of AUC. The team removes it and retrains, expecting a big loss. The score falls by only 0.004. What most likely happened?",
+     "options": [
+      "The importance figure was computed wrongly the first time and should be discarded",
+      "The retrained model is overfitting to the remaining columns, which hides the real loss",
+      "A related column, such as clicks per IP address, took over the same signal",
+      "The column was leaking the outcome, so removing it could not hurt the score"
+     ],
+     "answer": 2,
+     "why": "Importance says what one fitted model relied on. Take the column away, and a model refitted on the rest can lean on an overlapping neighbour instead. A calculation error is the tempting explanation, but both numbers can be right: they answer different questions."
+    },
+    {
+     "q": "A renewal model has two columns that move together: seats purchased and plan price. Shuffled one at a time, each costs about 0.02 of AUC. Shuffled together, they cost 0.11. How do you report this?",
+     "options": [
+      "Each is a minor column worth about 0.02, and neither deserves a place in the summary",
+      "The grouped figure must be an error, since it should equal 0.02 plus 0.02",
+      "Plan price is the cause of renewal, and the number of seats merely follows it",
+      "Account size, carried by the pair, is a major input; the single bars understate it"
+     ],
+     "answer": 3,
+     "why": "Shuffling one column leaves the other standing in for it, so each single drop is small; shuffling both removes the shared signal. The drops are not supposed to add up, and nothing here says which of the two, if either, causes renewal."
+    }
+   ]
+  },
+  {
+   "concept": "an explanation describes the model, not a cause",
+   "variants": [
+    {
+     "q": "A model predicts contract renewal. Its dependence curve for discount level climbs steadily: the bigger the discount, the higher the predicted renewal. Sales proposes larger discounts for everyone. What should you say?",
+     "options": [
+      "The curve proves it: predicted renewal rises with the discount at every level on the chart",
+      "The curve is the model's behaviour; who got discounts before was not random, so test it",
+      "The curve is unreliable, because discount is measured in percent rather than in dollars",
+      "Give the larger discount only to the customers where the curve is at its steepest"
+     ],
+     "answer": 1,
+     "why": "A dependence curve re-labels customers and averages predictions, so it inherits whatever decided who received a discount in the past. It describes the model; the proposal is a claim about cause, and that needs an experiment."
+    },
+    {
+     "q": "A model flags support tickets likely to escalate. For one ticket, the largest push is that it contains the word refund. A team lead suggests that agents steer customers away from that word to reduce escalations. What is the right read?",
+     "options": [
+      "Sensible: the push shows that the word itself raises the chance that a ticket will escalate",
+      "Sensible, but only if the word is also the top column in the model's importance chart",
+      "The word marks tickets that score high; dropping it changes the score, not the customer",
+      "The push must be wrong, because one word cannot carry that much weight in a model"
+     ],
+     "answer": 2,
+     "why": "The push says the model's score is higher when that word is present. Customers who write it are already unhappy about money, and hiding the word leaves them exactly as unhappy. That is the gap between the model's arithmetic and a cause."
+    },
+    {
+     "q": "An advertiser is on the risk list at 73 percent, and one of the reasons given is that her newest creative is 120 days old. The account manager asks: if she uploads new creatives tomorrow, what will her risk be? What is the honest answer?",
+     "options": [
+      "The model's score would fall, but that is its arithmetic; it cannot tell you whether she stays",
+      "Her risk would fall by exactly the size of that push, so quote her the new percentage",
+      "Nothing would change, because a push describes the past and cannot move",
+      "Her risk would fall to the level of an average advertiser, about 5 percent"
+     ],
+     "answer": 0,
+     "why": "Re-scoring her with a fresh creative would lower the number, because the model's weight on that column has not changed. But the weight was learned from advertisers who differ in many other ways, so a lower score is not evidence that she would stay. Quoting the re-scored percentage as her new risk treats arithmetic as a cause."
+    }
+   ]
+  }
+ ],
+ "drill": [
+  {
+   "q": "A column's importance comes out close to zero. Give the two possible explanations, and say how you would tell them apart.",
+   "a": "Either the column really carries no useful signal, or another column carries the same signal and covers for it. To tell them apart, shuffle the related columns together as a group, or test the column on its own."
+  },
+  {
+   "q": "A model lists stale creatives as the top reason an advertiser is high risk. What does that reason tell you, and what does it not tell you?",
+   "a": "It tells you why the model's score is high: that value pushed the arithmetic up. It does not tell you that refreshing the creatives would keep the advertiser. That is a question about cause, and it needs different evidence."
+  }
+ ],
+ "recall": {
+  "prompt": "An account manager asks why a particular advertiser is on the risk list. Explain what you can tell her, and what you cannot.",
+  "model_answer": "I can show her the pushes: starting from an average advertiser, which of this advertiser's values moved the model's score up, and by how much — for example few active days, a CPA far over goal and stale creatives. That gives her a reason to open the call with. What I cannot tell her is that fixing those things would keep the account: a push is the model's arithmetic, weight times distance from average, not a cause. The same caution applies to the importance chart, where overlapping columns hide each other, and to a dependence curve, which is the model's behaviour and not a promise."
+ },
+ "ask_assistant": "For the churn model, on the test months only, produce three exhibits. One: permutation importance for each column and for each group of related columns, as the drop in AUC. Two: a dependence curve for CPA versus goal and for spend trend, stating which model drew it. Three: for each of the top 400 advertisers, the three largest pushes, with the advertiser's value and the training average beside each. Caption every exhibit as a description of the model, and use no causal wording.",
+ "audit_checklist": [
+  "Importance is computed on test rows, with single-column and grouped drops side by side",
+  "Each dependence curve names the model that drew it and is captioned as the model's behaviour",
+  "Per-advertiser reasons show the advertiser's value, the average and the push, starting from the average advertiser's score",
+  "No sentence says a column drives or causes the outcome"
+ ],
+ "transfer": [
+  "Lead scoring: why is this lead ranked first, and what does the model lean on across all leads?",
+  "Invalid traffic: explaining to a publisher which of their numbers got their traffic flagged.",
+  "A spend forecast for finance: which inputs the forecast relies on, and how its answer moves with each."
+ ],
+ "other_ways": [
+  {
+   "approach": "Use a model that explains itself: a shallow tree, or the weighted sum's own table of weights",
+   "when": "When the audience needs to follow the whole logic, and the simple model's score is close enough to the best."
+  },
+  {
+   "approach": "Remove a column or a group, retrain, and compare the scores",
+   "when": "When the question is what the information is worth, rather than what this one fitted model happens to lean on."
+  },
+  {
+   "approach": "Read the rows: pull twenty high-score and twenty low-score cases and look at them",
+   "when": "As a sanity check before trusting any explanation chart, and whenever a reason looks odd."
+  }
+ ],
+ "glossary": [
+  {
+   "term": "permutation importance",
+   "def": "How far a model's score falls when one column's values are shuffled between rows."
+  },
+  {
+   "term": "grouped importance",
+   "def": "The same test with a set of related columns shuffled together, so they cannot cover for each other."
+  },
+  {
+   "term": "dependence curve",
+   "def": "The model's average prediction as one column is set to each value in turn; also called partial dependence."
+  },
+  {
+   "term": "push",
+   "def": "One column's contribution to one prediction: its weight times how far this case sits from average."
+  },
+  {
+   "term": "SHAP",
+   "def": "The name under which per-case pushes are computed for complex models."
+  }
+ ]
+}

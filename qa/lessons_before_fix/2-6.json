@@ -1,0 +1,419 @@
+{
+  "id": "2-6",
+  "module": 2,
+  "title": "Real or noise?",
+  "subtitle": "Gaming churn jumped five points in a month. Is that a finding, or a coin flip?",
+  "goal": "After this lesson you can ask of any gap, between groups, months or models, how big it would be by chance, and read an interval to tell a real difference from one the data cannot settle.",
+  "predict": {
+    "q": "Draw two random groups of 250 advertisers. Nothing is different between them. How often will their churn rates differ by more than 2 points?",
+    "options": [
+      "Almost never",
+      "About 1 time in 20",
+      "About 1 time in 7",
+      "About half the time"
+    ],
+    "answer": 3,
+    "reveal": "About half the time, with nothing going on at all. The lesson shows where that comes from and what it means for every gap on your dashboard."
+  },
+  "segments": [
+    {
+      "narration": "Monday morning. The retention dashboard shows gaming churn at 14 percent in March and 19 percent in April. Five points in a month. The head of the gaming vertical wants a meeting and a root cause. You could spend the week slicing April by country, by device, by account manager. You would find something, because you always do. Or you could ask one question first. If nothing at all had changed for gaming advertisers, how big a jump could show up anyway?",
+      "visual": {
+        "type": "title",
+        "kicker": "Module 2 · Lesson 6",
+        "title": "Real or noise?",
+        "sub": "How big would this gap be by chance?"
+      }
+    },
+    {
+      "narration": "Every rate on a dashboard comes from a limited group of advertisers, and a different draw would have given a slightly different rate. The margin of error says how different: nineteen draws in twenty land within it. That is the 95 percent you will see quoted. Take a churn rate of around 12 percent. [[1]] Measured on 100 advertisers, the margin is about 6 points either way. [[2]] On 250 advertisers, about 4 points. [[3]] On 1,000, about 2. [[4]] On all 12,000, under 1. Look at the middle two. Four times the advertisers, and the margin only halves. It shrinks with the square root of the group size, which makes certainty expensive. So the first question about any percentage is how many advertisers stand behind it.",
+      "visual": {
+        "type": "bar",
+        "title": "Margin of error (±) around a churn rate near 12%",
+        "unit": "pts",
+        "data": [
+          {
+            "label": "100 advertisers",
+            "value": 6.3
+          },
+          {
+            "label": "250 advertisers",
+            "value": 4
+          },
+          {
+            "label": "1,000 advertisers",
+            "value": 2
+          },
+          {
+            "label": "12,000 advertisers",
+            "value": 0.6
+          }
+        ],
+        "note": "95% margin. Four times the advertisers, half the margin."
+      }
+    },
+    {
+      "narration": "Here is that wobble at work. Draw two random groups of 250 advertisers from the advertiser table. Random, so there is no real difference between them. Compare their churn rates anyway, and repeat that 2,000 times. [[1]] The typical gap between the two groups is 2 points. [[2]] In other words, half the time the gap is bigger than that. [[3]] One time in twenty, it is bigger than 5.6 points. With nothing going on. This is an A-A test: both sides are the same, so whatever gap you see is noise. [[4]] Make each group 4,000 advertisers, and a gap above 2 points never showed up.",
+      "visual": {
+        "type": "stat",
+        "title": "A/A test: two random groups, no real difference",
+        "stats": [
+          {
+            "value": "2 pts",
+            "label": "typical gap, groups of 250"
+          },
+          {
+            "value": "50%",
+            "label": "of splits: gap over 2 points"
+          },
+          {
+            "value": "5.6 pts",
+            "label": "gap exceeded 1 time in 20"
+          },
+          {
+            "value": "0%",
+            "label": "gaps over 2 points, groups of 4,000"
+          }
+        ]
+      }
+    },
+    {
+      "narration": "Now back to gaming. Each monthly cohort holds only about 250 gaming advertisers. [[3]] So March is 14 percent, give or take about 4 points. [[4]] April is 19 percent, give or take about 5. Those ranges overlap. And look at the two months before: 15 percent, then 17. This number has been bouncing all year. The cleaner check puts an interval on the gap itself: the range of true differences this much data cannot rule out. The gap is about 5 points. Its interval runs from roughly minus 2 to plus 11. Zero is inside. So no change at all fits the data, and so does a rise of 10 points. That is not proof that nothing happened. It means 250 advertisers a month cannot tell you.",
+      "visual": {
+        "type": "table",
+        "title": "Gaming churn by month",
+        "columns": [
+          "Month",
+          "Gaming advertisers",
+          "Churn",
+          "Margin"
+        ],
+        "rows": [
+          [
+            "January",
+            "262",
+            "14.9%",
+            "±4.3 pts"
+          ],
+          [
+            "February",
+            "231",
+            "17.3%",
+            "±4.9 pts"
+          ],
+          [
+            "March",
+            "253",
+            "14.2%",
+            "±4.3 pts"
+          ],
+          [
+            "April",
+            "246",
+            "19.1%",
+            "±4.9 pts"
+          ]
+        ],
+        "highlight": [
+          2,
+          3
+        ],
+        "note": "April minus March: +4.9 pts, 95% interval −1.7 to +11.4"
+      }
+    },
+    {
+      "narration": "Put three gaps through the same check. [[1]] April against March you have just seen: zero is inside the interval, so it cannot be told from noise. [[2]] Health against education, with more than a thousand advertisers on each side: about half a point apart, and the interval straddles zero. Big groups do not make a tiny gap real. [[3]] Then June. Gaming churn reached about 30 percent, against 16 percent across January to April. That is a gap of 14 points. Its interval runs from about 8 to 20, nowhere near zero. That one earns the meeting. Because this world is simulated, we can look up the truth: something did change for gaming, in June only. On real data you cannot look it up. The interval is what you have.",
+      "visual": {
+        "type": "table",
+        "title": "Three gaps, three intervals",
+        "columns": [
+          "Comparison",
+          "Churn",
+          "Advertisers",
+          "Gap",
+          "95% interval",
+          "Read"
+        ],
+        "rows": [
+          [
+            "Gaming: April vs March",
+            "19.1% vs 14.2%",
+            "246 vs 253",
+            "+4.9 pts",
+            "−1.7 to +11.4",
+            "cannot tell"
+          ],
+          [
+            "Health vs education",
+            "11.8% vs 11.2%",
+            "1,868 vs 1,159",
+            "+0.6 pts",
+            "−1.7 to +2.9",
+            "cannot tell"
+          ],
+          [
+            "Gaming: June vs Jan–Apr",
+            "30.5% vs 16.3%",
+            "272 vs 992",
+            "+14.2 pts",
+            "+8.2 to +20.1",
+            "real"
+          ]
+        ],
+        "highlight": [
+          2
+        ]
+      }
+    },
+    {
+      "narration": "Models are no different. A model's score is measured on a sample too. [[1]] The churn model's AUC of about 0.85 comes from 4,000 test advertisers. [[2]] Draw a different set and it could land anywhere from about 0.83 to 0.86. So when the assistant says a new model is better by a hair, ask for an interval on the gap between the two, measured on the same test rows. [[3]] Last lesson's 58 dollar gap between model A and model B is the example. [[4]] Its interval runs from 177 dollars one way to 73 the other. Zero is inside. Call it a tie, and keep the simpler model.",
+      "visual": {
+        "type": "stat",
+        "title": "Model scores wobble too",
+        "stats": [
+          {
+            "value": "0.845",
+            "label": "churn model AUC, 4,000 test advertisers"
+          },
+          {
+            "value": "0.827 to 0.863",
+            "label": "95% interval for that AUC"
+          },
+          {
+            "value": "−$58",
+            "label": "MAE gap, model B minus model A"
+          },
+          {
+            "value": "−$177 to +$73",
+            "label": "95% interval for the gap: a tie"
+          }
+        ]
+      }
+    },
+    {
+      "narration": "So, the brief. Whenever your assistant compares anything, two groups, two months or two models, the output must carry the evidence. [[1]] The number of advertisers behind every rate. [[2]] The gap, with a 95 percent interval beside it. [[3]] One line on how the interval was made. The usual way is to redraw the rows at random, a thousand times over, and watch how far the number moves. [[4]] Then check the words against the numbers. If the text says churn rose, the interval must sit clear of zero. [[5]] And if the assistant scanned thirty segments and reports the biggest mover, be suspicious. The biggest of thirty wobbles always looks like news.",
+      "visual": {
+        "type": "bullets",
+        "title": "Brief and audit: evidence beside every comparison",
+        "items": [
+          "Group size beside every rate",
+          "The gap with a 95% interval, not two bare percentages",
+          "How the interval was computed",
+          "Words match numbers: “rose” needs an interval clear of zero",
+          "Biggest mover out of many cuts? Expect one by chance"
+        ]
+      }
+    },
+    {
+      "narration": "To recap. Every number from a sample wobbles, and small groups wobble a lot. Before you react to a gap, ask how big it would be by chance, and get the interval. If zero is inside, you have a tie, or a question that needs more data. Not a finding. That completes your scoreboard: you can judge a result before anyone builds anything. Module three opens up the models themselves, starting with the simplest way to predict a number.",
+      "visual": {
+        "type": "quote",
+        "text": "Before reacting to a gap, ask how big it would be by chance.",
+        "sub": "Group size and an interval beside every comparison"
+      }
+    }
+  ],
+  "takeaways": [
+    "Every number from a sample wobbles, and it takes four times the data to halve the wobble.",
+    "A gap is a finding only when its interval excludes zero; otherwise the data cannot tell.",
+    "Ask for the group size and an interval beside every comparison, for models as well as rates."
+  ],
+  "quiz": [
+    {
+      "id": "2-6-q1",
+      "concept": "margin of error and group size",
+      "domain": "course",
+      "q": "An account manager writes: 'My book of 100 advertisers churned at 16% this quarter. The platform is at 12%. What am I doing wrong?' What is the best first reply?",
+      "options": [
+        "A 4-point gap is a third above the platform, so something is clearly wrong",
+        "On 100 advertisers a rate swings about 6 points by chance; this gap shows nothing yet",
+        "100 advertisers is a large sample, so the gap is real but small",
+        "A book can never be compared with the platform, because the mix differs"
+      ],
+      "answer": 1,
+      "why": "A churn rate measured on 100 advertisers carries a margin of roughly ±6 points, so 16% against 12% is well inside what chance produces. Restating the gap as 'a third higher' makes it sound bigger without making it more certain, and 100 is a small group for a rate."
+    },
+    {
+      "id": "2-6-q2",
+      "concept": "a gap needs an interval, even with large groups",
+      "domain": "course",
+      "q": "The assistant's summary: 'Churn by vertical: health 11.8%, education 11.2%. Education retains better, so I recommend copying its onboarding for health advertisers.' The group sizes, 1,868 and 1,159, sit in a footnote. No interval is given. What is the flaw?",
+      "options": [
+        "Education has fewer advertisers, so its rate must be weighted up first",
+        "Nothing: with over a thousand advertisers a side, a gap is reliable",
+        "The gap is real, but too small to be worth acting on",
+        "The gap's interval runs from about −1.7 to +2.9 points: nothing is shown"
+      ],
+      "answer": 3,
+      "why": "Even with more than a thousand advertisers on each side, each rate still wobbles by a point or two, so a gap of 0.6 points has an interval that straddles zero. Large groups make an interval narrow, not automatically narrower than the gap, and 'real but small' accepts a difference the data has not shown."
+    },
+    {
+      "id": "2-6-q3",
+      "concept": "cannot tell is not the same as no difference",
+      "domain": "other",
+      "q": "Two versions of a landing page get 250 visitors each. Version A converts at 12%, version B at 14%. The product manager wants to ship B as the winner. What is the right read?",
+      "options": [
+        "Groups of 250 differ by 2 points about half the time by chance: no verdict yet",
+        "B wins: 14% is higher than 12% and the groups are the same size",
+        "The test shows that the two pages convert equally well",
+        "B wins by 17%, because 2 points is a sixth of 12"
+      ],
+      "answer": 0,
+      "why": "Two random groups of 250 with no real difference show a gap over 2 points about half the time, so this result is what noise alone looks like. That makes it inconclusive: not a win for B, and equally not proof that the pages are the same, because a real difference of a few points would look just like this."
+    },
+    {
+      "id": "2-6-q4",
+      "concept": "reading an interval",
+      "domain": "course",
+      "q": "Gaming churn was 30.5% in June (272 advertisers) against 16.3% for January to April (992). The gap is 14.2 points with a 95% interval of 8.2 to 20.1. A colleague says: 'Only 272 advertisers. It is noise, like April was.' What do you answer?",
+      "options": [
+        "Agreed: with under 1,000 advertisers nothing can be concluded",
+        "The rise is exactly 14.2 points, so plan around that figure",
+        "The interval is wide, but all of it is far above zero: a real rise of uncertain size",
+        "It is real because June is the most recent month on the dashboard"
+      ],
+      "answer": 2,
+      "why": "A small group makes the interval wide, not the conclusion wrong: the whole range sits well above zero, so chance is not a reasonable explanation, unlike April's gap, whose interval included zero. What stays uncertain is the size, somewhere between about 8 and 20 points, which is why 'exactly 14.2' overstates it."
+    }
+  ],
+  "review": [
+    {
+      "concept": "Small groups wobble: the margin of error shrinks with the square root of group size",
+      "variants": [
+        {
+          "q": "A satisfaction survey of 400 advertisers reports 62% satisfied, with a margin of error of about 5 points. Marketing wants the margin down to about 2.5 points. Roughly how many responses does that take?",
+          "options": [
+            "800",
+            "1,000",
+            "1,600",
+            "4,000"
+          ],
+          "answer": 2,
+          "why": "The margin shrinks with the square root of the group, so halving it takes four times the responses: 400 becomes 1,600. Doubling to 800 is the tempting answer, but it trims the margin by less than a third."
+        },
+        {
+          "q": "A new publisher is audited: 9 of 100 sampled sessions are flagged as invalid traffic, against a network rate of 5%. Sales wants the publisher suspended today. What is the sound call?",
+          "options": [
+            "Suspend: 9% is nearly double the network rate",
+            "Sample more sessions first: 100 cannot separate 9% from 5%",
+            "Clear the publisher: the difference has been shown to be noise",
+            "Average the two rates and compare with other publishers"
+          ],
+          "answer": 1,
+          "why": "A rate measured on 100 sessions carries a margin of several points either way, so 9% and 5% are not yet distinguishable. 'Nearly double' is the same thin evidence in bigger words, and declaring it noise is just as unsupported: a larger sample settles it."
+        },
+        {
+          "q": "Four tiles on a churn dashboard moved this month. Each group's churn rate is around 12%. Which move is hardest to explain by chance alone?",
+          "options": [
+            "8 points, in a group of 50 advertisers",
+            "4 points, in a group of 250 advertisers",
+            "2 points, in a group of 1,000 advertisers",
+            "3 points, in a group of 4,000 advertisers"
+          ],
+          "answer": 3,
+          "why": "Compare each move with its margin of error: about ±9 points for 50 advertisers, ±4 for 250, ±2 for 1,000 and ±1 for 4,000. Only the 3-point move is several times its margin. The 8-point move is the largest on the screen and the least reliable."
+        }
+      ]
+    },
+    {
+      "concept": "A gap is a finding only if its interval excludes zero; otherwise it is 'cannot tell', not 'no difference'",
+      "variants": [
+        {
+          "q": "A new invalid-traffic model scores an AUC of 0.912 against the current model's 0.905 on the same test set. The interval for the difference runs from −0.004 to +0.018. The assistant recommends switching. What is the right read?",
+          "options": [
+            "Switch: 0.912 is higher than 0.905",
+            "Switch: most of the interval is above zero",
+            "A tie on this evidence: zero is inside the interval",
+            "The new model is worse: the interval dips below zero"
+          ],
+          "answer": 2,
+          "why": "The interval for the difference includes zero, so this test set cannot tell the two models apart. 'Most of the interval is above zero' is tempting, but it is not the bar; with a tie, the usual choice is whichever model is simpler or already running."
+        },
+        {
+          "q": "Accounts with a dedicated rep adopted a new ad format at 21%, other accounts at 18%. The gap is 3 points, with a 95% interval of 0.5 to 5.5. Which statement is supported?",
+          "options": [
+            "Adoption is higher with a rep, by between 0.5 and 5.5 points",
+            "Assigning a rep raises an account's adoption by 3 points",
+            "There is no real difference, because the interval is wide",
+            "Adoption is exactly 3 points higher among accounts with a rep"
+          ],
+          "answer": 0,
+          "why": "The interval excludes zero, so the difference is real, but its size is only pinned down to a range. It describes a difference between two groups, not what assigning a rep would do, and a wide interval that stays clear of zero is still a finding."
+        },
+        {
+          "q": "A new creative's CTR is compared with the old one's. The difference is +0.35 points, with an interval from −0.2 to +0.9. The product manager concludes: 'So the new creative makes no difference.' What is wrong with that?",
+          "options": [
+            "Nothing: an interval that includes zero means no difference",
+            "The interval also allows a gain of 0.9 points: inconclusive, not negative",
+            "The difference is +0.35, so the new creative is simply better",
+            "A CTR difference this small cannot be given an interval"
+          ],
+          "answer": 1,
+          "why": "An interval that includes zero means the data cannot tell, and this one is just as consistent with a useful gain. Treating 'not shown' as 'shown to be zero' is as much an over-read as declaring +0.35 a win."
+        }
+      ]
+    }
+  ],
+  "drill": [
+    {
+      "q": "Two random groups of advertisers, treated exactly the same, show different churn rates. Why, and what does group size have to do with it?",
+      "a": "Every rate measured on a sample wobbles by chance, and small groups wobble most. To halve the wobble you need about four times as many advertisers."
+    },
+    {
+      "q": "Someone shows you a jump in a metric for one small segment. What two things do you ask for before looking for a cause?",
+      "a": "How many advertisers are in the segment, and an interval around the jump. If zero is inside the interval, the data cannot tell the jump from chance."
+    }
+  ],
+  "recall": {
+    "prompt": "A stakeholder points at a 5-point jump in one segment's churn and asks for a root cause. Explain what you check first and how you read the answer.",
+    "model_answer": "First I ask how many advertisers stand behind each rate, because a rate on a few hundred advertisers swings several points by chance. Then I get an interval for the gap itself. If zero is inside it, the data cannot tell the jump from noise, which is not the same as proving nothing happened. If the whole interval is clear of zero, the change is real, and the interval says how big it might be."
+  },
+  "ask_assistant": "For every comparison in this analysis, between groups, months or models, show the number of advertisers behind each rate and the difference with a 95% interval, and say how the interval was computed. For model comparisons, bootstrap the difference on the same test rows. Tell me how many cuts you looked at before choosing which to report, and do not describe a change as a rise or a fall unless its interval excludes zero.",
+  "audit_checklist": [
+    "The number of advertisers beside every rate",
+    "A 95% interval beside every difference, with the method named",
+    "Wording that matches the interval: no 'rose' or 'beats' while zero is inside it",
+    "How many cuts were examined before the reported one was chosen"
+  ],
+  "transfer": [
+    "Creative A has a higher CTR than creative B after two days: is the gap bigger than two identical creatives would show?",
+    "A publisher's invalid-traffic rate looks twice the network's on a small audit sample: suspend, clear, or sample more?",
+    "A new model scores slightly higher than the current one on the same test set: is that a win or a tie?"
+  ],
+  "other_ways": [
+    {
+      "approach": "Collect more data before deciding",
+      "when": "When the interval includes zero but also includes a difference large enough to matter."
+    },
+    {
+      "approach": "Run an A/A check on your own metric",
+      "when": "When a stakeholder needs to see, in numbers they know, how large a gap pure chance produces."
+    },
+    {
+      "approach": "Compare the move with the metric's own history",
+      "when": "When you have many past periods: if the number has moved this much before with no cause, it is ordinary."
+    }
+  ],
+  "glossary": [
+    {
+      "term": "margin of error",
+      "def": "How far a rate measured on a sample is likely to sit from the true rate; it shrinks with the square root of the group size."
+    },
+    {
+      "term": "interval",
+      "def": "The range of values the data cannot rule out; a 95% interval is built to contain the truth 19 times in 20."
+    },
+    {
+      "term": "A/A test",
+      "def": "Comparing two groups that were treated identically, to see how big a gap chance alone produces."
+    },
+    {
+      "term": "noise",
+      "def": "The part of a number that comes from which cases happened to be in the sample, not from any real change."
+    },
+    {
+      "term": "bootstrap",
+      "def": "Estimating an interval by redrawing the rows at random many times and seeing how far the number moves."
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+[
+ {
+  "reviewer": "learner-2",
+  "lesson": "4-2",
+  "where": "brief, with seg3 and seg6",
+  "quote": "make each fold check on later months than it trains on",
+  "kind": "not_usable",
+  "severity": "medium",
+  "problem": "With three training months I cannot have five folds that each check on later months than they train on. Seg3's own demonstration rotates five parts of Jan-Mar, so some rounds check on earlier rows, while seg6 says 'If rows carry dates, the mock exam comes from later months'. I do not know which instruction the assistant will follow or which one the course means for the main table.",
+  "fix": "Split the brief into two explicit cases: one row per advertiser (rotating folds inside the training months are acceptable, and say why), and repeated or dated rows (grouped, forward-in-time checks, stating how many checks three months allow)."
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "4-2",
+  "where": "audit checklist",
+  "quote": "A statement that the test set was scored once, after the settings were frozen",
+  "kind": "not_usable",
+  "severity": "medium",
+  "problem": "A statement from the assistant is a claim, not evidence. Nothing in the output lets me verify how often the test rows were scored. The same weakness is in 7-3 ('no instructions tuned on it') and 5-5 ('picked at random').",
+  "fix": "Make it structural: test scoring is its own stage that I trigger after approving the frozen configuration, and the output lists every evaluation run with the rows it used."
+ },
+ {
+  "reviewer": "expert-2",
+  "lesson": "4-2",
+  "where": "ask_assistant; seg6 item 3; takeaway 2; seg3",
+  "quote": "If any advertiser has more than one row, keep all of its rows in the same fold, make each fold check on later months than it trains on",
+  "kind": "brief",
+  "severity": "low",
+  "problem": "The brief makes time-ordered folds conditional on repeated advertisers. Those are two separate conditions: a table with one row per advertiser and a time trend still needs folds that do not train on the future, and this brief would let shuffled folds through. The lesson's own example (seg3: shuffled five-fold over January-March rows, which do carry dates) also breaks its stated rule 'never train on the future' without saying why that is acceptable here.",
+  "evidence": "cv.note: 'shuffled folds are fine here only because every row is a different advertiser from the same three months; with repeated advertisers or a time trend, folds must respect groups and time'.",
+  "fix": "Brief: \"If any advertiser has more than one row, keep all of its rows in the same fold. If the rows span periods that differ, make each fold check on later months than it trains on. Say which of the two applied.\" Seg4: add one sentence that the three training months are alike, which is the only reason shuffled folds are acceptable in the main table."
+ },
+ {
+  "reviewer": "expert-2",
+  "lesson": "4-2",
+  "where": "seg7 visual and narration; glossary 'learning curve'",
+  "quote": "The test score of one model trained on growing numbers of rows",
+  "kind": "contradiction",
+  "severity": "low",
+  "problem": "In the lesson whose rule is 'open the test set once', the learning curve is defined and drawn as 56 scorings of the test set (7 sizes x 8 samples), and the learner is told to ask for one, with no remark that it is a diagnostic or that it should be read off validation folds. A learner who follows the glossary breaks the audit item 'the test set was scored once'.",
+  "evidence": "learning_curve.what: 'train on a random sample of the training rows, score on all 4,000 May-June rows; 8 repeats per size'.",
+  "fix": "Glossary: \"The held-out score of one model trained on growing numbers of rows...\"; narration: \"Ask for a learning curve, scored on validation folds.\"; visual note: \"Shown here on the test months for illustration only; nothing was chosen from it.\""
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "4-2",
+  "where": "seg1 narration and quiz 4-2-q1",
+  "quote": "Twelve depths were scored on the same 4,000 test advertisers",
+  "kind": "doubt",
+  "severity": "low",
+  "problem": "The 4-1 widget showed 25 depths, the 4-1 brief asked for seven, and now it is twelve; the quiz says 'depths from 1 to 25' and 'the best of twelve looks' in the same item. I stopped to count.",
+  "fix": "Use one number everywhere, ideally the seven depths the 4-1 brief asked for."
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "4-2",
+  "where": "seg7 narration, brief",
+  "quote": "So count the churners, not the rows.",
+  "kind": "not_usable",
+  "severity": "low",
+  "problem": "The learning curve is a second lesson bolted on to this one, and neither the brief nor the audit checklist asks for it, so the best line in the segment ends in the air.",
+  "fix": "Add one line to the brief ('show the test score at growing training sizes with the count of positives at each') or give the curve its own short lesson."
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "4-2",
+  "where": "quiz 4-2-q4",
+  "quote": "Keep each advertiser's rows in one fold, check on later months, and drop the ID column",
+  "kind": "question",
+  "severity": "low",
+  "problem": "Answerable by shape: one option starts 'Nothing', two start 'Only', and the right one is the only option that lists every fix.",
+  "fix": "Make a distractor that sounds complete, for example 'Group by advertiser and drop the ID; the order of months does not matter'."
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "4-2",
+  "where": "seg4 narration",
+  "quote": "the rows usually carry the same label",
+  "kind": "doubt",
+  "severity": "low",
+  "problem": "As an analyst I could not picture it: if the label is 'churned in the next 60 days', how does an advertiser have six monthly rows that mostly share one label? I spent the next segment wondering what the label was.",
+  "fix": "Say what the label in the side simulation is in one sentence, or use an outcome that is obviously stable per advertiser (for example 'ever adopts video')."
+ }
+]

@@ -1,0 +1,35 @@
+{
+ "issues": [
+  {
+   "where": "seg3 visual",
+   "quote": "Visible columns held fixed: gap 6.5 pts",
+   "kind": "number_mismatch",
+   "severity": "medium",
+   "explanation": "The 6.5-point adjusted churn gap for conversion tracking was NOT computed by holding all visible columns fixed. It holds fixed only 7 background and setup columns (tenure, spend, active campaigns, creatives per campaign, creative refresh days, account manager, and vertical), deliberately excluding downstream behaviour and performance columns. When all 17 visible feature columns are held fixed in the full logistic regression model, the average probability shift for conversion tracking is 4.4 points, not 6.5 points.",
+   "evidence": "facts.json: tracking_story.adjusted_diff_pts = -6.5 with tracking_story.adjusted_for = [\"tenure_weeks\", \"spend_8w\", \"campaigns_active\", \"creatives_per_campaign\", \"creative_refresh_days\", \"managed\", \"vertical\"], whereas tracking_story.model_weight_for_tracking.avg_probability_shift_pts = -4.4.",
+   "fix": "Change the cell text to \"Background and setup columns held fixed: gap 6.5 pts\" (or \"7 visible background columns held fixed: gap 6.5 pts\")."
+  },
+  {
+   "where": "seg3 narration and glossary",
+   "quote": "the gap survives holding the visible columns fixed",
+   "kind": "misleading",
+   "severity": "medium",
+   "explanation": "Both seg3 narration and the glossary ('with the visible columns held fixed') define the Adjusted evidence tier as holding the visible columns in the table fixed, without restricting adjustment to background (pre-treatment) columns. Holding all visible columns fixed includes downstream mediators and outcomes that the practice itself changes (such as CPA vs goal, spend trend, and active days), which removes the effect being measured ('bad controls').",
+   "evidence": "facts.json: bad_controls.lesson = \"controlling for the route a practice works through removes the very effect you are trying to measure\" (where controlling for visible mediators shrinks auto-bidding's adjusted gap from -4.2 pts to -1.2 pts).",
+   "fix": "Specify \"holding visible background columns fixed\" in seg3 narration and \"with visible background columns held fixed\" in the glossary entry for 'evidence tier'."
+  },
+  {
+   "where": "review 1 variant 3",
+   "quote": "After adjusting for what the table holds, a gap of about 4 points remains",
+   "kind": "number_mismatch",
+   "severity": "medium",
+   "explanation": "The question stem correctly attributes the 4-point churn gap for automated bidding to adjusting for 'the background columns in the table' (-4.2 points), but the keyed answer rewrites this as 'adjusting for what the table holds'. In this dataset, the table also holds the downstream columns automated bidding changes (CPA versus goal, spend trend, active days); adjusting for everything the table holds drops the gap to 1.2 points (or 1.3 points in the full logistic regression), not 4 points, and models vague phrasing that obscures which columns were adjusted for.",
+   "evidence": "facts.json: bad_controls.adjusted_for_background_only_pts = -4.2 versus bad_controls.adjusted_also_for_what_it_changes_pts = -1.2 (and logreg.coefs uses_auto_bidding avg_probability_shift_pts = -1.3).",
+   "fix": "Change option 0 to: \"After adjusting for the background columns in the table, a gap of about 4 points remains\"."
+  }
+ ],
+ "numbers_checked": 54,
+ "verdict": "Nearly every number, interval, baseline, slice, and quiz item checks out cleanly against facts.json; the only substantive defect is conflating adjustment for background columns with holding all visible columns in the table fixed (in seg3, the glossary, and review 1 variant 3), which mislabels the 6.5-point and 4.2-point adjusted gaps and undercuts the earlier lesson on bad controls.",
+ "_hash": "737323597985f8a8",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_ChdYUllDYTVPbktJdVB2ZElQeDdhdjZBURIXWFJZQ2E1T25LSXVQdmRJUHg3YXY2QVE | tokens in=68439 out=966 thought=29817]"
+}

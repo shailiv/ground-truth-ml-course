@@ -1,0 +1,41 @@
+{
+ "lesson": "5-6",
+ "decisions": [
+  {
+   "n": 0,
+   "reviewer": "expert-3",
+   "finding": "May's gaming miss (22.6 against 14.9, margin 5.6) is about 2.7 standard errors, not something that turns up 'fairly often'; what makes it unremarkable is that predictions ran about 2 points low everywhere that month.",
+   "decision": "accepted",
+   "reason": "Checked: drift.gaming_may predicted 0.149, actual 0.226, +/- 0.056, so the gap is 7.7 points against a standard error near 2.9. drift.all_may: predicted 0.107, actual 0.127; drift.base_rate_creep.",
+   "change": "Seg 4: 'Part of that miss is not about gaming: the model ran about 2 points low for everyone in May. And with six verticals checked every month, a miss like this can turn up by chance.' 'A narrow miss ... now and then' and 'mostly luck' removed. 5-6-q2 'why' rewritten on the reviewer's lines, without 'fairly often'."
+  },
+  {
+   "n": 1,
+   "reviewer": "learner-2",
+   "finding": "A check has tripped but there will be no labels from after the shift for two months; what I do meanwhile is only in other_ways.",
+   "decision": "accepted",
+   "reason": "This is ruling R6; the interim moves are other_ways items 2 and 3.",
+   "change": "Seg 7: 'If a segment has clearly shifted and there are too few labels since to retrain on, correct that segment's percentages meanwhile, or fall back to a simple rule for it.' Paid for by dropping 'A newer model is not automatically a better one.'"
+  }
+ ],
+ "rulings": {
+  "R1": "Seg 2 ends: 'And it is the check for any model left running: a lead score or a spend forecast can keep its headline number while one segment goes wrong.'",
+  "R2": "Not applicable.",
+  "R3": "ask_assistant rewritten as a template ([model], [period], [outcome window], [outcome], [segments the business cares about], [units], [the action], [working cut-off]); 116 words.",
+  "R4": "Seg 8 was 52 words and re-read the take-aways; now 46 words: what the learner will show when asked whether the model still works, then the pointer to module 6. Quote visual kept.",
+  "R5": "Keyed answer longest in 3 of 10 (unchanged). 'Nothing: ...' (quiz 1) replaced by a specific wrong request; 'Nothing at all: ...' and 'The model is fine: ...' in the review reworded as specific beliefs.",
+  "R6": "The interim move for a shifted segment is spoken in seg 7 (finding 1).",
+  "R7": "Item 4 now asks for a label on every row saying where its actuals come from, with the row's count; the brief asks for those labels. Items 1 to 3 were already evidence.",
+  "specific": "None for this lesson."
+ },
+ "segments_changed": [
+  2,
+  4,
+  7,
+  8
+ ],
+ "numbers_verified": 105,
+ "open_questions": [
+  "5-6-q3 uses an invented figure ('only 48 percent of them churned') next to a real one (74 percent, logreg.test.precision 0.738); it is a hypothetical report, unchanged."
+ ]
+}

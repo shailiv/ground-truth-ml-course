@@ -1,0 +1,73 @@
+[
+ {
+  "reviewer": "learner-1",
+  "lesson": "2-2",
+  "where": "quiz 2-2-q1 to q4 (same in 2-3, 2-4, 2-5, 2-6, 3-1)",
+  "quote": "They differ where it counts: the second's flags are right more often, but it catches 77 churners, not 104.",
+  "kind": "question",
+  "severity": "high",
+  "problem": "From 2-2 to 3-1 the longest option is the right one in 23 of 24 quiz questions (4 of 4 in 2-2, 2-4, 2-5, 2-6 and 3-1; 3 of 4 in 2-3). By 2-4 I was choosing by length and getting it right.",
+  "fix": "Give distractors a (wrong) reason of the same length, or trim the correct option. Add an automatic length check to the build."
+ },
+ {
+  "reviewer": "expert-1",
+  "lesson": "2-2",
+  "where": "quiz 2-2-q1 to q4; review 1 variants 1-3; review 2 variant 2",
+  "quote": "They differ where it counts: the second's flags are right more often, but it catches 77 churners, not 104.",
+  "kind": "bad_question",
+  "severity": "medium",
+  "problem": "The keyed option is the single longest option in 8 of the 10 questions (all four quiz questions). 'Pick the longest answer' scores 80 percent with no understanding. Examples: 2-2-q1 keyed 106 characters against 74/67/55; review 1 variant 3 keyed 84 against 38/63/58; review 1 variant 2 keyed 87 against 53/53/62. In lessons 1-1 to 2-1 the same count is 0 or 1 of 10.",
+  "evidence": "Option lengths in the file; principle: option length must carry no signal about the key.",
+  "fix": "Shorten the keyed options and give the distractors the same level of specific detail, so that the key is the longest in roughly a quarter of the questions."
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "2-2",
+  "where": "seg3 narration + matrix",
+  "quote": "Of the advertisers it did not flag, 423 churned anyway: those are the misses. The remaining 3,436 were left alone and stayed.",
+  "kind": "ear",
+  "severity": "medium",
+  "problem": "Five counts in four sentences while all four boxes sit on screen at once (this segment has no reveal markers). I was still finding 37 when 3,436 arrived.",
+  "fix": "Reveal one box per sentence. Speak three numbers (flagged 141, right 104, missed 423) and let the screen carry the rest."
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "2-2",
+  "where": "worked example (pattern across modules 1 to 3)",
+  "quote": "The churn report from the stand-up has reached the account team",
+  "kind": "not_for_me",
+  "severity": "medium",
+  "problem": "13 of my 16 lessons open on churn (two on spend, one mixed). adopted_video and hit_cpa_goal sit unused in the table. I asked for general fundamentals; the narration is a churn course with general quiz questions attached at the end.",
+  "fix": "Rotate the spoken example: run 2-2 and 2-3 on invalid traffic or video adoption, and 3-3 on hit-CPA-goal, which is my 'happy advertisers' question and suits a tree. Keep churn as the thread for about half."
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "2-2",
+  "where": "seg5 narration (same phrase in 2-3 seg4 and 2-5 seg3)",
+  "quote": "on another draw of test advertisers, precision could land anywhere from about 67 to 81 percent",
+  "kind": "lost",
+  "severity": "low",
+  "problem": "'Another draw'? There is one test set. The idea that a result wobbles with who happened to be in the sample is not introduced until 2-6.",
+  "fix": "'With a different 4,000 advertisers this could be anywhere from 67 to 81; lesson 2-6 shows how we know.'"
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "2-2",
+  "where": "seg7 narration vs other_ways",
+  "quote": "Say no.",
+  "kind": "doubt",
+  "severity": "low",
+  "problem": "The narration says to refuse rebalancing outright. The 'other ways' card says resampling the training rows is acceptable when positives are very few. I do not know which to tell the assistant.",
+  "fix": "'Never on the test rows. On training rows only if it then shows the predicted-versus-actual table.'"
+ },
+ {
+  "reviewer": "learner-1",
+  "lesson": "2-2",
+  "where": "seg2 and seg6 reveal markers (also 2-5 seg3, 2-6 seg4, 3-1 seg5)",
+  "quote": "[[2]] The model's edge of under two points",
+  "kind": "lost",
+  "severity": "low",
+  "problem": "Marker numbering starts at 2, 3 or 4 in these segments. If parts stay hidden until their marker, the 'everyone stays' card is never revealed while the voice is talking about it. I could not verify the rendering from the file.",
+  "fix": "Check these in the player; add the missing [[1]] where the first part is meant to appear on cue."
+ }
+]

@@ -1,0 +1,73 @@
+{
+ "lesson": "4-6",
+ "decisions": [
+  {
+   "n": 0,
+   "reviewer": "learner-2",
+   "finding": "Six lessons in a row run on the same churn list; switch the running outcome in two of them (for example next-8-week spend in 4-6).",
+   "decision": "partly",
+   "reason": "The complaint is the reason for rulings R1 and R2. Re-basing 4-6 on another outcome is not possible from facts.json: slices (by_size, by_account_manager, by_tenure, rank_by_what) exist only for the churn model.",
+   "change": "Segment 1 now states the idea for any model and names another question ('any model judged by one headline number, a list of leads likely to convert as much as this one'). Within the module, 4-4 now opens on the video-adoption list and 4-3 runs two questions. The worked numbers of 4-6 stay on the churn table."
+  },
+  {
+   "n": 1,
+   "reviewer": "learner-2",
+   "finding": "An option starting 'Nothing' or 'None' appears in a quarter of the quiz questions and is never the key, so it is struck unread; make 'nothing is wrong, approve it' the right answer in a handful.",
+   "decision": "partly",
+   "reason": "R5. The pattern is real in this lesson (three such options). Adding a new sound-output question here was not done: 4-6 is to be changed as little as the rulings require, and the neighbouring lesson 4-5 already has one (quiz 4).",
+   "change": "Replaced the three options with specific mistakes: quiz 1 ('A separate model trained for each size tier ...'), quiz 4 ('It leaves the list as it was: a ranking depends only on the order of scores, not on their level') and review 1 variant 3 ('An interval on each region's AUC ...')."
+  },
+  {
+   "n": 2,
+   "reviewer": "learner-2",
+   "finding": "The brief is written for the course's churn table, so it is not paste-ready for another question.",
+   "decision": "accepted",
+   "reason": "R3.",
+   "change": "ask_assistant rewritten as a template with slots [model], [held-out rows], [list size], [segments the business cares about], [outcome], [ranking metric], [value at stake], [value]."
+  },
+  {
+   "n": 3,
+   "reviewer": "expert-3",
+   "finding": "Review 1 variant 1 says 91 percent overall, but its own category figures give 93.6 percent.",
+   "decision": "accepted",
+   "reason": "(0.97 x 600 + 0.94 x 300 + 0.58 x 60) / 960 = 898.8 / 960 = 0.936.",
+   "change": "'94 percent accurate overall' in the question and '94 percent accuracy' in the first option. Key unchanged."
+  },
+  {
+   "n": 4,
+   "reviewer": "learner-2",
+   "finding": "The chart note shows new accounts predicted at 12.6% against 17.7% actual, the largest miss on the slide, while the voice says 'By tenure there is hardly any gap at all'.",
+   "decision": "accepted",
+   "reason": "The voice is right about what the bars show (share of churners caught: slices.by_tenure recall 0.428 against 0.414); the note mixes in a second measure without saying so. Fixed on the card rather than in the voice, because segment 6 is otherwise sound and R8 asks to leave recorded narration alone.",
+   "change": "Note now reads: 'Bars: share of churners caught. A separate check, predicted vs actual churn — small: 17.6% vs 18.3% · large: 5.5% vs 8.4% · new accounts: 12.6% vs 17.7% (caught as often as established accounts, but percentages 5 points low)'. Narration unchanged."
+  },
+  {
+   "n": 5,
+   "reviewer": "learner-2",
+   "finding": "The fairness use of slicing gets one sentence; show one such slice (by country or by agency) with its counts.",
+   "decision": "out_of_scope",
+   "reason": "Needs a new exhibit and a grouping the course table does not have (no country or agency column in data.columns). The account-manager cut spoken in the same segment (about 45 percent caught without one, 28 with) is the available example of a client group served unequally. Collected for the course owner.",
+   "change": ""
+  }
+ ],
+ "rulings": {
+  "R1": "Segment 1 adds one sentence after the general statement about averages: 'That is true of any model judged by one headline number, a list of leads likely to convert as much as this one.'",
+  "R2": "Not one of the three lessons.",
+  "R3": "ask_assistant rewritten as a template (107 words); no 'churn model', 'top-400', 'size tier' or 'eight-week spend'. Keeps every demand and adds two: the slice counts must add up to the totals, and the two lists print how many names they share.",
+  "R4": "Segment 8 is 49 words: one sentence on what to do before a list leaves the learner's hands, one pointing to module 5. Bullet card kept, shown whole from the start.",
+  "R5": "Keyed answer is the longest option in 2 of 10. Three 'Nothing: ...' distractors replaced (finding 1); the arithmetic in review 1 variant 1 corrected (finding 3).",
+  "R6": "Segment 7 adds: 'If the business wants every tier covered, there is a third way: reserve places for each tier and take the riskiest accounts within it.' That was only in other_ways.",
+  "R7": "All four items were already things the output shows. Item 1 gains a check the learner can run: 'the segment counts add up to the totals'.",
+  "specific": "No lesson-specific ruling. Changed as little as the rulings require: segments 2 to 6 keep their narration word for word; only the segment 6 chart note changed."
+ },
+ "segments_changed": [
+  1,
+  7,
+  8
+ ],
+ "numbers_verified": 96,
+ "open_questions": [
+  "Learner finding 1 is a pattern across modules 4 to 7: should a few questions per module show a sound output and key 'approve it'? Not added to 4-6.",
+  "A worked fairness slice (learner finding 5) would need a column such as country or agency in the course table, or a decision to use an existing cut (by_vertical, by_tracking) for it."
+ ]
+}

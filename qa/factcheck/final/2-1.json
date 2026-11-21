@@ -1,0 +1,7 @@
+{
+ "issues": [],
+ "numbers_checked": 58,
+ "verdict": "Pass: all numeric claims match facts.json, the time-split and 60-day gap logic is exact, baselines are fairly compared on the same held-out rows and flag counts, and all quiz and review items are sound and unambiguous.",
+ "_hash": "de93ec07b6a6ad91",
+ "_status": "[gemini-4-carbon | status=completed | id=v1_ChdIeElDYV95YkJJcTFuc0VQOHVTUjBRURIXSHhJQ2FfeWJCSXExbnNFUDh1U1IwUVE | tokens in=67895 out=84 thought=30461]"
+}

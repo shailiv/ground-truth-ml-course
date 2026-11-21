@@ -1,0 +1,75 @@
+{
+ "lesson": "2-4",
+ "decisions": [
+  {
+   "n": 0,
+   "reviewer": "expert-1",
+   "finding": "Keyed answer is the longest option in 9 of 10 questions.",
+   "decision": "accepted",
+   "reason": "Confirmed by counting option lengths (validator: 9 of 10). Option length must carry no signal about the key.",
+   "change": "Rewrote the distractors of all 10 questions as specific wrong readings of equal weight (errors cancel in a sum; a match on fitted rows; averaging the two checks; moving the line the wrong way). Key is now the longest in 3 of 10 and the shortest in 2 of 10. Removed the 'all three' option (review 1 variant 2) and the 'nothing' options (q2, q4, review 1 variant 3)."
+  },
+  {
+   "n": 1,
+   "reviewer": "learner-1",
+   "finding": "Seg7: recalibrate, then 'ask for the same table again' repeats the trap the segment warns about.",
+   "decision": "accepted",
+   "reason": "An adjustment fitted on the rows it is then checked on matches by construction, exactly like the training-month table (calibration.on_training_months 0.111 vs 0.111). The fix sat only in other_ways.",
+   "change": "Seg7 last sentence now: 'Ask for it, then ask for the same table, on rows the adjustment never saw.' The brief and audit item 4 demand the rows the adjustment was fitted on and a table on different rows."
+  },
+  {
+   "n": 2,
+   "reviewer": "learner-1",
+   "finding": "Seg5: a two-point rise in churn does not explain an eight-point miss in the 25 percent bucket.",
+   "decision": "partly",
+   "reason": "The doubt is fair: the miss scales with the score. The proposed wording ('in every bucket about a fifth more') is not exact: actual/predicted runs from 1.10 to 1.35 by bucket (calibration.logreg); only the overall ratio is about a fifth (calibration.overall 0.132 vs 0.109 = 1.21).",
+   "change": "Added one sentence to seg5: 'That is about a fifth too few, and a fifth of a high score is more points than a fifth of a low one.'"
+  },
+  {
+   "n": 3,
+   "reviewer": "learner-1",
+   "finding": "Brief uses 'size tier', which is not defined until 2-5.",
+   "decision": "accepted",
+   "reason": "Term used before it is taught (SPEC rule 7); R3 removes course-specific wording anyway.",
+   "change": "Brief now says 'Repeat the table for [the two or three segments the business cares about]'."
+  },
+  {
+   "n": 4,
+   "reviewer": "learner-1",
+   "finding": "Quiz q2 depends on recalling that 6,000 is the training row count.",
+   "decision": "accepted",
+   "reason": "The reusable move is asking which rows, not remembering a count from the practice table.",
+   "change": "q2 stem now reads 'on the 6,000 advertisers the model was fitted on'; the key is 'A match on the fitted rows is automatic...'. Review 2 variant 3 states the rows of each check in the same way."
+  },
+  {
+   "n": 5,
+   "reviewer": "learner-1",
+   "finding": "The same buckets are shown three times in a row (seg2 table, seg3 widget, seg4 table).",
+   "decision": "accepted",
+   "reason": "The static table repeated what the widget had just shown; seg4's message is the two readings, not the cells.",
+   "change": "Seg4 visual replaced by a compare card (order: 2.5% to 90.7%, climbing at every step; level: 8 of 8 buckets run low). Seg4 narration is byte-identical, so no re-recording. The widget remains the place where all eight buckets are shown."
+  }
+ ],
+ "rulings": {
+  "R1": "Seg1 states the idea for 'any yes-or-no model, whether it scores deals, video-format adoption or churn': it makes two separate claims, ranking and percentages.",
+  "R2": "Seg1 now opens on a sales forecast that multiplies each open deal's win probability by its value, and bridges in one sentence to finance's revenue at risk on the churn table, where the claim can be checked. Seg2 onward keep their evidence; the last sentence of seg1 (the 30 percent question) is unchanged.",
+  "R3": "Brief rewritten as a template with slots for the test rows, the outcome, the number of buckets, the period and the segments; no months, columns or bucket edges; it keeps every demand for evidence and adds the rows used for any recalibration. 111 words.",
+  "R4": "Recap cut from 95 to 47 words: one sentence on what to ask for the next time a probability is multiplied by money, one pointing to 2-5. Cue markers removed; the 'Keep this' bullets are kept.",
+  "R5": "Key longest in 3 of 10 (was 9), shortest in 2. No 'nothing is wrong' or 'all of the above' options remain.",
+  "R6": "The practical alternatives were already spoken: recalibration in Brief and audit, rank-only use in seg6. Added the missing half of the recalibration move (check it on rows it was not fitted on).",
+  "R7": "Audit items are all visible in the output: bucket counts adding up to the test row count, a row count per bucket with overall predicted beside overall actual, the same table per segment, and after recalibration the rows it was fitted on plus the table on other rows.",
+  "specific": "None for 2-4."
+ },
+ "segments_changed": [
+  1,
+  5,
+  7,
+  8
+ ],
+ "numbers_verified": 98,
+ "open_questions": [
+  "Why the scores run low: seg5 and facts.calibration.why_it_runs_low attribute it to churn creeping up, but by facts.drift about two thirds of the shortfall sits in gaming (expected churners 436 vs 527 actual, a gap of about 91; gaming May and June account for about 63 of it: 217 x (22.6-14.9) points and 272 x (30.5-13.5) points), while non-gaming June is almost on target (10.8 predicted, 11.1 actual). The lesson keeps the outline's explanation because drift belongs to 5-6; decide whether seg5 should say 'most of it is one vertical, which a later lesson returns to'.",
+  "Seg4 no longer shows the eight buckets as a static table (widget only). If slides or print need the exact cells without the widget, restore the table as a second visual or a note.",
+  "Seg1, seg5 and seg7 run 133 to 138 words: over the 130 target, under the validator's 140."
+ ]
+}

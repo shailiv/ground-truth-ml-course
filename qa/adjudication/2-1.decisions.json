@@ -1,0 +1,67 @@
+{
+ "lesson": "2-1",
+ "decisions": [
+  {
+   "n": 0,
+   "reviewer": "learner-1",
+   "finding": "The sealed-envelope rule is contradicted by later lessons that keep looking at test results; the reason given is one sentence",
+   "decision": "accepted",
+   "reason": "Right on the principle: choosing on test results biases them, and the course does keep showing test rows to teach. SPEC rule 7 forbids naming the later term, so the narration points to 'a later lesson' without it.",
+   "change": "Seg 5 rewritten: the envelope leads; 'make every choice on the training months. A later lesson shows how'; 'This course keeps showing you test results ... teaching, not a habit to copy'. Brief gains 'Make every modelling choice on the training periods'. Quote sub line updated."
+  },
+  {
+   "n": 1,
+   "reviewer": "learner-1",
+   "finding": "The brief is written for the practice table and cannot be pasted at work",
+   "decision": "accepted",
+   "reason": "Ruling R3.",
+   "change": "ask_assistant rewritten as a 120-word template with slots: [date column], [outcome window], [the latest periods], [the most common outcome], [rule], [outcome]. Every demand for evidence kept, two added (listed evaluation runs, same number of flags)."
+  },
+  {
+   "n": 2,
+   "reviewer": "expert-1",
+   "finding": "Brief and checklist never ask for the model at the rule's list size, so the default cut-off (141 flags) would sit beside the rule (711 flags)",
+   "decision": "accepted",
+   "reason": "Verified: facts baseline.rule_flagged 711 / rule_tp 246, logreg.test.flagged 141 / tp 104, baseline.model_same_count 711 / 321. The lesson's own bar (seg 7) is 'the same number of flags'.",
+   "change": "Seg 8 narration and bullet 4, the brief ('with the model also shown at my rule's number of flags') and audit item 4 now demand it."
+  },
+  {
+   "n": 3,
+   "reviewer": "learner-1",
+   "finding": "The guess question is a recall check with the reason printed in the option",
+   "decision": "accepted",
+   "reason": "1-3 and 1-5 already gave the April answer; a guess must be open.",
+   "change": "predict replaced: how often is 'every advertiser stays' right on the 4,000 May-June advertisers (answer about 87 percent, facts baseline.always_no_accuracy 0.868). Segment 6 answers it."
+  },
+  {
+   "n": 4,
+   "reviewer": "learner-1",
+   "finding": "Two segments argue for the time split, then the caveat says it makes no difference here; the envelope is buried behind it",
+   "decision": "partly",
+   "reason": "Order and length fixed, but the caveat stays spoken: SPEC rule 6 requires a property of the simulation to be said in one plain sentence and the 2-1 outline brief asks for it (facts split: random 0.851, time 0.845).",
+   "change": "Seg 5: the envelope comes first; the caveat is cut by half (about 75 words to 38) and moved to the end; it also stays on screen in the quote's sub line."
+  }
+ ],
+ "rulings": {
+  "R1": "Seg 1: 'Both apply to any yes-or-no model, whether it flags invalid clicks or picks leads that will convert, and to any model that predicts a number.'",
+  "R2": "Seg 1 now opens on a vendor's invalid-traffic filter that is '99 percent accurate', asks the two questions, and bridges in one sentence to the 12,000-advertiser table and a teammate's churn model reported at stand-up as 88 percent accurate ('stand-up' kept so that seg 6 and lesson 2-2 seg 1 still resolve). Segments 2-4, 6 and 7 keep their evidence byte-identical; the recap returns to the vendor.",
+  "R3": "Brief is a slot template, 120 words, no months, column names, thresholds or list sizes.",
+  "R4": "Seg 9 is 43 words: the reply to the vendor, then the pointer to 2-2. Visual kept. Take-aways not re-read.",
+  "R5": "Keyed answer is the longest option in 1 of 10 (unchanged). The two 'nothing is wrong' options (2-1-q2 option 3, review 1 variant 3 option 2) replaced by specific wrong readings, with the whys extended. Two keyed answers that were conspicuously the shortest (review 1 variant 1, review 2 variant 2) lengthened slightly.",
+  "R6": "Seg 8, cue 5: 'When rows have no time order that matters, a random hold-out is fine.' Fifth bullet added.",
+  "R7": "Audit items rewritten as output evidence: a split table with dates, rows and outcome rate; the gap readable from the dates; test scoring as a final stage you trigger with every evaluation run listed; both baselines at the same number of flags. The old 'a statement that the test months were not used' is gone.",
+  "specific": "None for 2-1 beyond R2."
+ },
+ "segments_changed": [
+  1,
+  5,
+  8,
+  9
+ ],
+ "numbers_verified": 108,
+ "open_questions": [
+  "The vendor's 99 percent is a scenario number required by R2, not a fact; build/lint_numbers.py passes it only by coincidence (it reads it as arithmetic on other figures). No exceptions file exists; add one if you want it recorded.",
+  "Narration is exactly 900 words (was 885). The opening grew from 64 to 109 words to carry R1 and R2.",
+  "Process note: running build/lint_numbers.py with a lesson id overwrites qa/numbers_report.json with a one-lesson report. I did that once by mistake and immediately regenerated the full 37-lesson report (12 unverified, the same total as qa/numbers.out). It reflects the lessons as they stood mid-fix, so re-run it once all fixers are done."
+ ]
+}

@@ -1,0 +1,84 @@
+{
+ "lesson": "1-5",
+ "decisions": [
+  {
+   "n": 0,
+   "reviewer": "gemini",
+   "finding": "seg2 says the assistant cannot know when a column was recorded; seg6 tells the learner to ask it exactly that and treat the reply as evidence",
+   "decision": "accepted",
+   "reason": "Both statements are true and need one sentence between them: the assistant can report what the table records, and when the table does not say, that admission is the finding (it is how the 1-4 leak is caught: facts leakage.why).",
+   "change": "seg6: 'And if the honest reply is that nothing in the table says when, that is evidence too: you now know which column to go and ask about.' The seg6 quote card's small line adds '\"The table does not say\" is an answer too.' The quoted request itself was not lengthened, so it still matches the card, the take-away and review 2 variant 3."
+  },
+  {
+   "n": 1,
+   "reviewer": "learner-1",
+   "finding": "The audit block lists each feature 'with the table it came from' and drops the latest date, so the 1-4 leak would pass it",
+   "decision": "accepted",
+   "reason": "1-4's evidence is 'source table and the latest date of data it used'; the standing block must not be weaker than the lesson before it.",
+   "change": "seg4 narration and bullet 4, the brief, checklist item 3, take-away 2, drill 2, the explain-back answer and the glossary entry now all say source table and latest date."
+  },
+  {
+   "n": 2,
+   "reviewer": "learner-1",
+   "finding": "The list of checks grows over 16 lessons and the learner is never shown the grown block; wants a cumulative block and one paste-able instruction at the end of each module",
+   "decision": "partly",
+   "reason": "Within this lesson: the brief is now one paste-able standing instruction and the block is defined stage by stage. A cumulative card at the end of modules 1, 2 and 3 is a change to the course structure (new cards in 2-6 and 3-5), which is out of scope for this pass; noted for the course owner.",
+   "change": "ask_assistant rewritten (R3); seg4 card retitled 'The audit block: it grows by stage'."
+  },
+  {
+   "n": 3,
+   "reviewer": "gemini",
+   "finding": "seg4 and the brief demand the label rate and the feature list in every reply, but neither exists at stage one, and the lesson's own stage-two example omits the monthly rates and the features",
+   "decision": "accepted",
+   "reason": "This is the lesson-specific ruling. Monthly rates are in facts data.churn_by_month (0.1125, 0.109, 0.1125, 0.1125, 0.1265, 0.137).",
+   "change": "seg4 narration and bullets say what joins the block at stage one, two and three. The seg5 example block gains 'by month = 11.25 10.90 11.25 11.25 12.65 13.70 %' and 'features, baseline = not yet: they join at stage 3'. Two decimals are used so that the monthly figures average to the block's own 11.1% and 13.2%. seg5 narration unchanged."
+  },
+  {
+   "n": 4,
+   "reviewer": "learner-1",
+   "finding": "Guess: the right option is the only one that is not 'one prompt', under a title that says 'Brief in stages'",
+   "decision": "accepted",
+   "reason": "The shape gave it away. The suggested replacement (which line on the page can you verify) was not used because it duplicates review 2 variant 2 and quiz q1.",
+   "change": "New guess: what is the main thing you lose with a one-prompt report? Key: 'The chance to catch a wrong assumption before everything is built on it', against accuracy, detail and wording."
+  },
+  {
+   "n": 5,
+   "reviewer": "learner-1",
+   "finding": "seg4 says every output ends with the same five lines, but the example block has other lines and no feature list; which one is the template?",
+   "decision": "accepted",
+   "reason": "Same defect as finding 3.",
+   "change": "The block is defined by stage (seg4), the example shows a stage-two block with a 'not yet' line for what joins at stage three (seg5 visual), and the brief is the template to paste."
+  },
+  {
+   "n": 6,
+   "reviewer": "learner-1",
+   "finding": "Told four times in one lesson that I will not read code",
+   "decision": "partly",
+   "reason": "Fair. Two of the four were in segments being re-recorded anyway and were removed. The sentence in seg5 stays because that segment's narration is otherwise unchanged (R8), and the seg8 card is kept by R4.",
+   "change": "Removed 'You do not open the script and hunt for the bug.' from seg6 and the 'not Python' clause from the recap narration. It is now spoken once (seg5); it remains on the seg8 card and in take-away 3."
+  }
+ ],
+ "rulings": {
+  "R1": "seg1 now ends: 'It would be the same with a spend forecast for finance: whatever the question, work that arrives in one piece cannot be checked piece by piece.'",
+  "R2": "Not applicable.",
+  "R3": "ask_assistant rewritten as a template, 117 words, slots: [outcome], [period], [table], [units]. It keeps the four stages, one stage per reply, and the audit block (now by stage, with each feature's latest date), and adds 'In stage four, quote every number from those blocks.' No course months, column names or counts.",
+  "R4": "seg8 narration cut from 88 to 48 words, two sentences: your next request is stage one ending in an audit block; then the pointer to module two. Visual unchanged. The sentence 'each later lesson adds a line to it' went with the cut (see open questions).",
+  "R5": "Keyed answer is the longest option in 0 of 10. No literal 'nothing is wrong' or 'all of the above' options. Literal 'None:' / 'Nothing:' / 'Either' / 'Neither' / 'Both' options were replaced with a specific mistake. Options that accept the result FOR A STATED REASON (for example 'Trust the score: it was learned from thousands of advertisers') were kept: they are the tempting misreading the explanation argues against, not a bare 'nothing is wrong'.",
+  "R6": "'A reusable template script with the audit block built in' sat only in other_ways and is what makes the routine sustainable for repeated reports. seg7 now says: 'For work you repeat every month, save the checked pipeline as a template with the audit block built in.'",
+  "R7": "Checklist rewritten, one item per stage plus the new one: (1) row counts after every step and the date range, (2) the label rate overall and by month, (3) each feature with source table and latest date, and the baseline beside the model on the same held-back rows, (4) every number in a sentence of the report matches the audit block of the latest run, and both carry the same run date.",
+  "specific": "'Read the prose against the numbers': one spoken sentence pair in seg7 ('When the report arrives, read its sentences against the numbers. After a re-run, the prose can still describe the old result.'), a fourth bullet on the seg7 card, checklist item 4, a clause in take-away 3 and a line in the brief. The audit block accumulates by stage in seg4 (narration and card), the seg5 example, the brief, the checklist, take-away 2, drill 2 and the glossary."
+ },
+ "segments_changed": [
+  1,
+  4,
+  6,
+  7,
+  8
+ ],
+ "numbers_verified": 59,
+ "open_questions": [
+  "A learner asked for the cumulative audit block and one paste-able standing instruction at the end of each module (after 1-5, 2-6 and 3-5). 1-5 now has both for module 1; the later two need a decision on new cards.",
+  "The recap no longer says that later lessons each add a line to the checklist (R4 cut it and the card had to stay). If that promise should still be made in 1-5, the place is take-away 2 or the seg8 card's small line.",
+  "Visual-only change in segment 5 (the example block gained two lines); no re-recording needed there."
+ ]
+}

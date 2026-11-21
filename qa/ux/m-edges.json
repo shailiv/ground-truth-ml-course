@@ -1,0 +1,105 @@
+{
+ "base": "http://localhost:8791",
+ "out": "qa/ux/shots",
+ "seed": "const s = __gt.store, now = Date.now(); s.put('lessons', '1-1', {guess: 1, watched: now}); await new Promise(r => setTimeout(r, 300));",
+ "shots": [
+  {
+   "name": "m01-lesson-missing",
+   "url": "/#/lesson/9-9",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "return {text: document.querySelector('main').innerText, title: document.title, nav: [...document.querySelectorAll('.nav a')].filter(a => a.getAttribute('aria-current') === 'page').map(a => a.textContent)};"
+  },
+  {
+   "name": "m02-route-missing-phone",
+   "url": "/#/nonsense",
+   "w": 390,
+   "h": 844,
+   "mobile": true,
+   "theme": "dark"
+  },
+  {
+   "name": "m03-case-missing",
+   "url": "/#/case/c99",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "return document.querySelector('main').innerText;"
+  },
+  {
+   "name": "m04-bad-step",
+   "url": "/#/lesson/1-1/banana",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "return {hash: location.hash, sel: document.querySelector('.steps [aria-selected=true]')?.textContent};"
+  },
+  {
+   "name": "m05-back-between-steps",
+   "url": "/#/",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "location.hash = '#/lesson/1-2'; await new Promise(r => setTimeout(r, 600)); document.querySelectorAll('.opt')[0].click(); await new Promise(r => setTimeout(r, 300)); [...document.querySelectorAll('button, a.btn')].find(b => b.textContent.trim().startsWith(\"Watch the lesson\")).click(); await new Promise(r => setTimeout(r, 500)); const h1 = location.hash; [...document.querySelectorAll('.steps button')].find(b => b.textContent.includes('Check')).click(); await new Promise(r => setTimeout(r, 400)); const h2 = location.hash; history.back(); await new Promise(r => setTimeout(r, 900)); return {h1, h2, afterBack: location.hash, len: history.length};"
+  },
+  {
+   "name": "m06-check-reload-mid",
+   "url": "/#/lesson/1-1/check",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "{ const q = __gt.course.lessons.find(l => l.id === '1-1').quiz[0]; [...document.querySelectorAll('.opt')].find(b => (b.querySelector('span').textContent === q.options[q.answer]) === true).click(); } [...document.querySelectorAll('button, a.btn')].find(b => b.textContent.trim().startsWith(\"Next question\")).click(); { const q = __gt.course.lessons.find(l => l.id === '1-1').quiz[1]; [...document.querySelectorAll('.opt')].find(b => (b.querySelector('span').textContent === q.options[q.answer]) === false).click(); } [...document.querySelectorAll('button, a.btn')].find(b => b.textContent.trim().startsWith(\"Next question\")).click(); await new Promise(r => setTimeout(r, 200)); const before = document.querySelector('.q .concept').textContent; setTimeout(() => location.reload(), 50); return before;",
+   "wait": 2500
+  },
+  {
+   "name": "m07-check-after-reload",
+   "url": "/#/lesson/1-1/check",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "return {label: document.querySelector('.q .concept')?.textContent, quiz: __gt.store.state.lessons['1-1'].quiz || null};"
+  },
+  {
+   "name": "m08-check-leave-warning",
+   "url": "/#/lesson/1-1/check",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "{ const q = __gt.course.lessons.find(l => l.id === '1-1').quiz[0]; [...document.querySelectorAll('.opt')].find(b => (b.querySelector('span').textContent === q.options[q.answer]) === true).click(); } [...document.querySelectorAll('button, a.btn')].find(b => b.textContent.trim().startsWith(\"Next question\")).click(); [...document.querySelectorAll('.steps button')].find(b => b.textContent.includes('Watch')).click(); await new Promise(r => setTimeout(r, 400)); [...document.querySelectorAll('.steps button')].find(b => b.textContent.includes('Check')).click(); await new Promise(r => setTimeout(r, 400)); return document.querySelector('.q .concept')?.textContent;"
+  },
+  {
+   "name": "m09-watch-tablet-light",
+   "url": "/#/lesson/1-1/watch",
+   "w": 820,
+   "h": 1100,
+   "theme": "light",
+   "js": "await __gt.player.show(2, false); document.querySelector('.overlay').hidden = true; document.querySelectorAll('.cue.off').forEach(e => e.classList.remove('off')); return (() => { const c = document.querySelector('.controls')?.getBoundingClientRect(), s = document.querySelector('.stage')?.getBoundingClientRect(); return c ? {stageTop: Math.round(s.top), stageH: Math.round(s.height), stageW: Math.round(s.width), controlsBottom: Math.round(c.bottom), vh: innerHeight, cut: Math.max(0, Math.round(c.bottom - innerHeight))} : null; })();"
+  },
+  {
+   "name": "m10-watch-short-laptop",
+   "url": "/#/lesson/1-1/watch",
+   "w": 1280,
+   "h": 640,
+   "theme": "dark",
+   "js": "await __gt.player.show(2, false); document.querySelector('.overlay').hidden = true; document.querySelectorAll('.cue.off').forEach(e => e.classList.remove('off')); return (() => { const c = document.querySelector('.controls')?.getBoundingClientRect(), s = document.querySelector('.stage')?.getBoundingClientRect(); return c ? {stageTop: Math.round(s.top), stageH: Math.round(s.height), stageW: Math.round(s.width), controlsBottom: Math.round(c.bottom), vh: innerHeight, cut: Math.max(0, Math.round(c.bottom - innerHeight))} : null; })();"
+  },
+  {
+   "name": "m11-watch-laptop-light-table",
+   "url": "/#/lesson/1-1/watch",
+   "w": 1366,
+   "h": 768,
+   "theme": "light",
+   "js": "await __gt.player.show(2, false); document.querySelector('.overlay').hidden = true; document.querySelectorAll('.cue.off').forEach(e => e.classList.remove('off'));"
+  },
+  {
+   "name": "m12-watch-phone-landscape",
+   "url": "/#/lesson/1-1/watch",
+   "w": 844,
+   "h": 390,
+   "mobile": true,
+   "theme": "dark",
+   "js": "return (() => { const c = document.querySelector('.controls')?.getBoundingClientRect(), s = document.querySelector('.stage')?.getBoundingClientRect(); return c ? {stageTop: Math.round(s.top), stageH: Math.round(s.height), stageW: Math.round(s.width), controlsBottom: Math.round(c.bottom), vh: innerHeight, cut: Math.max(0, Math.round(c.bottom - innerHeight))} : null; })();"
+  }
+ ]
+}

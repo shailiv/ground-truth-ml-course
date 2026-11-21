@@ -1,0 +1,100 @@
+[
+ {
+  "reviewer": "gemini",
+  "lesson": "5-1",
+  "where": "predict",
+  "quote": "If you switched tracking on for every advertiser, by how much would churn fall?",
+  "kind": "number_mismatch",
+  "severity": "medium",
+  "explanation": "In the dataset, 58.5% of advertisers (7,016 of 12,000) already have conversion tracking switched on and the overall churn rate is 11.83%. Switching tracking on for every advertiser lowers overall churn from 11.83% to 10.7% — a drop of 1.1 percentage points, not about 2 points. The -2.3-point figure keyed as the answer is the contrast between everyone having tracking (10.7%) and nobody having tracking (12.9%).",
+  "evidence": "facts.json -> data.tracking_rate = 0.5847, data.churn_rate = 0.1183, tracking_story.truth.if_everyone_did = 0.107, tracking_story.truth.if_nobody_did = 0.129, tracking_story.truth.effect_pts = -2.3.",
+  "fix": "Reword predict.q to: \"Advertisers with conversion tracking churn about 11 points less than those without. Compared with nobody having tracking, by how much would churn fall if every advertiser had it switched on?\"",
+  "problem": "In the dataset, 58.5% of advertisers (7,016 of 12,000) already have conversion tracking switched on and the overall churn rate is 11.83%. Switching tracking on for every advertiser lowers overall churn from 11.83% to 10.7% — a drop of 1.1 percentage points, not about 2 points. The -2.3-point figure keyed as the answer is the contrast between everyone having tracking (10.7%) and nobody having tracking (12.9%)."
+ },
+ {
+  "reviewer": "expert-3",
+  "lesson": "5-1",
+  "where": "ask_assistant; audit_checklist item 3; seg8 narration",
+  "quote": "For each practice add one line on how advertisers come to have it: chosen by them, assigned by us, or triggered by poor performance",
+  "kind": "brief",
+  "severity": "medium",
+  "problem": "The lesson's point is that the reason an account gets a practice is not in the table. The assistant sees only the table, so this line can only be a guess, and a fluent guess in the output will be read as evidence. The one check that would have caught the review reversal is handed to the party that cannot know the answer; the lesson's own advice to ask the people who assign the practice sits in other_ways, outside both the brief and the checklist.",
+  "evidence": "happy.review_story ('reviews go to accounts that are struggling for reasons the table cannot see'); tracking_story.why ('it is not in the table'). Principle: the selection mechanism is domain knowledge, not something an output computed from the table can show.",
+  "fix": "Brief: 'For each practice I will tell you how advertisers come to have it, from the team that assigns it. You show how the two groups differ on the columns we have.' Checklist item 3: 'Who gets or chooses each practice, stated by you from the owning team, not inferred by the assistant.'"
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "5-1",
+  "where": "audit checklist item 2",
+  "quote": "controlling for the route a practice works through removes the very effect you are measuring",
+  "kind": "lost",
+  "severity": "medium",
+  "problem": "A whole new idea (do not adjust for things the practice itself changes) appears only in the checklist and the brief. The narration never says it, and it seems to clash with seg7, where the churn model adjusts for spend trend and CPA.",
+  "fix": "Give it thirty seconds of narration with one example (adjusting for CPA while judging automated bidding), or remove it from the checklist."
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "5-1",
+  "where": "brief",
+  "quote": "For each practice add one line on how advertisers come to have it",
+  "kind": "not_usable",
+  "severity": "medium",
+  "problem": "The assistant cannot know this from the table and will guess with confidence. Module 1 told me this is the kind of fact only I can supply, and this lesson's own other_ways says to ask the people who assign the practice.",
+  "fix": "Turn it round: I supply that line per practice in the brief, and the assistant must print it beside each gap."
+ },
+ {
+  "reviewer": "gemini",
+  "lesson": "5-1",
+  "where": "quiz 5-1-q2",
+  "quote": "The gap is unchanged after controlling for tenure, spend, vertical and number of campaigns.",
+  "kind": "number_mismatch",
+  "severity": "low",
+  "explanation": "In this course-domain question, the 'unchanged' adjusted gap for optimisation reviews (-25.5 pts vs -25.3 pts naive) comes from adjusting not only for tenure, spend, vertical, and number of campaigns, but also for the other four practices; facts.json does not report an adjusted gap controlling only for those four columns.",
+  "evidence": "facts.json -> happy.adjusted_pts.had_optimisation_review = -25.5 and happy.adjusted_for = [\"tenure_weeks\", \"spend_8w\", \"campaigns_active\", \"vertical\", \"the other practices\"].",
+  "fix": "Change the clause to: \"The gap is unchanged after controlling for tenure, spend, vertical, number of campaigns and the other practices.\"",
+  "problem": "In this course-domain question, the 'unchanged' adjusted gap for optimisation reviews (-25.5 pts vs -25.3 pts naive) comes from adjusting not only for tenure, spend, vertical, and number of campaigns, but also for the other four practices; facts.json does not report an adjusted gap controlling only for those four columns."
+ },
+ {
+  "reviewer": "gemini",
+  "lesson": "5-1",
+  "where": "other_ways",
+  "quote": "it is the only design that deals with causes nobody recorded",
+  "kind": "misleading",
+  "severity": "low",
+  "explanation": "Randomised experiments are not literally the only causal design that can handle unrecorded confounders: quasi-experimental designs — including difference-in-differences in the very next item (lesson 5-3), which removes time-invariant unrecorded differences between groups, as well as instrumental variables and regression discontinuity — also address unrecorded causes under extra assumptions. What is unique to randomisation is balancing all unrecorded causes by design without untestable assumptions.",
+  "evidence": "Causal inference principles and facts.json -> before_after (difference-in-differences handles unrecorded baseline group differences under parallel trends).",
+  "fix": "Change to: \"Whenever you can control who gets the change or the encouragement; it balances even unrecorded causes by design, without extra assumptions (next lesson).\"",
+  "problem": "Randomised experiments are not literally the only causal design that can handle unrecorded confounders: quasi-experimental designs — including difference-in-differences in the very next item (lesson 5-3), which removes time-invariant unrecorded differences between groups, as well as instrumental variables and regression discontinuity — also address unrecorded causes under extra assumptions. What is unique to randomisation is balancing all unrecorded causes by design without untestable assumptions."
+ },
+ {
+  "reviewer": "expert-3",
+  "lesson": "5-1",
+  "where": "glossary (confounder)",
+  "quote": "so the two move together without one causing the other",
+  "kind": "misleading",
+  "severity": "low",
+  "problem": "A confounder does not mean the practice has no effect; it means the gap is not the effect. In this very lesson tracking has both a common cause and a real effect of about 2 points, and fresh creatives a real 13 points inside a 20-point gap.",
+  "evidence": "tracking_story.truth.effect_pts = -2.3 alongside tracking_story.why; happy.truth.fresh_creatives.effect_pts = 13.1 vs happy.naive.fresh_creatives.diff_pts = 19.6",
+  "fix": "'A trait that influences both the practice and the outcome, so the gap between the groups differs from what the practice itself does.'"
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "5-1",
+  "where": "quiz options (all of module 5)",
+  "quote": "The gap is real, but who chooses to run more creatives may explain much of it; the lift from forcing it is unknown.",
+  "kind": "question",
+  "severity": "low",
+  "problem": "From module 5 on, every option is a sentence of 20 to 30 words. Sixteen of them per quiz is a page of reading for someone who took this course in order to listen.",
+  "fix": "Cap options at about twelve words and move the nuance into the 'why'."
+ },
+ {
+  "reviewer": "learner-2",
+  "lesson": "5-1",
+  "where": "seg5 narration",
+  "quote": "Take five candidate practices",
+  "kind": "ear",
+  "severity": "low",
+  "problem": "The five are never named; the voice mentions two and sends me to the widget. Listening, I do not know what the other three are.",
+  "fix": "Name all five in one breath before the first example."
+ }
+]

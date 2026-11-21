@@ -1,0 +1,104 @@
+{
+ "base": "http://localhost:8791",
+ "out": "qa/ux/shots",
+ "shots": [
+  {
+   "name": "b01-guess-before",
+   "url": "/#/lesson/1-1",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "return {ghosts: [...document.querySelectorAll('.ghost')].map(e => e.textContent.trim().slice(0, 30) + '|' + getComputedStyle(e).visibility + '|' + getComputedStyle(e).display), tabs: [...document.querySelectorAll('.steps button')].map(b => b.innerText.replace(/\n/g, ' '))};"
+  },
+  {
+   "name": "b02-guess-wrong",
+   "url": "/#/lesson/1-1",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "const p = __gt.course.lessons.find(l => l.id === '1-1').predict; document.querySelectorAll('.opt')[(p.answer + 1) % p.options.length].click(); await new Promise(r => setTimeout(r, 700)); return {y: scrollY, ghosts: [...document.querySelectorAll('.ghost')].map(e => e.textContent.trim().slice(0, 30) + '|' + getComputedStyle(e).visibility + '|' + getComputedStyle(e).display)};"
+  },
+  {
+   "name": "b03-guess-revisit",
+   "url": "/#/lesson/1-1/guess",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "return {disabled: document.querySelectorAll('.opt[disabled]').length, stored: __gt.store.state.lessons['1-1']?.guess};"
+  },
+  {
+   "name": "b04-watch-arrive",
+   "url": "/#/lesson/1-1",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "return {hash: location.hash, fold: (() => { const c = document.querySelector('.controls')?.getBoundingClientRect(), s = document.querySelector('.stage')?.getBoundingClientRect(); return c ? {stageTop: Math.round(s.top), stageH: Math.round(s.height), stageW: Math.round(s.width), controlsBottom: Math.round(c.bottom), vh: innerHeight, cut: Math.max(0, Math.round(c.bottom - innerHeight))} : null; })(), overlay: document.querySelector('.overlay .box').innerText};"
+  },
+  {
+   "name": "b05-watch-playing-6s",
+   "url": "/#/lesson/1-1/watch",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "document.querySelector('.bigplay').click(); await new Promise(r => setTimeout(r, 6000)); return {time: document.querySelector('.time').textContent, f: [...document.querySelectorAll('.rail i')].slice(0, 2).map(e => e.style.getPropertyValue('--f')), paused: __gt.player.audio.paused, cur: __gt.player.audio.currentTime, y: scrollY, fold: (() => { const c = document.querySelector('.controls')?.getBoundingClientRect(), s = document.querySelector('.stage')?.getBoundingClientRect(); return c ? {stageTop: Math.round(s.top), stageH: Math.round(s.height), stageW: Math.round(s.width), controlsBottom: Math.round(c.bottom), vh: innerHeight, cut: Math.max(0, Math.round(c.bottom - innerHeight))} : null; })()};",
+   "wait": 200
+  },
+  {
+   "name": "b06-watch-cc-playing",
+   "url": "/#/lesson/1-1/watch",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "document.querySelector('.bigplay').click(); [...document.querySelectorAll('.chip')].find(b => b.textContent === 'CC').click(); await new Promise(r => setTimeout(r, 5000)); __gt.player.pause(); return {cap: document.querySelector('.caption span').textContent, time: document.querySelector('.time').textContent};",
+   "wait": 200
+  },
+  {
+   "name": "b07-slide1",
+   "url": "/#/lesson/1-1/watch",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "__gt.player.setCaptions(false); await __gt.player.show(1, false); document.querySelector('.overlay').hidden = true; document.querySelectorAll('.cue.off').forEach(e => e.classList.remove('off'));  return {type: __gt.player.segments[1].visual.type, fit: __gt.player.slide.style.cssText, fold: (() => { const c = document.querySelector('.controls')?.getBoundingClientRect(), s = document.querySelector('.stage')?.getBoundingClientRect(); return c ? {stageTop: Math.round(s.top), stageH: Math.round(s.height), stageW: Math.round(s.width), controlsBottom: Math.round(c.bottom), vh: innerHeight, cut: Math.max(0, Math.round(c.bottom - innerHeight))} : null; })()};"
+  },
+  {
+   "name": "b08-slide2",
+   "url": "/#/lesson/1-1/watch",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "__gt.player.setCaptions(true); await __gt.player.show(2, false); document.querySelector('.overlay').hidden = true; document.querySelectorAll('.cue.off').forEach(e => e.classList.remove('off')); __gt.player.seekIn(20); return {type: __gt.player.segments[2].visual.type, fit: __gt.player.slide.style.cssText, fold: (() => { const c = document.querySelector('.controls')?.getBoundingClientRect(), s = document.querySelector('.stage')?.getBoundingClientRect(); return c ? {stageTop: Math.round(s.top), stageH: Math.round(s.height), stageW: Math.round(s.width), controlsBottom: Math.round(c.bottom), vh: innerHeight, cut: Math.max(0, Math.round(c.bottom - innerHeight))} : null; })()};"
+  },
+  {
+   "name": "b09-slide3",
+   "url": "/#/lesson/1-1/watch",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "__gt.player.setCaptions(false); await __gt.player.show(3, false); document.querySelector('.overlay').hidden = true; document.querySelectorAll('.cue.off').forEach(e => e.classList.remove('off'));  return {type: __gt.player.segments[3].visual.type, fit: __gt.player.slide.style.cssText, fold: (() => { const c = document.querySelector('.controls')?.getBoundingClientRect(), s = document.querySelector('.stage')?.getBoundingClientRect(); return c ? {stageTop: Math.round(s.top), stageH: Math.round(s.height), stageW: Math.round(s.width), controlsBottom: Math.round(c.bottom), vh: innerHeight, cut: Math.max(0, Math.round(c.bottom - innerHeight))} : null; })()};"
+  },
+  {
+   "name": "b010-slide4",
+   "url": "/#/lesson/1-1/watch",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "__gt.player.setCaptions(false); await __gt.player.show(4, false); document.querySelector('.overlay').hidden = true; document.querySelectorAll('.cue.off').forEach(e => e.classList.remove('off'));  return {type: __gt.player.segments[4].visual.type, fit: __gt.player.slide.style.cssText, fold: (() => { const c = document.querySelector('.controls')?.getBoundingClientRect(), s = document.querySelector('.stage')?.getBoundingClientRect(); return c ? {stageTop: Math.round(s.top), stageH: Math.round(s.height), stageW: Math.round(s.width), controlsBottom: Math.round(c.bottom), vh: innerHeight, cut: Math.max(0, Math.round(c.bottom - innerHeight))} : null; })()};"
+  },
+  {
+   "name": "b11-listen",
+   "url": "/#/lesson/1-1/watch",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "__gt.player.setCaptions(false); await __gt.player.show(2, false); document.querySelector('.overlay').hidden = true; document.querySelector('[aria-label^=\"Listening mode\"]').click(); return {hidden: document.querySelector('.listen').hidden, pressed: document.querySelector('[aria-label^=\"Listening mode\"]').getAttribute('aria-pressed')};"
+  },
+  {
+   "name": "b12-speed-and-keys",
+   "url": "/#/lesson/1-1/watch",
+   "w": 1366,
+   "h": 768,
+   "theme": "dark",
+   "js": "__gt.player.setListen(false); document.querySelector('.overlay').hidden = true; const sp = document.querySelector('[title=\"Playback speed\"]'); const seen = [sp.textContent]; for (let k = 0; k < 7; k++) { sp.click(); seen.push(sp.textContent); } const i0 = __gt.player.i; dispatchEvent(new KeyboardEvent('keydown', {key: 'ArrowRight', bubbles: true})); await new Promise(r => setTimeout(r, 400)); const i1 = __gt.player.i; return {seen, i0, i1, title: [...document.querySelectorAll('.controls button')].map(b => b.title || b.getAttribute('aria-label'))};"
+  }
+ ]
+}

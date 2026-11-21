@@ -1,0 +1,54 @@
+{
+ "lesson": "7-5",
+ "decisions": [
+  {
+   "n": 0,
+   "reviewer": "learner-2",
+   "finding": "The guess question gives itself away: the key is the only option that says 'before any code'.",
+   "decision": "accepted",
+   "reason": "True: nobody at lesson 37 picks 'choose the strongest algorithm first'. A guess question should be a real fork that the lesson then settles.",
+   "change": "The guess is now a framing choice for the weekly list of twenty creatives: days until fatigue, clusters of similar creatives, fatigued within two weeks yes or no (keyed), or a forecast of average CTR. Segment 2 answers it ('A ranked list wants the yes or no'). Reveal reworded to match."
+  },
+  {
+   "n": 1,
+   "reviewer": "expert-4",
+   "finding": "Segment 2 fixes the row as a creative three days after launch; the baseline 'replace anything older than a month' cannot produce a list on those rows, so 'the rule's twenty' breaks the same-rows, same-list-size rule.",
+   "decision": "accepted",
+   "reason": "Correct on the principle the course teaches in 2-3 and 7-4: baseline and model are compared on the same rows at the same list size. No creative is a month old at day three.",
+   "change": "Segment 3 narration: 'against the rule the team already uses on day three: the twenty whose CTR has fallen most since launch.' Table cell: 'The team's day-three rule: the twenty steepest CTR drops'. Segments 2, 4 and 6 are untouched and now consistent with it."
+  },
+  {
+   "n": 2,
+   "reviewer": "learner-2",
+   "finding": "'A column can stand in for something you should not decide on' is a new idea in a lesson billed as recap; teach it in 4-6 and only recap it here.",
+   "decision": "partly",
+   "reason": "Teaching it in 4-6 is a change to another lesson (out of scope, listed below). The outline puts it in 7-5 under 'using it responsibly', so it stays; what can be done here is to tie it to a tool the learner already has (4-6: results by segment).",
+   "change": "Segment 7: 'Check results by the groups that could be treated unfairly.' became 'The check is one you know: cut the results by segment, this time by the groups that could be treated unfairly.'"
+  },
+  {
+   "n": 3,
+   "reviewer": "learner-2",
+   "finding": "'This course never covered that' rings false: creative fatigue has been a quiz or transfer scenario since module 4.",
+   "decision": "partly",
+   "reason": "The sentence was false as written. Swapping the worked example for a credit-offer question would make the capstone's main example a causal problem and rewrite five segments; the three worked problems already span classification, anomaly detection and forecasting.",
+   "change": "Segment 1: 'No lesson worked that problem through.' and 'Three questions no lesson worked through.' The guess reveal says the same."
+  }
+ ],
+ "rulings": {
+  "R1": "Already met, no change: segment 1 states the idea in general form ('Nine questions come before any code, and they are the same nine whatever the topic') and names two other questions from the same week (flagging publishers with suspicious traffic, forecasting ticket volume).",
+  "R2": "Not applicable.",
+  "R3": "Brief rewritten as a template (118 words) with slots for the question, how many cases and how often, the outcome window, today's rule or report, the segments, and what must not be decided on. It now asks for an answer to all nine questions (prediction or cause, the segments and the untouched slice were missing). Every earlier demand kept.",
+  "R4": "Recap is 49 spoken words, two sentences, cue markers removed, the one-page table kept. There is no next lesson, so the second sentence points onward with the outline's three names (recommendation, deeper causal methods, deep learning).",
+  "R5": "Keyed answer is the longest option in 3 of 10. No literal 'nothing is wrong' options existed; the three that only endorsed the output shown were replaced with specific wrong moves: quiz 1 ('Sound: ...'), quiz 4 ('Agree: ...'), review 1 variant 2 ('That average is right: ...'). Whys extended. Keyed positions unchanged.",
+  "R6": "Segment 8, one added sentence for the move that sat only in other_ways: 'Often the best first request is smaller still: the baseline and the scoreboard, no model, so you learn what the cheap method scores.'",
+  "R7": "Audit list regrouped as Frame / Score / Trust / Stop so four lines cover the nine questions. 'Fixed before any model is fitted' was a promise; it is now 'written in the plan before any model is fitted, and every later result repeats them unchanged', which can be checked on the page. The stop condition must be a number.",
+  "specific": "Standing-instruction request: the brief and the four audit lines contain nothing course-specific and can be pasted as they are. Segment 8's five things now mirror them: the decision; the kind of problem with one other framing; row, target, timeline; baseline, measure, held-out rows and stop condition; and how it will be trusted (segments to cut by, prediction or cause, the untouched slice)."
+ },
+ "segments_changed": [1, 3, 7, 8, 9],
+ "numbers_verified": 0,
+ "open_questions": [
+  "numbers_verified is 0 because this lesson quotes no figure from facts.json (its brief: 'Evidence: none new'). Every numeral in it was checked to be a question number 1 to 9 or an invented scenario figure (twenty creatives, 50 leads, 14 publishers); none states a course result. The segment 4 card now says 'top twenty' in words, so build/lint_numbers.py no longer flags a scenario figure.",
+  "Finding 2: stand-in columns are never shown on a worked slice anywhere in the course. Learner-2 suggests 4-6; that is a change to another editor's lesson.",
+  "Narration is 902 words (SPEC aims at 900, hard cap 950)."
+ ]
+}

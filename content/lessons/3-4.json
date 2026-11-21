@@ -1,0 +1,372 @@
+{
+  "id": "3-4",
+  "module": 3,
+  "title": "Dirty tables",
+  "subtitle": "What can go wrong before any model is fitted, without a single error message?",
+  "goal": "After this lesson you can catch dropped, multiplied and deleted rows by reading row counts, distinct advertisers and the label rate after every step.",
+  "predict": {
+    "q": "A script drops every row that has a missing value before modelling churn. In the advertiser table, CPA versus goal is empty for advertisers without conversion tracking. What share of all the churners disappears with those rows?",
+    "options": [
+      "Almost none: churners are rarely the ones with missing data",
+      "About 40 percent, the same as the share of rows dropped",
+      "Nearly two thirds",
+      "All of them"
+    ],
+    "answer": 2,
+    "reveal": "Nearly two thirds: 1,420 churners become 505. The rows that vanish are not a random sample, and the lesson shows the one check that catches it."
+  },
+  "segments": [
+    {
+      "narration": "The assistant's report says churn is 7 percent. Your dashboard has said 12 for as long as you can remember. Nothing crashed. There is no warning in the output, and the charts are lovely. Somewhere between the raw table and the model, about four in ten of your advertisers went missing, and the script never mentioned it. This kind of damage is easy to do and hard to see, and it has nothing to do with machine learning. It happens in the clean-up and the joins, which is your home turf. The same holds whatever the model is for: a table of leads you want to score can lose rows to a clean-up line or a join just as quietly. So this lesson builds one habit: count the rows.",
+      "visual": {
+        "type": "title",
+        "kicker": "Module 3 · Lesson 4",
+        "title": "Dirty tables",
+        "sub": "What breaks before the model"
+      }
+    },
+    {
+      "narration": "Here is what happened. Somewhere in the script sits one tidy-looking line that drops every row with a missing value. In the advertiser table, CPA versus goal is empty for everyone without conversion tracking. [[1]] So 42 percent of the rows vanished. 12,000 advertisers became about 7,000. [[2]] And they were not a random 42 percent. Untracked advertisers churn far more, so nearly two thirds of all the churners went with them. [[3]] What remains is a calmer population, churning at 7 percent instead of 12. The line did exactly what it says. It just answers a question about a different set of advertisers.",
+      "visual": {
+        "type": "stat",
+        "title": "After one line: df = df.dropna()",
+        "stats": [
+          {
+            "value": "12,000 → 7,016",
+            "label": "rows"
+          },
+          {
+            "value": "1,420 → 505",
+            "label": "churners"
+          },
+          {
+            "value": "11.8% → 7.2%",
+            "label": "churn rate"
+          }
+        ]
+      }
+    },
+    {
+      "narration": "It gets worse once a model is trained on the survivors. That model has never met an advertiser without tracking. But in production it will be asked to score them, because they are still your customers. [[1]] For the untracked advertisers in the test months, it predicts an average churn risk of about 9 percent. [[2]] Their actual churn was about 20. And here is the trap. It still ranks those advertisers almost as well as a model trained on everyone, so the ranking score would not have warned you. The percentages are simply less than half the truth, for two fifths of your book. You met that kind of error in the calibration lesson. This is one way it gets made.",
+      "visual": {
+        "type": "compare",
+        "title": "Trained on the survivors, then asked about the untracked",
+        "left": {
+          "label": "What the model says",
+          "value": "9.1%",
+          "sub": "average predicted churn · ranking barely hurt: AUC 0.809, against 0.824 when trained on everyone"
+        },
+        "right": {
+          "label": "What happened",
+          "value": "19.9%",
+          "sub": "actual churn of untracked advertisers, test months"
+        }
+      }
+    },
+    {
+      "narration": "The deeper mistake was treating an empty cell as a hole. It is information. Advertisers whose CPA cell is empty churn at about 18 percent, against 7 for the rest. So do not drop the rows, and do not quietly fill the gap either. Fill it with zero, and you have told the model these advertisers are beating their goal spectacularly. The honest pattern is to keep every row, fill the cell with a typical value, and add a yes or no column saying it was empty. Here that flag already exists: has conversion tracking. On this data the ranking score barely notices: about 0.845 with the flag against 0.84 without. Keep it anyway. It costs one column, and you cannot know in advance what a blank is worth.",
+      "visual": {
+        "type": "bar",
+        "title": "An empty cell is a signal",
+        "unit": "%",
+        "data": [
+          {
+            "label": "CPA versus goal is empty",
+            "value": 18.4
+          },
+          {
+            "label": "CPA versus goal is filled in",
+            "value": 7.2
+          }
+        ],
+        "highlight": [
+          0
+        ],
+        "note": "Churn rate. Test AUC with a was-empty flag: 0.845. Filled silently with no flag: 0.840."
+      }
+    },
+    {
+      "narration": "Joins fail in the other direction too. The assistant wants campaign details, so it joins advertisers to the campaigns table. That table has one row per campaign, so an advertiser with three campaigns now appears three times. That is called a fan-out. 12,000 advertisers become about 31,000 rows. Add up spend over those rows and the total is overstated by about 160 percent. Now the nasty part. The churn rate barely moves, because churners and stayers are duplicated alike. So the one sanity check you would think to run passes. What gives it away is the row count, set against the number of distinct advertisers.",
+      "visual": {
+        "type": "code",
+        "title": "A join that multiplies rows",
+        "lang": "sql",
+        "code": "SELECT a.advertiser_id, a.spend_8w,\n       a.churned_next_60d, c.campaign_id\nFROM advertisers a\nJOIN campaigns c          -- one row per campaign\n  ON c.advertiser_id = a.advertiser_id;\n\n-- rows:            12,000  ->  31,197\n-- advertisers:     12,000  ->  12,000\n-- SUM(spend_8w):   48.0M   ->  124.1M\n-- churn rate:      11.83%  ->  11.55%",
+        "note": "Rows grew, distinct advertisers did not. Total spend is overstated by 158%."
+      }
+    },
+    {
+      "narration": "A join can also quietly delete. Suppose the script picks up the account manager's name by joining to the account managers table, with an inner join. An inner join keeps only the rows that find a match, and most advertisers have no account manager. [[1]] You start with 12,000 advertisers. [[2]] After the join, 69 percent of them are gone. The ones left are the managed accounts, and they churn at about 6 percent. In SQL you would spot the missing LEFT. In Python it is easier to miss, because a merge with no join type stated is an inner join. Dropped rows, multiplied rows, deleted rows. Three different lines, and one check catches all of them.",
+      "visual": {
+        "type": "compare",
+        "title": "An inner join keeps only the matched",
+        "left": {
+          "label": "Advertiser table",
+          "value": "12,000",
+          "sub": "churn 11.8%"
+        },
+        "right": {
+          "label": "After df.merge(account_managers)",
+          "value": "3,768",
+          "sub": "churn 6.2% · 69% of advertisers gone"
+        }
+      }
+    },
+    {
+      "narration": "Brief and audit. Ask the assistant to print one small table and keep it in every output: after each step, the number of rows, the number of distinct advertisers, and the churn rate. [[1]] The raw table sets the reference. [[2]] If rows fall, something was dropped, and you ask who. [[3]] If rows exceed advertisers, a join fanned out: roll that table up to one row per advertiser first. [[4]] If advertisers fall after a join, it was an inner join: ask for a left join. Then three more things the output must state. How many values were missing in each column, and what was done about them. The feature list, with no ID column in it: a flexible model can memorise rows by their ID. And the churn rate, checked against a number you already trust, like your dashboard.",
+      "visual": {
+        "type": "table",
+        "title": "Ask for this after every step",
+        "columns": [
+          "Step",
+          "Rows",
+          "Advertisers",
+          "Churn rate"
+        ],
+        "rows": [
+          [
+            "Raw table",
+            "12,000",
+            "12,000",
+            "11.83%"
+          ],
+          [
+            "Drop rows with a missing value",
+            "7,016",
+            "7,016",
+            "7.2%"
+          ],
+          [
+            "Join to campaigns",
+            "31,197",
+            "12,000",
+            "11.55%"
+          ],
+          [
+            "Inner join to account managers",
+            "3,768",
+            "3,768",
+            "6.2%"
+          ]
+        ],
+        "highlight": [
+          1,
+          2,
+          3
+        ],
+        "note": "Each step is shown on its own, applied to the raw table. Rows should equal advertisers, and neither should change unless you asked for it."
+      }
+    },
+    {
+      "narration": "From now on, when a report disagrees with a number you trust, ask where the rows went before you question the model. Next, the script itself: eighty lines of Python you could not have written, and the six parts that let you audit it anyway.",
+      "visual": {
+        "type": "bullets",
+        "title": "Keep this",
+        "items": [
+          "Rows get dropped, multiplied or deleted with no error message",
+          "An empty cell is information: keep the row, add a flag",
+          "Count rows, distinct advertisers and the label rate after every step"
+        ]
+      }
+    }
+  ],
+  "takeaways": [
+    "A dropped row or a join can change who the table is about before any model is fitted, and nothing crashes.",
+    "A missing value is information: keep the row, fill the cell, and add a flag that says it was empty.",
+    "Count rows, distinct advertisers and the label rate before and after every step, and compare with a number you already trust."
+  ],
+  "quiz": [
+    {
+      "id": "3-4-q1",
+      "concept": "dropped rows change the population",
+      "domain": "course",
+      "q": "The assistant's audit block reads: 'Rows loaded: 12,000. Rows after cleaning: 7,016. Churn rate: 7.2 percent.' Your dashboard shows churn near 12 percent. What is the right read?",
+      "options": [
+        "The dashboard must be using a different definition of churn, so the cleaned table is the one to trust.",
+        "A gap of 5 points between two churn rates is ordinary sampling noise at this scale.",
+        "Cleaning removed outliers and bad records, which makes the remaining table more reliable.",
+        "Four rows in ten were dropped, and not at random; ask which step removed them and who they were."
+      ],
+      "answer": 3,
+      "why": "Four rows in ten are gone and the churn rate moved by five points, so the lost rows were a particular kind of advertiser: the untracked, who churn far more. With thousands of rows, noise is about a point at most. 'Cleaning' that changes the label rate has changed the question, and the dashboard number is the one you already trust."
+    },
+    {
+      "id": "3-4-q2",
+      "concept": "a join that multiplies rows",
+      "domain": "course",
+      "q": "After joining advertisers to the campaigns table, the report shows total 8-week spend of 124 million dollars. Finance has 48 million. The churn rate in the report matches your dashboard. What happened?",
+      "options": [
+        "The join repeated each advertiser once per campaign, so spend was counted several times; totals inflate, rates barely move.",
+        "Finance leaves churned advertisers out of its total, which explains the whole difference.",
+        "The matching churn rate proves the table is sound, so the finance figure is the one to question.",
+        "The campaigns table must be recorded in a different currency from the advertiser table."
+      ],
+      "answer": 0,
+      "why": "A table with several rows per advertiser multiplies the advertiser's row, and with it any advertiser-level column you sum. The churn rate hardly moves because churners and stayers are duplicated alike, so a matching rate proves nothing here. Rows against distinct advertisers is the check that shows it."
+    },
+    {
+      "id": "3-4-q3",
+      "concept": "missing is information",
+      "domain": "other",
+      "q": "In a lead-scoring table, company size is blank for 35 percent of leads: people who skipped an optional form field. The assistant filled the blanks with the average company size and reports that everything ran cleanly. What is the concern?",
+      "options": [
+        "The blanks should have been filled with zero instead, so that the model can tell those leads apart.",
+        "The assistant should have dropped those leads instead of filling them in.",
+        "Leads who skip the field may convert differently; keep a 'was blank' flag and compare the groups.",
+        "An average cannot be computed on a column that contains blanks, so the numbers are invalid."
+      ],
+      "answer": 2,
+      "why": "Skipping a field is behaviour, and it may go with a different conversion rate. Filling with the average makes those leads look like ordinary mid-sized companies and erases the signal; filling with zero would claim they are the smallest companies of all. Dropping them would be worse: a third of the leads gone, and not at random. The fill itself is fine once a flag records that it happened."
+    },
+    {
+      "id": "3-4-q4",
+      "concept": "an inner join deletes the unmatched",
+      "domain": "other",
+      "q": "An upsell analysis joins customers to the table of account-manager call notes and reports that 31 percent bought the add-on. Sales knows the overall rate is about 12 percent. The report shows no row counts. What is the most likely cause?",
+      "options": [
+        "Call notes cause customers to buy the add-on, which is the real finding of the analysis.",
+        "The join kept only customers who have call notes, a smaller and more engaged group.",
+        "A difference of that size between two rates is normal sampling variation and needs no explanation.",
+        "The add-on rate has probably risen sharply since sales last looked at its own figures."
+      ],
+      "answer": 1,
+      "why": "An inner join keeps only rows with a match, so customers without call notes vanished, and those who get calls are not typical. The rate describes that subgroup, not the customer base. A count of distinct customers before and after the join would have shown it at once; no causal story is needed."
+    }
+  ],
+  "review": [
+    {
+      "concept": "rows that vanish change who the answer is about",
+      "variants": [
+        {
+          "q": "A creative-performance script drops every row with a missing value. Video completion rate is empty for all image creatives. The report says average click rate is 0.9 percent; your dashboard says 0.4. What happened?",
+          "options": [
+            "Click rates improved since the dashboard was last refreshed.",
+            "Only the video creatives survived, so the average describes a different set of creatives.",
+            "The gap is ordinary noise between two ways of averaging.",
+            "The dashboard is wrong, because it still includes creatives whose data is incomplete and should be ignored."
+          ],
+          "answer": 1,
+          "why": "A column that is empty for a whole category turns 'drop rows with missing values' into 'drop that category'. The report's average is true for video creatives and says nothing about the rest. Comparing row counts and the headline rate before and after the drop would have exposed it."
+        },
+        {
+          "q": "Support tickets are inner-joined to the satisfaction survey table. The report gives a median resolution time of 3 hours; the operations dashboard says 9. Which explanation should you check first?",
+          "options": [
+            "The survey itself makes agents resolve tickets faster, because they know they will be rated.",
+            "Medians cannot be compared between two different tools.",
+            "Operations measures resolution time in a different time zone.",
+            "Only tickets whose customer answered the survey were kept, and those are not typical tickets at all."
+          ],
+          "answer": 3,
+          "why": "An inner join keeps only tickets with a survey response, and customers who respond tend to be a particular group. The 3 hours describes them. Ask for the number of tickets before and after the join; a large drop means the result is about a subgroup, with no need for a story about the survey changing behaviour."
+        },
+        {
+          "q": "A churn script loads 9,000 advertisers and reports results on 5,200 'after cleaning', with a churn rate well below the one on your dashboard. What do you ask for first?",
+          "options": [
+            "Which step removed the rows, and the churn rate of the removed rows beside the kept ones.",
+            "A more flexible model, to make up for the smaller table.",
+            "The same analysis with the cut-off lowered, so that the model can find the churners that went missing.",
+            "The same model refitted with churners given extra weight, to restore the dashboard's rate."
+          ],
+          "answer": 0,
+          "why": "A fall in rows together with a shift in the label rate means the removed rows were different from the kept ones. Until you know who was removed and how they behave, every later number describes an unknown subgroup. No model, cut-off or weighting can recover advertisers who are no longer in the table."
+        }
+      ]
+    },
+    {
+      "concept": "a one-to-many join multiplies rows",
+      "variants": [
+        {
+          "q": "Orders are joined to their line items, and revenue is then summed from the order-level column 'order total'. The result is 2.4 times the figure finance reports. What is the cause?",
+          "options": [
+            "Finance reports its revenue net of tax and refunds, which accounts for the whole of the difference.",
+            "Line items include discounts that the order total leaves out.",
+            "Each order's total is repeated once for every line item, so it is counted several times.",
+            "The join dropped the orders that had no line items."
+          ],
+          "answer": 2,
+          "why": "Joining to a table with several rows per order copies every order-level value onto each of those rows. Summing the copies inflates the total by roughly the average number of line items. A dropped order would make revenue too low, not too high. Count rows against distinct orders after the join."
+        },
+        {
+          "q": "Leads are joined to their marketing touchpoints, and a conversion model is trained on the result. The table has 90,000 rows; the CRM holds 30,000 leads. What is wrong with treating each row as a lead?",
+          "options": [
+            "The CRM must be missing 60,000 leads, so its count of 30,000 is the figure to correct.",
+            "Each lead now appears once per touchpoint, so busy leads are counted many times over.",
+            "The model will refuse to train on a table that contains repeated lead IDs, so the result cannot exist.",
+            "Only the first 30,000 rows are real leads; the remaining rows are empty."
+          ],
+          "answer": 1,
+          "why": "The unit of the table silently changed from one lead to one touchpoint. A lead with nine touchpoints now weighs nine times as much as a lead with one, in every count, every rate and the model's training. Nothing raises an error. Either aggregate touchpoints to one row per lead before joining, or be explicit that a row is a touchpoint."
+        },
+        {
+          "q": "To add billing data, 8,000 advertisers are joined to an invoices table. The result has exactly 8,000 rows, and a colleague concludes the join was clean. The output also shows 6,500 distinct advertisers. What does that tell you?",
+          "options": [
+            "About 1,500 rows are exact duplicates, but every advertiser is still in the table.",
+            "The invoices table has exactly one row for every advertiser.",
+            "Distinct counts are unreliable after a join, so the row count is the only number worth checking.",
+            "Some advertisers were dropped while others were duplicated, so the matching row count is a coincidence."
+          ],
+          "answer": 3,
+          "why": "Rows and distinct advertisers must both match the starting table. Here 1,500 advertisers disappeared, those with no invoice, while others with several invoices were repeated, and the two effects happened to cancel in the row count. That is why the check is always both numbers, never the row count alone."
+        }
+      ]
+    }
+  ],
+  "drill": [
+    {
+      "q": "A report's headline rate is far from the number on your dashboard, and nothing crashed. What do you ask the assistant for first?",
+      "a": "A table of row counts, distinct advertisers and the label rate after every step, to see where rows were dropped, multiplied or deleted."
+    },
+    {
+      "q": "Why is it dangerous to drop every row that has a missing value?",
+      "a": "Because a value is usually missing for a reason. The rows you lose can be one particular kind of customer, so the result describes a different population, and a model trained on it has never seen the people you dropped."
+    }
+  ],
+  "recall": {
+    "prompt": "Name the three ways a table gets damaged before modelling, and the one check that catches all of them.",
+    "model_answer": "Rows are dropped because a column has missing values, rows are multiplied by a join to a table with several rows per advertiser, and rows are deleted by an inner join that keeps only the matched. None of them raises an error, and each changes who the table is about or how often they are counted. Counting rows, distinct advertisers and the label rate before and after every step exposes all three. Missing values themselves are information, so the row is kept and a flag records that the cell was empty."
+  },
+  "ask_assistant": "Before any modelling, build the table step by step. After each step print the number of rows, the number of distinct [unit ID] and the [outcome] rate, and flag any step where a count changes. Do not drop rows because a feature is missing, and do not fill anything yet: report missing values per column and add a yes/no flag column for each feature that has any. Fill values come later, computed from the training rows only. Never fill a missing [outcome]: list those rows separately. Start from [main table], join with left joins, and aggregate any table with several rows per [unit] to one row per [unit] before joining. Leave ID columns out of the feature list.",
+  "audit_checklist": [
+    "A step table: rows, distinct advertisers and churn rate after every step, with rows equal to advertisers throughout.",
+    "Missing values per column, and what was done with each: no row dropped for a missing feature, a flag column for each, no outcome value filled in.",
+    "The final churn rate matches a number you already trust, such as the dashboard.",
+    "The feature list contains no ID column."
+  ],
+  "transfer": [
+    "Revenue per customer after joining orders to line items: is each order counted once?",
+    "A satisfaction analysis built only on customers who answered the survey: who is missing?",
+    "Creative performance after dropping rows with empty video metrics: which formats disappeared?"
+  ],
+  "other_ways": [
+    {
+      "approach": "Aggregate before you join",
+      "when": "When the other table has several rows per advertiser: roll it up to one row per advertiser first, then join."
+    },
+    {
+      "approach": "A left join plus a 'matched' flag",
+      "when": "When the other table covers only some advertisers and you need to keep everyone."
+    },
+    {
+      "approach": "A model that accepts empty cells as they are",
+      "when": "When the model type handles blanks itself; you still report how many were missing, and for whom."
+    }
+  ],
+  "glossary": [
+    {
+      "term": "fan-out",
+      "def": "A join to a table with several rows per advertiser, which repeats each advertiser's row and inflates counts and totals."
+    },
+    {
+      "term": "inner join",
+      "def": "A join that keeps only rows with a match in both tables, silently deleting the rest."
+    },
+    {
+      "term": "missing-value flag",
+      "def": "A yes/no column recording that a cell was empty before it was filled."
+    },
+    {
+      "term": "distinct count",
+      "def": "The number of different advertisers in a table, as opposed to the number of rows."
+    }
+  ]
+}

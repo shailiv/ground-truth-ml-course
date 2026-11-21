@@ -1,0 +1,84 @@
+{
+ "lesson": "2-2",
+ "decisions": [
+  {
+   "n": 0,
+   "reviewer": "learner-1",
+   "finding": "The longest option is the right one in all four quiz questions; the learner was choosing by length",
+   "decision": "accepted",
+   "reason": "Measured in the file: keyed answer longest in 8 of 10 (all four quiz questions). Ruling R5.",
+   "change": "See R5. Every distractor now carries a specific wrong reading with its own reason and numbers."
+  },
+  {
+   "n": 1,
+   "reviewer": "expert-1",
+   "finding": "Keyed option is the single longest in 8 of the 10 questions",
+   "decision": "accepted",
+   "reason": "Same measurement; option length must carry no signal.",
+   "change": "Keyed answer is now the longest in 3 of 10 (2-2-q3, review 1 variant 2, review 2 variant 2), by at most 10 characters, and the shortest in 2."
+  },
+  {
+   "n": 2,
+   "reviewer": "learner-1",
+   "finding": "Seg 3 speaks five counts in four sentences while all four boxes are on screen at once",
+   "decision": "partly",
+   "reason": "The ear problem is real. A per-box reveal is not available: the matrix visual has no cue support (validate.py CUE_ITEMS, visuals.js R.matrix), and swapping it for a table would lose the 2x2 picture the assistant prints.",
+   "change": "Seg 3 now speaks three counts (141 flagged, 104 caught, 423 missed), in the order of the on-screen columns and with the cells' own words (caught, false alarms, misses, left alone); 37 and 3,436 are left to the screen."
+  },
+  {
+   "n": 3,
+   "reviewer": "learner-1",
+   "finding": "The narration is a churn course; rotate the spoken example to invalid traffic or video adoption",
+   "decision": "partly",
+   "reason": "Generality is handled by ruling R1. Re-basing the worked example is out of scope: facts.json holds four-box counts and a threshold table only for the churn model (logreg.test, thresholds), and R1 keeps worked numbers on the course tables.",
+   "change": "Seg 2 gains the general sentence naming invalid traffic; the recap speaks of 'a report or a vendor'."
+  },
+  {
+   "n": 4,
+   "reviewer": "learner-1",
+   "finding": "'On another draw of test advertisers' is unexplained; the idea arrives only in 2-6",
+   "decision": "accepted",
+   "reason": "The term is not taught yet (SPEC rule 7). Figures unchanged: uncertainty.precision_at_half_95 = 0.665 to 0.809.",
+   "change": "Seg 5: 'with a different set of test advertisers, precision could land anywhere from about 67 to 81 percent. A later lesson shows how we know.' The same phrase is fixed in 2-3 seg 4."
+  },
+  {
+   "n": 5,
+   "reviewer": "learner-1",
+   "finding": "'Say no' to rebalancing contradicts the other-ways card that allows resampling the training rows",
+   "decision": "accepted",
+   "reason": "The flat refusal was stricter than the truth: reweighting or resampling training rows is legitimate when positives are very few, provided the scores are corrected; the test rows must never be touched.",
+   "change": "Seg 7 rewritten: default answer no; on the test rows never; on the training rows a last resort for very rare outcomes, with scores corrected and checked against what happened. The brief says the same."
+  },
+  {
+   "n": 6,
+   "reviewer": "learner-1",
+   "finding": "Cue markers start at 2 in segs 2 and 6, so the first item may never be revealed while the voice talks about it",
+   "decision": "accepted",
+   "reason": "Confirmed in site/public/js/player.js and visuals.js: when a segment has any cue, every item starts hidden, a cue N reveals items 1 to N, and items above the highest cue stay hidden until the segment ends. In seg 2 both cards were blank until the second half; in seg 6 the model's row never appeared while the voice compared it with the rule.",
+   "change": "Seg 2: [[1]] added before 'Call every advertiser a stayer'. Seg 6: [[1]] at the start, [[3]] before 'And notice the rule's accuracy', and the table rows reordered (model, hand rule, everyone stays) so each appears when the voice reaches it. Seg 6 spoken text is unchanged, so its audio stands."
+  }
+ ],
+ "rulings": {
+  "R1": "Seg 2: 'That holds for any yes-or-no model: when almost every click is valid, last lesson's invalid-traffic filter could flag nothing and score almost perfectly.' Invalid traffic is named again on purpose: it answers the question the new 2-1 opening leaves open. 2-3 uses video adoption.",
+  "R2": "Not this lesson.",
+  "R3": "Brief is a slot template, 113 words: [model], [the test period], [cut-off], [outcome], [the common outcome], [rule]. Adds 'print the test row count and the [outcome] rate' so the audit checks can be run.",
+  "R4": "Seg 9 is 49 words: what to do when accuracy leads a report, then the pointer to 2-3. Visual kept.",
+  "R5": "Keyed longest in 3 of 10 (was 8). Rewritten: all four quiz questions and review 1 variants 1-3 and review 2 variant 3. Two 'nothing is wrong' options replaced (2-2-q2, review 2 variant 3). Review 2 variants 1 and 2 untouched. All keyed positions unchanged.",
+  "R6": "Not triggered: the most usable move (four counts with precision and recall beside both baselines) is already the spoken brief, and the training-rows alternative now has its spoken sentence in seg 7. Seg 8 left byte-identical.",
+  "R7": "All four audit items were already checkable from the output (counts add up to the row count; caught plus missed equals the churner total; cut-off stated beside both baselines; test churn rate unchanged). Left as they were.",
+  "specific": "None listed. Clarity protected as instructed: segs 1, 4 and 8 are byte-identical, and the 95 percent example is kept word for word."
+ },
+ "segments_changed": [
+  2,
+  3,
+  5,
+  7,
+  9
+ ],
+ "numbers_verified": 211,
+ "open_questions": [
+  "Player versus SPEC: SPEC says items without a marker are visible from the start; the player hides every item until the first cue and keeps items above the highest cue hidden to the end. The finding names the same pattern in 2-5 seg 3, 2-6 seg 4 and 3-1 seg 5. Fix the player (applyCues) or the lessons.",
+  "The matrix visual cannot build box by box. If you want the reveal the learner asked for, the player needs cue support on matrix cells.",
+  "Narration is 910 words (was 898); seg 2 is 132 words. Inside the 950 cap, a little over the 900 and 130 targets."
+ ]
+}
