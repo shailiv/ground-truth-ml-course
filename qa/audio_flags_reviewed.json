@@ -1,0 +1,32 @@
+{
+ "what": "Every clip the listen-back check (build/tts_verify.py) flagged after the second correction round, and what was decided. A flag means the first transcriber's text differed from the script; each doubtful one was transcribed again by a second, different model before deciding.",
+ "date": "2026-11-22",
+ "re_recorded": [
+  {"lesson": "4-2", "part": 7, "heard": "eighty-three percent ... sixty-one percent", "script": "0.83 ... 0.61", "both_transcribers_agreed": true,
+   "decision": "Real: the voice read two AUC scores as percentages. Re-recorded; now 'point eight three ... point six one'."},
+  {"lesson": "5-1", "part": 4, "heard": "about mm six and a half ... about two percent", "script": "about six and a half ... about 2.", "both_transcribers_agreed": true,
+   "decision": "Real: a stray filler and an invented unit. A plain re-record repeated 'two percent', so the script now says 'about 2 points' (which is what is meant) and the clip was recorded from that; now 'about two points'."},
+  {"lesson": "5-4", "part": 9, "heard": "for the randomized comparison chosen", "script": "for the randomised comparison that shows it", "both_transcribers_agreed": true,
+   "decision": "Real: a garbled phrase. Re-recorded; now 'that shows it'."}
+ ],
+ "kept": [
+  {"lesson": "1-4", "part": 7, "flag": "'every one' heard as 'everyone'", "decision": "Spelling only."},
+  {"lesson": "2-3", "part": 3, "flag": "'cut-off' heard as 'cutoff' (four times)", "decision": "Spelling only."},
+  {"lesson": "2-4", "part": 3, "flag": "'2.5' heard as 'two and a half'", "decision": "Same number, spoken form."},
+  {"lesson": "2-5", "part": 3, "flag": "position of 'dollars'; 'favour' / 'favor'", "decision": "Spoken form of money amounts; spelling."},
+  {"lesson": "2-6", "part": 7, "flag": "'0 is' heard as 'zeros'; position of 'dollars'", "decision": "Transcriber's rendering."},
+  {"lesson": "4-3", "part": 4, "flag": "'So, churn' heard as 'So, CatBoost'; 'nine thousandths' written as 9,000", "second_transcriber": "matches the script", "decision": "First transcriber's error."},
+  {"lesson": "4-3", "part": 6, "flag": "'nine thousandths' written as 9,000; '1 132' joined", "second_transcriber": "matches the script apart from number spelling", "decision": "First transcriber's error."},
+  {"lesson": "4-5", "part": 1, "flag": "'by 10' written as 10:00", "second_transcriber": "matches the script", "decision": "Transcriber's rendering."},
+  {"lesson": "5-3", "part": 3, "flag": "'ecommerce' heard as 'e-commerce' (four times)", "decision": "Spelling only."},
+  {"lesson": "5-6", "part": 4, "flag": "'5.5' heard as 'five and a half'", "decision": "Same number, spoken form."},
+  {"lesson": "6-2", "part": 2, "flag": "'module 4 trap' heard as 'model forest trapped'; 'plain' as 'plane'", "second_transcriber": "matches the script", "decision": "First transcriber's error."},
+  {"lesson": "6-2", "part": 3, "flag": "'3.5' heard as 'three and a half'", "decision": "Same number, spoken form."},
+  {"lesson": "6-3", "part": 5, "flag": "'2.5' heard as 'two and a half'", "decision": "Same number, spoken form."},
+  {"lesson": "7-1", "part": 4, "flag": "'2' heard as 'to'; 'behaviour' / 'behavior'", "decision": "Homophone; spelling."}
+ ],
+ "also_checked": [
+  {"lesson": "5-1", "part": 4, "note": "'tenure' was heard as 'ten-year' by the first transcriber; the second heard 'tenure'."},
+  {"lesson": "5-4", "part": 9, "note": "Both transcribers hear 'you'll want to ask' where the script says 'you will ask', in both recordings. Same meaning; kept."}
+ ]
+}

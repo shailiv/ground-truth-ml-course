@@ -26,7 +26,16 @@ echo   If Cloudflare asks you to choose a workers.dev name, type any short name:
 echo.
 cd /d "%ROOT%"
 "%BASH%" build/deploy.sh
-if errorlevel 1 (
+set "RC=%errorlevel%"
+if "%RC%"=="5" (
+  echo.
+  echo   The site is online but FAILED its own checks, listed above. Do not use it yet.
+  echo   Ask Claude to look at this window's output before doing anything else.
+  echo.
+  pause
+  exit /b 5
+)
+if not "%RC%"=="0" (
   echo.
   echo   It did not finish. The lines above say why.
   echo   Nothing is left half-open: the site only ever answers after a sign-in.

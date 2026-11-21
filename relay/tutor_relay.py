@@ -20,7 +20,9 @@ Settings, from the environment or from a JSON file given with --config (keys: ur
 
 Standard library only. Python 3.9 or newer.
 """
-import argparse, json, os, pathlib, shutil, subprocess, sys, tempfile, time, urllib.error, urllib.request
+import argparse, json, os, pathlib, shutil, subprocess, sys, tempfile, time, urllib.error, urllib.request, uuid
+
+RELAY_ID = uuid.uuid4().hex          # tells the site which relay took a question, so two relays never answer the same one
 
 SYSTEM = """You are the tutor inside "Ground Truth", a private course in machine-learning fundamentals.
 
@@ -77,10 +79,22 @@ def ask_claude(cfg, item, workdir):
 
 def call(cfg, method, path, body=None, timeout=40):
     req = urllib.request.Request(cfg["url"].rstrip("/") + path, method=method, data=None if body is None else json.dumps(body).encode("utf-8"),
-                                 headers={"authorization": "Bearer " + cfg["secret"], "content-type": "application/json", "user-agent": "ground-truth-relay"})
+                                 headers={"authorization": "Bearer " + cfg["secret"], "content-type": "application/json", "user-agent": "ground-truth-relay", "x-relay-id": RELAY_ID})
     with urllib.request.urlopen(req, timeout=timeout) as res:
         raw = res.read()
         return res.status, (json.loads(raw) if raw else None)
+
+
+def deliver(cfg, body):
+    """Post an answer. If the site no longer has the question (it expired, or the site restarted), say so and move on."""
+    try:
+        call(cfg, "POST", "/api/relay/answer", body)
+        return True
+    except urllib.error.HTTPError as e:
+        if e.code in (404, 410):
+            log("the site no longer has question %s (it expired or the site restarted); dropped" % body["id"][:8])
+            return False
+        raise
 
 
 def serve(cfg, once=False):
@@ -96,15 +110,16 @@ def serve(cfg, once=False):
             t0 = time.time()
             try:
                 answer = ask_claude(cfg, item, workdir)
-                call(cfg, "POST", "/api/relay/answer", {"id": item["id"], "text": answer})
-                log("answered %s in %.1fs (%d characters)" % (item["id"][:8], time.time() - t0, len(answer)))
             except Exception as e:                        # the learner must not be left waiting on a failure
                 log("FAILED %s: %s" % (item["id"][:8], e))
-                call(cfg, "POST", "/api/relay/answer", {"id": item["id"], "error": "The tutor could not answer just now. Try again in a minute."})
+                deliver(cfg, {"id": item["id"], "error": "The tutor could not answer just now. Try again in a minute."})
+            else:
+                if deliver(cfg, {"id": item["id"], "text": answer}):
+                    log("answered %s in %.1fs (%d characters)" % (item["id"][:8], time.time() - t0, len(answer)))
             if once:
                 return
         except urllib.error.HTTPError as e:
-            if e.code in (403, 404):
+            if e.code in (403, 404):                     # only reached from the "next" request: a wrong secret or a wrong address
                 log("the site refused the relay (HTTP %s): check GT_URL and GT_RELAY_SECRET. Retrying in 60s." % e.code)
                 time.sleep(60)
             else:

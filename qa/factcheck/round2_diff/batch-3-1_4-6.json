@@ -1,0 +1,57 @@
+{
+ "changes_checked": 33,
+ "problems": [
+  {
+   "lesson": "4-2",
+   "path": "audit_checklist[0]",
+   "severity": "high",
+   "wrong": "for a model that must meet new advertisers, each check's months come after its training months and the count of advertisers on both sides of any fold is 0",
+   "why": "This conflates meeting new advertisers with time drift, contradicting the checklist's own 'by advertiser, by time, or shuffled' options and FACTS. In shuffled 5-fold CV on Jan-Mar (facts.json cv, where every row is a distinct advertiser and the model scores 4,000 new advertisers in May-Jun) and in grouped folds across alike months (facts.json panel_leak.whole_advertisers_held_out), the model must meet new advertisers and 0 advertisers sit on both sides, yet each check's months do not come after its training months. Check months must come after training months when periods differ (time splits), whereas 0 advertisers on both sides is the requirement for meeting new advertisers.",
+   "fix": "How the folds were made (by advertiser, by time, or shuffled) and why that case applies; for a model that must meet new advertisers the count of advertisers on both sides of any fold is 0, and when months differ each check's months come after its training months (with a gap as long as the outcome window)"
+  },
+  {
+   "lesson": "4-2",
+   "path": "ask_assistant",
+   "severity": "medium",
+   "wrong": "Several rows per [unit], or [periods] that differ: if the model will meet new [units], hold out whole [units], train each check only on earlier [periods], and print how many [units] sit on both sides: zero. If it will score the same [units] later, walk forward instead. Leave a gap as long as the [outcome window].",
+   "why": "Bundling repeated units with differing periods forces time-ordered checks with an outcome-window gap even when units repeat across alike periods (where rotating grouped folds holding out whole units is the standard method, as in facts.json panel_leak.whole_advertisers_held_out), and on a 3-month training span like Jan-Mar with a 60-day outcome it leaves at most a single check (Jan vs Mar skipping Feb) rather than multiple folds with a mean and range. In addition, an outcome-window gap applies to time splits, not to rotating shuffled or grouped folds.",
+   "fix": "Several rows per [unit] from alike [periods]: if the model will meet new [units], use grouped folds holding out whole [units] and print how many [units] sit on both sides: zero. [Periods] that differ: make each check test on later [periods] than it trains on with a gap as long as the [outcome window]—walking forward if scoring the same [units] later, and also holding out whole [units] (zero on both sides) if meeting new [units]."
+  },
+  {
+   "lesson": "4-5",
+   "path": "segments[4].narration",
+   "severity": "medium",
+   "wrong": "Add her pushes, about four points, to the average advertiser's score, then pass the total through the S-curve: 5 percent becomes 73.",
+   "why": "Two sentences earlier the average advertiser is given a probability of 'about 5 percent' (0.047 in facts.json explain_examples), and audit_checklist[2] in this lesson uses 'score' to mean probability. Adding +4 log-odds points to 0.047 and passing the sum through the S-curve gives 98.3%, not 72.7%; her ~4 scorecard (log-odds) points must be added to the average advertiser's pre-S-curve scorecard points (log-odds, about -3.0), and passing that total through the S-curve turns 5% into 73%.",
+   "fix": "Add her pushes, about four points, to the average advertiser's scorecard points, then pass the total through the S-curve: 5 percent becomes 73."
+  },
+  {
+   "lesson": "4-5",
+   "path": "segments[4].visual.note",
+   "severity": "medium",
+   "wrong": "Average advertiser: 4.7%. Her pushes added to its score, then through the S-curve: 72.7%.",
+   "why": "Immediately after 'Average advertiser: 4.7%', 'its score' points to 4.7% (0.047, a probability already past the S-curve). Adding ~4 log-odds points to 0.047 before applying the S-curve gives 98.3%, not 72.7%; the pushes are added to the average advertiser's pre-S-curve scorecard points (log-odds), not to 4.7%.",
+   "fix": "Average advertiser: 4.7%. Her pushes added to the average advertiser's scorecard points, then through the S-curve: 72.7%."
+  },
+  {
+   "lesson": "4-6",
+   "path": "quiz[3].why",
+   "severity": "medium",
+   "wrong": "'Only the order matters' holds when every score is off in the same way",
+   "why": "False when ranking by probability times spend. Even if every predicted probability is off in the exact same order-preserving way (for example, shifted down by 2 percentage points on every row as in calibration.overall, or distorted by the same monotonic curve), multiplying by spend turns a non-proportional probability error into a dollar error that scales with spend and changes the list order. Only a uniform multiplicative factor preserves the ranking of probability times spend; expected-dollar ranking requires calibrated probabilities, not just intact rank order.",
+   "fix": "'Only the order matters' fails twice here: multiplying by money uses the probability values themselves (so miscalibration changes the dollar ranking even when probability order is intact), and when percentages run low in one group, that group sits too low on any list, sorted by probability or by dollars."
+  }
+ ],
+ "_lessons": [
+  "3-1",
+  "3-3",
+  "3-4",
+  "3-5",
+  "4-1",
+  "4-2",
+  "4-3",
+  "4-5",
+  "4-6"
+ ],
+ "_fields": 33
+}

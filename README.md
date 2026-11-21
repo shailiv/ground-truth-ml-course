@@ -36,6 +36,7 @@ python build/validate.py                # lesson format rules (word limits, cue 
 ```
 
 The local server runs the real `site/worker.js` against an in-memory stand-in for Cloudflare (`build/local_env.mjs`).
+On Windows, `preview.cmd` does the second line and opens the browser.
 
 ## Reproduce the numbers
 
@@ -58,9 +59,16 @@ review, and why.
    `facts.json` (`build/factcheck.py`).
 3. **Adjudication**: every finding accepted, partly accepted or rejected with a reason
    (`qa/adjudication/*.decisions.json`), under course-wide rulings in `qa/adjudication/FIXER_BRIEF.md`.
-4. **Audio**: each clip transcribed back and compared with its text (`build/tts_verify.py`, `qa/audio_report.json`).
-5. **Site**: a code review (`qa/site_review_code.json`), a design review (`qa/design/REVIEW.md`) and a learner
-   walkthrough at phone and laptop sizes (`qa/ux/report.json`).
+4. **A second round**: every corrected lesson fact-checked again (`qa/factcheck/final/`), the points ruled on by a
+   second set of editors (`qa/adjudication/*.round2.json`), and the textbook terms added where a lesson already
+   taught the idea. Then only the fields that round changed were sent back to Gemini, old text beside new
+   (`build/factcheck_diff.py`, `qa/factcheck/round2_diff/`, rulings in `qa/adjudication/round2_diff.decisions.json`).
+5. **Audio**: each clip transcribed back and compared with its text (`build/tts_verify.py`, `qa/audio_report.json`);
+   every flagged clip decided on, with a second transcriber for the doubtful ones (`qa/audio_flags_reviewed.json`).
+   Each clip carries a fingerprint of the words it was recorded from, and the build refuses a stale one.
+6. **Site**: two code reviews (`qa/site_review_code.json`, `qa/site_review_round2.json`), a design review
+   (`qa/design/REVIEW.md`) and a learner walkthrough at phone and laptop sizes (`qa/ux/report.json`). The findings
+   about progress and the lock are now tests (`build/test_site.mjs`).
 
 ## If you are asked to cross-check this course
 

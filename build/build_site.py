@@ -105,6 +105,10 @@ def review_stats():
     ux = load("ux/report.json", {})
     st["ux_findings"] = len(ux.get("findings", []))
     st["code_findings"] = len(load("site_review_code.json", {}).get("findings", [])) + len(load("site_review_round2.json", {}).get("findings", []))
+    # the check of the second round's own edits (build/factcheck_diff.py)
+    r3 = [load("factcheck/round2_diff/" + f.name, {}) for f in sorted((q / "factcheck/round2_diff").glob("*.json"))] if (q / "factcheck/round2_diff").exists() else []
+    st["r3_fields"], st["r3_problems"] = sum(x.get("_fields", 0) for x in r3), sum(len(x.get("problems", [])) for x in r3)
+    st["site_tests"] = load("site_tests.json", {}).get("passed", 0)
     au = load("audio_report.json", {})
     st["clips"], st["audio_diff"], st["audio_flagged"] = au.get("clips", 0), round(100 * au.get("mean_wer", 0), 1), len(au.get("flagged", []))
     extra = load("review_notes.json", {})          # measurements made by hand during the build (linter mutation test, design scores, rounds)

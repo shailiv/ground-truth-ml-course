@@ -195,7 +195,7 @@
       "id": "5-5-q2",
       "concept": "calibration before money",
       "domain": "course",
-      "q": "Break-even is a churn probability of 10 percent. The model ranks well, but a predicted-versus-actual table shows that advertisers it scores at around 8 percent actually churn about 12 percent of the time. What happens if you cut the list at a score of 0.10?",
+      "q": "Take illustrative numbers. Break-even is a churn probability of 10 percent. A model ranks well, but its predicted-versus-actual table shows that advertisers it scores at around 8 percent actually churn about 12 percent of the time. What happens if you cut the list at a score of 0.10?",
       "options": [
         "You stop too early: some advertisers scored under 0.10 are really above break-even",
         "You get the right list: the model ranks well, and a good ranking is all a cut-off needs",

@@ -106,6 +106,7 @@ export class Player {
     if (this.dead) return;
     const token = ++this.token;
     this.stopClock();
+    this.audio.pause();                       // the old clip must not keep talking, or end and skip ahead, while the next slide is drawn
     this.i = i; this.t = 0; this.silent = false; this.moreEl.hidden = true; this.noAudio.hidden = true;
     const seg = this.segments[i];
     let slide;
@@ -128,7 +129,7 @@ export class Player {
     this.tick(startAt);
     this.onSegment?.(i, this.initial);
     this.initial = false;
-    if (autoplay) this.play();
+    if (autoplay || this.playing) this.play();   // Play pressed while the slide was being drawn still counts
   }
 
   play() {

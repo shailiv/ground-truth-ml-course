@@ -262,11 +262,11 @@ The output must show:
 
 Brief:
 
-Choose every setting by cross-validation on the training rows only. Case one, one row per [unit] from [periods] that are alike: rotating shuffled folds are fine. Case two, several rows per [unit] or [periods] that differ: keep all rows of one [unit] in the same fold, make each fold check on later [periods] than it trains on, say how many such checks the data allows, and print how many [units] sit on both sides of any fold. Tell me which case applied and why. Remove ID columns. Report every fold score per candidate, with mean and range. Then stop: score [test period] only when I approve the frozen setting, and list every scoring run with the rows it used.
+Choose every setting by cross-validation on the training rows only. One row per [unit] from alike [periods]: rotating shuffled folds are fine. Several rows per [unit], and the model will meet new [units]: keep each [unit]'s rows in one fold and print how many [units] sit on both sides: zero. [Periods] that differ: each check tests on later [periods] than it trains on, after a gap as long as the [outcome window]; say how many such checks the data allows. Tell me which cases applied and why. Remove ID columns. Report every fold score per candidate, with mean and range. Then stop: score [test period] only after I approve the frozen setting, and list every scoring run and its rows.
 
 The output must show:
 
-- How the folds were made (by advertiser, by time, or shuffled) and why that case applies, with the count of advertisers on both sides of any fold: 0
+- How the folds were made (by advertiser, by time, or shuffled) and why that case applies; for a model that must meet new advertisers the count of advertisers on both sides of any fold is 0, and when months differ each check's months come after its training months, with a gap as long as the outcome window
 - Every fold score for each candidate setting, with mean and range, not only the winner's mean
 - Test scoring is its own final stage that you trigger, and the output lists every scoring run with the rows it used: the test rows appear once
 - The feature list, with no ID column in it
@@ -301,7 +301,7 @@ The output must show:
 
 Brief:
 
-For [model], produce three exhibits, and state on each the model and the rows used. One: permutation importance on [held-out rows] for each column and for each group of related columns ([groups]), as the drop in [metric]. Two: a partial dependence curve for [columns the business asks about]. Three: for each of the top [list size] rows, the three largest per-row contributions (coefficient times distance from the training mean for a linear model, SHAP values otherwise), with the row's value and the training mean beside each, plus the base value, so that base plus all contributions reproduces the row's score, after the S-curve if they are in log-odds. Caption every exhibit as a description of the model; no causal wording such as drives or impact.
+For [model], produce three exhibits, each stating the model and the rows used. One: permutation importance on [held-out rows] for each column and each group of related columns ([groups]), as the drop in [metric]. Two: a partial dependence curve for [columns the business asks about]. Three: for each of the top [list size] rows, the three largest per-row contributions (coefficient times distance from the training mean for a linear model, SHAP values otherwise), with the row's value and the training mean beside each, plus the base value, so base plus all contributions reproduces the row's score, after the S-curve if they are in log-odds. Caption each exhibit as the model's behaviour; no causal wording such as drives or impact.
 
 The output must show:
 
@@ -369,7 +369,7 @@ The output must show:
 
 Brief:
 
-We ran [action] with [units] assigned to it at random; the assignment is in [assignment column]. Fit one [outcome] model on the treated group and one on the untreated group, using only features known at [decision date], and rank held-out [units] by predicted [outcome] without the action minus predicted [outcome] with it. For the top [list size] by that uplift, the top [list size] by plain risk and a random [list size], show [outcome] among treated versus untreated inside each list, with group sizes and 95 percent intervals. Start the output with the size of each group, a table showing the two groups were alike before the action, and the overall effect with its interval.
+We ran [action] with [units] assigned to it at random; the assignment is in [assignment column]. Fit one [outcome] model on the treated and one on the untreated, using only features known at [decision date], and rank held-out [units] by predicted improvement: [outcome] with the action minus without it, or the reverse if [outcome] is unwanted, such as churn. For the top [list size] by that uplift, the top [list size] by predicted [outcome] alone and a random [list size], show [outcome] among treated versus untreated inside each list, with group sizes and 95 percent intervals. Start the output with the size of each group, a table showing the groups were alike beforehand, and the overall effect with its interval.
 
 The output must show:
 
@@ -424,13 +424,13 @@ The output must show:
 
 Brief:
 
-Backtest this forecast of [series]: from each of the last [twelve] [month starts], train only on data before that date and forecast the next [horizon]. For each backtest print the forecast date and the last training date. Report the average percentage error by [month] and by [week ahead], for the model and for two naive methods. Build an [80] percent range for [the number I need: one day, or the total over the horizon] from backtest errors of that same kind, using the earlier backtests, and report how often it held on the later ones. If I name a break date, add a step from that date and re-run the backtest: [break date, or none].
+Backtest this forecast of [series]: from each of the last [twelve] [month starts], train only on earlier data and forecast the next [horizon]. Print each backtest's forecast date and last training date. Report the percentage error by [month] and by [week ahead], beside two naive methods. Build an [80] percent range for [one day, or the horizon total] from errors of that same kind on the earlier backtests; report how often it held on the later ones, with the number of errors used to build and to check it. A total gives one error per backtest, so use more starts, such as weekly. If I name a break date, add a step from it and re-run: [break date, or none].
 
 The output must show:
 
 - Every backtest lists its forecast date and its last training day, and the training day is always earlier
 - Errors are shown by month and by week ahead, beside the naive methods
-- The range names what it covers, a day or a total, was built from errors of that same kind, and shows how often it held on backtests it was not built from
+- The range names what it covers, a day or a total, was built from errors of that same kind, and shows how often it held on backtests it was not built from, with the number of errors used to build it and to check it: twelve monthly backtests split in half leave only six totals in each half, too few for a range
 - If you named a break date: the fitted size of the step is printed, and the error by month is shown before and after adding it
 
 ### Anomalies: is this unusual?

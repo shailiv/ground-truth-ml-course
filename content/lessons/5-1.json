@@ -38,7 +38,7 @@
       }
     },
     {
-      "narration": "The usual reply is: then control for it. Ask the assistant to compare like with like, holding tenure, spend, vertical and the rest fixed. That is what a regression weight does. [[1]] The naive gap was about 11 points. [[2]] Adjusted, it shrinks to about six and a half. [[3]] The truth is still about 2. Adjusting removed the part of the mirage the table can see. It cannot remove the part that comes from a trait nobody recorded. And nothing in the output warns you how far off it still is. Adjusted is a better description. It is still not the effect of acting.",
+      "narration": "The usual reply is: then control for it. Ask the assistant to compare like with like, holding tenure, spend, vertical and the rest fixed. That is what a regression weight does. [[1]] The naive gap was about 11 points. [[2]] Adjusted, it shrinks to about six and a half. [[3]] The truth is still about 2 points. Adjusting removed the part of the mirage the table can see. It cannot remove the part that comes from a trait nobody recorded. And nothing in the output warns you how far off it still is. Adjusted is a better description. It is still not the effect of acting.",
       "visual": {
         "type": "bar",
         "title": "Tracking and churn: three numbers",

@@ -12,8 +12,8 @@ who=$(cd site && $W whoami 2>&1 || true)
 if grep -qi "not authenticated" <<<"$who"; then echo "Not signed in to Cloudflare. Run go-live.cmd (or: cd site && npx wrangler login)."; exit 2; fi
 
 # 1. nothing goes out unless the lock and the progress merge pass their tests, and every lesson has its audio
-node build/test_site.mjs
 python build/build_site.py --prune
+node build/test_site.mjs
 
 cd site
 # 2. KV namespace for progress. Its id goes into wrangler.deploy.jsonc, which is not committed.
@@ -30,7 +30,10 @@ python - "$id" <<'PY'
 import pathlib, sys
 src = pathlib.Path("wrangler.jsonc").read_text(encoding="utf-8")
 assert "REPLACED_AT_DEPLOY" in src, "wrangler.jsonc must keep the placeholder"
-pathlib.Path("wrangler.deploy.jsonc").write_text(src.replace("REPLACED_AT_DEPLOY", sys.argv[1]), encoding="utf-8")
+full = src.replace("REPLACED_AT_DEPLOY", sys.argv[1])
+pathlib.Path("wrangler.deploy.jsonc").write_text(full, encoding="utf-8")
+# the same without the optional sign-in rate limit, in case an account cannot have that binding
+pathlib.Path("wrangler.deploy.plain.jsonc").write_text("\n".join(l for l in full.splitlines() if '"ratelimits"' not in l) + "\n", encoding="utf-8")
 PY
 
 # 3. secrets, generated once and kept in .secrets/ (never committed): the session-signing key, the passphrase you
@@ -55,7 +58,12 @@ PY
 # 4. deploy. Wrangler stays attached to the window (on a brand-new account it asks for a workers.dev name), and
 #    the address is read from the record Wrangler writes, not scraped from what it prints.
 rm -f ../.secrets/deploy.ndjson
-WRANGLER_OUTPUT_FILE_PATH=../.secrets/deploy.ndjson $W deploy -c wrangler.deploy.jsonc --secrets-file ../.secrets/worker-secrets.json
+if ! WRANGLER_OUTPUT_FILE_PATH=../.secrets/deploy.ndjson $W deploy -c wrangler.deploy.jsonc --secrets-file ../.secrets/worker-secrets.json; then
+  echo
+  echo "That did not deploy. Trying once more without the optional sign-in rate limit (the site's own brake stays on)..."
+  rm -f ../.secrets/deploy.ndjson
+  WRANGLER_OUTPUT_FILE_PATH=../.secrets/deploy.ndjson $W deploy -c wrangler.deploy.plain.jsonc --secrets-file ../.secrets/worker-secrets.json
+fi
 url=$(python ../build/deploy_url.py)
 [ -n "$url" ] || { echo "Deployed, but the workers.dev address could not be read. Find it in the Cloudflare dashboard under Workers, put it in .secrets/url.txt, and run this again."; exit 4; }
 echo "$url" > ../.secrets/url.txt
@@ -67,8 +75,18 @@ PY
 
 # 5. is the live site really locked, and does it work once signed in? Fail loudly if not.
 echo "Checking the live site..."
-sleep 4
 cd ..
+# a brand-new workers.dev address can take a few minutes to start answering: wait for it rather than cry wolf
+up=""
+for i in $(seq 1 40); do
+  c=$(curl -s -o /dev/null -w '%{http_code}' --max-time 10 "$url/login" || true)
+  if [ "$c" = "200" ]; then up=1; break; fi
+  [ "$i" = "1" ] && echo "  waiting for $url to come online (a new address can take a few minutes)..."
+  sleep 8
+done
+if [ -z "$up" ]; then
+  echo; echo "Deployed, but $url is not answering yet. Give it ten minutes and run go-live.cmd again: it is safe to repeat, and keeps the same address and passphrase."; exit 6
+fi
 if ! bash build/smoke.sh "$url" .secrets/passphrase.txt; then
   echo; echo "The site is deployed at $url but FAILED the checks above. Do not rely on it until they pass."; exit 5
 fi

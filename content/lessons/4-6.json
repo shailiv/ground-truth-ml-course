@@ -251,7 +251,7 @@
         "The list is fine, but the model must now be retrained on large accounts alone"
       ],
       "answer": 2,
-      "why": "Multiplying by spend turns a probability into expected dollars, so a probability that runs low for large accounts shrinks their expected loss by the same proportion, and they get too few places. 'Only the order matters' holds when every score is off in the same way; when percentages run low in one group, that group sits too low on any list, sorted by probability or by dollars."
+      "why": "Multiplying by spend turns a probability into expected dollars, so a probability that runs low for large accounts shrinks their expected loss by the same proportion, and they get too few places. 'Only the order matters' fails twice here: multiplying by money uses the probability values themselves, so percentages that are off can change the dollar order even when the probability order is intact; and when percentages run low in one group, that group sits too low on any list, sorted by probability or by dollars."
     }
   ],
   "review": [

@@ -1,6 +1,6 @@
 // Progress: kept in this browser at once, synced to the server in the background, and merged field by field
 // (see merge.js) so a phone and a laptop never undo each other. Plus the spaced-review schedule.
-import { merge, blank } from "./merge.js";
+import { merge, blank, clamp, canon } from "./merge.js";
 export { merge };
 
 const KEY = "gt.progress.v1";
@@ -10,7 +10,10 @@ const ROLLOVER = 4;                             // a "study day" runs from 4 am 
 
 export let state = blank();
 const subs = new Set();
-let pushTimer = null, online = null, lastSync = 0, dirty = false, busy = false, skew = 0, undoAt = 0;
+let pushTimer = null, online = null, lastSync = 0, dirty = false, busy = false, undoAt = 0;
+// how far this device's clock is from the server's. Remembered across reloads, so the first thing written after a
+// reload (or offline) is already stamped in server time.
+let skew = (() => { try { return +localStorage.getItem("gt.skew") || 0; } catch { return 0; } })();
 const now = () => Date.now() + skew;            // this device's clock, corrected to the server's
 
 const local = {
@@ -26,10 +29,13 @@ export const syncStatus = () => ({ online, lastSync, mode: online === false ? "l
 const signedOut = () => { location.href = "/login" + (location.hash || ""); };
 
 function took(body) {                           // what every /api/progress answer carries
-  if (typeof body.now === "number") skew = body.now - Date.now();
+  if (typeof body.now === "number") { skew = body.now - Date.now(); try { localStorage.setItem("gt.skew", String(skew)); } catch { /* fine */ } }
   undoAt = body.undo || 0;
   return body.state;
 }
+// The server pulls any timestamp from the future back to now. Do the same to this device's own copy: a record
+// stamped by a fast clock must not outlive a later "start over" just because its time has not arrived yet.
+const settle = () => clamp(state, now());
 
 /** What this browser already knows. Synchronous, so the first screen never waits for the network. */
 export function initLocal() { state = merge(blank(), local.read()); emit(); }
@@ -41,13 +47,14 @@ export async function sync() {
     if (r.status === 401) return void signedOut();
     if (!r.ok) throw new Error(r.status);
     const remote = took(await r.json());
-    const before = JSON.stringify(state);
-    state = merge(state, remote);
+    const before = canon(state);
+    state = merge(state, remote); settle();
     local.write();
     online = true; lastSync = Date.now();
-    if (JSON.stringify(merge(blank(), remote)) !== JSON.stringify(state)) { dirty = true; schedulePush(200); }   // this device had newer records
+    // compared with keys in a fixed order: two copies that differ only in the order records were made are the same
+    if (canon(merge(blank(), remote)) !== canon(state)) { dirty = true; schedulePush(200); }   // this device had newer records
     emit();
-    return before !== JSON.stringify(state);
+    return before !== canon(state);
   } catch { online = false; emit(); return false; }
 }
 export async function init() { initLocal(); await sync(); }
@@ -64,7 +71,7 @@ export async function push(keepalive = false) {
     if (r.status === 401) return void signedOut();
     if (!r.ok) throw new Error(r.status);
     const remote = took(await r.json());
-    if (remote) { state = merge(state, remote); local.write(); }
+    if (remote) { state = merge(state, remote); settle(); local.write(); }
     online = true; dirty = false; lastSync = Date.now();
   } catch { online = false; dirty = true; schedulePush(30000); }      // always try again, also for a save that died as the tab was hidden
   busy = false;
@@ -147,8 +154,8 @@ export async function restore() {
   const r = await fetch("/api/progress/restore", { method: "POST", credentials: "same-origin", headers: { "content-type": "application/json" }, body: "{}" });
   if (!r.ok) return false;
   const remote = took(await r.json());
-  state = merge(blank(), remote);
+  state = merge(state, remote); settle();          // what came back is added to what this device has done since
   try { localStorage.setItem(KEY, JSON.stringify(state)); } catch { /* fine */ }
-  dirty = false; emit();
+  dirty = true; emit(); schedulePush(500);
   return true;
 }

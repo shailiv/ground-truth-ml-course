@@ -1,0 +1,169 @@
+{
+ "summary": "Second independent review of the overnight rewrite (tutor relay + TutorRoom, shared merge/store, player/app changes, one-click deploy, narration fingerprints). The lock holds: every course file, progress route and tutor route answers 401/303 without the cookie, the relay door needs its bearer secret (the owner's cookie does not open it), the relay passes the question on stdin (never argv) to `claude -p --restricted --tools \"\" --strict-mcp-config --no-session-persistence` (flags checked against the installed Claude Code 2.1.330 --help), and prose() builds nodes only. The 84 site tests pass. When I first checked, go-live would have failed at its build step: 8 lessons and all 7 drills had no audio fingerprint. A concurrent tts run fixed the manifest and course.json at 00:51-00:52, and a re-check at 00:55 is clean (R1, now low). The progress merge still lets erased progress come back after 'Start over' in two confirmed ways, and 'Bring my progress back' throws away work done after the reset. A second relay re-runs a question the first is still answering (confirmed live). A tutor answer that arrives after the learner changes step lands in a detached box and can be overwritten. First-ever deploys will probably fail the smoke test because it starts 4 s after a brand-new workers.dev subdomain is created (timing unconfirmed). 17 earlier high/medium findings were re-checked against the code: 16 fixed, S6 only partly.",
+ "verified_fixed": [
+  "S1",
+  "S2",
+  "S3",
+  "S4",
+  "S5",
+  "S7",
+  "S8",
+  "S9",
+  "S10",
+  "S11",
+  "S12",
+  "S13",
+  "S14",
+  "S15",
+  "S16",
+  "S17"
+ ],
+ "still_open": [
+  {
+   "id": "S6",
+   "why": "The worker now clamps incoming timestamps (merge.js clamp, worker.js:141), but the device keeps its own future-stamped copy in localStorage: store.js merges the server reply with max(t), so the future t survives locally and later beats a reset (see R3). skew is also not persisted, so every page load writes raw-clock stamps until the first sync returns."
+  }
+ ],
+ "findings": [
+  {
+   "id": "R1",
+   "severity": "low",
+   "file": "build/build_site.py",
+   "line": 182,
+   "title": "RESOLVED DURING THIS REVIEW: 8 lessons and all 7 drills had no audio fingerprint, which would have made go-live fail at its build step. Nothing yet catches a repeat before deploy.",
+   "detail": "At 00:48 (course.json build) and when I first checked, 71 clips (all of lessons 4-2, 5-4, 5-5, 5-6, 6-1, 6-2, 6-3, 6-4) and all 7 drill entries in data/audio_manifest.json had no `text` field. build_site.py would therefore have exited 1 at line 182 under deploy.sh, and go-live would have failed. course.json then had those 8 lessons silent and no drill audio. All 71 clip names matched the current narration hash. Drills 1, 4 and 7 were really stale. A concurrent tts run, not mine, rewrote the manifest at 00:52 and course.json at 00:51. Re-checked at 00:55: no stale lessons, no stale drills, and course.json has audio for all 37 lessons and 7 drills. What remains: (a) the only guard is build_site.py at deploy time, so a partial tts run the night before a go-live repeats the failure. (b) `--allow-missing --prune`, the obvious workaround, deletes every clip that is currently unreferenced, including good clips that only lack a fingerprint.",
+   "evidence": "First check: 'stale [4-2:1..9 ... 6-4:1..9, drill-1..drill-7]'; manifest['lessons']['4-2'][0] = {'src': ..., 'dur': 36.06} with no 'text'; filename-hash check '71 match current text, 0 mismatch'. Re-check at 00:55 after the manifest changed (mtime 00:52): 'stale lessons now: [] stale drills now: []'; course.json 'no audio: []', drills all True.",
+   "fix": "Add a test in build/test_site.mjs (or validate.py) that fails when any manifest entry lacks `text` or mismatches, so the night-before check fails, not go-live. In build_site.py, refuse `--prune` when `--allow-missing` is also given."
+  },
+  {
+   "id": "R2",
+   "severity": "medium",
+   "file": "site/public/js/merge.js",
+   "line": 41,
+   "title": "'Start over' does not hold: a stale device brings back finished lessons and old card counts for any record touched again after the reset",
+   "detail": "merge() first combines the two copies of each record with RULES and sets t = max(x.t, y.t). Only then does it drop records with t < reset. If device A resets at R and then reopens lesson 1-1 (any put, t > R), and device B, offline since before R, still has 1-1 done, then lessons: done = first(a.done, b.done) is B's pre-reset done time, and t = A's post-reset t. The record survives the reset filter and the lesson shows as finished again on every device. Cards are the same: B's copy with n=5, box 4 wins over A's fresh n=1 ('more answers wins'), and its t is A's post-reset t. The same happens on the server (merge(current, incoming)) and in the browser (sync merges remote into local).",
+   "evidence": "Scratch script importing site/public/js/merge.js: B={lessons:{'1-1':{done:400,watched:300,t:500}},cards:{'1-1-c0':{n:5,ok:5,box:4,t:500}}}, S={settings:{reset:1000},lessons:{'1-1':{seg:2,t:1100}},cards:{'1-1-c0':{n:1,ok:1,box:0,t:1100}}}; merge(B,S) -> lessons {'1-1':{done:400,watched:300,t:1100,seg:2}}, cards {'1-1-c0':{n:5,ok:5,box:4,t:1100}}.",
+   "fix": "Apply the reset to each side before combining: compute reset = max(sa.reset, sb.reset) first, then in the loop treat x as null when num(x.t) < reset (same for y), and merge only what survives."
+  },
+  {
+   "id": "R3",
+   "severity": "medium",
+   "file": "site/public/js/store.js",
+   "line": 67,
+   "title": "A device whose clock runs fast keeps future timestamps locally, and they outlive a later reset (clocks hours apart)",
+   "detail": "The server clamps incoming t to now. But push() and sync() store `merge(state, remote)`, which keeps max(t), so the device's future t stays in its localStorage for good. skew starts at 0 on every page load and is never saved, so anything written before the first sync, or while offline, uses the raw clock. Sequence: phone clock +3 h. At real 10:00 it finishes 2-1 (t = 13:00). At 11:00 the laptop resets. At 11:30 the phone syncs: its record t = 13:00 > reset 11:00, so it survives, is pushed, is clamped to 11:30 and is now after the reset on the server too. The erased lesson is back everywhere.",
+   "evidence": "merge(B2,S2) with B2.lessons['2-1'] = {done: 900+3h, t: 900+3h} and S2.settings.reset = 5000 -> {'2-1': {done: 10800900, t: 10800900}} (kept). store.js:43-45 and :66-67 keep max(t) locally, and skew is a module variable reset to 0 on load (store.js:13).",
+   "fix": "Clamp locally too: after took(), run clamp(state, Date.now() + skew) on the merged state before local.write(). Save skew in localStorage so it applies from the first write after a reload."
+  },
+  {
+   "id": "R4",
+   "severity": "medium",
+   "file": "site/worker.js",
+   "line": 123,
+   "title": "'Bring my progress back' replaces the stored progress instead of merging it, so work done after the reset is lost on the restoring device. The undo stays offered indefinitely.",
+   "detail": "The restore handler builds st from the backup only, copies just cur.settings, and calls PROGRESS.put(key, st). Lessons and cards recorded after the reset are dropped on the server. store.restore() then sets state = merge(blank(), remote), which also drops this device's local copy, including unpushed work. Only another device that still holds the work can bring it back. undoKey has no expiry, and the Settings page offers 'Bring my progress back' whenever it exists, so a learner can reset, study for a week, press it, and lose the week.",
+   "evidence": "Scratch script running the real worker.js on makeEnv(): PUT lesson 1-1, PUT reset, PUT lesson 1-2 after the reset -> 'before restore: [ '1-2' ] undo: true'; POST /api/progress/restore -> 'after restore (server): [ '1-1' ]'.",
+   "fix": "Server: `const out = merge(cur, st)` (st with refreshed t as now) and put that. Client: `state = merge(state, remote)` instead of merge(blank(), remote). Give the undo copy an age limit (for example, hide the button and drop the key after 7 days)."
+  },
+  {
+   "id": "R5",
+   "severity": "medium",
+   "file": "site/tutor.js",
+   "line": 69,
+   "title": "With two relays connected, every question that takes over 20 s is run twice (double spend on the subscription)",
+   "detail": "The 'lost question' rule assumes a single relay ('only asks for work when it is idle'). A second relay, such as tutor-relay.cmd started twice or the README's 'any always-on machine' alongside the laptop, that polls /next more than 20 s after relay A took a question gets the same question while A is still running claude (answers routinely take 10 to 60 s, and the subprocess timeout is 180 s). Both run claude, and the later answer overwrites it.answer. Nothing stops a second relay connecting.",
+   "evidence": "Against the local server: relay A GET /api/relay/next received id a72888e9...; after 21 s a second GET /api/relay/next returned the same payload ('[relayB 200]'); both POST /api/relay/answer returned {ok:true}; the page then read {\"text\":\"answer from B\"}.",
+   "fix": "Re-deliver only when the original relay is shown to be gone: record a relay instance id (sent by the relay as a header) with `handed`, and re-deliver only to the same instance, or only after it has polled again without answering. At minimum, raise the 20 s to the relay's 180 s timeout plus a margin, and ignore a second answer for an id that already has one."
+  },
+  {
+   "id": "R6",
+   "severity": "medium",
+   "file": "site/public/js/app.js",
+   "line": 182,
+   "title": "A tutor answer that arrives after the learner changes step lands in a detached box, is not shown, and can be overwritten",
+   "detail": "Each step is a hash change, so route() rebuilds the whole lesson view and creates a new tutorBox that loads the thread from localStorage. The question in flight lives only in the old box's closure (`turns`) and is saved only when its answer arrives (threads.save at line 193). Sequence: ask in Watch, then press 'Check yourself' or Back. The new box shows neither the question nor 'Thinking…', and its `busy` is false, so a second question can be sent at once. When the first answer arrives, the old detached box saves turns1+answer. The next save from the visible box (a new question or 'Clear') writes turns2, which does not include them, so the first Q&A is lost for good. It is never shown unless the view is rebuilt in between.",
+   "evidence": "Code path: app.js:161 `let turns = threads.load(key)` per box; :189-193 push to the closure array and save only after `await relay.ask(...)`; :289 `go` sets location.hash, and route() (:548-553) replaces main. All three tutor boxes in a lesson share key = lesson.id.",
+   "fix": "Keep the thread and in-flight state per key at module level, for example `const live = new Map()` of key -> {turns, busy}. Have tutorBox read from it and re-draw on completion if its box is still connected. Save the 'me' turn before awaiting, and re-read storage, merge and save when the answer arrives."
+  },
+  {
+   "id": "R7",
+   "severity": "medium",
+   "file": "build/deploy.sh",
+   "line": 68,
+   "title": "First-ever deploy on a new Cloudflare account will probably report FAILED: the smoke test starts 4 s after the workers.dev subdomain is created",
+   "detail": "On a brand-new account, wrangler registers the workers.dev subdomain during this same deploy. A new subdomain usually takes longer than 4 s to resolve and serve TLS. curl then returns 000 for every check, smoke.sh fails, deploy.sh exits 5, and go-live shows 'It did not finish' even though the site was deployed correctly (it fails closed, but the unattended run reports failure). Unconfirmed: I could not contact Cloudflare, so the propagation delay comes from Cloudflare's own 'may take a few minutes' notice, not a measurement. Separately, go-live's failure text 'Nothing is left half-open: the site only ever answers after a sign-in' is also printed when exit 5 means the smoke test found something open.",
+   "evidence": "deploy.sh: `sleep 4` then `bash build/smoke.sh \"$url\" ...`; smoke.sh code() uses curl --max-time 30 with no retry, and want() fails on 000.",
+   "fix": "Before the smoke test, poll until `curl -s -o /dev/null -w '%{http_code}' $url/login` returns 200, up to about 5 minutes, then run it. In go-live.cmd, print the 'half-open' reassurance only for exit codes other than 5."
+  },
+  {
+   "id": "R8",
+   "severity": "low",
+   "file": "relay/tutor_relay.py",
+   "line": 107,
+   "title": "An answer posted after the room forgot the question (deploy or Durable Object restart) is logged as a wrong URL/secret, and the relay sleeps 60 s",
+   "detail": "POST /api/relay/answer for an id the room no longer has returns 404. The relay's inner except then posts an error, gets 404 again, and the outer handler treats 404 like 403: 'check GT_URL and GT_RELAY_SECRET', sleep 60. For that minute the site shows the tutor offline. TutorRoom keeps everything in memory, so every redeploy causes this for any question in flight.",
+   "evidence": "tutor.js:85 `if (!it) return reply({ error: 'unknown' }, 404)`; tutor_relay.py:99-109.",
+   "fix": "Return 410 for an unknown id from the relay answer route and have the relay ignore 410. Keep the 60 s back-off for 403 only."
+  },
+  {
+   "id": "R9",
+   "severity": "low",
+   "file": "site/public/js/store.js",
+   "line": 48,
+   "title": "The sync dirty-check compares key order, so a device can PUT again after every focus forever",
+   "detail": "merge() builds keys in the order of its first argument. sync() compares JSON.stringify(merge(blank(), remote)), which is in the server's order, with JSON.stringify(state), which is in this device's order. Once the two orders differ, for example after the device created record a and the server already had b, every visibilitychange sync sets dirty and sends a PUT, even though nothing changed.",
+   "evidence": "Scratch: L1 lessons {a,b}, R1 lessons {b,a} with identical records -> `JSON.stringify(merge(blank(),R1)) !== JSON.stringify(merge(L1,R1))` is true.",
+   "fix": "Compare order-independently, for example by sorting keys in a stable stringify, or compare merge(remote, state) with remote field by field."
+  },
+  {
+   "id": "R10",
+   "severity": "low",
+   "file": "site/public/js/player.js",
+   "line": 108,
+   "title": "show() leaves the previous clip playing while the next slide renders, and its 'ended' can skip the part the learner chose",
+   "detail": "show() sets this.i = i, then awaits renderVisual (slow on a widget part, because widgets.json loads the first time) without pausing the old clip. While it waits, the old clip's timeupdate ticks against the new part. If the old clip ends, segmentEnded() moves to i+1 and takes the token, so the requested part is dropped. Pressing Play during the wait plays the old clip, then the new src replaces it, and autoplay (captured earlier as false) does not resume: the button shows Pause and nothing plays.",
+   "evidence": "player.js:105-131: only stopClock() before the await; audio 'ended' -> segmentEnded() -> next(false) -> show(this.i + 1).",
+   "fix": "Call this.audio.pause() at the top of show(), before the await. After the await, use `if (autoplay || this.playing) this.play()`."
+  },
+  {
+   "id": "R11",
+   "severity": "low",
+   "file": "site/tutor.js",
+   "line": 107,
+   "title": "The content-type 'cross-site' check accepts `text/plain; application/json`; only SameSite=Lax actually protects the POST routes",
+   "detail": "includes('application/json') matches the CORS-safelisted value `text/plain; application/json`, which a cross-site page can send without a preflight. The cookie is SameSite=Lax, so no cookie travels cross-site today, which makes this a defence-in-depth gap rather than an exploit. The test 'a cross-site form cannot ask' only tries plain text/plain. /api/progress/restore has no content-type check at all.",
+   "evidence": "curl to localhost:8788 with cookie: `content-type: text/plain; application/json` -> 503 {\"error\":\"offline\"} (accepted past the check); `text/plain` -> 415.",
+   "fix": "Parse the essence: `(ct.split(';')[0].trim().toLowerCase() === 'application/json')`, in tutor.js and worker.js, and add it to the restore route."
+  },
+  {
+   "id": "R12",
+   "severity": "low",
+   "file": "site/public/js/app.js",
+   "line": 186,
+   "title": "When the relay is offline, 'Ask' opens claude.ai only after an awaited status fetch, so a popup blocker or clipboard rule may swallow it (unconfirmed)",
+   "detail": "ask() awaits mode(true), a network round trip, before openInClaude() calls copy() (clipboard) and window.open. Both need a live user gesture. Chrome allows about 5 s. Safari on iOS is stricter, and a slow status fetch on a phone can lose the gesture. I could not run a browser to confirm.",
+   "evidence": "app.js:186 `if (!(await mode(true))) return openInClaude(lesson, q, at);`",
+   "fix": "Decide from the cached relay.known synchronously in the click handler (it is refreshed by mode() on draw and every 30 s), and fetch fresh status only on the relay path."
+  },
+  {
+   "id": "R13",
+   "severity": "low",
+   "file": "site/public/js/app.js",
+   "line": 520,
+   "title": "The undo box is hidden when Settings is the first page opened",
+   "detail": "undoBox reads syncStatus().undoAt once, when the view is built. On a fresh load of #/settings that happens before sync() returns, and the boot redraw skips 'about'/'settings' (quiet()), so 'Bring my progress back' does not appear until the learner navigates away and back.",
+   "evidence": "app.js:520 and :593-594.",
+   "fix": "Subscribe the box to store.onChange and toggle `hidden` from syncStatus().undoAt."
+  },
+  {
+   "id": "R14",
+   "severity": "low",
+   "file": "site/tutor.js",
+   "line": 13,
+   "title": "The tutor shows as offline while the relay is busy on an answer longer than 45 s",
+   "detail": "The relay does not poll while claude runs (up to 180 s), and `online` means 'polled within 45 s'. A second question asked during a long answer gets 503, and the page switches to 'Open in Claude' and sends it to claude.ai.",
+   "evidence": "tutor.js:13 ALIVE = 45_000; tutor_relay.py serve() runs ask_claude synchronously between polls.",
+   "fix": "Count the relay as online while it holds an unanswered handed question (it.handed within 200 s), or have the relay send a heartbeat."
+  }
+ ]
+}

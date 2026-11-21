@@ -1,0 +1,30 @@
+120 changed fields in 30 lessons since 9beeef4
+batch 1-1..2-6: 43 fields, 0 problems
+batch 3-1..4-6: 33 fields, 5 problems
+batch 5-1..7-2: 25 fields, 1 problems
+batch 7-3..7-5: 19 fields, 0 problems
+[high] 4-2 audit_checklist[0]
+    wrong: for a model that must meet new advertisers, each check's months come after its training months and the count of advertisers on both sides of any fold is 0
+    why:   This conflates meeting new advertisers with time drift, contradicting the checklist's own 'by advertiser, by time, or shuffled' options and FACTS. In shuffled 5-fold CV on Jan-Mar (facts.json cv, where every row is a distinct advertiser and the model scores 4,000 new advertisers in May-Jun) and in grouped folds across alike months (facts.json panel_leak.whole_advertisers_held_out), the model must 
+    fix:   How the folds were made (by advertiser, by time, or shuffled) and why that case applies; for a model that must meet new advertisers the count of advertisers on both sides of any fold is 0, and when months differ each check's months come after its training months (with a gap as long as the outcome wi
+[medium] 4-2 ask_assistant
+    wrong: Several rows per [unit], or [periods] that differ: if the model will meet new [units], hold out whole [units], train each check only on earlier [periods], and print how many [units] sit on both sides: zero. If it will score the same [units] later, walk forward instead. Leave a gap as long as the [ou
+    why:   Bundling repeated units with differing periods forces time-ordered checks with an outcome-window gap even when units repeat across alike periods (where rotating grouped folds holding out whole units is the standard method, as in facts.json panel_leak.whole_advertisers_held_out), and on a 3-month training span like Jan-Mar with a 60-day outcome it leaves at most a single check (Jan vs Mar skipping 
+    fix:   Several rows per [unit] from alike [periods]: if the model will meet new [units], use grouped folds holding out whole [units] and print how many [units] sit on both sides: zero. [Periods] that differ: make each check test on later [periods] than it trains on with a gap as long as the [outcome window
+[medium] 4-5 segments[4].narration
+    wrong: Add her pushes, about four points, to the average advertiser's score, then pass the total through the S-curve: 5 percent becomes 73.
+    why:   Two sentences earlier the average advertiser is given a probability of 'about 5 percent' (0.047 in facts.json explain_examples), and audit_checklist[2] in this lesson uses 'score' to mean probability. Adding +4 log-odds points to 0.047 and passing the sum through the S-curve gives 98.3%, not 72.7%; her ~4 scorecard (log-odds) points must be added to the average advertiser's pre-S-curve scorecard p
+    fix:   Add her pushes, about four points, to the average advertiser's scorecard points, then pass the total through the S-curve: 5 percent becomes 73.
+[medium] 4-5 segments[4].visual.note
+    wrong: Average advertiser: 4.7%. Her pushes added to its score, then through the S-curve: 72.7%.
+    why:   Immediately after 'Average advertiser: 4.7%', 'its score' points to 4.7% (0.047, a probability already past the S-curve). Adding ~4 log-odds points to 0.047 before applying the S-curve gives 98.3%, not 72.7%; the pushes are added to the average advertiser's pre-S-curve scorecard points (log-odds), not to 4.7%.
+    fix:   Average advertiser: 4.7%. Her pushes added to the average advertiser's scorecard points, then through the S-curve: 72.7%.
+[medium] 4-6 quiz[3].why
+    wrong: 'Only the order matters' holds when every score is off in the same way
+    why:   False when ranking by probability times spend. Even if every predicted probability is off in the exact same order-preserving way (for example, shifted down by 2 percentage points on every row as in calibration.overall, or distorted by the same monotonic curve), multiplying by spend turns a non-proportional probability error into a dollar error that scales with spend and changes the list order. Onl
+    fix:   'Only the order matters' fails twice here: multiplying by money uses the probability values themselves (so miscalibration changes the dollar ranking even when probability order is intact), and when percentages run low in one group, that group sits too low on any list, sorted by probability or by dol
+[low] 6-2 audit_checklist[2]
+    wrong: with the number of errors on each side: twelve monthly backtests give only six totals each, too few for a range
+    why:   Each monthly backtest produces one 28-day horizon total, not six totals each (12 totals in all across the 12 backtests in forecast.backtest.how, which split into 6 to build the band and 6 to check it in forecast.interval.how). Also, 'on each side' right after coverage usually means misses above vs below the interval rather than the build half vs check half.
+    fix:   with the number of errors used to build and to check it: twelve monthly backtests split in half give only six totals in each half, too few for a range
+6 problems in 120 changed fields

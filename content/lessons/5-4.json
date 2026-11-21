@@ -370,7 +370,7 @@
     "prompt": "Your manager asks why the success team should not simply call the highest-risk accounts. Explain it back in 30 seconds.",
     "model_answer": "High risk means likely to leave, not likely to be changed by a call: in the simulated outreach nearly half of the top 400 by risk left whatever happened and nearly half would have stayed anyway. What we want is the accounts whose outcome moves if we call, which is uplift. We can only estimate that from a randomised outreach, by comparing called with not-called accounts, and any list, from a model or a rule, should be tested the same way."
   },
-  "ask_assistant": "We ran [action] with [units] assigned to it at random; the assignment is in [assignment column]. Fit one [outcome] model on the treated group and one on the untreated group, using only features known at [decision date], and rank held-out [units] by predicted [outcome] without the action minus predicted [outcome] with it. For the top [list size] by that uplift, the top [list size] by plain risk and a random [list size], show [outcome] among treated versus untreated inside each list, with group sizes and 95 percent intervals. Start the output with the size of each group, a table showing the two groups were alike before the action, and the overall effect with its interval.",
+  "ask_assistant": "We ran [action] with [units] assigned to it at random; the assignment is in [assignment column]. Fit one [outcome] model on the treated and one on the untreated, using only features known at [decision date], and rank held-out [units] by predicted improvement: [outcome] with the action minus without it, or the reverse if [outcome] is unwanted, such as churn. For the top [list size] by that uplift, the top [list size] by predicted [outcome] alone and a random [list size], show [outcome] among treated versus untreated inside each list, with group sizes and 95 percent intervals. Start the output with the size of each group, a table showing the groups were alike beforehand, and the overall effect with its interval.",
   "audit_checklist": [
     "The size of the called and not-called groups, with a table showing they were alike before the calls: a coin flip leaves them alike, hand-picking does not",
     "The overall effect of the call, with its interval",
@@ -399,7 +399,7 @@
   "glossary": [
     {
       "term": "uplift",
-      "def": "The change in an advertiser's chance of an outcome caused by acting on them: the chance without the action minus the chance with it."
+      "def": "The change in an advertiser's chance of an outcome caused by acting on them: the chance with the action minus the chance without it, or the other way round when the outcome is unwanted, such as churn, so that a helpful action always shows a positive uplift."
     },
     {
       "term": "persuadable",

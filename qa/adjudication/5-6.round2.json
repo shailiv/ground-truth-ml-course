@@ -1,0 +1,9 @@
+{"lesson": "5-6",
+ "recheck": [
+  {"n": 0, "issue": "quiz 5-6-q3: 'Only 48 percent of them churned' is not in facts and is steeper than any outreach effect modelled there", "decision": "accepted", "reason": "74 percent is logreg.test.precision 0.738 at threshold 0.5; 48 cannot be derived. economics.assumptions.share_of_contacted_churners_saved = 0.2, the save rate taught in 5-5, gives 0.738 x 0.8 = 0.590.", "change": "Report figure 48 -> 59 percent; why gains one sentence: 'The drop itself is about what calls that save one churner in five, the money lesson's assumption, would produce: four fifths of 74 percent is about 59.' Options and key unchanged (longest-option count stays 3 of 10)."}
+ ],
+ "terms": [
+  {"term": "data drift versus concept drift", "spoken": false, "segment": 2, "glossary": true, "note": "Optional term. Not spoken: seg 2 already teaches the two kinds ('the inputs move' / 'the relationship moved') and is at 132 words. Named on seg 2's card instead (bullets now read 'The inputs move (data drift)' and 'The relationship moves (concept drift)'; card text is not narration) plus two glossary entries: 'data drift (covariate shift)' and 'concept drift'. Glossary now 6 items."}
+ ],
+ "segments_changed": [],
+ "open_questions": []}

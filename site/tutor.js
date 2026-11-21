@@ -11,6 +11,7 @@
 const HOLD = 25_000;            // how long a waiting request is held open before it is told "nothing yet"
 const KEEP = 10 * 60_000;       // a question and its answer are forgotten after ten minutes
 const ALIVE = 45_000;           // the relay counts as connected if it asked for work this recently
+const WORKING = 200_000;        // ...or took a question this recently and has not answered yet (its own limit is 180 s)
 export const LIMITS = { question: 2000, context: 14000, turns: 8, turn: 3000, perDay: 200, answer: 12000 };
 
 const reply = (data, status = 200) => new Response(JSON.stringify(data), { status, headers: { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" } });
@@ -26,7 +27,9 @@ export class TutorRoom {
     this.day = ""; this.count = 0;
   }
   sweep(now) { for (const [id, it] of this.items) if (now - it.at > KEEP) { this.items.delete(id); this.askers.delete(id); } this.queue = this.queue.filter((id) => this.items.has(id)); }
-  status(now) { return { online: now - this.seen < ALIVE, queued: this.queue.length }; }
+  // a relay in the middle of a long answer is not asking for work, but it is very much there
+  working(now) { for (const it of this.items.values()) if (it.handed && it.answer == null && it.error == null && now - it.handed < WORKING) return true; return false; }
+  status(now) { return { online: now - this.seen < ALIVE || this.working(now), queued: this.queue.length }; }
 
   async fetch(req) {
     const url = new URL(req.url), now = Date.now();
@@ -63,10 +66,13 @@ export class TutorRoom {
 
     if (url.pathname === "/next" && req.method === "GET") {                 // the relay, asking for work
       this.seen = now;
-      // The relay answers one question at a time and only asks for work when it is idle. So a question that was
-      // handed out a while ago and never answered was lost on the way (the relay restarted, the line dropped):
-      // hand it out again, once.
-      const lost = [...this.items.entries()].find(([, it]) => it.handed && it.answer == null && it.error == null && now - it.handed > 20_000 && it.tries < 2);
+      // A relay answers one question at a time and only asks for work when it is idle. So when the SAME relay that
+      // took a question comes back for more without having answered it, the question was lost on the way: hand
+      // it out again, once. A different relay (two windows open, or a second machine) may only pick it up after
+      // the first has had its full time, or the question would be answered, and paid for, twice.
+      const who = url.searchParams.get("relay") || "";
+      const lost = [...this.items.entries()].find(([, it]) => it.handed && it.answer == null && it.error == null && it.tries < 2 &&
+        (it.by && it.by === who ? now - it.handed > 3_000 : now - it.handed > WORKING));
       let id = lost ? lost[0] : this.queue.shift();
       if (!id) {
         let mine;
@@ -76,14 +82,16 @@ export class TutorRoom {
       }
       const it = id && this.items.get(id);
       if (!it) return new Response(null, { status: 204 });
-      it.handed = Date.now(); it.tries = (it.tries || 0) + 1;
+      it.handed = Date.now(); it.tries = (it.tries || 0) + 1; it.by = who;
       return reply(it.payload);
     }
 
     if (url.pathname === "/answer" && req.method === "POST") {             // the relay, delivering
       const body = await req.json().catch(() => null), it = this.items.get(body?.id);
-      if (!it) return reply({ error: "unknown" }, 404);
-      if (typeof body.error === "string" && body.error) it.error = str(body.error, 300); else it.answer = str(body.text, LIMITS.answer);
+      if (!it) return reply({ error: "gone" }, 410);                  // the question expired, or this room restarted: not the relay's fault
+      this.seen = now;
+      if (it.answer != null) return reply({ ok: true, already: true });   // the first answer stands
+      if (typeof body.error === "string" && body.error) it.error = str(body.error, 300); else { it.answer = str(body.text, LIMITS.answer); it.error = null; }
       for (const res of this.askers.get(body.id) || []) res();
       this.askers.delete(body.id);
       return reply({ ok: true });
@@ -96,7 +104,7 @@ const room = (env) => env.TUTOR.get(env.TUTOR.idFromName("room"));
 const forward = (env, path, init) => room(env).fetch(new Request("https://room" + path, init));
 
 /** Routes for the signed-in owner. Returns null when the path is not the tutor's. */
-export async function tutorForOwner(req, env, url) {
+export async function tutorForOwner(req, env, url, isJson) {
   const p = url.pathname;
   if (!p.startsWith("/api/tutor/")) return null;
   if (!env.TUTOR || !env.RELAY_SECRET) return p === "/api/tutor/status" ? reply({ online: false, off: true }) : reply({ error: "offline" }, 503);
@@ -104,7 +112,7 @@ export async function tutorForOwner(req, env, url) {
   if (p === "/api/tutor/answer" && req.method === "GET") return forward(env, "/answer?id=" + encodeURIComponent(url.searchParams.get("id") || ""));
   if (p === "/api/tutor/ask" && req.method === "POST") {
     // a browser will not send this header cross-site without a preflight, which is never answered
-    if (!(req.headers.get("content-type") || "").includes("application/json")) return reply({ error: "content-type" }, 415);
+    if (!isJson(req)) return reply({ error: "content-type" }, 415);
     const buf = await req.arrayBuffer();
     if (buf.byteLength > 64 * 1024) return reply({ error: "too large" }, 413);
     return forward(env, "/ask", { method: "POST", headers: { "content-type": "application/json" }, body: buf });
@@ -119,7 +127,7 @@ export async function tutorForRelay(req, env, url, same) {
   if (!env.TUTOR || !env.RELAY_SECRET) return reply({ error: "not found" }, 404);
   const given = (req.headers.get("authorization") || "").replace(/^Bearer\s+/i, "");
   if (!given || !same(given, env.RELAY_SECRET)) return reply({ error: "forbidden" }, 403);
-  if (p === "/api/relay/next" && req.method === "GET") return forward(env, "/next");
+  if (p === "/api/relay/next" && req.method === "GET") return forward(env, "/next?relay=" + encodeURIComponent((req.headers.get("x-relay-id") || "").slice(0, 64)));
   if (p === "/api/relay/answer" && req.method === "POST") {
     const buf = await req.arrayBuffer();
     if (buf.byteLength > 128 * 1024) return reply({ error: "too large" }, 413);

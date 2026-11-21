@@ -120,7 +120,7 @@ const relay = {
   async ask(question, context, history) {
     const r = await fetch("/api/tutor/ask", { method: "POST", credentials: "same-origin", headers: { "content-type": "application/json" }, body: JSON.stringify({ question, context, history }) });
     if (r.status === 401) { location.href = "/login" + location.hash; throw new Error("You were signed out."); }
-    if (r.status === 503) { this.known = false; throw new Error("The tutor went offline just now. “Open in Claude” below still works."); }
+    if (r.status === 503) { this.known = false; throw new Error("The tutor went offline just now. Ask again and the question will open in Claude instead."); }
     if (r.status === 429) throw new Error("That is the tutor's limit for one day. “Open in Claude” below still works.");
     if (!r.ok) throw new Error("The question could not be sent. Try again.");
     const { id } = await r.json();
@@ -134,9 +134,23 @@ const relay = {
     throw new Error("No answer came back in time. Try again.");
   },
 };
+// One conversation per lesson (or lab), held here and not inside a tutor box: every step of a lesson rebuilds the
+// page, and an answer that arrives after the learner has moved on must land in the conversation, not in a box that
+// is no longer on screen. Kept in this browser, so a question asked last week is still under its lesson.
 const threads = {
-  load(key) { try { const v = JSON.parse(localStorage.getItem("gt.tutor." + key)); return Array.isArray(v) ? v : []; } catch { return []; } },
-  save(key, turns) { try { localStorage.setItem("gt.tutor." + key, JSON.stringify(turns.filter((t) => !t.failed).slice(-40))); } catch { /* fine */ } },
+  live: new Map(),
+  get(key) {
+    let t = this.live.get(key);
+    if (!t) {
+      let turns = [];
+      try { const v = JSON.parse(localStorage.getItem("gt.tutor." + key)); if (Array.isArray(v)) turns = v; } catch { /* start empty */ }
+      this.live.set(key, (t = { key, turns, busy: false, boxes: new Set() }));
+    }
+    return t;
+  },
+  save(t) { try { localStorage.setItem("gt.tutor." + t.key, JSON.stringify(t.turns.filter((x) => !x.failed).slice(-40))); } catch { /* fine */ } },
+  /** Redraw every box showing this conversation; forget boxes that have left the page. */
+  changed(t) { for (const b of [...t.boxes]) { if (b.el.isConnected) { b.seen = true; b.draw(); } else if (b.seen) t.boxes.delete(b); else b.draw(); } },
 };
 /** The tutor writes plain text with a little emphasis. Build it from nodes, never from HTML. */
 function prose(text) {
@@ -153,51 +167,54 @@ function prose(text) {
   return out;
 }
 /**
- * The tutor box. `where()` describes the moment ({ label, where, detail, seg, t }); `key` names the conversation,
- * which is kept in this browser so a question asked last week is still under the lesson it was asked in.
+ * The tutor box. `where()` describes the moment ({ label, where, detail, seg, t }); `key` names the conversation.
  */
 function tutorBox(lesson, where, what = "lesson", key = lesson?.id || what) {
   const DEFAULT = `Explain this ${what}'s main idea a different way, with a fresh example.`;
-  let turns = threads.load(key), busy = false;
+  const T = threads.get(key);
   const list = h("div", { class: "thread", "aria-live": "polite" });
   const inp = h("input", { type: "text", maxlength: 2000, placeholder: `Ask anything about this ${what}…`, "aria-label": "Question for the tutor", id: "tutor-q-" + key });
   const note = h("p", { class: "note tutor-note", text: "Checking for the tutor…" });
-  const clear = btn("Clear this conversation", () => { turns = []; threads.save(key, turns); draw(); }, "small ghost");
+  const clear = btn("Clear this conversation", () => { T.turns.length = 0; threads.save(T); threads.changed(T); }, "small ghost");
+  const other = btn("Open in Claude instead", () => openInClaude(lesson, inp.value.trim() || DEFAULT, where?.() || {}), "small ghost");
   const jump = (t) => { if (player && t.seg != null) { player.show(t.seg, false, t.t || 0); player.wrap.scrollIntoView({ behavior: "smooth", block: "nearest" }); } };
   const draw = () => {
-    list.replaceChildren(...turns.map((t) => (t.role === "me"
+    list.replaceChildren(...T.turns.map((t) => (t.role === "me"
       ? h("div", { class: "turn me" }, t.label ? h("button", { class: "at", type: "button", title: lesson && t.seg != null ? "Go back to this moment" : null, disabled: !(player && t.seg != null), text: t.label, onclick: () => jump(t) }) : null, h("p", { text: t.text }))
       : h("div", { class: "turn tutor" + (t.failed ? " failed" : "") }, prose(t.text)))),
-      ...(busy ? [h("div", { class: "turn tutor wait" }, h("p", { text: "Thinking…" }))] : []));
-    clear.hidden = !turns.length || busy;
+      ...(T.busy ? [h("div", { class: "turn tutor wait" }, h("p", { text: "Thinking…" }))] : []));
+    clear.hidden = !T.turns.length || T.busy;
   };
-  const other = btn("Open in Claude instead", () => openInClaude(lesson, inp.value.trim() || DEFAULT, where?.() || {}), "small ghost");
-  const mode = async (fresh) => {
-    const on = await relay.online(fresh);
+  const say = (on) => {
     other.hidden = !on;                       // when the tutor is not connected, asking already opens Claude
     note.textContent = on ? `Answered here by Claude, on your own subscription. It is told where you were in the ${what} when you asked.`
       : `The tutor is not connected right now, so a question opens Claude in a new tab, with this moment of the ${what} already in the message.`;
-    return on;
   };
+  const refresh = (fresh) => relay.online(fresh).then(say);
   const ask = async (q) => {
     q = (q ?? inp.value).trim() || DEFAULT;
-    if (busy) return;
+    if (T.busy) return;
     const at = where?.() || {};
-    if (!(await mode(true))) return openInClaude(lesson, q, at);
+    // Opening a new tab must happen inside the click itself, or a browser may block it. So when the tutor is
+    // already known to be offline, open Claude at once and check again in the background for next time.
+    if (relay.known === false) { openInClaude(lesson, q, at); refresh(true); return; }
+    if (relay.known == null && !(await relay.online())) { say(false); return openInClaude(lesson, q, at); }
     inp.value = "";
-    const history = turns.slice(-8).map(({ role, text }) => ({ role, text }));
-    turns.push({ role: "me", text: q, label: at.label, seg: at.seg, t: at.t, at: Date.now() });
-    busy = true; draw(); list.lastChild?.scrollIntoView({ behavior: "smooth", block: "nearest" });
-    try { turns.push({ role: "tutor", text: await relay.ask(q, moment(lesson, at, true), history), at: Date.now() }); }
-    catch (e) { turns.push({ role: "tutor", failed: true, text: e.message || "No answer came back. Try again." }); mode(true); }
-    busy = false; threads.save(key, turns); draw();
+    const history = T.turns.filter((x) => !x.failed).slice(-8).map(({ role, text }) => ({ role, text }));
+    T.turns.push({ role: "me", text: q, label: at.label, seg: at.seg, t: at.t, at: Date.now() });
+    T.busy = true; threads.save(T); threads.changed(T);            // the question is kept even if the page is left before the answer
+    list.lastChild?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    try { T.turns.push({ role: "tutor", text: await relay.ask(q, moment(lesson, at, true), history), at: Date.now() }); }
+    catch (e) { T.turns.push({ role: "tutor", failed: true, text: e.message || "No answer came back. Try again." }); refresh(true); }
+    T.busy = false; threads.save(T); threads.changed(T);
   };
   inp.addEventListener("keydown", (e) => { if (e.key === "Enter") ask(); });
-  draw(); mode();
-  const box = h("div", { class: "section tutor" }, h("h3", { text: turns.length ? "Your tutor" : "Stuck? Ask your tutor" }), list,
+  const box = h("div", { class: "section tutor" }, h("h3", { text: T.turns.length ? "Your tutor" : "Stuck? Ask your tutor" }), list,
     h("div", { class: "row" }, h("div", { style: { flex: "1 1 260px", minWidth: 0 } }, inp), btn("Ask", () => ask(), "", "spark")),
     h("div", { class: "row" }, ["Explain it differently", "Give me a harder example", "How would this go wrong on real data?", "Quiz me on this"].map((t) => btn(t, () => ask(t), "small ghost"))),
     h("div", { class: "row" }, note, other, clear));
+  T.boxes.add({ el: box, draw, seen: false });
+  draw(); refresh();
   box.ask = ask;
   return box;
 }
@@ -517,12 +534,14 @@ function guide() {
 // Erasing everything is a different, deliberate act from pressing a button twice: type the word, and it can still be undone.
 function eraseControls() {
   const word = h("input", { type: "text", "aria-label": "Type ERASE to confirm", placeholder: "Type ERASE", autocomplete: "off", style: { maxWidth: "200px" } });
-  const undoBox = h("div", { class: "section", hidden: !store.syncStatus().undoAt }, h("p", { text: "You started over recently. The copy from just before is still kept." }),
+  const undoBox = h("div", { class: "section", hidden: !store.syncStatus().undoAt }, h("p", { text: "You started over recently. The copy from just before is kept for a week, and bringing it back keeps whatever you have done since." }),
     h("div", { class: "row" }, btn("Bring my progress back", async () => { toast((await store.restore()) ? "Progress restored" : "Nothing to restore"); route(); }, "small")));
   const confirmBox = h("div", { class: "confirm", hidden: true }, h("b", { text: "Erase all progress on every device?" }),
     h("p", { text: "Finished lessons, review cards and practice ticks are cleared. Settings are kept. You can undo this from here afterwards." }),
     h("div", { class: "row" }, word, btn("Erase everything", async () => { if (word.value.trim().toUpperCase() !== "ERASE") return toast("Type ERASE to confirm"); await store.resetAll(); toast("Progress cleared"); route(); }, "small"),
       btn("Cancel", () => { confirmBox.hidden = true; word.value = ""; }, "small ghost")));
+  let shown = false;
+  const off = store.onChange(() => { if (undoBox.isConnected) shown = true; else if (shown) return off(); undoBox.hidden = !store.syncStatus().undoAt; });
   return { confirmBox, undoBox };
 }
 function about(toSettings) {

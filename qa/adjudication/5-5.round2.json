@@ -1,0 +1,7 @@
+{"lesson": "5-5",
+ "recheck": [
+  {"n": 0, "issue": "quiz 5-5-q2 says 'The model' scored at about 8 percent churns about 12 percent, which reads as the course model but is not in facts", "decision": "accepted", "reason": "calibration.logreg 5-10% bin is predicted 0.072, actual 0.097, which seg 5 quotes as 'about 7 percent churned at nearly 10'; 8 and 12 are not in facts.json. The question's logic does not depend on the exact figures.", "change": "q now opens 'Take illustrative numbers.' and says 'A model ranks well, but its predicted-versus-actual table ...'. Options, key and why unchanged, so the longest-option count is unchanged (3 of 10)."}
+ ],
+ "terms": [],
+ "segments_changed": [],
+ "open_questions": []}

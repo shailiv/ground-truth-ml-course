@@ -1,6 +1,6 @@
 {
  "1-1": {
-  "checked": 61,
+  "checked": 60,
   "keys": [
    "data"
   ],
@@ -39,7 +39,7 @@
   ]
  },
  "1-2": {
-  "checked": 9,
+  "checked": 10,
   "keys": [
    "data"
   ],
@@ -48,17 +48,24 @@
   "unverified": []
  },
  "1-3": {
-  "checked": 38,
+  "checked": 36,
   "keys": [
    "churn_by",
    "data"
   ],
   "elsewhere": [],
-  "derived": [],
+  "derived": [
+   {
+    "where": "1-3-q1",
+    "number": "38",
+    "context": "urn by snapshot month: 11, 12, 11, 12, 19 and 38 percent. Churn is accelerating.' ",
+    "from": "19 % of 7.2"
+   }
+  ],
   "unverified": []
  },
  "1-4": {
-  "checked": 39,
+  "checked": 44,
   "keys": [
    "data",
    "leakage"
@@ -70,7 +77,7 @@
   "unverified": []
  },
  "1-5": {
-  "checked": 29,
+  "checked": 42,
   "keys": [
    "data"
   ],
@@ -81,7 +88,7 @@
   "unverified": []
  },
  "2-1": {
-  "checked": 50,
+  "checked": 57,
   "keys": [
    "baseline",
    "data",
@@ -93,8 +100,14 @@
   "derived": [
    {
     "where": "seg1 narration",
+    "number": "99",
+    "context": "alid-traffic filter, and the first slide says 99 percent accurate. Accurate means ",
+    "from": "50 % change 0.7"
+   },
+   {
+    "where": "seg1 narration",
     "number": "88",
-    "context": "one shares the new churn model and says it is 88 percent accurate. Accurate means ",
+    "context": "ate's churn model was reported at stand-up as 88 percent accurate.",
     "from": "86.8 + 0.7"
    },
    {
@@ -102,6 +115,12 @@
     "number": "88",
     "context": "one of the 527 advertisers who left.   So the 88 percent from the stand-up is less",
     "from": "86.8 + 0.7"
+   },
+   {
+    "where": "seg9 narration",
+    "number": "99",
+    "context": "So when the vendor says 99 percent accurate, you have your r",
+    "from": "50 % change 0.7"
    },
    {
     "where": "2-1-q1",
@@ -137,7 +156,7 @@
   "unverified": []
  },
  "2-2": {
-  "checked": 123,
+  "checked": 134,
   "keys": [
    "baseline",
    "data",
@@ -145,6 +164,7 @@
    "uncertainty"
   ],
   "elsewhere": [
+   "11.5",
    "14.6",
    "77.8",
    "88.2"
@@ -171,6 +191,18 @@
    {
     "where": "2-2-q1",
     "number": "77",
+    "context": "The second is the better model: 77 of its 99 flags were right, again",
+    "from": "77.8 - 0.3"
+   },
+   {
+    "where": "2-2-q1",
+    "number": "99",
+    "context": "The second is the better model: 77 of its 99 flags were right, against 104 of ",
+    "from": "19.7 % change 0.3"
+   },
+   {
+    "where": "2-2-q1",
+    "number": "77",
     "context": "'s flags are right more often, but it catches 77 churners, not 104.",
     "from": "77.8 - 0.3"
    }
@@ -178,7 +210,7 @@
   "unverified": []
  },
  "2-3": {
-  "checked": 162,
+  "checked": 168,
   "keys": [
    "baseline",
    "data",
@@ -193,7 +225,7 @@
   "unverified": []
  },
  "2-4": {
-  "checked": 148,
+  "checked": 98,
   "keys": [
    "calibration",
    "data",
@@ -206,7 +238,7 @@
   "unverified": []
  },
  "2-5": {
-  "checked": 111,
+  "checked": 122,
   "keys": [
    "data",
    "regression"
@@ -214,46 +246,46 @@
   "elsewhere": [],
   "derived": [
    {
-    "where": "seg2 narration",
-    "number": "3,000",
-    "context": " with one advertiser. Say the model predicted 3,000 dollars and they spent 2,000. The",
-    "from": "177 % change 5.7"
-   },
-   {
     "where": "seg4 narration",
     "number": "99",
     "context": " single one.   The second is exactly right on 99 of them and off by 100,000 dollar",
-    "from": "500 % change 5.7"
+    "from": "46 % change 0.61"
    },
    {
     "where": "seg4 narration",
     "number": "10,000",
     "context": "res 1,000. The model with one disaster scores 10,000.",
-    "from": "615 % change 6.2"
+    "from": "73 % change 0.71"
    },
    {
     "where": "seg4 visual",
     "number": "99",
     "context": "exact on 99, $100,000 off on one",
-    "from": "500 % change 5.7"
+    "from": "46 % change 0.61"
    },
    {
     "where": "seg4 visual",
     "number": "$10,000",
     "context": "$10,000",
-    "from": "615 % change 6.2"
+    "from": "73 % change 0.71"
+   },
+   {
+    "where": "guess",
+    "number": "99",
+    "context": "very one of them. Model 2 is exactly right on 99 and off by $100,000 on the last. ",
+    "from": "46 % change 0.61"
    },
    {
     "where": "2-5-q4",
     "number": "$1,400",
     "context": " averaging about $500 of spend, says: 'Off by $1,400 on a $500 account? Useless to me.",
-    "from": "1395 - 5.7"
+    "from": "1395 - 0.61"
    }
   ],
   "unverified": []
  },
  "2-6": {
-  "checked": 152,
+  "checked": 167,
   "keys": [
    "data",
    "noise",
@@ -262,45 +294,50 @@
   "elsewhere": [
    "0.845",
    "177",
+   "200",
    "−$177"
   ],
   "derived": [
    {
-    "where": "seg6 narration",
+    "where": "seg7 narration",
     "number": "73",
     "context": "Its interval runs from 177 dollars one way to 73 the other. Zero is inside. Call i",
-    "from": "0.827 % of 0.6"
+    "from": "0.863 % change 0.5"
    },
    {
-    "where": "seg6 visual",
+    "where": "seg7 visual",
     "number": "$73",
     "context": "−$177 to +$73",
-    "from": "0.827 % of 0.6"
+    "from": "0.863 % change 0.5"
    }
   ],
   "unverified": []
  },
  "3-1": {
-  "checked": 79,
+  "checked": 80,
   "keys": [
    "data",
    "regression"
   ],
-  "elsewhere": [
-   "600"
-  ],
+  "elsewhere": [],
   "derived": [
    {
-    "where": "seg4 narration",
-    "number": "2,500",
-    "context": "ll. Squared, a miss fifty times bigger counts 2,500 times more.   So the fit bends it",
-    "from": "5257 / 2.1"
+    "where": "seg4 visual",
+    "number": "$10,000",
+    "context": "log scale: $1,000 → $10,000 equals $10,000 → $100,000",
+    "from": "1000 / 0.1"
+   },
+   {
+    "where": "seg4 visual",
+    "number": "$10,000",
+    "context": "log scale: $1,000 → $10,000 equals $10,000 → $100,000",
+    "from": "1000 / 0.1"
    }
   ],
   "unverified": []
  },
  "3-2": {
-  "checked": 72,
+  "checked": 81,
   "keys": [
    "baseline",
    "data",
@@ -326,11 +363,16 @@
     "where": "3-2-q2",
     "number": "−0.00004",
     "context": "ghts with no units: spend in the last 8 weeks −0.00004, active days −0.09, spend trend −"
+   },
+   {
+    "where": "3-2-q2",
+    "number": "−0.00004",
+    "context": "The summary undersells it: −2.1 against −0.00004 means spend trend matters about f"
    }
   ]
  },
  "3-3": {
-  "checked": 65,
+  "checked": 68,
   "keys": [
    "data",
    "logreg",
@@ -338,22 +380,12 @@
   ],
   "elsewhere": [
    "111",
+   "12.9",
    "136",
    "200"
   ],
   "derived": [],
-  "unverified": [
-   {
-    "where": "3-3-q2",
-    "number": "0.95",
-    "context": ", three questions deep, with a test AUC above 0.95. The first question is 'days sinc"
-   },
-   {
-    "where": "3-3-q2",
-    "number": "0.95",
-    "context": "ed the AUC on the training rows is also above 0.95, which rules out memorising."
-   }
-  ]
+  "unverified": []
  },
  "3-4": {
   "checked": 69,
@@ -384,20 +416,35 @@
   "unverified": []
  },
  "3-5": {
-  "checked": 56,
+  "checked": 69,
   "keys": [
    "data",
    "forest"
   ],
   "elsewhere": [
+   "0.845",
+   "0.851",
+   "136",
    "200"
   ],
-  "derived": [],
+  "derived": [
+   {
+    "where": "guess",
+    "number": "0.70",
+    "context": "About 0.70: most of the 0.98 was memory",
+    "from": "0.851 % change 0.845"
+   }
+  ],
   "unverified": [
    {
     "where": "guess",
-    "number": "0.97",
-    "context": "About 0.97: a strong model stays strong"
+    "number": "0.95",
+    "context": "About 0.95: a strong model stays strong"
+   },
+   {
+    "where": "guess",
+    "number": "0.90",
+    "context": "About 0.90: a little is always lost on new r"
    },
    {
     "where": "3-5-q1",
@@ -407,17 +454,12 @@
    {
     "where": "3-5-q1",
     "number": "0.85",
-    "context": "Nothing: 0.98 beats 0.85, so the new model replaces the ol"
-   },
-   {
-    "where": "3-5-q1",
-    "number": "0.85",
     "context": "are on the page, 0.98 cannot be compared with 0.85, which was measured on test rows."
    }
   ]
  },
  "4-1": {
-  "checked": 117,
+  "checked": 120,
   "keys": [
    "data",
    "depth_sweep",
@@ -429,36 +471,29 @@
   "unverified": []
  },
  "4-2": {
-  "checked": 111,
+  "checked": 110,
   "keys": [
    "boosting",
    "cv",
    "data",
-   "learning_curve",
+   "depth_sweep",
    "panel_leak"
   ],
   "elsewhere": [
-   "0.769",
    "54,000"
   ],
   "derived": [
    {
-    "where": "guess",
-    "number": "0.90",
-    "context": "About 0.90: it does better once it has whole",
-    "from": "0.88 + 0.02"
-   },
-   {
     "where": "4-2-q3",
     "number": "0.002",
     "context": "A lead of 0.002 is a tenth of the fold-to-fold wo",
-    "from": "1000 % of 0.02"
+    "from": "54000 % of 0.76"
    }
   ],
   "unverified": []
  },
  "4-3": {
-  "checked": 116,
+  "checked": 113,
   "keys": [
    "boosting",
    "data",
@@ -467,93 +502,52 @@
    "uncertainty",
    "video"
   ],
-  "elsewhere": [],
+  "elsewhere": [
+   "0.769"
+  ],
   "derived": [
    {
     "where": "seg2 narration",
     "number": "0.77",
     "context": ". On churn, that lifts the best single tree's 0.77 to about 0.83.",
-    "from": "0.761 + 0.009"
+    "from": "0.769 - 0.002"
    },
    {
     "where": "seg6 visual",
     "number": "95",
-    "context": "Each gap against its noise (95% intervals)",
+    "context": "Each gap against its own interval (95%)",
     "from": "0.04 % change 0.002"
    },
    {
     "where": "brief",
     "number": "95",
-    "context": ". Then give the difference in test AUC with a 95% bootstrap interval, and say in o",
+    "context": " Print the difference in test [metric] with a 95% interval from resampling the sam",
     "from": "0.04 % change 0.002"
    }
   ],
   "unverified": []
  },
  "4-4": {
-  "checked": 63,
+  "checked": 91,
   "keys": [
    "data",
-   "feature_groups"
+   "feature_groups",
+   "learning_curve",
+   "video"
   ],
   "elsewhere": [],
-  "derived": [
-   {
-    "where": "seg3 narration",
-    "number": "0.04",
-    "context": "uestion, the better algorithm was worth about 0.04, and even there a few hand-built ",
-    "from": "0.7 - 0.66"
-   },
-   {
-    "where": "seg5 narration",
-    "number": "28",
-    "context": "t login.   How often: active days in the last 28.   How much: spend over the windo",
-    "from": "0.66 % of 0.184"
-   },
-   {
-    "where": "seg6 narration",
-    "number": "56",
-    "context": "e date window inside the join condition: from 56 days before the snapshot up to, b",
-    "from": "0.18 % change 0.08"
-   },
-   {
-    "where": "seg6 visual",
-    "number": "- 28",
-    "context": "NCT CASE WHEN e.event_date >= s.snapshot_date - 28                       THEN e.even",
-    "from": "0.66 % of 0.184"
-   },
-   {
-    "where": "seg6 visual",
-    "number": "- 28",
-    "context": "SUM(CASE WHEN e.event_date >= s.snapshot_date - 28            THEN e.spend ELSE 0 EN",
-    "from": "0.66 % of 0.184"
-   },
-   {
-    "where": "seg6 visual",
-    "number": "- 56",
-    "context": "iser_id   AND e.event_date >= s.snapshot_date - 56   -- window opens   AND e.event_d",
-    "from": "0.18 % change 0.08"
-   },
-   {
-    "where": "brief",
-    "number": "56",
-    "context": "snapshot date, every aggregate limited to the 56 days before the snapshot and stri",
-    "from": "0.18 % change 0.08"
-   }
-  ],
+  "derived": [],
   "unverified": []
  },
  "4-5": {
-  "checked": 55,
+  "checked": 60,
   "keys": [
    "data",
    "explain_examples",
    "importance",
    "partial_dependence"
   ],
-  "elsewhere": [
-   "400"
-  ],
+  "elsewhere": [],
   "derived": [
    {
     "where": "4-5-q4",
@@ -571,7 +565,7 @@
   ]
  },
  "4-6": {
-  "checked": 98,
+  "checked": 96,
   "keys": [
    "data",
    "slices"
@@ -600,7 +594,7 @@
   "unverified": []
  },
  "5-2": {
-  "checked": 77,
+  "checked": 84,
   "keys": [
    "data",
    "experiment",
@@ -623,7 +617,7 @@
    {
     "where": "5-2-q1",
     "number": "3,000",
-    "context": "With only 3,000 advertisers per group and 40 perc",
+    "context": "With 3,000 per group and only 40 percent upt",
     "from": "1500 + 1468"
    },
    {
@@ -642,7 +636,7 @@
   "unverified": []
  },
  "5-3": {
-  "checked": 87,
+  "checked": 84,
   "keys": [
    "before_after",
    "data"
@@ -658,14 +652,14 @@
    {
     "where": "brief",
     "number": "95",
-    "context": ") with advertiser counts, the estimate with a 95 percent interval, and a check of ",
+    "context": "e and after) with counts, the estimate with a 95 percent interval, and how fast th",
     "from": "3.2 % change 0.17"
    }
   ],
   "unverified": []
  },
  "5-4": {
-  "checked": 78,
+  "checked": 76,
   "keys": [
    "data",
    "uplift"
@@ -688,30 +682,13 @@
     "where": "guess",
     "number": "90",
     "context": "About 90 percent",
-    "from": "44.8 / 0.5"
-   },
-   {
-    "where": "5-4-q2",
-    "number": "1,900",
-    "context": "ays: 'Trained on last quarter's outreach log: 1,900 advertisers the account managers ",
-    "from": "400 % change 20"
+    "from": "2.9 % change 0.3"
    }
   ],
-  "unverified": [
-   {
-    "where": "5-4-q2",
-    "number": "6,100",
-    "context": "vertisers the account managers chose to call, 6,100 they did not. Two models fitted; "
-   },
-   {
-    "where": "5-4-q2",
-    "number": "8,000",
-    "context": "8,000 advertisers are too few to rank 4"
-   }
-  ]
+  "unverified": []
  },
  "5-5": {
-  "checked": 116,
+  "checked": 112,
   "keys": [
    "data",
    "economics",
@@ -726,7 +703,7 @@
   "unverified": []
  },
  "5-6": {
-  "checked": 70,
+  "checked": 71,
   "keys": [
    "data",
    "drift"
@@ -741,27 +718,27 @@
    },
    {
     "where": "5-6-q3",
-    "number": "48",
-    "context": " above 0.5, and the latest report says: 'Only 48 percent of them churned. The mode",
-    "from": "10.8 % change 5.6"
-   },
-   {
-    "where": "5-6-q3",
     "number": "74",
     "context": "until precision on the called list is back at 74 percent",
     "from": "14.9 % of 11.1"
    },
    {
+    "where": "5-6-q3",
+    "number": "74",
+    "context": "n's assumption, would produce: four fifths of 74 percent is about 59.",
+    "from": "14.9 % of 11.1"
+   },
+   {
     "where": "brief",
     "number": "95",
-    "context": " status, with the number of advertisers and a 95 percent margin on each actual rat",
+    "context": "ares about], with the number of [units] and a 95 percent margin on each actual rat",
     "from": "5.5 % change 0.25"
    }
   ],
   "unverified": []
  },
  "6-1": {
-  "checked": 61,
+  "checked": 60,
   "keys": [
    "data",
    "forecast"
@@ -771,7 +748,7 @@
   "unverified": []
  },
  "6-2": {
-  "checked": 70,
+  "checked": 65,
   "keys": [
    "data",
    "forecast"
@@ -781,7 +758,7 @@
   "unverified": []
  },
  "6-3": {
-  "checked": 79,
+  "checked": 80,
   "keys": [
    "data",
    "series_anomalies"
@@ -791,7 +768,7 @@
   "unverified": []
  },
  "6-4": {
-  "checked": 79,
+  "checked": 75,
   "keys": [
    "data",
    "time_to_event"
@@ -801,7 +778,7 @@
   "unverified": []
  },
  "7-1": {
-  "checked": 72,
+  "checked": 75,
   "keys": [
    "data",
    "distance",
@@ -812,7 +789,7 @@
   "unverified": []
  },
  "7-2": {
-  "checked": 72,
+  "checked": 74,
   "keys": [
    "data",
    "learning_curve",
@@ -829,48 +806,36 @@
    {
     "where": "7-2-q4",
     "number": "0.90",
-    "context": "Fine: a similarity of 0.90 means a 90 percent chance that bo",
+    "context": "ghbour and expect one ticket in ten misfiled: 0.90 is a 90 percent match.",
     "from": "90 % of 0.809"
    },
    {
     "where": "7-2-q4",
     "number": "90",
-    "context": "Fine: a similarity of 0.90 means a 90 percent chance that both belong i",
+    "context": " expect one ticket in ten misfiled: 0.90 is a 90 percent match.",
     "from": "65 / 0.72"
    },
    {
     "where": "7-2-q4",
     "number": "0.90",
-    "context": " similarity needed for a match is raised from 0.90 to 0.95.",
+    "context": "Raise the similarity needed for a match from 0.90 to 0.95, then route as the collea",
     "from": "90 % of 0.809"
    }
   ],
   "unverified": []
  },
  "7-3": {
-  "checked": 109,
+  "checked": 111,
   "keys": [
    "data",
    "tickets"
   ],
-  "elsewhere": [
-   "16.4",
-   "48.5",
-   "57.7",
-   "76.7"
-  ],
-  "derived": [
-   {
-    "where": "seg4 visual",
-    "number": "29.6",
-    "context": "18.9 to 29.6",
-    "from": "48.5 - 18.9"
-   }
-  ],
+  "elsewhere": [],
+  "derived": [],
   "unverified": []
  },
  "7-4": {
-  "checked": 76,
+  "checked": 81,
   "keys": [
    "baseline",
    "data",
@@ -892,24 +857,36 @@
     "number": "7.2",
     "context": "Two groups compared: 7.2% vs 18.4% churn, gap 11.2 pts",
     "from": "11.4 % of 0.825"
+   },
+   {
+    "where": "seg4 visual",
+    "number": "4.7",
+    "context": "p minus change in a similar untreated group: +4.7 pts, interval 3.2 to 6.2",
+    "from": "10.9 / 2.3"
+   },
+   {
+    "where": "seg4 visual",
+    "number": "6.2",
+    "context": "ar untreated group: +4.7 pts, interval 3.2 to 6.2",
+    "from": "13.2 % of 0.825"
+   },
+   {
+    "where": "seg4 visual",
+    "number": "4.7",
+    "context": "“rose 4.7 points more than the comparison g",
+    "from": "10.9 / 2.3"
    }
   ],
   "unverified": []
  },
  "7-5": {
-  "checked": 19,
+  "checked": 18,
   "keys": [
    "baseline",
    "data"
   ],
   "elsewhere": [],
   "derived": [],
-  "unverified": [
-   {
-    "where": "seg4 visual",
-    "number": "20",
-    "context": "Fatigued in the top 20, model vs rule"
-   }
-  ]
+  "unverified": []
  }
 }

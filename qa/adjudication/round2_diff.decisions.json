@@ -1,0 +1,30 @@
+{
+ "what": "Rulings on the six problems a Gemini model reported when it was sent every field the second round of editors had changed (120 fields in 30 lessons, old text beside new, with the results file). Tool: build/factcheck_diff.py. Raw reports: qa/factcheck/round2_diff/.",
+ "date": "2026-11-22",
+ "decisions": [
+  {"lesson": "4-2", "path": "audit_checklist[0]", "severity": "high", "decision": "accepted",
+   "problem": "The edit tied 'meets new advertisers' to 'check months come after training months'. They are separate requirements: whole advertisers held out answers the first, time order answers months that differ.",
+   "checked": "facts.json cv (shuffled folds on one row per advertiser) and panel_leak.whole_advertisers_held_out both hold out advertisers without ordering months.",
+   "change": "Zero advertisers on both sides for a model that must meet new advertisers; and, when months differ, check months after training months with a gap as long as the outcome window."},
+  {"lesson": "4-2", "path": "ask_assistant", "severity": "medium", "decision": "accepted",
+   "problem": "The brief bundled repeated units with differing periods, forcing time-ordered checks with a gap even where grouped folds are the right tool, and leaving one check on a three-month span.",
+   "change": "Three separate cases in the brief: one row per unit from alike periods (shuffled folds); several rows per unit and new units ahead (each unit's rows in one fold, overlap count zero); periods that differ (later periods, after a gap, and say how many checks the data allows). 120 words."},
+  {"lesson": "4-5", "path": "segments[4].narration", "severity": "medium", "decision": "accepted",
+   "problem": "'Add her pushes ... to the average advertiser's score' can be read as adding scorecard points to the 5 percent just quoted, which would give about 98 percent, not 73.",
+   "checked": "explain_examples: average advertiser 0.047, this advertiser 0.727; logit(0.047) is about -3.0, plus about 4 points is about 1.0, and the S-curve of that is about 0.73.",
+   "change": "'to the average advertiser's points' (the sentence before has just named them scorecard points). One clip re-recorded and heard back."},
+  {"lesson": "4-5", "path": "segments[4].visual.note", "severity": "medium", "decision": "accepted",
+   "problem": "Same ambiguity on the slide: 'added to its score' right after 'Average advertiser: 4.7%'.",
+   "change": "'Her pushes added to the average advertiser's scorecard points, then through the S-curve: 72.7%.'"},
+  {"lesson": "4-6", "path": "quiz[3].why", "severity": "medium", "decision": "accepted",
+   "problem": "'Only the order matters holds when every score is off in the same way' is false once scores are multiplied by money: a uniform shift in probability changes the dollar order.",
+   "change": "The explanation now says the claim fails twice: multiplying by money uses the probability values themselves, and a group whose percentages run low sits too low on any list."},
+  {"lesson": "6-2", "path": "audit_checklist[2]", "severity": "low", "decision": "accepted",
+   "problem": "'twelve monthly backtests give only six totals each' misstates it: twelve backtests give twelve totals, six to build the range and six to check it. 'On each side' also reads as above/below.",
+   "checked": "forecast.interval.how in facts.json.",
+   "change": "'the number of errors used to build it and to check it: twelve monthly backtests split in half leave only six totals in each half'. The brief's matching phrase was reworded the same way (120 words)."}
+ ],
+ "also": [
+  {"lesson": "5-1", "path": "segments[3].narration", "change": "'The truth is still about 2.' became 'about 2 points.' because the voice kept adding 'percent' (see qa/audio_flags_reviewed.json). Checked: tracking_story.truth.effect_pts is -2.3."}
+ ]
+}

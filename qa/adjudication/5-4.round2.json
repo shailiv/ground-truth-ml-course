@@ -1,0 +1,8 @@
+{"lesson": "5-4",
+ "recheck": [
+  {"n": 0, "issue": "glossary 'uplift' defined as chance without minus chance with, which inverts the sign for a wanted outcome", "decision": "accepted", "reason": "The general treatment effect is outcome with the action minus outcome without it; uplift.method's 'churn without the call minus churn with it' is that same quantity for an unwanted outcome. The definition is stated for 'an outcome', so it must cover both.", "change": "def now: '... the chance with the action minus the chance without it, or the other way round when the outcome is unwanted, such as churn, so that a helpful action always shows a positive uplift.'"},
+  {"n": 1, "issue": "ask_assistant template ranks by [outcome] without minus with, backwards for a wanted [outcome] such as the transfer examples", "decision": "accepted", "reason": "Same sign point; the template is meant to be pasted for any [outcome] (R3), and the three transfer questions are all wanted outcomes.", "change": "ask_assistant: 'rank held-out [units] by predicted improvement: [outcome] with the action minus without it, or the reverse if [outcome] is unwanted, such as churn'; 'plain risk' -> 'predicted [outcome] alone'; two phrases tightened to stay at 120 words. Narration untouched: it speaks only of churn, where 'whose chance of leaving drops' is correct."}
+ ],
+ "terms": [],
+ "segments_changed": [],
+ "open_questions": []}

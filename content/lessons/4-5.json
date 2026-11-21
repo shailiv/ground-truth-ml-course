@@ -136,7 +136,7 @@
       }
     },
     {
-      "narration": "Question three is hers: why this advertiser? Start from an advertiser who is average on every column. The model gives that one about 5 percent. Then measure how far she sits from average. [[1]] She was active on 5 of the last 28 days. [[2]] Her CPA is more than two and a half times her goal. [[3]] Her newest creative is 120 days old. [[4]] [[5]] Spend trend and click rate add two smaller pushes. Each push is the column's weight times her distance from average, in the scorecard points of module three, not percentage points. Add her pushes, about four points, to the average advertiser's score, then pass the total through the S-curve: 5 percent becomes 73. For complex models the same idea is called SHAP. Either way it is arithmetic, not a cause.",
+      "narration": "Question three is hers: why this advertiser? Start from an advertiser who is average on every column. The model gives that one about 5 percent. Then measure how far she sits from average. [[1]] She was active on 5 of the last 28 days. [[2]] Her CPA is more than two and a half times her goal. [[3]] Her newest creative is 120 days old. [[4]] [[5]] Spend trend and click rate add two smaller pushes. Each push is the column's weight times her distance from average, in the scorecard points of module three, not percentage points. Add her pushes, about four points, to the average advertiser's points, then pass the total through the S-curve: 5 percent becomes 73. For complex models the same idea is called SHAP. Either way it is arithmetic, not a cause.",
       "visual": {
         "type": "table",
         "title": "Advertiser 111754: why 73%?",
@@ -178,7 +178,7 @@
             "+0.30"
           ]
         ],
-        "note": "Scorecard points add up before the S-curve; they are not percentage points. Average advertiser: 4.7%. Her pushes added to its score, then through the S-curve: 72.7%. Top five shown; averages from the training months. CPA vs goal is scaled after its empty values are filled, so its push does not reproduce exactly from the average shown."
+        "note": "Scorecard points add up before the S-curve; they are not percentage points. Average advertiser: 4.7%. Her pushes added to the average advertiser's scorecard points, then through the S-curve: 72.7%. Top five shown; averages from the training months. CPA vs goal is scaled after its empty values are filled, so its push does not reproduce exactly from the average shown."
       }
     },
     {

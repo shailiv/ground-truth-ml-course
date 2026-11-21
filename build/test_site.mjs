@@ -2,7 +2,7 @@
 //   node build/test_site.mjs            (runs the real worker.js against the local stand-in for Cloudflare)
 import fs from "node:fs";
 import worker from "../site/worker.js";
-import { merge, clamp, blank } from "../site/public/js/merge.js";
+import { merge, clamp, blank, canon } from "../site/public/js/merge.js";
 import { makeEnv } from "./local_env.mjs";
 
 let pass = 0, fail = 0;
@@ -37,6 +37,22 @@ const eq = (a, b, name) => ok(JSON.stringify(a) === JSON.stringify(b), `${name}:
   const r = merge(before, reset);
   ok(!r.lessons["1-1"] && r.lessons["1-2"], "a reset drops what came before it and keeps what came after");
   eq(r.settings.dailyCap, 6, "settings survive a reset");
+  // start over must hold against a device that was offline through it (review R2): the laptop resets and then
+  // reopens lesson 1-1; the phone, offline since before the reset, still has 1-1 finished and a well-practised card
+  const laptopAfter = { ...blank(), lessons: { "1-1": { seg: 2, t: T + 400 } }, cards: { "1-1-c0": { box: 0, n: 1, ok: 1, due: 9, t: T + 450 } }, settings: { reset: T + 300, t: T + 300 } };
+  const phoneStale = { ...blank(), lessons: { "1-1": { done: T + 10, watched: T + 5, quiz: { score: 4, of: 4, t: T + 10 }, t: T + 10 } }, cards: { "1-1-c0": { box: 4, n: 5, ok: 5, due: 99, t: T + 20 } } };
+  for (const [x, y, tag] of [[laptopAfter, phoneStale, "laptop,phone"], [phoneStale, laptopAfter, "phone,laptop"]]) {
+    const m = merge(x, y);
+    ok(!m.lessons["1-1"].done && !m.lessons["1-1"].quiz && m.lessons["1-1"].seg === 2, `a stale device cannot bring back a lesson erased by start-over (${tag})`);
+    eq(m.cards["1-1-c0"].n, 1, `nor an erased card's old count (${tag})`);
+  }
+  // a device with a fast clock (review R3): after the server's time is known, its own copy is pulled back too,
+  // so the record no longer sits "after" a reset that really came later
+  const fast = clamp({ ...blank(), lessons: { "2-1": { done: T + 3 * 3600e3, t: T + 3 * 3600e3 } } }, T);
+  const laterReset = { ...blank(), settings: { reset: T + 3600e3, t: T + 3600e3 } };
+  ok(!merge(fast, laterReset).lessons["2-1"], "a record from a fast clock does not outlive a later start-over once clamped");
+  // two copies that differ only in the order their records were made are the same (review R9)
+  ok(canon({ ...blank(), lessons: { a: { t: 1 }, b: { t: 2 } } }) === canon({ ...blank(), lessons: { b: { t: 2 }, a: { t: 1 } } }), "comparison ignores the order of records");
   // hostile or broken input
   const bad = JSON.parse('{"lessons":{"__proto__":{"done":1,"t":1},"1-1":"oops","1-2":{"done":5,"t":5}},"cards":[1,2],"settings":7}');
   const mb = merge(blank(), bad);
@@ -105,6 +121,21 @@ const clip = (() => { const d = "site/public/audio"; if (!fs.existsSync(d)) retu
   body = await (await call("/api/progress", me())).json();
   ok(body.state.lessons["1-1"]?.done && body.state.cards["1-1-c0"], "and it stays back after the next read");
   eq((await call("/api/progress/restore", me({ method: "POST", headers: { "content-type": "application/json" }, body: "{}" }))).status, 404, "there is nothing to undo twice");
+  // undo must add back, never replace (review R4): start over, do new work, then undo
+  await new Promise((res) => setTimeout(res, 5));
+  await put({ ...blank(), settings: { reset: Date.now(), t: Date.now() } });
+  await new Promise((res) => setTimeout(res, 5));
+  await put({ ...blank(), lessons: { "3-3": { done: Date.now(), t: Date.now() } } });
+  eq((await call("/api/progress/restore", me({ method: "POST", headers: { "content-type": "text/plain" }, body: "{}" }))).status, 415, "undo cannot be triggered by a cross-site form");
+  body = await (await call("/api/progress/restore", me({ method: "POST", headers: { "content-type": "application/json" }, body: "{}" }))).json();
+  ok(body.state.lessons["1-1"]?.done && body.state.lessons["3-3"]?.done, "undo brings the old progress back and keeps the work done since");
+  // the undo offer expires
+  await new Promise((res) => setTimeout(res, 5));
+  await put({ ...blank(), settings: { reset: Date.now(), t: Date.now() } });
+  const copy = JSON.parse(env.PROGRESS._map.get("backup:owner:before-reset"));
+  copy.at = Date.now() - 8 * 864e5; env.PROGRESS._map.set("backup:owner:before-reset", JSON.stringify(copy));
+  ok((await (await call("/api/progress", me())).json()).undo === 0 && (await call("/api/progress/restore", me({ method: "POST", headers: { "content-type": "application/json" }, body: "{}" }))).status === 404, "the undo offer lapses after a week");
+  eq((await call("/api/progress", me({ method: "PUT", headers: { "content-type": "text/plain; application/json" }, body: "{}" }))).status, 415, "a disguised content type is refused");
 
   // audio: byte ranges, as Safari needs them
   if (clip) {
@@ -153,6 +184,28 @@ const clip = (() => { const d = "site/public/audio"; if (!fs.existsSync(d)) retu
     await w2;
     await call("/api/relay/answer", { method: "POST", headers: { ...J, ...relayAuth }, body: JSON.stringify({ id: id2, error: "The tutor could not answer just now." }) });
     eq((await (await call("/api/tutor/answer?id=" + id2, me())).json()).error, "The tutor could not answer just now.", "a relay failure is passed on");
+    eq((await call("/api/tutor/ask", me({ method: "POST", headers: { "content-type": "text/plain; application/json" }, body: "{}" }))).status, 415, "a disguised content type cannot ask");
+    // two relays (review R5): relay A takes a question and is still working on it when relay B asks for work
+    const relayA = { ...relayAuth, "x-relay-id": "relay-a" }, relayB = { ...relayAuth, "x-relay-id": "relay-b" };
+    const wa = call("/api/relay/next", { headers: relayA });
+    await new Promise((res) => setTimeout(res, 20));
+    const id3 = (await (await call("/api/tutor/ask", askBody({ question: "third" }))).json()).id;
+    eq((await (await wa).json()).id, id3, "relay A gets the question");
+    const room = env.TUTOR.get(), item = room.items.get(id3);
+    item.handed = Date.now() - 60_000;                                   // a minute into a long answer
+    eq((await (await call("/api/tutor/status", me())).json()).online, true, "a relay busy on a long answer still shows as connected");
+    const wb = call("/api/relay/next", { headers: relayB });             // B must wait, not be handed A's question
+    const raced = await Promise.race([wb.then((r) => r.status), new Promise((res) => setTimeout(() => res("still waiting"), 150))]);
+    eq(raced, "still waiting", "a second relay is not handed a question the first is still answering");
+    eq((await call("/api/relay/answer", { method: "POST", headers: { ...J, ...relayA }, body: JSON.stringify({ id: id3, text: "first answer" }) })).status, 200, "relay A answers");
+    await call("/api/relay/answer", { method: "POST", headers: { ...J, ...relayB }, body: JSON.stringify({ id: id3, text: "second answer" }) });
+    eq((await (await call("/api/tutor/answer?id=" + id3, me())).json()).text, "first answer", "a second answer does not replace the first");
+    // the same relay coming back without having answered means the question was lost: it gets it again, once
+    const id4 = (await (await call("/api/tutor/ask", askBody({ question: "fourth" }))).json()).id;
+    eq((await (await wb).json()).id, id4, "the waiting relay B gets the next question");
+    room.items.get(id4).handed = Date.now() - 5_000;
+    eq((await (await call("/api/relay/next", { headers: relayB })).json()).id, id4, "a relay that returns without answering is handed its lost question again");
+    eq((await call("/api/relay/answer", { method: "POST", headers: { ...J, ...relayB }, body: JSON.stringify({ id: "no-such-question", text: "x" }) })).status, 410, "an answer to a forgotten question is 'gone', not 'forbidden'");
     const bare = makeEnv({ TUTOR: undefined, RELAY_SECRET: undefined });
     const c2 = (await worker.fetch(new Request("http://localhost/login", { ...form({ passphrase: "test" }), redirect: "manual" }), bare)).headers.get("set-cookie").split(";")[0];
     eq((await (await worker.fetch(new Request("http://localhost/api/tutor/status", { headers: { cookie: c2 } }), bare)).json()).online, false, "a site deployed without the tutor simply reports it offline");
@@ -170,5 +223,16 @@ const clip = (() => { const d = "site/public/audio"; if (!fs.existsSync(d)) retu
   eq(last.status, 429, "repeated wrong passphrases are slowed down");
 }
 
+// ---------------------------------------------------------------- what would stop tomorrow's deploy
+{
+  const course = JSON.parse(fs.readFileSync("site/public/data/course.json", "utf8"));
+  const silent = course.lessons.filter((l) => !l.audio).map((l) => l.id), noDrill = Object.entries(course.drills).filter(([, d]) => !d.src).map(([n]) => n);
+  ok(silent.length === 0, `every lesson in the built site has its narration (missing: ${silent.join(" ") || "none"})`);
+  ok(noDrill.length === 0, `every module has its drill track (missing: ${noDrill.join(" ") || "none"})`);
+  const lost = course.lessons.flatMap((l) => (l.audio || []).map((a) => a.src)).filter((src) => !fs.existsSync("site/public/" + src));
+  ok(lost.length === 0, `every clip the site refers to exists on disk (${lost.length} missing)`);
+}
+
 console.log(`${pass} passed, ${fail} failed`);
+fs.writeFileSync("qa/site_tests.json", JSON.stringify({ passed: pass, failed: fail }));      // the About page quotes this count
 process.exit(fail ? 1 : 0);

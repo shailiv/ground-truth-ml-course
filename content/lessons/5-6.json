@@ -48,8 +48,8 @@
         "type": "bullets",
         "title": "Two ways the world moves",
         "items": [
-          "The inputs move: a new mix of advertisers, a column goes empty. Visible the same day",
-          "The relationship moves: same inputs, different outcome. Visible only when outcomes arrive"
+          "The inputs move (data drift): a new mix of advertisers, a column goes empty. Visible the same day",
+          "The relationship moves (concept drift): same inputs, different outcome. Visible only when outcomes arrive"
         ]
       }
     },
@@ -180,7 +180,7 @@
       "id": "5-6-q3",
       "concept": "acting on the list changes the labels",
       "domain": "course",
-      "q": "At launch, 74 percent of advertisers scored above 0.5 went on to churn. Since then the success team has called everyone above 0.5, and the latest report says: 'Only 48 percent of them churned. The model has degraded; retrain on the latest months.' What is the right read?",
+      "q": "At launch, 74 percent of advertisers scored above 0.5 went on to churn. Since then the success team has called everyone above 0.5, and the latest report says: 'Only 59 percent of them churned. The model has degraded; retrain on the latest months.' What is the right read?",
       "options": [
         "Agreed: precision has dropped sharply, so retrain on the freshest data available",
         "The calls changed the outcomes; judge the model on a random slice nobody called",
@@ -188,7 +188,7 @@
         "Precision is the wrong measure here; check whether the AUC has fallen as well"
       ],
       "answer": 1,
-      "why": "Advertisers the calls saved show up as high scores that did not churn, so the model looks worst exactly where the team succeeded. Retraining on them would teach the next model that rescued accounts were safe; an untouched random slice is the only fair test."
+      "why": "Advertisers the calls saved show up as high scores that did not churn, so the model looks worst exactly where the team succeeded. Retraining on them would teach the next model that rescued accounts were safe; an untouched random slice is the only fair test. The drop itself is about what calls that save one churner in five, the money lesson's assumption, would produce: four fifths of 74 percent is about 59."
     },
     {
       "id": "5-6-q4",
@@ -339,6 +339,14 @@
     {
       "term": "untouched holdout",
       "def": "A random slice of the list that nobody acts on, kept so the model can still be judged fairly once the team starts acting."
+    },
+    {
+      "term": "data drift (covariate shift)",
+      "def": "Drift in the inputs themselves, such as a new mix of advertisers or a column going empty; you can see it the day you score."
+    },
+    {
+      "term": "concept drift",
+      "def": "Drift in how the inputs relate to the outcome: the same inputs now lead to a different outcome, as for gaming in June; it shows only when the outcomes arrive."
     }
   ]
 }

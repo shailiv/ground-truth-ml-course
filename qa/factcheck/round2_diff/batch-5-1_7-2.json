@@ -1,0 +1,25 @@
+{
+ "changes_checked": 25,
+ "problems": [
+  {
+   "lesson": "6-2",
+   "path": "audit_checklist[2]",
+   "severity": "low",
+   "wrong": "with the number of errors on each side: twelve monthly backtests give only six totals each, too few for a range",
+   "why": "Each monthly backtest produces one 28-day horizon total, not six totals each (12 totals in all across the 12 backtests in forecast.backtest.how, which split into 6 to build the band and 6 to check it in forecast.interval.how). Also, 'on each side' right after coverage usually means misses above vs below the interval rather than the build half vs check half.",
+   "fix": "with the number of errors used to build and to check it: twelve monthly backtests split in half give only six totals in each half, too few for a range"
+  }
+ ],
+ "_lessons": [
+  "5-1",
+  "5-2",
+  "5-3",
+  "5-4",
+  "5-5",
+  "5-6",
+  "6-1",
+  "6-2",
+  "7-2"
+ ],
+ "_fields": 25
+}

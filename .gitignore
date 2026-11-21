@@ -25,3 +25,4 @@ qa/js_before_design/
 site/wrangler.deploy.jsonc
 site/.dev.vars
 qa/relay_test.log
+site/wrangler.deploy.plain.jsonc

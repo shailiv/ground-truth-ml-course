@@ -33,24 +33,29 @@ const RULES = {
 
 export function merge(a, b) {
   const out = blank();
+  const sa = obj(a?.settings) || { t: 0 }, sb = obj(b?.settings) || { t: 0 };
+  // "start over" is a timestamp, not a deletion: anything recorded before it is dropped on every device.
+  // It is applied to each side BEFORE the two are combined. Otherwise a device that was offline during the reset
+  // would hand its old "finished" back to any record that has been touched since.
+  const reset = Math.max(num(sa.reset), num(sb.reset));
+  const live = (rec) => (rec && num(rec.t) >= reset ? rec : null);
   for (const c of COLLS) {
     const A = obj(a?.[c]) || {}, B = obj(b?.[c]) || {};
     for (const id of new Set([...Object.keys(A), ...Object.keys(B)])) {
       if (id === "__proto__" || id === "constructor" || id === "prototype") continue;
-      const x = obj(A[id]), y = obj(B[id]);
+      const x = live(obj(A[id])), y = live(obj(B[id]));
       const rec = x && y ? RULES[c](x, y) : x || y;
       if (rec) out[c][id] = { ...rec, t: Math.max(num(x?.t), num(y?.t)) };
     }
   }
-  const sa = obj(a?.settings) || { t: 0 }, sb = obj(b?.settings) || { t: 0 };
   out.settings = { ...older(sa, sb), ...newer(sa, sb) };
-  // "start over" is a timestamp, not a deletion: anything recorded before it is dropped on every device
-  const reset = Math.max(num(sa.reset), num(sb.reset));
-  if (reset) {
-    out.settings.reset = reset;
-    for (const c of COLLS) for (const [id, rec] of Object.entries(out[c])) if (num(rec.t) < reset) delete out[c][id];
-  } else delete out.settings.reset;
+  if (reset) out.settings.reset = reset; else delete out.settings.reset;
   return out;
+}
+
+/** The same state with its keys in a fixed order, as text: for asking "are these two the same?" */
+export function canon(x) {
+  return JSON.stringify(x, (k, v) => (v && typeof v === "object" && !Array.isArray(v) ? Object.fromEntries(Object.keys(v).sort().map((key) => [key, v[key]])) : v));
 }
 
 /** Server side: no timestamp from a device may lie in the future (a fast clock, or a reset "next year" that would

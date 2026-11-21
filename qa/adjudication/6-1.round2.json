@@ -1,0 +1,7 @@
+{"lesson": "6-1",
+ "recheck": [
+  {"n": 0, "issue": "other_ways offers boosted trees on calendar columns without the caveat that trees cannot extrapolate a trend", "decision": "accepted", "reason": "forecast.one_year_ahead.why: a tree only outputs values it has seen; on raw level it misses the one-year total by -8.9% (gradient_boosting_on_raw_level.error_of_total -0.0889, MAPE 10.2%) against 5.7% MAPE with the trend removed first. The 5.4% quoted is the 28-day backtest (backtest.methods.gradient_boosting_on_calendar.mape 0.0541), where the horizon is short enough for the flaw to stay small.", "change": "other_ways[1].when: '...provided the trend is taken out first or the model predicts growth rather than level: a tree only outputs values it has seen, so on raw levels it under-forecasts a growing series. ... it scored 5.4% over the next 28 days, level with the four-week average.'"}
+ ],
+ "terms": [],
+ "segments_changed": [],
+ "open_questions": []}

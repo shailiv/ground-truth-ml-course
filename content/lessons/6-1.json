@@ -336,7 +336,7 @@
     },
     {
       "approach": "A boosted-tree model on calendar columns",
-      "when": "When rhythms interact in ways a fixed formula cannot express. Judge it against the same baselines: on this series it scored 5.4%, level with the four-week average."
+      "when": "When rhythms interact in ways a fixed formula cannot express, provided the trend is taken out first or the model predicts growth rather than level: a tree only outputs values it has seen, so on raw levels it under-forecasts a growing series. Judge it against the same baselines: on this series it scored 5.4% over the next 28 days, level with the four-week average."
     },
     {
       "approach": "A run-rate from the last four weeks, adjusted by hand for known events",

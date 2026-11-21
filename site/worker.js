@@ -10,6 +10,10 @@ export { TutorRoom };
 const COOKIE = "gt_session";
 const SESSION_DAYS = 60;
 const MAX_BODY = 512 * 1024;
+const UNDO_DAYS = 7;                          // how long "bring my progress back" stays on offer after a start-over
+/** True only for a real JSON request. A browser cannot send this content type cross-site without a preflight,
+ *  which this Worker never answers; "text/plain; application/json" does not count. */
+export const isJson = (req) => (req.headers.get("content-type") || "").split(";")[0].trim().toLowerCase() === "application/json";
 const CSP = "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; media-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'";
 
 /** Every response leaves through here, so none can miss the security headers. */
@@ -114,16 +118,20 @@ async function login(req, env) {
 async function progress(req, env, user, url) {
   const key = `progress:${user}`, undoKey = `backup:${user}:before-reset`;
   const now = Date.now();
-  const reply = async (state, status = 200) => json({ state, user, now, undo: (await env.PROGRESS.get(undoKey, "json"))?.at || 0 }, status);
+  const undoCopy = async () => { const u = await env.PROGRESS.get(undoKey, "json"); return u?.state && now - u.at < UNDO_DAYS * 864e5 ? u : null; };
+  const reply = async (state, status = 200) => json({ state, user, now, undo: (await undoCopy())?.at || 0 }, status);
   if (url.pathname === "/api/progress/restore") {
     if (req.method !== "POST") return json({ error: "method" }, 405);
-    const saved = await env.PROGRESS.get(undoKey, "json");
-    if (!saved?.state) return json({ error: "nothing to restore" }, 404);
-    // bring the copy back with fresh timestamps, so the reset every device still remembers cannot delete it again
-    const st = merge(null, saved.state);
-    for (const c of ["lessons", "cards", "cases", "labs", "days", "missions"]) for (const rec of Object.values(st[c])) rec.t = now;
-    const cur = (await env.PROGRESS.get(key, "json")) || {};
-    st.settings = { ...st.settings, ...(cur.settings || {}), t: now };
+    if (!isJson(req)) return json({ error: "content-type" }, 415);
+    const saved = await undoCopy();
+    if (!saved) return json({ error: "nothing to restore" }, 404);
+    // Bring the copy back with fresh timestamps, so the reset every device still remembers cannot delete it again,
+    // and MERGE it into what is there now: work done since the reset stays.
+    const old = merge(null, saved.state);
+    for (const c of ["lessons", "cards", "cases", "labs", "days", "missions"]) for (const rec of Object.values(old[c])) rec.t = now;
+    const cur = (await env.PROGRESS.get(key, "json")) || null;
+    old.settings = { ...(cur?.settings || {}), t: now };            // today's settings, including the reset marker
+    const st = merge(cur, old);
     await env.PROGRESS.put(key, JSON.stringify(st));
     await env.PROGRESS.delete(undoKey);
     return json({ state: st, user, now, undo: 0 });
@@ -131,7 +139,7 @@ async function progress(req, env, user, url) {
   if (req.method === "GET") return reply((await env.PROGRESS.get(key, "json")) || null);
   if (req.method !== "PUT") return json({ error: "method" }, 405);
   // a browser will not send this header cross-site without a preflight, which we never answer
-  if (!(req.headers.get("content-type") || "").includes("application/json")) return json({ error: "content-type" }, 415);
+  if (!isJson(req)) return json({ error: "content-type" }, 415);
   if (+(req.headers.get("content-length") || 0) > MAX_BODY) return json({ error: "too large" }, 413);
   const buf = await req.arrayBuffer();
   if (buf.byteLength > MAX_BODY) return json({ error: "too large" }, 413);
@@ -142,7 +150,7 @@ async function progress(req, env, user, url) {
   const current = await env.PROGRESS.get(key, "json");
   // a "start over" is about to wipe what is stored: keep a copy first, so it can be undone
   if (current && (incoming.settings?.reset || 0) > (current.settings?.reset || 0) && Object.keys(current.lessons || {}).length + Object.keys(current.cards || {}).length > 0) {
-    await env.PROGRESS.put(undoKey, JSON.stringify({ at: now, state: current }));
+    await env.PROGRESS.put(undoKey, JSON.stringify({ at: now, state: current }), { expirationTtl: (UNDO_DAYS + 1) * 86400 });
   }
   const merged = merge(current, incoming);
   const out = JSON.stringify(merged);
@@ -184,7 +192,7 @@ export default {
     if (path.startsWith("/api/relay/")) {                                                 // the tutor relay: its own secret, no cookie
       const ip = req.headers.get("cf-connecting-ip") || "?";
       if (throttled(ip)) return text("Too many attempts. Wait ten minutes.", 429);
-      const res = await tutorForRelay(req, env, url, safeEqual);
+      const res = await tutorForRelay(req, env, url, safeEqual);  
       if (res.status === 403) failed(ip);
       return secure(res);
     }
@@ -197,7 +205,7 @@ export default {
     const renew = who?.renew ? { "set-cookie": await sessionCookie(env) } : {};
     if (path === "/api/progress" || path === "/api/progress/restore") return secure(await progress(req, env, who.user, url), renew);
     if (path === "/api/me") return json({ user: who.user });
-    if (path.startsWith("/api/tutor/")) return secure(await tutorForOwner(req, env, url), renew);
+    if (path.startsWith("/api/tutor/")) return secure(await tutorForOwner(req, env, url, isJson), renew);
     if (path.startsWith("/api/")) return json({ error: "not found" }, 404);
     // files are served at their exact paths (html_handling is "none"), so the one alias is spelled out here
     const res = await env.ASSETS.fetch(path === "/" ? new Request(new URL("/index.html", req.url), req) : req);

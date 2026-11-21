@@ -291,9 +291,9 @@
     "prompt": "Explain in 30 seconds how a model can score well in cross-validation and badly on new advertisers, and what you would ask the assistant to change.",
     "model_answer": "If the same advertiser has rows on both sides of a fold, a flexible model can recognise it and recall its outcome, so validation rewards memory. In the course's small simulation that gave 0.80 in shuffled folds and about 0.63 on advertisers the model had never met. I would ask for folds that keep each advertiser's rows together and check on later months than they train on, with ID columns removed. Settings get chosen on those folds only, and the test set is scored once at the end."
   },
-  "ask_assistant": "Choose every setting by cross-validation on the training rows only. Case one, one row per [unit] from [periods] that are alike: rotating shuffled folds are fine. Case two, several rows per [unit] or [periods] that differ: keep all rows of one [unit] in the same fold, make each fold check on later [periods] than it trains on, say how many such checks the data allows, and print how many [units] sit on both sides of any fold. Tell me which case applied and why. Remove ID columns. Report every fold score per candidate, with mean and range. Then stop: score [test period] only when I approve the frozen setting, and list every scoring run with the rows it used.",
+  "ask_assistant": "Choose every setting by cross-validation on the training rows only. One row per [unit] from alike [periods]: rotating shuffled folds are fine. Several rows per [unit], and the model will meet new [units]: keep each [unit]'s rows in one fold and print how many [units] sit on both sides: zero. [Periods] that differ: each check tests on later [periods] than it trains on, after a gap as long as the [outcome window]; say how many such checks the data allows. Tell me which cases applied and why. Remove ID columns. Report every fold score per candidate, with mean and range. Then stop: score [test period] only after I approve the frozen setting, and list every scoring run and its rows.",
   "audit_checklist": [
-    "How the folds were made (by advertiser, by time, or shuffled) and why that case applies, with the count of advertisers on both sides of any fold: 0",
+    "How the folds were made (by advertiser, by time, or shuffled) and why that case applies; for a model that must meet new advertisers the count of advertisers on both sides of any fold is 0, and when months differ each check's months come after its training months, with a gap as long as the outcome window",
     "Every fold score for each candidate setting, with mean and range, not only the winner's mean",
     "Test scoring is its own final stage that you trigger, and the output lists every scoring run with the rows it used: the test rows appear once",
     "The feature list, with no ID column in it"
@@ -306,7 +306,7 @@
   "other_ways": [
     {
       "approach": "A later period held out for choosing",
-      "when": "When there is plenty of dated data: train on January and February and choose on March, or walk forward month by month when things drift, so every check looks ahead."
+      "when": "When there is plenty of dated data: train on the earliest months and choose on a later one, with a gap as long as the outcome window between them (for a 60-day outcome, train on January, skip February, choose on March), or walk forward month by month when things drift, so every check looks ahead."
     },
     {
       "approach": "A fresh test set",
@@ -337,6 +337,10 @@
     {
       "term": "learning curve",
       "def": "The held-out score of one model trained on growing numbers of rows; it shows what more data would buy."
+    },
+    {
+      "term": "stratified folds (stratified sampling)",
+      "def": "Folds cut so that each holds about the same share of the rare outcome as the whole table; it steadies the fold scores, but unlike grouped folds it does nothing about the same advertiser sitting on both sides."
     }
   ]
 }
