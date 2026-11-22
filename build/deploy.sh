@@ -87,11 +87,18 @@ done
 if [ -z "$up" ]; then
   echo; echo "Deployed, but $url is not answering yet. Give it ten minutes and run go-live.cmd again: it is safe to repeat, and keeps the same address and passphrase."; exit 6
 fi
-if ! bash build/smoke.sh "$url" .secrets/passphrase.txt; then
+selftest=0
+grep -q '"ANTHROPIC_API_KEY"' .secrets/worker-secrets.json && selftest=1
+if ! TUTOR_SELFTEST=$selftest bash build/smoke.sh "$url" .secrets/passphrase.txt; then
   echo; echo "The site is deployed at $url but FAILED the checks above. Do not rely on it until they pass."; exit 5
 fi
 
 echo
 echo "Live and locked: $url"
 echo "Passphrase:      in .secrets/passphrase.txt (show-login.cmd prints it)"
-echo "Tutor relay:     tutor-relay.cmd starts it on this computer; without it, questions open in Claude instead"
+if [ "$selftest" = "1" ]; then
+  echo "Tutor:           answered in the lesson page by Claude, through the site's own API key (see the self-test line above)"
+else
+  echo "Tutor:           add-tutor-key.cmd gives the site its own Claude API key, paid from your Max plan's included credit."
+  echo "                 Without one: tutor-relay.cmd on this computer, or questions open in Claude in a new tab."
+fi

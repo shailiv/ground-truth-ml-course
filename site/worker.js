@@ -1,7 +1,8 @@
 // Ground Truth - the whole site sits behind this Worker.
 //   1. Who is this?  Cloudflare Access (if ACCESS_TEAM + ACCESS_AUD are set) or a passphrase cookie.
 //   2. /api/progress  GET / PUT  - one JSON document per person in KV, merged field by field (public/js/merge.js).
-//   3. /api/tutor/*   the in-page tutor: questions wait here for the relay that runs Claude Code (tutor.js).
+//   3. /api/tutor/*   the in-page tutor: answered by the Claude API when a key is set (tutor_api.js), otherwise
+//                     questions wait here for the relay that runs Claude Code (tutor.js).
 //   4. everything else - static files, served only to a signed-in visitor.
 import { merge, clamp } from "./public/js/merge.js";
 import { TutorRoom, tutorForOwner, tutorForRelay } from "./tutor.js";
@@ -180,7 +181,7 @@ const PUBLIC = new Set(["/login.html", "/css/app.css", "/css/fonts.css", "/img/m
 const isOpen = (path) => PUBLIC.has(path) || /^\/fonts\/[A-Za-z0-9_-]+\.woff2$/.test(path);
 
 export default {
-  async fetch(req, env) {
+  async fetch(req, env, ctx) {
     const url = new URL(req.url);
     const path = url.pathname;
     if (/%2f|%5c|%2e|\\|\/\.\.?(\/|$)/i.test(path)) return text("Bad path", 400);       // no encoded slashes or dot segments, on any runtime
@@ -205,7 +206,7 @@ export default {
     const renew = who?.renew ? { "set-cookie": await sessionCookie(env) } : {};
     if (path === "/api/progress" || path === "/api/progress/restore") return secure(await progress(req, env, who.user, url), renew);
     if (path === "/api/me") return json({ user: who.user });
-    if (path.startsWith("/api/tutor/")) return secure(await tutorForOwner(req, env, url, isJson), renew);
+    if (path.startsWith("/api/tutor/")) return secure(await tutorForOwner(req, env, url, isJson, ctx), renew);
     if (path.startsWith("/api/")) return json({ error: "not found" }, 404);
     // files are served at their exact paths (html_handling is "none"), so the one alias is spelled out here
     const res = await env.ASSETS.fetch(path === "/" ? new Request(new URL("/index.html", req.url), req) : req);

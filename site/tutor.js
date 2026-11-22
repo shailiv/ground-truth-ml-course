@@ -8,6 +8,8 @@
 // One Durable Object holds the queue in memory. A Durable Object, not KV, because KV can take a minute to show a
 // write to another part of the world, and a question should reach the relay in milliseconds.
 
+import { apiOn, answerWithApi } from "./tutor_api.js";
+
 const HOLD = 25_000;            // how long a waiting request is held open before it is told "nothing yet"
 const KEEP = 10 * 60_000;       // a question and its answer are forgotten after ten minutes
 const ALIVE = 45_000;           // the relay counts as connected if it asked for work this recently
@@ -104,18 +106,37 @@ const room = (env) => env.TUTOR.get(env.TUTOR.idFromName("room"));
 const forward = (env, path, init) => room(env).fetch(new Request("https://room" + path, init));
 
 /** Routes for the signed-in owner. Returns null when the path is not the tutor's. */
-export async function tutorForOwner(req, env, url, isJson) {
+export async function tutorForOwner(req, env, url, isJson, ctx) {
   const p = url.pathname;
   if (!p.startsWith("/api/tutor/")) return null;
-  if (!env.TUTOR || !env.RELAY_SECRET) return p === "/api/tutor/status" ? reply({ online: false, off: true }) : reply({ error: "offline" }, 503);
-  if (p === "/api/tutor/status" && req.method === "GET") return forward(env, "/status");
+  // Three ways to answer, best first: the Claude API (a key is set), the relay (Claude Code on a machine of the
+  // owner's), or neither, in which case the page opens claude.ai instead.
+  if (apiOn(env)) {
+    if (p === "/api/tutor/status" && req.method === "GET") return reply({ mode: "api", online: true });
+    if (p === "/api/tutor/ask" && req.method === "POST") {
+      if (!isJson(req)) return reply({ error: "content-type" }, 415);
+      const buf = await req.arrayBuffer();
+      if (buf.byteLength > 96 * 1024) return reply({ error: "too large" }, 413);
+      let body;
+      try { body = JSON.parse(new TextDecoder().decode(buf)); } catch { return reply({ error: "bad json" }, 400); }
+      return answerWithApi(env, body, ctx);
+    }
+    return reply({ error: "not found" }, 404);
+  }
+  const relayReady = !!(env.TUTOR && env.RELAY_SECRET);
+  if (!relayReady) return p === "/api/tutor/status" ? reply({ mode: "link", online: false, off: true }) : reply({ error: "offline" }, 503);
+  if (p === "/api/tutor/status" && req.method === "GET") { const st = await (await forward(env, "/status")).json(); return reply({ ...st, mode: st.online ? "relay" : "link" }); }
   if (p === "/api/tutor/answer" && req.method === "GET") return forward(env, "/answer?id=" + encodeURIComponent(url.searchParams.get("id") || ""));
   if (p === "/api/tutor/ask" && req.method === "POST") {
     // a browser will not send this header cross-site without a preflight, which is never answered
     if (!isJson(req)) return reply({ error: "content-type" }, 415);
     const buf = await req.arrayBuffer();
-    if (buf.byteLength > 64 * 1024) return reply({ error: "too large" }, 413);
-    return forward(env, "/ask", { method: "POST", headers: { "content-type": "application/json" }, body: buf });
+    if (buf.byteLength > 96 * 1024) return reply({ error: "too large" }, 413);
+    // the page sends the lesson and the moment separately (the API path caches the lesson); the relay takes one text
+    let body;
+    try { body = JSON.parse(new TextDecoder().decode(buf)); } catch { return reply({ error: "bad json" }, 400); }
+    const context = [body?.moment, body?.lesson].filter((x) => typeof x === "string" && x).join("\n\n") || (typeof body?.context === "string" ? body.context : "");
+    return forward(env, "/ask", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ question: body?.question, context, history: body?.history }) });
   }
   return reply({ error: "not found" }, 404);
 }

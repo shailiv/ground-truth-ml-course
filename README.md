@@ -112,20 +112,31 @@ A lesson page can ask Claude a question, and the question carries the moment it 
 part and second of the video, the sentence being spoken, what the slide showed, the question on screen during a
 check, and which lessons are already finished.
 
-Claude is reached on the owner's own Claude subscription, which only Claude Code may use. So the site does not call
-Claude. Instead:
+There are three ways the question reaches Claude, tried in this order:
 
-```
-lesson page --question--> Worker --> TutorRoom (Durable Object, site/tutor.js)
-                                          ^  one request held open
-                          relay/tutor_relay.py  --runs-->  claude -p   (no tools, no settings, nothing saved)
-```
+1. **The Claude API** (`site/tutor_api.js`), when the Worker has an `ANTHROPIC_API_KEY` secret. The site calls the
+   Messages API with the official SDK and streams the answer into the page: no other machine involved, works on a
+   phone. The lesson text is sent as a cached system block, the moment and the question as the last message. A
+   Claude Max, Ultra or Team plan includes monthly API credit for a linked Console organization; with no card on
+   file there, requests stop when the credit is used up and nothing is charged. `add-tutor-key.cmd` walks through
+   linking, takes the key at a hidden prompt, stores it in `.secrets/` and redeploys; the deploy then asks the
+   tutor one real question and reports the result. The Worker also keeps its own ceiling (150 questions a day,
+   2,000 a month by default).
+2. **The relay** (`site/tutor.js`, `relay/tutor_relay.py`), when no key is set. Claude Code, signed in to the
+   owner's plan on a machine of theirs, answers:
 
-`relay/tutor_relay.py` runs wherever Claude Code is signed in (`tutor-relay.cmd` on Windows, or any always-on
-machine: `python relay/tutor_relay.py --config relay.json`). While it is connected, answers appear on the page.
-When it is not, the same question, with the same context, opens claude.ai in a new tab. The Worker never holds a
-Claude credential. This arrangement is for the owner's own questions; a site with other users would need the
-Claude API and an API key instead.
+   ```
+   lesson page --question--> Worker --> TutorRoom (Durable Object)
+                                             ^  one request held open
+                             relay/tutor_relay.py  --runs-->  claude -p   (no tools, no settings, nothing saved)
+   ```
+
+   `tutor-relay.cmd` on Windows, or `python relay/tutor_relay.py --config relay.json` anywhere. The Worker holds
+   no Claude credential in this mode. It is for the owner's own questions only.
+3. **A link**, when neither is available: the same question, with the same context, opens claude.ai in a new tab.
+
+`GT_FAKE_API=1 node build/dev_server.mjs` gives the local site a pretend Claude API that answers in slow pieces,
+for looking at the streamed tutor without a key.
 
 ## Not in the repository
 

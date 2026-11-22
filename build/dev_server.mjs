@@ -3,9 +3,10 @@
 //   node build/dev_server.mjs [port]      passphrase: "test"
 import http from "node:http";
 import worker from "../site/worker.js";
-import { makeEnv } from "./local_env.mjs";
+import { makeEnv, fakeClaude } from "./local_env.mjs";
 
-const env = makeEnv();
+// GT_FAKE_API=1 gives the local site a pretend Claude API, to look at the streamed tutor without a key
+const env = makeEnv(process.env.GT_FAKE_API ? { ANTHROPIC_API_KEY: "sk-ant-local-pretend", TUTOR_FETCH: fakeClaude() } : {});
 const port = +process.argv[2] || 8788;
 http.createServer(async (req, res) => {
   const chunks = [];
@@ -18,7 +19,8 @@ http.createServer(async (req, res) => {
     const h = {};
     r.headers.forEach((v, k) => { h[k] = k === "set-cookie" ? v.replace("; Secure", "") : v; });   // plain http locally
     res.writeHead(r.status, h);
-    res.end(Buffer.from(await r.arrayBuffer()));
+    if (r.body && (r.headers.get("content-type") || "").includes("ndjson")) { for await (const chunk of r.body) res.write(chunk); res.end(); }
+    else res.end(Buffer.from(await r.arrayBuffer()));
   } catch (e) {
     console.error(e);
     res.writeHead(500); res.end(String(e));

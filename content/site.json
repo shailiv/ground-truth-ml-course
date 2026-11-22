@@ -242,7 +242,7 @@
   {
    "h": "Your data",
    "p": [
-    "This site sits behind a login. It stores only your progress: which lessons you finished and your review schedule. It makes no requests to any third party. The tutor is Claude on your own subscription. When the tutor relay is running on your computer, a question and the part of the lesson you asked from travel to Claude Code there and the answer comes back to the page; the site itself never holds a Claude credential. When the relay is not running, the question opens Claude in a new tab instead. Nothing is sent until you ask. A question waits in the site's memory for a few seconds on its way to the relay and is never stored there; the conversation is kept only in your browser."
+    "This site sits behind a login. It stores only your progress: which lessons you finished and your review schedule. Apart from the tutor's questions to Claude, described next, it makes no requests to any third party. The tutor is Claude. When the site has its own Claude API key, a question and the part of the lesson you asked from go from the site to Anthropic's API and the answer streams back to the page; the key is paid from the API credit included in your Claude plan, and with no card on file nothing beyond that can be charged. Without a key, the tutor relay can do the same through Claude Code on a computer of yours; with neither, the question opens Claude in a new tab. Nothing is sent until you ask. A question waits in the site's memory for a few seconds on its way to the relay and is never stored there; the conversation is kept only in your browser."
    ]
   }
  ]

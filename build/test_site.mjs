@@ -4,6 +4,8 @@ import fs from "node:fs";
 import worker from "../site/worker.js";
 import { merge, clamp, blank, canon } from "../site/public/js/merge.js";
 import { makeEnv } from "./local_env.mjs";
+import { toMessages, API_LIMITS } from "../site/tutor_api.js";
+import { TUTOR_SYSTEM } from "../site/tutor_prompt.js";
 
 let pass = 0, fail = 0;
 const ok = (cond, name) => { if (cond) pass++; else { fail++; console.log("FAIL  " + name); } };
@@ -221,6 +223,90 @@ const clip = (() => { const d = "site/public/audio"; if (!fs.existsSync(d)) retu
   let last;
   for (let i = 0; i < 9; i++) last = await worker.fetch(new Request("http://localhost/login", { ...form({ passphrase: "x" + i }), redirect: "manual", headers: { "content-type": "application/x-www-form-urlencoded", "cf-connecting-ip": "10.9.9.9" } }), env);
   eq(last.status, 429, "repeated wrong passphrases are slowed down");
+}
+
+// ---------------------------------------------------------------- the tutor through the Claude API (a stand-in plays the API)
+{
+  // what the API sends back while it writes an answer: the event stream the official SDK reads
+  const sse = (events) => events.map((e) => `event: ${e.type}\ndata: ${JSON.stringify(e)}\n\n`).join("");
+  const answer = (pieces) => sse([
+    { type: "message_start", message: { id: "msg_test", type: "message", role: "assistant", model: "claude-opus-5-5", content: [], stop_reason: null, stop_sequence: null, usage: { input_tokens: 4200, output_tokens: 1, cache_read_input_tokens: 0, cache_creation_input_tokens: 3900 } } },
+    { type: "content_block_start", index: 0, content_block: { type: "text", text: "" } },
+    ...pieces.map((text) => ({ type: "content_block_delta", index: 0, delta: { type: "text_delta", text } })),
+    { type: "content_block_stop", index: 0 },
+    { type: "message_delta", delta: { stop_reason: "end_turn", stop_sequence: null }, usage: { output_tokens: 42 } },
+    { type: "message_stop" },
+  ]);
+  const apiError = (status, type, message) => new Response(JSON.stringify({ type: "error", error: { type, message } }), { status, headers: { "content-type": "application/json", "request-id": "req_test" } });
+  let seen = null, next = () => new Response(answer(["Because ", "the future ", "is what you will be scored on."]), { headers: { "content-type": "text/event-stream" } });
+  const TUTOR_FETCH = async (url, init) => { seen = { url: String(url), headers: new Headers(init.headers), body: JSON.parse(init.body) }; return next(); };
+  const env2 = makeEnv({ ANTHROPIC_API_KEY: "sk-ant-test-not-a-real-key", TUTOR_FETCH });
+  const call2 = (path, init = {}) => worker.fetch(new Request("http://localhost" + path, { redirect: "manual", ...init }), env2);
+  const cookie2 = (await call2("/login", form({ passphrase: "test" }))).headers.get("set-cookie").split(";")[0];
+  const J = { "content-type": "application/json", cookie: cookie2 };
+  const lines = async (res) => (await res.text()).trim().split("\n").map((l) => JSON.parse(l));
+  const ask = (o, headers = J) => call2("/api/tutor/ask", { method: "POST", headers, body: JSON.stringify(o) });
+
+  eq((await call2("/api/tutor/status")).status, 401, "API tutor: signed out, closed");
+  eq((await call2("/api/tutor/ask", { method: "POST", headers: { "content-type": "application/json" }, body: "{}" })).status, 401, "API tutor: signed out, nobody can ask");
+  ok(seen === null, "and nothing was sent to Claude for a signed-out request");
+  eq(await (await call2("/api/tutor/status", { headers: { cookie: cookie2 } })).json(), { mode: "api", online: true }, "with a key the tutor reports the API mode");
+  eq((await ask({ question: "x" }, { "content-type": "text/plain; application/json", cookie: cookie2 })).status, 415, "API tutor: a disguised content type cannot ask");
+  eq((await ask({ question: "   " })).status, 400, "API tutor: an empty question is refused before anything is sent");
+
+  const res = await ask({ question: "Why split by time?", lesson: "Lesson 2-1: the whole lesson text", moment: "Where I was when I asked: part 3, 0:14",
+    history: [{ role: "tutor", text: "orphan answer" }, { role: "me", text: "first question" }, { role: "tutor", text: "first answer" }, { role: "me", text: "an unanswered follow-up" }] });
+  const out = await lines(res);
+  ok(res.status === 200 && (res.headers.get("content-type") || "").includes("ndjson") && (res.headers.get("content-security-policy") || "").includes("default-src"), "the answer comes back as a stream, with the security headers");
+  eq(out.filter((e) => e.t === "delta").map((e) => e.text).join(""), "Because the future is what you will be scored on.", "the pieces of the answer arrive in order");
+  ok(out.at(-1).t === "done" && out.at(-1).tokens.out === 42, "and the stream ends with a done line");
+  ok(seen.url === "https://api.anthropic.com/v1/messages" && [seen.headers.get("x-api-key"), seen.headers.get("authorization")].some((v) => (v || "").endsWith("sk-ant-test-not-a-real-key")), "the request goes to the Messages API, carrying the key the way the SDK sends it");
+  eq([seen.body.model, seen.body.stream, seen.body.output_config], ["claude-opus-5-5", true, { effort: "medium" }], "default model and effort, streaming");
+  ok(seen.body.system.length === 2 && seen.body.system[0].text === TUTOR_SYSTEM && !seen.body.system[0].cache_control, "the standing instructions come first");
+  ok(seen.body.system[1].text.includes("Lesson 2-1: the whole lesson text") && seen.body.system[1].cache_control?.type === "ephemeral", "the lesson is a second system block, marked for caching");
+  eq(seen.body.messages.map((m) => m.role), ["user", "assistant", "user"], "the conversation alternates and starts with the learner");
+  ok(seen.body.messages.at(-1).content.includes("part 3, 0:14") && seen.body.messages.at(-1).content.endsWith("My question: Why split by time?"), "the moment and the question are the last message");
+  ok(!JSON.stringify(seen.body.messages).includes("orphan answer") && !JSON.stringify(seen.body.messages).includes("unanswered follow-up"), "a leading answer and an unanswered earlier question are dropped");
+  ok(!("thinking" in seen.body) && seen.body.max_tokens === API_LIMITS.maxTokens, "no thinking setting is sent (the model decides), and the answer length is bounded");
+  eq(toMessages([], "", "q").length, 1, "with no history there is exactly one message");
+
+  // limits on what is sent
+  await ask({ question: "q".repeat(5000), lesson: "L".repeat(50000), moment: "m".repeat(9000) });
+  ok(seen.body.messages.at(-1).content.length < API_LIMITS.question + API_LIMITS.moment + 60 && seen.body.system[1].text.length < API_LIMITS.lesson + 30, "oversized input is trimmed before it is sent");
+
+  // when the API says no, the learner gets a sentence, not silence
+  const failing = async (status, type, message) => { next = () => apiError(status, type, message); return (await lines(await ask({ question: "q" }))).at(-1); };
+  let ev = await failing(401, "authentication_error", "invalid x-api-key");
+  ok(ev.t === "error" && ev.message.includes("key was not accepted"), "a rejected key is explained");
+  ev = await failing(402, "billing_error", "billing");
+  ok(ev.t === "error" && ev.message.includes("included API credit is used up"), "an exhausted credit is explained, and says nothing is owed");
+  ev = await failing(400, "invalid_request_error", "Your credit balance is too low to access the Anthropic API.");
+  ok(ev.t === "error" && ev.message.includes("Your credit balance is too low"), "a refusal that arrives as a 400 passes on the API's own words");
+  ev = await failing(429, "rate_limit_error", "slow down");
+  ok(ev.t === "error" && ev.message.includes("slow down"), "rate limiting is explained");
+  ev = await failing(529, "overloaded_error", "overloaded");
+  ok(ev.t === "error" && ev.message.includes("busy"), "an overloaded API is explained");
+
+  // the ceiling: a page stuck in a loop cannot drain the month's credit
+  next = () => new Response(answer(["ok"]), { headers: { "content-type": "text/event-stream" } });
+  const env3 = makeEnv({ ANTHROPIC_API_KEY: "sk-ant-test-not-a-real-key", TUTOR_FETCH, TUTOR_PER_DAY: "2" });
+  const c3 = (await worker.fetch(new Request("http://localhost/login", { ...form({ passphrase: "test" }), redirect: "manual" }), env3)).headers.get("set-cookie").split(";")[0];
+  const ask3 = () => worker.fetch(new Request("http://localhost/api/tutor/ask", { method: "POST", headers: { "content-type": "application/json", cookie: c3 }, body: JSON.stringify({ question: "q" }) }), env3);
+  seen = null;
+  const first = await ask3(), second = await ask3();
+  await first.text(); await second.text();                               // let both answers finish before counting what the third sends
+  eq([first.status, second.status], [200, 200], "questions under the daily ceiling are answered");
+  seen = null;
+  const over = await ask3();
+  ok(over.status === 429 && (await over.json()).message.includes("limit for one day") && seen === null, "past the ceiling the question is refused and nothing is sent to Claude");
+
+  // without a key nothing changes: the relay and the link still decide
+  const env4 = makeEnv(), c4 = (await worker.fetch(new Request("http://localhost/login", { ...form({ passphrase: "test" }), redirect: "manual" }), env4)).headers.get("set-cookie").split(";")[0];
+  eq((await (await worker.fetch(new Request("http://localhost/api/tutor/status", { headers: { cookie: c4 } }), env4)).json()).mode, "link", "without a key or a connected relay, the page is told to use the link");
+
+  // one prompt, two homes
+  const py = fs.readFileSync("relay/tutor_relay.py", "utf8").replace(/\r\n/g, "\n");
+  eq(TUTOR_SYSTEM, /SYSTEM = """([\s\S]*?)"""/.exec(py)[1], "the relay and the API tutor give Claude the same instructions");
 }
 
 // ---------------------------------------------------------------- what would stop tomorrow's deploy

@@ -82,8 +82,8 @@ function watchMoment(les) {
     detail: [`The sentence being spoken at that moment: "${sn?.text || ""}"`, `That part's whole narration: "${parsed.spoken}"`, `On the slide for that part (as data): ${slideText(sg.visual)}`,
       i ? `The part just before it said: "${parseNarration(les.segments[i - 1].narration).spoken}"` : ""].filter(Boolean).join("\n\n") };
 }
-/** Everything the tutor should know about the moment a question was asked. `full` adds the whole lesson and the course map. */
-function moment(lesson, at = {}, full = false) {
+/** The moment a question was asked from: where in the lesson, what was on screen, how far the learner has got. */
+function moment(lesson, at = {}) {
   const out = [];
   if (lesson) { const mod = course.modules.find((m) => m.n === lesson.module); out.push(`Lesson ${lesson.id}: "${lesson.title}" (${lesson.subtitle}). It is in module ${mod.n}, "${mod.title}".`); }
   if (at.where) out.push("Where I was when I asked: " + at.where);
@@ -91,11 +91,17 @@ function moment(lesson, at = {}, full = false) {
   if (lesson) out.push("The lesson's three takeaways:\n- " + lesson.takeaways.join("\n- "));
   const done = course.lessons.filter((l) => lessonState(l.id).done).map((l) => l.id);
   out.push(`My progress: ${done.length} of ${course.lessons.length} lessons finished${done.length ? ` (${done.join(", ")})` : ""}. Any lesson not in that list is new to me.`);
-  if (full && lesson) {
+  return out.join("\n\n");
+}
+/** The lesson itself, for the tutor to draw on. Identical for every question asked in the same lesson, so it can be cached. */
+function lessonText(lesson) {
+  const out = [];
+  if (lesson) {
+    out.push(`Lesson ${lesson.id}: "${lesson.title}" (${lesson.subtitle}).`);
     out.push("Words this lesson introduces: " + lesson.glossary.map((g) => `${g.term}: ${g.def}`).join(" | "));
     out.push("The whole lesson as narrated, part by part:\n" + lesson.segments.map((sg, i) => `[${i + 1}] ${parseNarration(sg.narration).spoken}`).join("\n"));
   }
-  if (full) out.push("The course map (so you can say which lesson covers something):\n" + course.lessons.map((l) => `${l.id} ${l.title}`).join("\n"));
+  out.push("The course map (so you can say which lesson covers something):\n" + course.lessons.map((l) => `${l.id} ${l.title}`).join("\n"));
   return out.join("\n\n");
 }
 // the tutor may only ever open claude.ai: the question carries lesson text and whatever the learner typed
@@ -109,22 +115,29 @@ function openInClaude(lesson, ask, at) {
   const base = claudeAddress(store.setting("claudeUrl")) || "https://claude.ai/new";
   window.open(base + (base.includes("?") ? "&" : "?") + "q=" + encodeURIComponent(q), "_blank", "noopener");
 }
+// How the tutor is reached right now: "api" (the site calls Claude and the answer streams in), "relay" (Claude Code
+// on a machine of the owner's answers), or "link" (neither: the question opens claude.ai).
 const relay = {
-  known: null, at: 0,
+  mode: null, at: 0,
+  get known() { return this.mode == null ? null : this.mode !== "link"; },
   async online(fresh = false) {
-    if (!fresh && this.known != null && Date.now() - this.at < 30000) return this.known;
-    try { const r = await fetch("/api/tutor/status", { credentials: "same-origin" }); this.known = r.ok && (await r.json()).online === true; } catch { this.known = false; }
+    if (!fresh && this.mode != null && Date.now() - this.at < 30000) return this.known;
+    try { const r = await fetch("/api/tutor/status", { credentials: "same-origin" }), st = r.ok ? await r.json() : {}; this.mode = st.mode === "api" ? "api" : st.online === true ? "relay" : "link"; }
+    catch { this.mode = "link"; }
     this.at = Date.now();
     return this.known;
   },
-  async ask(question, context, history) {
-    const r = await fetch("/api/tutor/ask", { method: "POST", credentials: "same-origin", headers: { "content-type": "application/json" }, body: JSON.stringify({ question, context, history }) });
+  /** Ask. `onText(soFar)` is called as the answer grows (API mode); the whole answer is returned at the end. */
+  async ask(question, lesson, at, history, onText) {
+    const r = await fetch("/api/tutor/ask", { method: "POST", credentials: "same-origin", headers: { "content-type": "application/json" },
+      body: JSON.stringify({ question, moment: moment(lesson, at), lesson: lessonText(lesson), history }) });
     if (r.status === 401) { location.href = "/login" + location.hash; throw new Error("You were signed out."); }
-    if (r.status === 503) { this.known = false; throw new Error("The tutor went offline just now. Ask again and the question will open in Claude instead."); }
-    if (r.status === 429) throw new Error("That is the tutor's limit for one day. “Open in Claude” below still works.");
+    if (r.status === 503) { this.mode = "link"; throw new Error("The tutor went offline just now. Ask again and the question will open in Claude instead."); }
+    if (r.status === 429) throw new Error((await r.json().catch(() => ({}))).message || "That is the tutor's limit for now. “Open in Claude” below still works.");
     if (!r.ok) throw new Error("The question could not be sent. Try again.");
+    if ((r.headers.get("content-type") || "").includes("ndjson")) return this.readStream(r, onText);
     const { id } = await r.json();
-    for (let k = 0; k < 6; k++) {                 // the server holds each wait open for up to 25 seconds
+    for (let k = 0; k < 6; k++) {                 // the relay: the server holds each wait open for up to 25 seconds
       const a = await fetch("/api/tutor/answer?id=" + encodeURIComponent(id), { credentials: "same-origin" });
       if (!a.ok) break;
       const body = await a.json();
@@ -132,6 +145,28 @@ const relay = {
       if (body.error) throw new Error(body.error);
     }
     throw new Error("No answer came back in time. Try again.");
+  },
+  /** The API's answer arrives as lines of JSON: pieces of text, then "done", or an error that is safe to show. */
+  async readStream(r, onText) {
+    const reader = r.body.getReader(), dec = new TextDecoder();
+    let buf = "", text = "", finished = false;
+    const take = (line) => {
+      if (!line.trim()) return;
+      let ev; try { ev = JSON.parse(line); } catch { return; }
+      if (ev.t === "delta") { text += ev.text; onText?.(text); }
+      else if (ev.t === "done") finished = true;
+      else if (ev.t === "error") throw new Error(ev.message || "The tutor could not answer just now.");
+    };
+    for (;;) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      buf += dec.decode(value, { stream: true });
+      let i; while ((i = buf.indexOf("\n")) >= 0) { take(buf.slice(0, i)); buf = buf.slice(i + 1); }
+    }
+    take(buf);
+    if (!text.trim()) throw new Error("No answer came back. Try again.");
+    if (!finished) text += "\n\n(The answer was cut off. Ask again if it stopped mid-thought.)";
+    return text;
   },
 };
 // One conversation per lesson (or lab), held here and not inside a tutor box: every step of a lesson rebuilds the
@@ -182,12 +217,12 @@ function tutorBox(lesson, where, what = "lesson", key = lesson?.id || what) {
     list.replaceChildren(...T.turns.map((t) => (t.role === "me"
       ? h("div", { class: "turn me" }, t.label ? h("button", { class: "at", type: "button", title: lesson && t.seg != null ? "Go back to this moment" : null, disabled: !(player && t.seg != null), text: t.label, onclick: () => jump(t) }) : null, h("p", { text: t.text }))
       : h("div", { class: "turn tutor" + (t.failed ? " failed" : "") }, prose(t.text)))),
-      ...(T.busy ? [h("div", { class: "turn tutor wait" }, h("p", { text: "Thinking…" }))] : []));
+      ...(T.busy ? [T.live ? h("div", { class: "turn tutor live" }, prose(T.live)) : h("div", { class: "turn tutor wait" }, h("p", { text: "Thinking…" }))] : []));
     clear.hidden = !T.turns.length || T.busy;
   };
   const say = (on) => {
     other.hidden = !on;                       // when the tutor is not connected, asking already opens Claude
-    note.textContent = on ? `Answered here by Claude, on your own subscription. It is told where you were in the ${what} when you asked.`
+    note.textContent = on ? (relay.mode === "api" ? `Answered here by Claude. It is told where you were in the ${what} when you asked.` : `Answered here by Claude, through the relay on your own machine. It is told where you were in the ${what} when you asked.`)
       : `The tutor is not connected right now, so a question opens Claude in a new tab, with this moment of the ${what} already in the message.`;
   };
   const refresh = (fresh) => relay.online(fresh).then(say);
@@ -204,9 +239,11 @@ function tutorBox(lesson, where, what = "lesson", key = lesson?.id || what) {
     T.turns.push({ role: "me", text: q, label: at.label, seg: at.seg, t: at.t, at: Date.now() });
     T.busy = true; threads.save(T); threads.changed(T);            // the question is kept even if the page is left before the answer
     list.lastChild?.scrollIntoView({ behavior: "smooth", block: "nearest" });
-    try { T.turns.push({ role: "tutor", text: await relay.ask(q, moment(lesson, at, true), history), at: Date.now() }); }
+    let frame = 0;
+    const grow = (soFar) => { T.live = soFar; if (!frame) frame = requestAnimationFrame(() => { frame = 0; threads.changed(T); }); };   // redraw at most once a frame
+    try { T.turns.push({ role: "tutor", text: await relay.ask(q, lesson, at, history, grow), at: Date.now() }); }
     catch (e) { T.turns.push({ role: "tutor", failed: true, text: e.message || "No answer came back. Try again." }); refresh(true); }
-    T.busy = false; threads.save(T); threads.changed(T);
+    T.busy = false; T.live = ""; threads.save(T); threads.changed(T);
   };
   inp.addEventListener("keydown", (e) => { if (e.key === "Enter") ask(); });
   const box = h("div", { class: "section tutor" }, h("h3", { text: T.turns.length ? "Your tutor" : "Stuck? Ask your tutor" }), list,
@@ -552,7 +589,7 @@ function about(toSettings) {
     course.about.flatMap((s) => [h("h2", { text: s.h }), ...s.p.map((t) => h("p", { text: t }))]),
     h("section", { class: "card panel", id: "settings", style: { color: "var(--ink)" } }, h("h2", { text: "Settings" }),
       h("div", { class: "section" }, h("h3", { text: "Daily review cap" }), h("div", { class: "seg-btns" }, [6, 10, 16].map((n) => h("button", { type: "button", text: `${n} cards`, "aria-pressed": String((store.setting("dailyCap") || 10) === n), onclick: (e) => { store.setting("dailyCap", n); e.currentTarget.parentNode.querySelectorAll("button").forEach((x) => x.setAttribute("aria-pressed", String(x === e.currentTarget))); drawBadge(); } })))),
-      h("div", { class: "section" }, h("h3", { text: "The tutor" }), h("p", { text: "When the tutor relay is running on your computer, questions are answered on the lesson page by Claude, on your own subscription, and it is told the exact moment of the lesson you asked from. When it is not running, a question opens Claude in a new tab instead. This box sets where that tab goes: leave it empty for a new chat, or paste the address of a Claude Project that holds the assistant pack to keep one running conversation." }),
+      h("div", { class: "section" }, h("h3", { text: "The tutor" }), h("p", { text: "Questions are answered on the lesson page by Claude, which is told the exact moment of the lesson you asked from. That needs either the site's own Claude API key (paid from the API credit included in a Max plan) or the tutor relay running on a computer of yours. With neither, a question opens Claude in a new tab instead. This box sets where that tab goes: leave it empty for a new chat, or paste the address of a Claude Project that holds the assistant pack to keep one running conversation." }),
         h("input", { type: "url", id: "claude-url", placeholder: "https://claude.ai/project/…", value: store.setting("claudeUrl") || "", onchange: (e) => { const v = e.target.value.trim(); if (v && !claudeAddress(v)) { toast("That is not a claude.ai address"); e.target.value = store.setting("claudeUrl") || ""; return; } store.setting("claudeUrl", v); toast("Saved"); } })),
       h("div", { class: "section" }, h("h3", { text: "Your progress" }), h("div", { class: "row" }, btn("Download a copy", () => { const a = h("a", { href: URL.createObjectURL(new Blob([store.exportState()], { type: "application/json" })), download: "ground-truth-progress.json" }); a.click(); }, "small"),
         btn("Start over…", () => { confirmBox.hidden = false; confirmBox.querySelector("input").focus(); }, "small ghost"), h("form", { method: "post", action: "/logout", style: { display: "inline" } }, h("button", { class: "btn small ghost", type: "submit", text: "Sign out" }))),

@@ -37,6 +37,10 @@ want "signed in, reading progress" "$(code -b "$jar" "$url/api/progress")" 200
 want "signed in, the tutor status" "$(code -b "$jar" "$url/api/tutor/status")" 200
 want "signing out by link does nothing" "$(code -b "$jar" "$url/logout")" 303
 want "still signed in after that" "$(code -b "$jar" "$url/")" 200
+# the tutor, when the site has its own Claude API key: one real question, so a wrong key shows up now and not in a lesson
+if [ "${TUTOR_SELFTEST:-}" = "1" ]; then
+  curl -s --max-time 120 -b "$jar" -H 'content-type: application/json' -d '{"question":"Reply with the single word: ready","lesson":"","moment":"(a self-test run right after a deploy)","history":[]}' "$url/api/tutor/ask" | python build/tutor_selftest.py
+fi
 rm -f "$jar"
 
 if [ "$bad" = "1" ]; then echo "SMOKE TEST FAILED for $url"; exit 1; fi

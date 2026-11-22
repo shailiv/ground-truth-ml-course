@@ -1,0 +1,6 @@
+# Shell scripts must keep Unix line endings wherever the repository is cloned; Windows launchers keep Windows ones.
+*.sh   text eol=lf
+*.cmd  text eol=crlf
+*.mp3  binary
+*.woff2 binary
+*.png  binary
