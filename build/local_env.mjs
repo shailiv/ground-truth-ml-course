@@ -37,7 +37,7 @@ const PRETEND_ANSWER = [
   "Because the model is graded on **past** rows, ", "where the answer already sits in the table. ",
   "On the day you score live advertisers, ", "that column is empty.\n\n",
   "- first check: `snapshot_date`\n", "- second check: the join\n\n",
-  "Which column in your own table would fail that test?",
+  "Which column in *your own* table would fail that test, at 5 * 3 rows?",
 ];
 
 /** A stand-in for Claude's API that writes an answer in slow pieces, for looking at the streamed tutor locally

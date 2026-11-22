@@ -2,7 +2,14 @@
  "base": "http://localhost:8788",
  "out": "qa/verify",
  "shots": [
-  { "name": "a01-api-tutor-stream", "url": "/#/lesson/1-4/watch", "w": 1366, "h": 900, "theme": "light", "wait": 400,
-    "js": "const st = await (await fetch('/api/tutor/status')).json(); const p = __gt.player; await p.show(2, false, 14); document.querySelector('.overlay').hidden = true; await new Promise(r => setTimeout(r, 500)); const note0 = document.querySelector('.tutor-note').textContent; const inp = document.querySelector('.tutor input'); inp.value = 'Why is that a problem?'; [...document.querySelectorAll('.tutor button')].find(b => b.textContent.trim() === 'Ask').click(); const samples = []; for (let k = 0; k < 14; k++) { await new Promise(r => setTimeout(r, 300)); const live = document.querySelector('.turn.live'); samples.push(live ? live.innerText.length : (document.querySelector('.turn.wait') ? -1 : -2)); } let n = 0; while (n++ < 40 && document.querySelector('.turn.live, .turn.wait')) await new Promise(r => setTimeout(r, 250)); document.querySelector('.tutor').scrollIntoView({block: 'end'}); const turns = [...document.querySelectorAll('.turn')].map(t => t.className + ' | ' + t.innerText.slice(0, 260)); return { status: st, note: note0, growth: samples, turns, lists: document.querySelectorAll('.turn.tutor li').length, bold: document.querySelectorAll('.turn.tutor b').length, code: document.querySelectorAll('.turn.tutor code').length, saved: JSON.parse(localStorage.getItem('gt.tutor.1-4') || '[]').map(t => t.role + ':' + t.text.length) };" }
+  {
+   "name": "a01-api-tutor-stream",
+   "url": "/#/lesson/1-4/watch",
+   "w": 1366,
+   "h": 900,
+   "theme": "light",
+   "wait": 400,
+   "js": "const st = await (await fetch('/api/tutor/status')).json(); const p = __gt.player; await p.show(2, false, 14); document.querySelector('.overlay').hidden = true; await new Promise(r => setTimeout(r, 500)); const note0 = document.querySelector('.tutor-note').textContent; const inp = document.querySelector('.tutor input'); inp.value = 'Why is that a problem?'; [...document.querySelectorAll('.tutor button')].find(b => b.textContent.trim() === 'Ask').click(); const samples = []; for (let k = 0; k < 14; k++) { await new Promise(r => setTimeout(r, 300)); const live = document.querySelector('.turn.live'); samples.push(live ? live.innerText.length : (document.querySelector('.turn.wait') ? -1 : -2)); } let n = 0; while (n++ < 40 && document.querySelector('.turn.live, .turn.wait')) await new Promise(r => setTimeout(r, 250)); document.querySelector('.tutor').scrollIntoView({block: 'end'}); const turns = [...document.querySelectorAll('.turn')].map(t => t.className + ' | ' + t.innerText.slice(0, 260)); return { status: st, note: note0, growth: samples, turns, lists: document.querySelectorAll('.turn.tutor li').length, bold: document.querySelectorAll('.turn.tutor b').length, em: [...document.querySelectorAll('.turn.tutor em')].map(e => e.textContent), stars: document.querySelector('.thread').innerText.includes('*your') ? 'literal asterisks shown' : (document.querySelector('.thread').innerText.includes('5 * 3') ? 'plain asterisk kept' : 'none'), code: document.querySelectorAll('.turn.tutor code').length, saved: JSON.parse(localStorage.getItem('gt.tutor.1-4') || '[]').map(t => t.role + ':' + t.text.length) };"
+  }
  ]
 }

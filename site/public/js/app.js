@@ -189,7 +189,9 @@ const threads = {
 };
 /** The tutor writes plain text with a little emphasis. Build it from nodes, never from HTML. */
 function prose(text) {
-  const inline = (line) => line.split(/(\*\*[^*\n]+\*\*|`[^`\n]+`)/g).filter(Boolean).map((part) => (/^\*\*.+\*\*$/.test(part) ? h("b", { text: part.slice(2, -2) }) : /^`.+`$/.test(part) ? h("code", { text: part.slice(1, -1) }) : part));
+  // **bold**, *emphasis* and `code`. An asterisk with a space beside it (5 * 3) is left alone.
+  const inline = (line) => line.split(/(\*\*[^*\n]+\*\*|\*[^*\s](?:[^*\n]*[^*\s])?\*|`[^`\n]+`)/g).filter(Boolean).map((part) => (/^\*\*.+\*\*$/.test(part) ? h("b", { text: part.slice(2, -2) })
+    : /^\*.+\*$/.test(part) ? h("em", { text: part.slice(1, -1) }) : /^`.+`$/.test(part) ? h("code", { text: part.slice(1, -1) }) : part));
   const out = []; let list = null, para = [];
   const flush = () => { if (para.length) out.push(h("p", {}, inline(para.join(" ")))); para = []; };
   for (const line of String(text).trim().split("\n")) {
