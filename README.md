@@ -120,8 +120,10 @@ There are three ways the question reaches Claude, tried in this order:
    Claude Max, Ultra or Team plan includes monthly API credit for a linked Console organization; with no card on
    file there, requests stop when the credit is used up and nothing is charged. `add-tutor-key.cmd` walks through
    linking, takes the key at a hidden prompt, stores it in `.secrets/` and redeploys; the deploy then asks the
-   tutor one real question and reports the result. The Worker also keeps its own ceiling (150 questions a day,
-   2,000 a month by default).
+   tutor one real question and reports the result (`build/tutor_health.py`, through a self-test door opened by
+   the site's machine secret, so it needs no owner sign-in). The Worker also keeps its own ceiling (150 questions
+   a day, 2,000 a month by default). A key created for "All workspaces" must name its workspace on every request:
+   set `TUTOR_WORKSPACE_ID` (the script asks for it), or create the key for one workspace.
 2. **The relay** (`site/tutor.js`, `relay/tutor_relay.py`), when no key is set. Claude Code, signed in to the
    owner's plan on a machine of theirs, answers:
 

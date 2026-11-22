@@ -142,7 +142,7 @@ export async function tutorForOwner(req, env, url, isJson, ctx) {
 }
 
 /** Routes for the relay: no cookie, a long random secret instead. `same` is a constant-time comparison. */
-export async function tutorForRelay(req, env, url, same) {
+export async function tutorForRelay(req, env, url, same, ctx) {
   const p = url.pathname;
   if (!p.startsWith("/api/relay/")) return null;
   if (!env.TUTOR || !env.RELAY_SECRET) return reply({ error: "not found" }, 404);
@@ -153,6 +153,15 @@ export async function tutorForRelay(req, env, url, same) {
     const buf = await req.arrayBuffer();
     if (buf.byteLength > 128 * 1024) return reply({ error: "too large" }, 413);
     return forward(env, "/answer", { method: "POST", headers: { "content-type": "application/json" }, body: buf });
+  }
+  // A self-test the site's own tooling can run without signing in as the owner (build/tutor_health.py): one fixed
+  // question through the Claude API, so a bad key or an empty credit shows up after a deploy and not in a lesson.
+  // It carries no learner content, and it counts against the same daily and monthly ceilings as real questions.
+  if (p === "/api/relay/selftest" && req.method === "POST") {
+    if (!apiOn(env)) return reply({ mode: "relay", api: false });
+    // the same shape as a real question (a lesson block, a moment, one earlier exchange), so what passes here is what a lesson sends
+    return answerWithApi(env, { question: "Reply with the single word: ready", lesson: "Lesson 0-0: a self-test. It has no content.", moment: "(a self-test run by the site's own tooling)",
+      history: [{ role: "me", text: "Is this a self-test?" }, { role: "tutor", text: "Yes." }] }, ctx);
   }
   return reply({ error: "not found" }, 404);
 }

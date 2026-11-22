@@ -87,17 +87,36 @@ done
 if [ -z "$up" ]; then
   echo; echo "Deployed, but $url is not answering yet. Give it ten minutes and run go-live.cmd again: it is safe to repeat, and keeps the same address and passphrase."; exit 6
 fi
-selftest=0
-grep -q '"ANTHROPIC_API_KEY"' .secrets/worker-secrets.json && selftest=1
-if ! TUTOR_SELFTEST=$selftest bash build/smoke.sh "$url" .secrets/passphrase.txt; then
+# The signed-in half of the check types the owner's passphrase into the live site. That is the owner's to do:
+# go-live.cmd runs everything. Tooling that is not the owner sets OWNER=absent and runs only the half that needs
+# no sign-in. Either way the result is kept in .secrets/last-check.log.
+pass=.secrets/passphrase.txt
+[ "${OWNER:-present}" = "absent" ] && pass=-
+haskey=0
+grep -q '"ANTHROPIC_API_KEY"' .secrets/worker-secrets.json && haskey=1
+set +e
+bash build/smoke.sh "$url" "$pass" 2>&1 | tee .secrets/last-check.log
+smoke=${PIPESTATUS[0]}
+# the tutor, when the site has its own Claude API key: one real question, so a wrong key or an empty credit shows
+# up now and not in the middle of a lesson. It reports; it never fails the deploy.
+tutor=0
+if [ "$haskey" = "1" ]; then
+  python build/tutor_health.py 2>&1 | tee -a .secrets/last-check.log
+  tutor=${PIPESTATUS[0]}
+fi
+set -e
+date -u "+checked %Y-%m-%d %H:%M UTC" >> .secrets/last-check.log
+if [ "$smoke" != "0" ]; then
   echo; echo "The site is deployed at $url but FAILED the checks above. Do not rely on it until they pass."; exit 5
 fi
 
 echo
 echo "Live and locked: $url"
 echo "Passphrase:      in .secrets/passphrase.txt (show-login.cmd prints it)"
-if [ "$selftest" = "1" ]; then
-  echo "Tutor:           answered in the lesson page by Claude, through the site's own API key (see the self-test line above)"
+if [ "$haskey" = "1" ] && [ "$tutor" = "0" ]; then
+  echo "Tutor:           answers in the lesson page, through the site's own Claude API key"
+elif [ "$haskey" = "1" ]; then
+  echo "Tutor:           the site has a Claude API key but the check above FAILED: read its line"
 else
   echo "Tutor:           add-tutor-key.cmd gives the site its own Claude API key, paid from your Max plan's included credit."
   echo "                 Without one: tutor-relay.cmd on this computer, or questions open in Claude in a new tab."

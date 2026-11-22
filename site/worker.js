@@ -193,7 +193,7 @@ export default {
     if (path.startsWith("/api/relay/")) {                                                 // the tutor relay: its own secret, no cookie
       const ip = req.headers.get("cf-connecting-ip") || "?";
       if (throttled(ip)) return text("Too many attempts. Wait ten minutes.", 429);
-      const res = await tutorForRelay(req, env, url, safeEqual);  
+      const res = await tutorForRelay(req, env, url, safeEqual, ctx);
       if (res.status === 403) failed(ip);
       return secure(res);
     }

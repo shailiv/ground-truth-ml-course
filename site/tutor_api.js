@@ -53,7 +53,7 @@ export function explain(e) {
   if (e instanceof Anthropic.PermissionDeniedError) return "The tutor's Claude API key is not allowed to do this. Check the key in the Claude Console.";
   if (e instanceof Anthropic.RateLimitError) return "Claude is asking the tutor to slow down. Try again in a minute.";
   // a 400 carries the API's own words, which is how a credit or spend-limit notice arrives: pass them on as they are
-  if (e instanceof Anthropic.BadRequestError) return "Claude's API refused the request: " + cut(String(e.message || ""), 220);
+  if (e instanceof Anthropic.BadRequestError) return "Claude's API refused the request: " + cut(String(e.error?.error?.message || e.message || ""), 700);
   if (e instanceof Anthropic.APIConnectionError) return "The tutor could not reach Claude. Try again.";
   if (e instanceof Anthropic.APIError) return "Claude's API is busy right now. Try again in a minute.";
   return "The tutor could not answer just now. Try again.";
@@ -84,7 +84,11 @@ export async function answerWithApi(env, body, ctx) {
   const effort = env.TUTOR_EFFORT || (env.TUTOR_MODEL ? "" : "medium");
   if (effort) params.output_config = { effort };
 
-  const client = new Anthropic({ apiKey: env.ANTHROPIC_API_KEY, maxRetries: 1, timeout: 90_000, ...(env.TUTOR_FETCH ? { fetch: env.TUTOR_FETCH } : {}) });
+  // A key made for "all workspaces" does not say which workspace a request belongs to, and the API then refuses it
+  // unless the request names one. TUTOR_WORKSPACE_ID (an identifier, not a secret) is that name.
+  const workspace = typeof env.TUTOR_WORKSPACE_ID === "string" && /^wrkspc_[A-Za-z0-9_-]+$/.test(env.TUTOR_WORKSPACE_ID) ? env.TUTOR_WORKSPACE_ID : "";
+  const client = new Anthropic({ apiKey: env.ANTHROPIC_API_KEY, maxRetries: 1, timeout: 90_000,
+    ...(workspace ? { defaultHeaders: { "anthropic-workspace-id": workspace } } : {}), ...(env.TUTOR_FETCH ? { fetch: env.TUTOR_FETCH } : {}) });
   const { readable, writable } = new TransformStream(), writer = writable.getWriter(), enc = new TextEncoder();
   let stream, gone = false;
   const send = (o) => writer.write(enc.encode(JSON.stringify(o) + "\n")).catch(() => { gone = true; stream?.abort(); });   // the page went away: stop paying for the answer

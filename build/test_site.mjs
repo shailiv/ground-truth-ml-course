@@ -270,9 +270,22 @@ const clip = (() => { const d = "site/public/audio"; if (!fs.existsSync(d)) retu
   ok(!("thinking" in seen.body) && seen.body.max_tokens === API_LIMITS.maxTokens, "no thinking setting is sent (the model decides), and the answer length is bounded");
   eq(toMessages([], "", "q").length, 1, "with no history there is exactly one message");
 
+  // a key made for "all workspaces" needs each request to name its workspace
+  ok(seen.headers.get("anthropic-workspace-id") === null, "no workspace header is sent unless one is configured");
+  const envW = makeEnv({ ANTHROPIC_API_KEY: "sk-ant-test-not-a-real-key", TUTOR_FETCH, TUTOR_WORKSPACE_ID: "wrkspc_01TestOnly" });
+  const cW = (await worker.fetch(new Request("http://localhost/login", { ...form({ passphrase: "test" }), redirect: "manual" }), envW)).headers.get("set-cookie").split(";")[0];
+  await (await worker.fetch(new Request("http://localhost/api/tutor/ask", { method: "POST", headers: { "content-type": "application/json", cookie: cW }, body: JSON.stringify({ question: "q" }) }), envW)).text();
+  eq(seen.headers.get("anthropic-workspace-id"), "wrkspc_01TestOnly", "a configured workspace is named on the request");
+  const envBad = makeEnv({ ANTHROPIC_API_KEY: "sk-ant-test-not-a-real-key", TUTOR_FETCH, TUTOR_WORKSPACE_ID: "not a workspace id\r\nx-evil: 1" });
+  const cB = (await worker.fetch(new Request("http://localhost/login", { ...form({ passphrase: "test" }), redirect: "manual" }), envBad)).headers.get("set-cookie").split(";")[0];
+  await (await worker.fetch(new Request("http://localhost/api/tutor/ask", { method: "POST", headers: { "content-type": "application/json", cookie: cB }, body: JSON.stringify({ question: "q" }) }), envBad)).text();
+  ok(seen.headers.get("anthropic-workspace-id") === null && seen.headers.get("x-evil") === null, "a malformed workspace value is ignored, never sent");
+
   // limits on what is sent
-  await ask({ question: "q".repeat(5000), lesson: "L".repeat(50000), moment: "m".repeat(9000) });
-  ok(seen.body.messages.at(-1).content.length < API_LIMITS.question + API_LIMITS.moment + 60 && seen.body.system[1].text.length < API_LIMITS.lesson + 30, "oversized input is trimmed before it is sent");
+  seen = null;
+  await (await ask({ question: "q".repeat(5000), lesson: "L".repeat(50000), moment: "m".repeat(9000) })).text();   // read to the end: the request to Claude is made while the answer streams
+  ok(seen.body.messages.at(-1).content.length > API_LIMITS.question && seen.body.messages.at(-1).content.length < API_LIMITS.question + API_LIMITS.moment + 60
+    && seen.body.system[1].text.length > API_LIMITS.lesson - 10 && seen.body.system[1].text.length < API_LIMITS.lesson + 30, "oversized input is trimmed before it is sent");
 
   // when the API says no, the learner gets a sentence, not silence
   const failing = async (status, type, message) => { next = () => apiError(status, type, message); return (await lines(await ask({ question: "q" }))).at(-1); };
@@ -299,6 +312,19 @@ const clip = (() => { const d = "site/public/audio"; if (!fs.existsSync(d)) retu
   seen = null;
   const over = await ask3();
   ok(over.status === 429 && (await over.json()).message.includes("limit for one day") && seen === null, "past the ceiling the question is refused and nothing is sent to Claude");
+
+  // the self-test door: opened by the relay secret, not by the owner's cookie; one fixed question, no learner content
+  const self = (headers = {}) => call2("/api/relay/selftest", { method: "POST", headers: { "cf-connecting-ip": "10.3.3.3", ...headers } });
+  eq((await self()).status, 403, "the tutor self-test needs the relay secret");
+  eq((await self({ cookie: cookie2 })).status, 403, "the owner's cookie does not open the self-test door");
+  next = () => new Response(answer(["ready"]), { headers: { "content-type": "text/event-stream" } });
+  seen = null;
+  const st = await lines(await self({ authorization: "Bearer test-relay" }));
+  ok(st.some((e) => e.t === "delta" && e.text === "ready") && st.at(-1).t === "done", "with the secret, the self-test asks Claude and passes the answer on");
+  ok(seen.body.messages.length === 3 && seen.body.messages.at(-1).content.includes("Reply with the single word: ready") && seen.body.system.length === 2 && seen.body.system[1].text.includes("a self-test"),
+    "the self-test sends one fixed question in the same shape as a real one, with no learner content");
+  const noKey = makeEnv();
+  eq(await (await worker.fetch(new Request("http://localhost/api/relay/selftest", { method: "POST", headers: { authorization: "Bearer test-relay" } }), noKey)).json(), { mode: "relay", api: false }, "without a key the self-test says there is nothing to test");
 
   // without a key nothing changes: the relay and the link still decide
   const env4 = makeEnv(), c4 = (await worker.fetch(new Request("http://localhost/login", { ...form({ passphrase: "test" }), redirect: "manual" }), env4)).headers.get("set-cookie").split(";")[0];

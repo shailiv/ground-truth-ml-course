@@ -15,7 +15,8 @@ echo   Two pages will open in your browser. Do these two things, then come back 
 echo.
 echo     1. claude.ai - Settings - Billing: under "API credits", choose the Console organization
 echo        that should receive the credits and link it. This is done once.
-echo     2. Claude Console - API keys: create a key, name it ground-truth-tutor, and copy it.
+echo     2. Claude Console - API keys: create a key, name it ground-truth-tutor, choose the
+echo        workspace "Default" for it (not "All workspaces"), and copy it.
 echo.
 echo   Do NOT add a payment method and do NOT turn on auto-reload in the Console.
 echo.

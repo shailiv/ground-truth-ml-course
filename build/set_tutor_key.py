@@ -34,3 +34,20 @@ s["ANTHROPIC_API_KEY"] = key
 f.parent.mkdir(exist_ok=True)
 f.write_text(json.dumps(s), encoding="utf-8")
 print(f"  Key stored on this computer (it ends in ...{key[-4:]}).")
+
+# A key created for "All workspaces" does not say which workspace a request belongs to, and the API refuses such a
+# request unless it names one. The workspace's ID (an identifier, not a secret) is on the Console's Workspaces page.
+if "TUTOR_WORKSPACE_ID" in s:
+    print(f"  Workspace already set ({s['TUTOR_WORKSPACE_ID']}).")
+else:
+    print()
+    print("  If you created the key for one workspace (for example Default), just press Enter.")
+    print("  If you created it for ALL workspaces, paste the workspace ID to use: Console - Settings - Workspaces,")
+    print("  it starts with wrkspc_ .")
+    w = input("  Workspace ID (or Enter): ").strip()
+    if w.startswith("wrkspc_") and all(c.isalnum() or c in "_-" for c in w):
+        s["TUTOR_WORKSPACE_ID"] = w
+        f.write_text(json.dumps(s), encoding="utf-8")
+        print("  Workspace stored.")
+    elif w:
+        print("  That does not look like a workspace ID; skipped. The deploy's tutor check will say if one is needed.")
